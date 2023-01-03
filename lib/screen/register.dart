@@ -1,9 +1,12 @@
+import 'package:cheat_sheet/widgets/body_small.dart';
+import 'package:cheat_sheet/widgets/header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../res/colors.dart';
+import '../widgets/button_text.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -21,22 +24,9 @@ class RegisterScreen extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: const [
-                    Text(
-                      "ยินดีต้อนรับ!",
-                      style: TextStyle(
-                          fontFamily: 'BaiJamjuree',
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold),
-                    ),
+                    Header(text: "ยินดีต้อนรับ!"),
                     SizedBox(height: 4),
-                    Text(
-                      "สร้างบัญชีเพื่อเข้าใช้งาน",
-                      style: TextStyle(
-                        fontFamily: 'BaiJamjuree',
-                        fontSize: 16,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
+                    ButtonText(text: "สร้างบัญชีเพื่อเข้าใช้งาน"),
                     SizedBox(height: 25),
                   ],
                 ),
@@ -70,13 +60,9 @@ class RegisterScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: const Text(
-                        "ลงชื่อเข้าใช้งาน",
-                        style: TextStyle(
-                            fontFamily: 'BaiJamjuree',
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontWeight: FontWeight.normal),
+                      child: const ButtonText(
+                        text: "ลงชื่อเข้าใช้งาน",
+                        color: AppColors.white,
                       ),
                       onPressed: () {},
                     ),
@@ -94,13 +80,9 @@ class RegisterScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                const Text(
-                  "เข้าสู่ระบบด้วย",
-                  style: TextStyle(
-                    fontFamily: 'BaiJamjuree',
-                    fontSize: 12,
-                    color: AppColors.black600,
-                  ),
+                const BodySmall(
+                  text: "เข้าสู่ระบบด้วย",
+                  color: AppColors.black600,
                 ),
                 const SizedBox(
                   height: 16,
@@ -141,13 +123,9 @@ class RegisterScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextButton(
-                      child: const Text(
-                        "ยังไม่มีบัญชีใช่ไหม?",
-                        style: TextStyle(
-                          fontFamily: 'BaiJamjuree',
-                          fontSize: 12,
-                          color: AppColors.black600,
-                        ),
+                      child: const BodySmall(
+                        text: "ยังไม่มีบัญชีใช่ไหม?",
+                        color: AppColors.black600,
                       ),
                       onPressed: () {},
                     ),
@@ -155,14 +133,9 @@ class RegisterScreen extends StatelessWidget {
                       width: 24,
                     ),
                     TextButton(
-                      child: const Text(
-                        "เข้าสู่ระบบ",
-                        style: TextStyle(
-                          fontFamily: 'BaiJamjuree',
-                          fontSize: 12,
-                          color: AppColors.tertiary500,
-                          decoration: TextDecoration.underline,
-                        ),
+                      child: BodySmall(
+                        text: "เข้าสู่ระบบ",
+                        color: AppColors.tertiary500,
                       ),
                       onPressed: () {},
                     ),

@@ -81,15 +81,6 @@ class LoginScreen extends StatelessWidget {
                         text: "เข้าสู่ระบบด้วยเกสท์",
                         color: AppColors.tertiary500,
                       ),
-                      // const Text(
-                      //   "เข้าสู่ระบบด้วยเกสท์",
-                      //   style: TextStyle(
-                      //     fontFamily: 'BaiJamjuree',
-                      //     fontSize: 12,
-                      //     color: AppColors.tertiary500,
-                      //     decoration: TextDecoration.underline,
-                      //   ),
-                      // ),
                       onPressed: () {},
                     ),
                     const SizedBox(
