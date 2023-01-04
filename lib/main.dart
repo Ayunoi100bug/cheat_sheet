@@ -1,6 +1,5 @@
-import 'package:cheat_sheet/screen/forgot_password.dart';
-import 'package:cheat_sheet/screen/login.dart';
-import 'package:cheat_sheet/screen/register.dart';
+import 'package:cheat_sheet/view/login.dart';
+import 'package:cheat_sheet/view/register.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -19,7 +18,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const ForgotPasswordScreen(),
+      home: const LoginScreen(),
+
     );
   }
 }
