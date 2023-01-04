@@ -1,6 +1,5 @@
-import 'package:cheat_sheet/screen/forgot_password.dart';
-import 'package:cheat_sheet/screen/login.dart';
-import 'package:cheat_sheet/screen/register.dart';
+import 'package:cheat_sheet/view/login.dart';
+import 'package:cheat_sheet/view/register.dart';
 import 'package:flutter/material.dart';
 
 void main() {

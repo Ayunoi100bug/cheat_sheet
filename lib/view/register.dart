@@ -1,16 +1,13 @@
-import 'package:cheat_sheet/widgets/body.dart';
-import 'package:cheat_sheet/widgets/body_small.dart';
-import 'package:cheat_sheet/widgets/button_text.dart';
-import 'package:cheat_sheet/widgets/header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../res/colors.dart';
+import '../res/typo.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatelessWidget {
+  const RegisterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +18,13 @@ class LoginScreen extends StatelessWidget {
           padding: const EdgeInsets.only(top: 32),
           child: SingleChildScrollView(
             child: Column(
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: const [
-                    Header(text: "ยินดีต้อนรับ!"),
+                    Medium20px(text: "ยินดีต้อนรับ!"),
                     SizedBox(height: 4),
-                    ButtonText(text: "ล็อกอินเพื่อเข้าใช้งาน"),
+                    Regular16px(text: "สร้างบัญชีเพื่อเข้าใช้งาน"),
                     SizedBox(height: 25),
                   ],
                 ),
@@ -46,50 +42,25 @@ class LoginScreen extends StatelessWidget {
                   ),
                   child: Column(
                     children: <Widget>[
+                      makeInput(label: "ชื่อ"),
                       makeInput(label: "E-mail"),
                       makeInput(label: "รหัสผ่าน"),
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 12,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Column(
                   children: <Widget>[
                     MaterialButton(
-                      height: 44,
-                      minWidth: 116,
+                      height: 40,
+                      minWidth: 160,
                       color: AppColors.tertiary500,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: const ButtonText(
-                        text: "เข้าสู่ระบบ",
+                      child: const Regular16px(
+                        text: "ลงชื่อเข้าใช้งาน",
                         color: AppColors.white,
-                      ),
-                      onPressed: () {},
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextButton(
-                      child: const BodySmall(
-                        text: "เข้าสู่ระบบด้วยเกสท์",
-                        color: AppColors.tertiary500,
-                      ),
-                      onPressed: () {},
-                    ),
-                    const SizedBox(
-                      width: 48,
-                    ),
-                    TextButton(
-                      child: const BodySmall(
-                        text: "ลืมรหัสผ่าน?",
-                        color: AppColors.tertiary500,
                       ),
                       onPressed: () {},
                     ),
@@ -107,7 +78,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                const BodySmall(
+                const Regular12px(
                   text: "เข้าสู่ระบบด้วย",
                   color: AppColors.black600,
                 ),
@@ -149,20 +120,15 @@ class LoginScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextButton(
-                      child: const BodySmall(
-                        text: "ยังไม่มีบัญชีใช่ไหม?",
-                        color: AppColors.black600,
-                      ),
-                      onPressed: () {},
-                    ),
-                    const SizedBox(
-                      width: 24,
+                    const Regular12px(
+                      text: "ยังไม่มีบัญชีใช่ไหม?",
+                      color: AppColors.black600,
                     ),
                     TextButton(
-                      child: const BodySmall(
-                        text: "สมัครสมาชิก",
+                      child: const Regular12px(
+                        text: "เข้าสู่ระบบ",
                         color: AppColors.tertiary500,
+                        underline: true,
                       ),
                       onPressed: () {},
                     ),
@@ -180,9 +146,13 @@ class LoginScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Body(
-          text: label,
-          color: Colors.black,
+        Text(
+          label,
+          style: const TextStyle(
+            fontFamily: 'BaiJamjuree',
+            fontSize: 16,
+            color: AppColors.black800,
+          ),
         ),
         const SizedBox(
           height: 12,

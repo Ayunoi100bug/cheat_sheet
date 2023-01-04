@@ -1,10 +1,9 @@
-import 'package:cheat_sheet/widgets/button_text.dart';
-import 'package:cheat_sheet/widgets/header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 import '../res/colors.dart';
+import '../res/typo.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   const ForgotPasswordScreen({super.key});
@@ -31,7 +30,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                 const SizedBox(
                   height: 32,
                 ),
-                const Header(text: "ลืมรหัสผ่าน"),
+                const Medium20px(text: "ลืมรหัสผ่าน"),
                 const SizedBox(
                   height: 32,
                 ),
@@ -58,7 +57,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: const ButtonText(
+                      child: const Regular16px(
                         text: "กู้คืน",
                         color: AppColors.white,
                       ),
