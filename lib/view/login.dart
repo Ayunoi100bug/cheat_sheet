@@ -24,12 +24,11 @@ class LoginScreen extends StatelessWidget {
           padding: const EdgeInsets.only(top: 32),
           child: SingleChildScrollView(
             child: Column(
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: const [
-                    Medium20px(text: "ยินดีต้อนรับ!"),
+                    Bold24px(text: "ยินดีต้อนรับ!"),
                     SizedBox(height: 4),
                     Regular16px(text: "ล็อกอินเพื่อเข้าใช้งาน"),
                     SizedBox(height: 25),
@@ -62,8 +61,6 @@ class LoginScreen extends StatelessWidget {
                   children: <Widget>[
                     PrimaryButton(
                       text: "เข้าสู่ระบบ",
-                      height: 44,
-                      width: 116,
                       onPressed: () {},
                     ),
                   ],

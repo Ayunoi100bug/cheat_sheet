@@ -11,7 +11,6 @@ class Bold24px extends StatelessWidget {
       required this.text,
       this.size = 24,
       this.underline = false});
-
   @override
   Widget build(BuildContext context) {
     return Text(
