@@ -1,6 +1,10 @@
-import 'package:cheat_sheet/view/forgot_password.dart';
-import 'package:cheat_sheet/view/login.dart';
-import 'package:cheat_sheet/view/register.dart';
+import 'package:cheat_sheet/res/components/bottom_bar.dart';
+import 'package:cheat_sheet/utils/routes/routes.dart';
+import 'package:cheat_sheet/utils/routes/routes_name.dart';
+import 'package:cheat_sheet/view/activity_screen.dart';
+import 'package:cheat_sheet/view/home/main_screen.dart';
+import 'package:cheat_sheet/view/home_screen.dart';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -19,7 +23,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginScreen(),
+
+      //home: mainScreenLogin(),
+      initialRoute: routesName.main,
+      onGenerateRoute: Routes.generateRoute,
     );
   }
 }
