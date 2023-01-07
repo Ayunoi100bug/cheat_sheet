@@ -71,7 +71,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.1.4"
-
   firebase_core:
     dependency: "direct main"
     description:
@@ -93,6 +92,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  fluentui_icons:
+    dependency: "direct main"
+    description:
+      name: fluentui_icons
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -129,7 +135,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "10.3.0"
-
   http:
     dependency: "direct main"
     description:
@@ -276,7 +281,6 @@ packages:
       name: shared_preferences_macos
       url: "https://pub.dartlang.org"
     source: hosted
-
     version: "2.0.5"
   shared_preferences_platform_interface:
     dependency: transitive

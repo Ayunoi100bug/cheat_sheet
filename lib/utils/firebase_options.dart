@@ -67,7 +67,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '410235314749',
     projectId: 'cheatsheet-770ad',
     storageBucket: 'cheatsheet-770ad.appspot.com',
-    iosClientId: '410235314749-ddspkomr2c5lql1lldfomvk6gs3j1bt0.apps.googleusercontent.com',
+    iosClientId:
+        '410235314749-ddspkomr2c5lql1lldfomvk6gs3j1bt0.apps.googleusercontent.com',
     iosBundleId: 'com.example.cheatSheet',
   );
 
@@ -77,7 +78,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '410235314749',
     projectId: 'cheatsheet-770ad',
     storageBucket: 'cheatsheet-770ad.appspot.com',
-    iosClientId: '410235314749-ddspkomr2c5lql1lldfomvk6gs3j1bt0.apps.googleusercontent.com',
+    iosClientId:
+        '410235314749-ddspkomr2c5lql1lldfomvk6gs3j1bt0.apps.googleusercontent.com',
     iosBundleId: 'com.example.cheatSheet',
   );
 }
