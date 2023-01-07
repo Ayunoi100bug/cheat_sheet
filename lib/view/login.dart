@@ -79,6 +79,10 @@ class LoginScreen extends StatelessWidget {
                     const SizedBox(
                       width: 48,
                     ),
+                    Text(
+                      "data",
+                      style: TextStyle(fontFamily: "BaiJamjuree"),
+                    ),
                     TextButton(
                       child: const Regular12px(
                         text: "ลืมรหัสผ่าน?",
