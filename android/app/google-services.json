@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "410235314749",
+    "project_id": "cheatsheet-770ad",
+    "storage_bucket": "cheatsheet-770ad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:410235314749:android:b4b840f878bf84e382c054",
+        "android_client_info": {
+          "package_name": "com.example.cheat_sheet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "410235314749-ib76rcas9gt72r2bkhkbknfcvt3k8oq4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_dzqITCi5btoE7bZaVqHD4IjbrDX-_cI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "410235314749-ib76rcas9gt72r2bkhkbknfcvt3k8oq4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "410235314749-ddspkomr2c5lql1lldfomvk6gs3j1bt0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.cheatSheet"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
