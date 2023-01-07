@@ -4,6 +4,7 @@ import 'package:cheat_sheet/utils/routes/routes_name.dart';
 import 'package:cheat_sheet/view/activity_screen.dart';
 import 'package:cheat_sheet/view/home/main_screen.dart';
 import 'package:cheat_sheet/view/home_screen.dart';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,10 +18,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+
       //home: mainScreenLogin(),
       initialRoute: routesName.main,
       onGenerateRoute: Routes.generateRoute,
