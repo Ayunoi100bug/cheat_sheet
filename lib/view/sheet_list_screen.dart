@@ -10,7 +10,8 @@ class SheetListScreen extends StatefulWidget {
   State<SheetListScreen> createState() => _SheetListScreenState();
 }
 
-class _SheetListScreenState extends State<SheetListScreen> {
+class _SheetListScreenState extends State<SheetListScreen>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,4 +20,8 @@ class _SheetListScreenState extends State<SheetListScreen> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

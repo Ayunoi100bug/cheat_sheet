@@ -6,9 +6,9 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 import '../../view/activity_screen.dart';
-import '../../view/createSheet_screen.dart';
+import '../../view/create_sheet_screen.dart';
 import '../../view/profile_screen.dart';
-import '../../view/sheetList_screen.dart';
+import '../../view/sheet_list_screen.dart';
 
 class SidebarMenu extends StatefulWidget {
   const SidebarMenu({super.key});

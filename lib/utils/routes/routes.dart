@@ -1,11 +1,11 @@
 import 'package:cheat_sheet/utils/routes/routes_name.dart';
-import 'package:cheat_sheet/view/createSheet_screen.dart';
-import 'package:cheat_sheet/view/home/main_screen.dart';
+import 'package:cheat_sheet/view/create_sheet_screen.dart';
+import 'package:cheat_sheet/view/main_screen.dart';
 import 'package:cheat_sheet/view/home_screen.dart';
 import 'package:cheat_sheet/view/activity_screen.dart';
 import 'package:cheat_sheet/view/profile_screen.dart';
 import 'package:cheat_sheet/view/settingNotification_screen.dart';
-import 'package:cheat_sheet/view/sheetList_screen.dart';
+import 'package:cheat_sheet/view/sheet_list_screen.dart';
 import 'package:flutter/material.dart';
 
 class Routes {
