@@ -32,7 +32,7 @@ class _SidebarMenuState extends State<SidebarMenu> {
               leading: Icon(FluentSystemIcons.ic_fluent_settings_regular),
               title: Text('ตั้งค่าการแจ้งเตือน'),
               onTap: () {
-                Navigator.pushNamed(context, routesName.settingNotification);
+                Navigator.pushNamed(context, RoutesName.settingNotification);
               }),
           ListTile(
               leading:

@@ -13,31 +13,31 @@ class Routes {
     final argume = settings.arguments;
 
     switch (settings.name) {
-      case routesName.home:
+      case RoutesName.home:
         return MaterialPageRoute(
             builder: (BuildContext context) => const HomeScreen());
 
-      case routesName.activity:
+      case RoutesName.activity:
         return MaterialPageRoute(
             builder: (BuildContext context) => const ActivityScreen());
 
-      case routesName.createSheet:
+      case RoutesName.createSheet:
         return MaterialPageRoute(
             builder: (BuildContext context) => const CreateSheetScreen());
 
-      case routesName.sheetList:
+      case RoutesName.sheetList:
         return MaterialPageRoute(
             builder: (BuildContext context) => const SheetListScreen());
 
-      case routesName.profile:
+      case RoutesName.profile:
         return MaterialPageRoute(
             builder: (BuildContext context) => const ProfileScreen());
 
-      case routesName.main:
+      case RoutesName.main:
         return MaterialPageRoute(
             builder: (BuildContext context) => const MainScreen());
 
-      case routesName.settingNotification:
+      case RoutesName.settingNotification:
         return MaterialPageRoute(
             builder: (BuildContext context) =>
                 const SettingNotificationScreen());

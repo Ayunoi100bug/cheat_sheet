@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       ),
 
       //home: mainScreenLogin(),
-      initialRoute: routesName.main,
+      initialRoute: RoutesName.main,
       onGenerateRoute: Routes.generateRoute,
     );
   }
