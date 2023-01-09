@@ -1,4 +1,6 @@
+import 'package:cheat_sheet/model/user.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -6,8 +8,17 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../res/colors.dart';
 import '../res/typo.dart';
 
-class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  // const RegisterScreen({super.key});
+
+  @override
+  _RegisterScreenState createState() => _RegisterScreenState();
+}
+class _RegisterScreenState extends State<RegisterScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final formKey = GlobalKey<FormState>();
+  Users myUser = Users(username:'', email: '', password: '');
+  // RegisterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +53,15 @@ class RegisterScreen extends StatelessWidget {
                   ),
                   child: Column(
                     children: <Widget>[
-                      makeInput(label: "ชื่อ"),
-                      makeInput(label: "E-mail"),
-                      makeInput(label: "รหัสผ่าน"),
+                      makeInput(label: "ชื่อ", onSaved: (value) {
+                        myUser.username = value;
+                      },),
+                      makeInput(label: "E-mail", keyboardType: TextInputType.emailAddress, onSaved: (value) {
+                        myUser.email = value;
+                      },),
+                      makeInput(label: "รหัสผ่าน", obscureText: true, onSaved: (value) {
+                        myUser.password = value;
+                      },),
                     ],
                   ),
                 ),
@@ -62,7 +79,14 @@ class RegisterScreen extends StatelessWidget {
                         text: "ลงชื่อเข้าใช้งาน",
                         color: AppColors.white,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        if (formKey.currentState!.validate()){
+                          formKey.currentState?.save();
+                          // debugPrint("User name is: ${myUser.username}");
+                          // debugPrint("Email is: ${myUser.email}");
+                          // debugPrint("Password is: ${myUser.password}");
+                        }
+                      },
                     ),
                   ],
                 ),
@@ -142,7 +166,7 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
-  Widget makeInput({label, obscureText = false}) {
+  Widget makeInput({label, obscureText = false, keyboardType, onSaved}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -158,6 +182,8 @@ class RegisterScreen extends StatelessWidget {
           height: 12,
         ),
         TextField(
+          keyboardType: keyboardType,
+          obscureText: obscureText,
           decoration: InputDecoration(
             isDense: true, // Added this
             contentPadding: const EdgeInsets.all(8),
