@@ -1,14 +1,7 @@
 import 'package:cheat_sheet/utils/routes/routes_name.dart';
-import 'package:cheat_sheet/view/home_screen.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-
-import '../../view/activity_screen.dart';
-import '../../view/create_sheet_screen.dart';
-import '../../view/profile_screen.dart';
-import '../../view/sheet_list_screen.dart';
 
 class SidebarMenu extends StatefulWidget {
   const SidebarMenu({super.key});

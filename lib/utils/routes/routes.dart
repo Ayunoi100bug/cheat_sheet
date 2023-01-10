@@ -7,7 +7,6 @@ import 'package:cheat_sheet/view/home_screen.dart';
 import 'package:cheat_sheet/view/activity_screen.dart';
 import 'package:cheat_sheet/view/profile_screen.dart';
 import 'package:cheat_sheet/view/sheet_list_screen.dart';
-import 'package:flutter/material.dart';
 
 @MaterialAutoRouter(replaceInRouteName: 'Page,Route', routes: [
   AutoRoute(
