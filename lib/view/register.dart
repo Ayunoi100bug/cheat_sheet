@@ -34,7 +34,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             );
           }
-
           if (snapshot.connectionState == ConnectionState.done) {
             return Scaffold(
               body: SafeArea(
@@ -72,8 +71,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 // Username
                                 TextFormField(
                                   /**
-                           * * validator is a prompt when not fill the form, if you already have some of this handling please remove it.
-                           */
+                                  * * validator is a prompt when not fill the form, if you already have some of this handling please remove it.
+                                  */
                                   validator: RequiredValidator(
                                       errorText: 'Please enter username.'),
                                   onSaved: (value) {
@@ -125,12 +124,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                               // This procress is not create username into firebase yet.
                                               email: myUser.email.toString(),
                                               password: myUser.password.toString()
-                                            );
-                                            Fluttertoast.showToast(
-                                              msg: 'Success create user',
-                                              gravity: ToastGravity.BOTTOM
-                                            );
-                                            // Change route? below here.
+                                            ).then((value) {
+                                              Fluttertoast.showToast(
+                                                msg: 'Success create user',
+                                                gravity: ToastGravity.BOTTOM
+                                              );
+                                              formKey.currentState!.reset();
+                                            });
+                                            /*
+                                              Change route code here.
+                                            */
                                           } on FirebaseAuthException catch (e) {
                                             // debugPrint(e.message);
                                             Fluttertoast.showToast(
@@ -138,7 +141,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                               gravity: ToastGravity.BOTTOM
                                             );
                                           }
-                                          formKey.currentState!.reset();
                                         }
                                       },
                                     ),
