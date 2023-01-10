@@ -31,19 +31,24 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  fluttertoast: any
-  another_flushbar: any
-  provider: any
-  http: any
+  fluttertoast: ^8.1.2
+  another_flushbar: ^1.12.29
+  provider: ^6.0.5
+  http: ^0.13.5
   font_awesome_flutter: ^10.3.0
-  shared_preferences:
+  shared_preferences: ^2.0.15
   cupertino_icons: ^1.0.2
   fluentui_icons: ^1.0.0
   firebase_core: ^2.4.1
+  auto_route: ^5.0.4
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  auto_route_generator: ^5.0.3
+  build_runner: ^2.3.3
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

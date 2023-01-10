@@ -1,14 +1,7 @@
 import 'package:cheat_sheet/utils/routes/routes_name.dart';
-import 'package:cheat_sheet/view/home_screen.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-
-import '../../view/activity_screen.dart';
-import '../../view/createSheet_screen.dart';
-import '../../view/profile_screen.dart';
-import '../../view/sheetList_screen.dart';
 
 class SidebarMenu extends StatefulWidget {
   const SidebarMenu({super.key});
@@ -32,7 +25,7 @@ class _SidebarMenuState extends State<SidebarMenu> {
               leading: Icon(FluentSystemIcons.ic_fluent_settings_regular),
               title: Text('ตั้งค่าการแจ้งเตือน'),
               onTap: () {
-                Navigator.pushNamed(context, routesName.settingNotification);
+                Navigator.pushNamed(context, RoutesName.settingNotification);
               }),
           ListTile(
               leading:
