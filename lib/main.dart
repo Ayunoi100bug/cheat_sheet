@@ -14,7 +14,6 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -24,10 +23,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<Users?>.value(
-      value: AuthService().user,
-      initialData: null,
-      child: MaterialApp(
+    return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
@@ -37,7 +33,7 @@ class MyApp extends StatelessWidget {
         home: RegisterScreen(),
         // initialRoute: routesName.main,
         // onGenerateRoute: Routes.generateRoute,
-      )
-    );
+      );
+    // );
   }
 }
