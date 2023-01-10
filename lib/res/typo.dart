@@ -83,6 +83,36 @@ class Light20px extends StatelessWidget {
   }
 }
 
+class Light12px extends StatelessWidget {
+  final Color color;
+  final String text;
+  final double size;
+  final TextOverflow overFlow;
+  final bool underline;
+  const Light12px(
+      {super.key,
+      this.color = const Color(0xff000000),
+      required this.text,
+      this.size = 12,
+      this.overFlow = TextOverflow.ellipsis,
+      this.underline = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontFamily: 'BaiJamjuree',
+        color: color,
+        fontSize: size,
+        fontWeight: FontWeight.w300,
+        decoration: underline ? TextDecoration.underline : TextDecoration.none,
+      ),
+      overflow: overFlow,
+    );
+  }
+}
+
 class Medium16px extends StatelessWidget {
   final Color color;
   final String text;
@@ -94,6 +124,36 @@ class Medium16px extends StatelessWidget {
       this.color = const Color(0xff000000),
       required this.text,
       this.size = 16,
+      this.overFlow = TextOverflow.ellipsis,
+      this.underline = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontFamily: 'BaiJamjuree',
+        color: color,
+        fontSize: size,
+        fontWeight: FontWeight.w500,
+        decoration: underline ? TextDecoration.underline : TextDecoration.none,
+      ),
+      overflow: overFlow,
+    );
+  }
+}
+
+class Medium12px extends StatelessWidget {
+  final Color color;
+  final String text;
+  final double size;
+  final TextOverflow overFlow;
+  final bool underline;
+  const Medium12px(
+      {super.key,
+      this.color = const Color(0xff000000),
+      required this.text,
+      this.size = 12,
       this.overFlow = TextOverflow.ellipsis,
       this.underline = false});
 
@@ -196,6 +256,7 @@ class Regular12px extends StatelessWidget {
         decoration: underline ? TextDecoration.underline : TextDecoration.none,
       ),
       overflow: overFlow,
+      softWrap: true,
     );
   }
 }
@@ -226,6 +287,7 @@ class Regular10px extends StatelessWidget {
         decoration: underline ? TextDecoration.underline : TextDecoration.none,
       ),
       overflow: overFlow,
+      softWrap: true,
     );
   }
 }
