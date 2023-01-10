@@ -1,3 +1,5 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/utils/routes/routes_name.dart';
 import 'package:cheat_sheet/view/login.dart';
 import 'package:flutter/material.dart';
@@ -27,8 +29,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                     child: InkWell(
                       child: Text('I am ปดกุ่ม'),
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (BuildContext context) => LoginScreen()));
+                        AutoRouter.of(context).pushNamed('/login');
                       },
                     ),
                   ),

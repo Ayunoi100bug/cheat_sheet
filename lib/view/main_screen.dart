@@ -9,7 +9,7 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
-      // appBarBuilder: (context, tabsRouter) => AppBar(),
+      appBarBuilder: (context, tabsRouter) => AppBar(),
       routes: const [
         HomeScreenRoute(),
         ActivityScreenRoute(),

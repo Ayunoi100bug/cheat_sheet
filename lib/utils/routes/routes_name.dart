@@ -35,4 +35,7 @@ class RoutesName {
 
   //tutorial routes name
   static const String tutorial = 'tutorial_screen';
+
+  //other
+  static const String login = 'login';
 }
