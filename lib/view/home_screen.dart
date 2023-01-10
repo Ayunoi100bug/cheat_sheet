@@ -18,7 +18,17 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text("home"),
+        child: InkWell(
+          child: Text('I am ปุ่มกด'),
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) => SafeArea(
+                      child: Container(
+                        child: Text('WWWWW'),
+                      ),
+                    )));
+          },
+        ),
       ),
     );
   }

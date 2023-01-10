@@ -1,4 +1,5 @@
 import 'package:cheat_sheet/utils/routes/routes_name.dart';
+import 'package:cheat_sheet/view/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -16,7 +17,26 @@ class _ProfileScreenState extends State<ProfileScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text("profile"),
+        child: InkWell(
+          child: Text('I am ปุ่มกด'),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (BuildContext context) => SafeArea(
+                  child: Container(
+                    child: InkWell(
+                      child: Text('I am ปดกุ่ม'),
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (BuildContext context) => LoginScreen()));
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
