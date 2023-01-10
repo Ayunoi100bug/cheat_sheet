@@ -40,10 +40,15 @@ dependencies:
   cupertino_icons: ^1.0.2
   fluentui_icons: ^1.0.0
   firebase_core: ^2.4.1
+  auto_route: any
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  auto_route_generator: any
+  build_runner: any
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
