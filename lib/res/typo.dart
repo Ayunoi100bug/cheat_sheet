@@ -27,6 +27,31 @@ class Bold24px extends StatelessWidget {
   }
 }
 
+class Medium24px extends StatelessWidget {
+  final Color color;
+  final String text;
+  final double size;
+  final bool underline;
+  const Medium24px(
+      {super.key,
+      this.color = const Color(0xff000000),
+      required this.text,
+      this.size = 24,
+      this.underline = false});
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontFamily: 'BaiJamjuree',
+        color: color,
+        fontSize: size,
+        decoration: underline ? TextDecoration.underline : TextDecoration.none,
+      ),
+    );
+  }
+}
+
 class Medium20px extends StatelessWidget {
   final Color color;
   final String text;
