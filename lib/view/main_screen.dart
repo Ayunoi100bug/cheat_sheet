@@ -30,40 +30,42 @@ class MainScreen extends StatelessWidget {
         Fluttertoast.cancel();
         return true;
       },
-      child: AutoTabsScaffold(
+      child: Scaffold(
         key: _scaffoldKey,
         endDrawer: SidebarMenu(),
-        appBarBuilder: (context, tabsRouter) => AppBar(
-          backgroundColor: CustomAppBar.appBarColor,
-          title: CustomAppBar.textLogo,
-          actions: [
-            CustomAppBar.coin,
-            CustomAppBar.notifications,
-            IconButton(
-              icon: Icon(Icons.menu),
-              onPressed: () {
-                _scaffoldKey.currentState!.openEndDrawer();
-              },
-            ),
+        body: AutoTabsScaffold(
+          appBarBuilder: (context, tabsRouter) => AppBar(
+            backgroundColor: CustomAppBar.appBarColor,
+            title: CustomAppBar.textLogo,
+            actions: [
+              CustomAppBar.coin,
+              CustomAppBar.notifications,
+              IconButton(
+                icon: Icon(Icons.menu),
+                onPressed: () {
+                  _scaffoldKey.currentState!.openEndDrawer();
+                },
+              ),
+            ],
+          ),
+          routes: const [
+            HomeScreenRoute(),
+            ActivityScreenRoute(),
+            CreateSheetRoute(),
+            SheetListRoute(),
+            ProfileRoute(),
           ],
-        ),
-        routes: const [
-          HomeScreenRoute(),
-          ActivityScreenRoute(),
-          CreateSheetRoute(),
-          SheetListRoute(),
-          ProfileRoute(),
-        ],
-        bottomNavigationBuilder: (context, tabsRouter) => BottomNavigationBar(
-          items: BottomBar.listItemBottomBar,
-          currentIndex: tabsRouter.activeIndex,
-          onTap: tabsRouter.setActiveIndex,
-          elevation: BottomBar.elevation,
-          showSelectedLabels: BottomBar.showSelectedLabels,
-          showUnselectedLabels: BottomBar.showUnselectedLabels,
-          type: BottomBar.bottomNavigationBarType,
-          selectedItemColor: BottomBar.selectedItemColor,
-          unselectedItemColor: BottomBar.unSelectedItemColor,
+          bottomNavigationBuilder: (context, tabsRouter) => BottomNavigationBar(
+            items: BottomBar.listItemBottomBar,
+            currentIndex: tabsRouter.activeIndex,
+            onTap: tabsRouter.setActiveIndex,
+            elevation: BottomBar.elevation,
+            showSelectedLabels: BottomBar.showSelectedLabels,
+            showUnselectedLabels: BottomBar.showUnselectedLabels,
+            type: BottomBar.bottomNavigationBarType,
+            selectedItemColor: BottomBar.selectedItemColor,
+            unselectedItemColor: BottomBar.unSelectedItemColor,
+          ),
         ),
       ),
     );
