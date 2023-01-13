@@ -8,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
 import '../res/colors.dart';
+import '../res/gap_dimension.dart';
 import '../res/typo.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -26,16 +27,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    double height0_01 = screenHeight * 0.01;
-    double height0_02 = screenHeight * 0.02;
-    double height0_03 = screenHeight * 0.03;
-    double height0_024 = screenHeight * 0.024;
-    double height0_032 = screenHeight * 0.032;
-    double height0_18 = screenHeight * 0.18;
-    double height0_36 = screenHeight * 0.36;
-    double width0_048 = screenWidth * 0.048;
-    double width0_096 = screenWidth * 0.096;
-    double width0_4 = screenWidth * 0.4;
 
     return FutureBuilder(
       future: firebase,
@@ -54,7 +45,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.only(
-                  top: height0_032,
+                  top: screenHeight * GapDimension.h0_032,
                 ),
                 child: SingleChildScrollView(
                   child: Column(
@@ -63,13 +54,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           const Medium20px(text: "ยินดีต้อนรับ!"),
-                          SizedBox(height: height0_01),
+                          SizedBox(height: GapDimension.h0_01),
                           const Regular16px(text: "สร้างบัญชีเพื่อเข้าใช้งาน"),
-                          SizedBox(height: height0_024),
+                          SizedBox(height: GapDimension.h0_024),
                         ],
                       ),
                       Container(
-                        height: screenWidth < 480 ? height0_18 : height0_36,
+                        height: screenWidth < 480
+                            ? GapDimension.h0_18
+                            : GapDimension.h0_36,
                         decoration: const BoxDecoration(
                           image: DecorationImage(
                               image: AssetImage('assets/images/logo.png')),
@@ -77,7 +70,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(
-                          horizontal: width0_096,
+                          horizontal: GapDimension.w0_096,
                         ),
                         child: Form(
                           key: formKey,
@@ -87,7 +80,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 alignment: Alignment.centerLeft,
                                 child: Regular16px(text: "ชื่อ"),
                               ),
-                              SizedBox(height: height0_01),
+                              SizedBox(height: GapDimension.h0_01),
                               // Username
                               MyTextFormField(
                                 validator: RequiredValidator(
@@ -97,12 +90,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 },
                                 hintText: "ชื่อ",
                               ),
-                              SizedBox(height: height0_02),
+                              SizedBox(height: GapDimension.h0_02),
                               const Align(
                                 alignment: Alignment.centerLeft,
                                 child: Regular16px(text: "E-mail"),
                               ),
-                              SizedBox(height: height0_01),
+                              SizedBox(height: GapDimension.h0_01),
                               // E-mail
                               MyTextFormField(
                                 validator: MultiValidator([
@@ -118,12 +111,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 keyboardType: TextInputType.emailAddress,
                                 hintText: "example@email.com",
                               ),
-                              SizedBox(height: height0_02),
+                              SizedBox(height: GapDimension.h0_02),
                               const Align(
                                 alignment: Alignment.centerLeft,
                                 child: Regular16px(text: "รหัสผ่าน"),
                               ),
-                              SizedBox(height: height0_01),
+                              SizedBox(height: GapDimension.h0_01),
                               // Password
                               MyTextFormField(
                                 validator: RequiredValidator(
@@ -135,10 +128,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 hintText: "รหัสผ่าน",
                                 helperText: "ต้องใช้ตัวอักษร 6-12 ตัวอักษร",
                               ),
-                              SizedBox(height: height0_03),
+                              SizedBox(height: GapDimension.h0_03),
                               SizedBox(
                                 height: 40,
-                                width: width0_4,
+                                width: GapDimension.w0_4,
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     alignment: Alignment.center,
@@ -188,10 +181,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: height0_02),
+                      SizedBox(height: GapDimension.h0_02),
                       Container(
                         margin: EdgeInsets.only(
-                            left: width0_048, right: width0_048),
+                            left: GapDimension.w0_048,
+                            right: GapDimension.w0_048),
                         child: const Divider(
                           thickness: 1,
                         ),
@@ -201,12 +195,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         color: AppColors.black600,
                       ),
                       SizedBox(
-                        height: height0_01,
+                        height: GapDimension.h0_01,
                       ),
                       Padding(
                         padding: EdgeInsets.only(
-                            left: screenWidth * 0.045,
-                            right: screenWidth * 0.045),
+                            left: GapDimension.w0_044,
+                            right: GapDimension.w0_044),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
