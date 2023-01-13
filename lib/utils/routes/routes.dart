@@ -1,12 +1,12 @@
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/empty_router_widgets.dart';
-import 'package:cheat_sheet/view/create_sheet_screen.dart';
+import 'package:cheat_sheet/view/create_sheet_screen/create_sheet_screen.dart';
 import 'package:cheat_sheet/view/login.dart';
 import 'package:cheat_sheet/view/main_screen.dart';
-import 'package:cheat_sheet/view/home_screen.dart';
-import 'package:cheat_sheet/view/activity_screen.dart';
-import 'package:cheat_sheet/view/profile_screen.dart';
-import 'package:cheat_sheet/view/sheet_list_screen.dart';
+import 'package:cheat_sheet/view/home_screen/home_screen.dart';
+import 'package:cheat_sheet/view/activity_screen/activity_screen.dart';
+import 'package:cheat_sheet/view/profile_screen/profile_screen.dart';
+import 'package:cheat_sheet/view/sheet_list_screen/sheet_list_screen.dart';
 
 @MaterialAutoRouter(replaceInRouteName: 'Page,Route', routes: [
   AutoRoute(
@@ -15,14 +15,14 @@ import 'package:cheat_sheet/view/sheet_list_screen.dart';
     children: [
       AutoRoute(
           path: 'home',
-          name: 'HomeScreenRoute',
+          name: 'HomeRoute',
           page: EmptyRouterPage,
           children: [
             AutoRoute(path: '', page: HomeScreen),
           ]),
       AutoRoute(
           path: 'activity',
-          name: 'ActivityScreenRoute',
+          name: 'ActivityRoute',
           page: EmptyRouterPage,
           children: [
             AutoRoute(path: '', page: ActivityScreen),

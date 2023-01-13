@@ -15,13 +15,13 @@ import 'package:auto_route/auto_route.dart' as _i9;
 import 'package:auto_route/empty_router_widgets.dart' as _i3;
 import 'package:flutter/material.dart' as _i10;
 
-import '../../view/activity_screen.dart' as _i5;
-import '../../view/create_sheet_screen.dart' as _i6;
-import '../../view/home_screen.dart' as _i4;
+import '../../view/activity_screen/activity_screen.dart' as _i5;
+import '../../view/create_sheet_screen/create_sheet_screen.dart' as _i6;
+import '../../view/home_screen/home_screen.dart' as _i4;
 import '../../view/login.dart' as _i2;
 import '../../view/main_screen.dart' as _i1;
-import '../../view/profile_screen.dart' as _i8;
-import '../../view/sheet_list_screen.dart' as _i7;
+import '../../view/profile_screen/profile_screen.dart' as _i8;
+import '../../view/sheet_list_screen/sheet_list_screen.dart' as _i7;
 
 class AppRouter extends _i9.RootStackRouter {
   AppRouter([_i10.GlobalKey<_i10.NavigatorState>? navigatorKey])
