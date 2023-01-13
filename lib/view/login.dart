@@ -27,6 +27,20 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+    double height0_01 = screenHeight * 0.01;
+    double height0_016 = screenHeight * 0.016;
+    double height0_02 = screenHeight * 0.02;
+    double height0_03 = screenHeight * 0.03;
+    double height0_06 = screenHeight * 0.06;
+    double height0_024 = screenHeight * 0.024;
+    double height0_032 = screenHeight * 0.032;
+    double height0_18 = screenHeight * 0.18;
+    double height0_36 = screenHeight * 0.36;
+    double width0_044 = screenWidth * 0.044;
+    double width0_048 = screenWidth * 0.048;
+    double width0_096 = screenWidth * 0.096;
+    double width0_128 = screenWidth * 0.128;
+    double width0_4 = screenWidth * 0.4;
 
     return FutureBuilder(
         future: firebase,
@@ -45,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Container(
                   width: double.infinity,
                   padding: EdgeInsets.only(
-                    top: screenHeight * 0.032,
+                    top: height0_032,
                   ),
                   child: SingleChildScrollView(
                     child: Column(
@@ -54,15 +68,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Medium20px(text: "ยินดีต้อนรับ!"),
-                            SizedBox(height: screenHeight * 0.01),
+                            SizedBox(height: height0_01),
                             Regular16px(text: "ล็อกอินเพื่อเข้าใช้งาน"),
-                            SizedBox(height: screenHeight * 0.024),
+                            SizedBox(height: height0_024),
                           ],
                         ),
                         Container(
-                          height: screenWidth < 480
-                              ? screenHeight * 0.18
-                              : screenHeight * 0.36,
+                          height: screenWidth < 480 ? height0_18 : height0_36,
                           decoration: const BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage('assets/images/logo.png')),
@@ -70,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         Padding(
                           padding: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 0.096,
+                            horizontal: width0_096,
                           ),
                           child: Form(
                             key: formKey,
@@ -80,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   alignment: Alignment.centerLeft,
                                   child: Regular16px(text: "E-mail"),
                                 ),
-                                SizedBox(height: screenHeight * 0.01),
+                                SizedBox(height: height0_01),
                                 // I delete username because currently it can't use username to login.
                                 // E-mail
                                 MyTextFormField(
@@ -97,12 +109,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                   keyboardType: TextInputType.emailAddress,
                                   hintText: "example@email.com",
                                 ),
-                                SizedBox(height: screenHeight * 0.02),
+                                SizedBox(height: height0_02),
                                 const Align(
                                   alignment: Alignment.centerLeft,
                                   child: Regular16px(text: "รหัสผ่าน"),
                                 ),
-                                SizedBox(height: screenHeight * 0.01),
+                                SizedBox(height: height0_01),
                                 // Password
                                 MyTextFormField(
                                   validator: RequiredValidator(
@@ -116,11 +128,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                 SizedBox(
                                     height: screenWidth < 480
-                                        ? screenHeight * 0.03
-                                        : screenHeight * 0.06),
+                                        ? height0_03
+                                        : height0_06),
                                 SizedBox(
                                   height: 40,
-                                  width: screenWidth * 0.4,
+                                  width: width0_4,
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                       alignment: Alignment.center,
@@ -168,7 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: screenHeight * 0.02),
+                        SizedBox(height: height0_02),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -180,7 +192,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               onPressed: () {},
                             ),
-                            SizedBox(width: screenWidth * 0.128),
+                            SizedBox(width: width0_128),
                             TextButton(
                               child: const Regular12px(
                                 text: "ลืมรหัสผ่าน?",
@@ -196,8 +208,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Expanded(
                               child: Container(
                                 margin: EdgeInsets.only(
-                                    left: screenWidth * 0.048,
-                                    right: screenWidth * 0.048),
+                                    left: width0_048, right: width0_048),
                                 child: const Divider(
                                   thickness: 1,
                                 ),
@@ -210,12 +221,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: AppColors.black600,
                         ),
                         SizedBox(
-                          height: screenHeight * 0.016,
+                          height: height0_016,
                         ),
                         Padding(
                           padding: EdgeInsets.only(
-                              left: screenWidth * 0.045,
-                              right: screenWidth * 0.045),
+                              left: width0_044, right: width0_044),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
