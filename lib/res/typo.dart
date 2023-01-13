@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 
 class Bold24px extends StatelessWidget {
@@ -13,7 +14,7 @@ class Bold24px extends StatelessWidget {
       this.underline = false});
   @override
   Widget build(BuildContext context) {
-    return Text(
+    return AutoSizeText(
       text,
       style: TextStyle(
         fontFamily: 'BaiJamjuree',
@@ -40,7 +41,7 @@ class Medium20px extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
+    return AutoSizeText(
       text,
       style: TextStyle(
         fontFamily: 'BaiJamjuree',
@@ -69,7 +70,7 @@ class Light20px extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
+    return AutoSizeText(
       text,
       style: TextStyle(
         fontFamily: 'BaiJamjuree',
@@ -99,7 +100,7 @@ class Medium16px extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
+    return AutoSizeText(
       text,
       style: TextStyle(
         fontFamily: 'BaiJamjuree',
@@ -127,7 +128,7 @@ class Regular16px extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
+    return AutoSizeText(
       text,
       style: TextStyle(
         fontFamily: 'BaiJamjuree',
@@ -156,7 +157,7 @@ class Regular14px extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
+    return AutoSizeText(
       text,
       style: TextStyle(
         fontFamily: 'BaiJamjuree',
@@ -186,7 +187,7 @@ class Regular12px extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
+    return AutoSizeText(
       text,
       style: TextStyle(
         fontFamily: 'BaiJamjuree',
@@ -216,7 +217,7 @@ class Regular10px extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
+    return AutoSizeText(
       text,
       style: TextStyle(
         fontFamily: 'BaiJamjuree',

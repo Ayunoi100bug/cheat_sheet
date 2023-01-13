@@ -25,16 +25,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
 
-        home: LoginScreen(),
-        // initialRoute: routesName.main,
-        // onGenerateRoute: Routes.generateRoute,
-      );
+      home: RegisterScreen(),
+      // initialRoute: routesName.main,
+      // onGenerateRoute: Routes.generateRoute,
+    );
     // );
   }
 }
