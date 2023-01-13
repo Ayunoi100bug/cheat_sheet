@@ -40,8 +40,12 @@ dependencies:
   cupertino_icons: ^1.0.2
   fluentui_icons: ^1.0.0
   firebase_core: ^2.4.1
+  email_validator: ^2.1.17
+  cloud_firestore: ^4.3.1
+  firebase_auth: ^4.2.5
+  form_field_validator: ^1.1.0
+  auto_size_text: ^3.0.0
   auto_route: ^5.0.4
-  
 
 dev_dependencies:
   auto_size_text: ^3.0.0
