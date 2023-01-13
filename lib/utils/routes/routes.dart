@@ -54,6 +54,6 @@ import 'package:cheat_sheet/view/sheet_list_screen/sheet_list_screen.dart';
     path: '/login',
     name: 'LoginRoute',
     page: LoginScreen,
-  )
+  ),
 ])
 class $AppRouter {}

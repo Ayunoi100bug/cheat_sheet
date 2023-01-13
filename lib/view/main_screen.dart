@@ -9,6 +9,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
+import '../res/colors.dart';
+
+final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
 
