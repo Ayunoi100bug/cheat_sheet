@@ -5,6 +5,7 @@ import 'package:cheat_sheet/res/components/custom_appbar.dart';
 import 'package:cheat_sheet/res/components/sidebar_menu.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -13,10 +14,25 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      endDrawer: SidebarMenu(),
-      body: AutoTabsScaffold(
+    DateTime timeBackPressed = DateTime.now();
+    return WillPopScope(
+      onWillPop: () async {
+        final difference = DateTime.now().difference(timeBackPressed);
+        final isExitWarning = difference >= Duration(seconds: 2);
+        timeBackPressed = DateTime.now();
+
+        if (isExitWarning) {
+          const message = 'Press back again to exit';
+          //custom your notification here.
+          Fluttertoast.showToast(msg: message, fontSize: 18);
+          return false;
+        }
+        Fluttertoast.cancel();
+        return true;
+      },
+      child: AutoTabsScaffold(
+        key: _scaffoldKey,
+        endDrawer: SidebarMenu(),
         appBarBuilder: (context, tabsRouter) => AppBar(
           backgroundColor: CustomAppBar.appBarColor,
           title: CustomAppBar.textLogo,
