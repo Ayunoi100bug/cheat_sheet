@@ -108,7 +108,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   myUser.email = value;
                                 },
                                 keyboardType: TextInputType.emailAddress,
-                                hintText: "@mail.com",
+                                hintText: "example@email.com",
                               ),
                               SizedBox(height: screenHeight * 0.02),
                               const Align(
