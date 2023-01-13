@@ -1,8 +1,13 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/components/bottom_bar.dart';
+import 'package:cheat_sheet/res/components/custom_appbar.dart';
+import 'package:cheat_sheet/res/components/sidebar_menu.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -26,7 +31,22 @@ class MainScreen extends StatelessWidget {
         return true;
       },
       child: AutoTabsScaffold(
-        appBarBuilder: (context, tabsRouter) => AppBar(),
+        key: _scaffoldKey,
+        endDrawer: SidebarMenu(),
+        appBarBuilder: (context, tabsRouter) => AppBar(
+          backgroundColor: CustomAppBar.appBarColor,
+          title: CustomAppBar.textLogo,
+          actions: [
+            CustomAppBar.coin,
+            CustomAppBar.notifications,
+            IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () {
+                _scaffoldKey.currentState!.openEndDrawer();
+              },
+            ),
+          ],
+        ),
         routes: const [
           HomeScreenRoute(),
           ActivityScreenRoute(),
