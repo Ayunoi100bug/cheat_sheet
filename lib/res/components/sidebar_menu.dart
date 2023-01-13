@@ -1,3 +1,6 @@
+import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/utils/routes/routes_name.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +70,7 @@ class _SidebarMenuState extends State<SidebarMenu> {
                       Icon(FluentSystemIcons.ic_fluent_arrow_enter_regular),
                   title: Text('เข้าสู่ระบบ'),
                   onTap: () {
-                    print("Register");
+                    AutoRouter.of(context).push(LoginRoute());
                   }),
             ),
           ),
