@@ -54,6 +54,60 @@ class Medium20px extends StatelessWidget {
   }
 }
 
+class Medium14px extends StatelessWidget {
+  final Color color;
+  final String text;
+  final double size;
+  final bool underline;
+  const Medium14px(
+      {super.key,
+      this.color = const Color(0xff000000),
+      required this.text,
+      this.size = 14,
+      this.underline = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return AutoSizeText(
+      text,
+      style: TextStyle(
+        fontFamily: 'BaiJamjuree',
+        color: color,
+        fontSize: size,
+        fontWeight: FontWeight.w500,
+        decoration: underline ? TextDecoration.underline : TextDecoration.none,
+      ),
+    );
+  }
+}
+
+class Medium12px extends StatelessWidget {
+  final Color color;
+  final String text;
+  final double size;
+  final bool underline;
+  const Medium12px(
+      {super.key,
+      this.color = const Color(0xff000000),
+      required this.text,
+      this.size = 12,
+      this.underline = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return AutoSizeText(
+      text,
+      style: TextStyle(
+        fontFamily: 'BaiJamjuree',
+        color: color,
+        fontSize: size,
+        fontWeight: FontWeight.w500,
+        decoration: underline ? TextDecoration.underline : TextDecoration.none,
+      ),
+    );
+  }
+}
+
 class Light20px extends StatelessWidget {
   final Color color;
   final String text;
@@ -65,6 +119,36 @@ class Light20px extends StatelessWidget {
       this.color = const Color(0xff000000),
       required this.text,
       this.size = 20,
+      this.overFlow = TextOverflow.ellipsis,
+      this.underline = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return AutoSizeText(
+      text,
+      style: TextStyle(
+        fontFamily: 'BaiJamjuree',
+        color: color,
+        fontSize: size,
+        fontWeight: FontWeight.w300,
+        decoration: underline ? TextDecoration.underline : TextDecoration.none,
+      ),
+      overflow: overFlow,
+    );
+  }
+}
+
+class Light12px extends StatelessWidget {
+  final Color color;
+  final String text;
+  final double size;
+  final TextOverflow overFlow;
+  final bool underline;
+  const Light12px(
+      {super.key,
+      this.color = const Color(0xff000000),
+      required this.text,
+      this.size = 12,
       this.overFlow = TextOverflow.ellipsis,
       this.underline = false});
 

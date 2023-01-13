@@ -1,12 +1,12 @@
 import 'package:cheat_sheet/model/user.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:cheat_sheet/res/button.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
-import '../res/button.dart';
 import '../res/colors.dart';
 import '../res/components/form_field.dart';
 import '../res/gap_dimension.dart';
