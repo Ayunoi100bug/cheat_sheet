@@ -41,7 +41,7 @@ class Medium24px extends StatelessWidget {
       this.underline = false});
   @override
   Widget build(BuildContext context) {
-    return Text(
+    return AutoSizeText(
       text,
       style: TextStyle(
         fontFamily: 'BaiJamjuree',
@@ -285,14 +285,14 @@ class Regular14px extends StatelessWidget {
   final Color color;
   final String text;
   final double size;
-  final TextOverflow overFlow;
+  //final TextOverflow overFlow;
   final bool underline;
   const Regular14px(
       {super.key,
       this.color = AppColors.black800,
       required this.text,
       this.size = 14,
-      this.overFlow = TextOverflow.ellipsis,
+      //this.overFlow = TextOverflow.ellipsis,
       this.underline = false});
 
   @override
@@ -306,7 +306,7 @@ class Regular14px extends StatelessWidget {
         fontWeight: FontWeight.w400,
         decoration: underline ? TextDecoration.underline : TextDecoration.none,
       ),
-      overflow: overFlow,
+      //overflow: overFlow,
     );
   }
 }
