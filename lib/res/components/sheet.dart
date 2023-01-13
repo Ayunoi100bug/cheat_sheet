@@ -12,23 +12,30 @@ class Sheet extends StatefulWidget {
 class _SheetState extends State<Sheet> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: SingleChildScrollView(
-        child: Column(
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Column(
           children: [
             Container(
               color: AppColors.black300,
-              height: 160,
+              height: constraints.maxHeight*0.7,
             ),
             SizedBox(
               height: 4,
             ),
             Row(
               children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      'https://icons.veryicon.com/png/o/internet--web/55-common-web-icons/person-4.png'),
-                  radius: 16,
+                InkWell(
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      'https://icons.veryicon.com/png/o/internet--web/55-common-web-icons/person-4.png',
+                    ),
+                    radius: constraints.maxHeight*0.061,
+                  ),
+                  onTap: () {},
                 ),
                 SizedBox(
                   width: 8,
@@ -66,8 +73,8 @@ class _SheetState extends State<Sheet> {
               ],
             ),
           ],
-        ),
-      ),
+        );
+      }
     );
   }
 }
