@@ -41,13 +41,13 @@ class AppRouter extends _i9.RootStackRouter {
         child: const _i2.LoginScreen(),
       );
     },
-    HomeScreenRoute.name: (routeData) {
+    HomeRoute.name: (routeData) {
       return _i9.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i3.EmptyRouterPage(),
       );
     },
-    ActivityScreenRoute.name: (routeData) {
+    ActivityRoute.name: (routeData) {
       return _i9.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i3.EmptyRouterPage(),
@@ -110,26 +110,26 @@ class AppRouter extends _i9.RootStackRouter {
           path: '/',
           children: [
             _i9.RouteConfig(
-              HomeScreenRoute.name,
+              HomeRoute.name,
               path: 'home',
               parent: MainScreen.name,
               children: [
                 _i9.RouteConfig(
                   HomeScreen.name,
                   path: '',
-                  parent: HomeScreenRoute.name,
+                  parent: HomeRoute.name,
                 )
               ],
             ),
             _i9.RouteConfig(
-              ActivityScreenRoute.name,
+              ActivityRoute.name,
               path: 'activity',
               parent: MainScreen.name,
               children: [
                 _i9.RouteConfig(
                   ActivityScreen.name,
                   path: '',
-                  parent: ActivityScreenRoute.name,
+                  parent: ActivityRoute.name,
                 )
               ],
             ),
@@ -205,28 +205,28 @@ class LoginRoute extends _i9.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i3.EmptyRouterPage]
-class HomeScreenRoute extends _i9.PageRouteInfo<void> {
-  const HomeScreenRoute({List<_i9.PageRouteInfo>? children})
+class HomeRoute extends _i9.PageRouteInfo<void> {
+  const HomeRoute({List<_i9.PageRouteInfo>? children})
       : super(
-          HomeScreenRoute.name,
+          HomeRoute.name,
           path: 'home',
           initialChildren: children,
         );
 
-  static const String name = 'HomeScreenRoute';
+  static const String name = 'HomeRoute';
 }
 
 /// generated route for
 /// [_i3.EmptyRouterPage]
-class ActivityScreenRoute extends _i9.PageRouteInfo<void> {
-  const ActivityScreenRoute({List<_i9.PageRouteInfo>? children})
+class ActivityRoute extends _i9.PageRouteInfo<void> {
+  const ActivityRoute({List<_i9.PageRouteInfo>? children})
       : super(
-          ActivityScreenRoute.name,
+          ActivityRoute.name,
           path: 'activity',
           initialChildren: children,
         );
 
-  static const String name = 'ActivityScreenRoute';
+  static const String name = 'ActivityRoute';
 }
 
 /// generated route for

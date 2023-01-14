@@ -49,8 +49,8 @@ class MainScreen extends StatelessWidget {
             ],
           ),
           routes: const [
-            HomeScreenRoute(),
-            ActivityScreenRoute(),
+            HomeRoute(),
+            ActivityRoute(),
             CreateSheetRoute(),
             SheetListRoute(),
             ProfileRoute(),
