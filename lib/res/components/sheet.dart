@@ -1,6 +1,9 @@
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+
+import 'custom_appbar.dart';
 
 class Sheet extends StatelessWidget {
   final Image sheetTitle;
@@ -27,52 +30,86 @@ class Sheet extends StatelessWidget {
             color: AppColors.black300,
             height: constraints.maxHeight * 0.7,
           ),
-          SizedBox(
-            height: 4,
-          ),
-          Row(
-            children: [
-              InkWell(
-                child: CircleAvatar(
-                  backgroundImage: sheetTitle.image,
-                  radius: constraints.maxHeight * 0.061,
-                ),
-                onTap: () {},
-              ),
-              SizedBox(
-                width: 8,
-              ),
-              Expanded(
+          Container(
+            padding: EdgeInsets.only(
+              top: constraints.maxHeight * 0.02,
+            ),
+            height: constraints.maxHeight * 0.3,
+            child: LayoutBuilder(builder: (context, constraints) {
+              return SizedBox(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Regular12px(text: title),
-                    Regular10px(text: username),
+                    Container(
+                      height: constraints.maxHeight * 0.7,
+                      child: LayoutBuilder(builder: (context, constraints) {
+                        return Row(
+                          children: [
+                            InkWell(
+                              child: Container(
+                                width: constraints.maxWidth * 0.25,
+                                child: CircleAvatar(
+                                  backgroundImage: sheetTitle.image,
+                                ),
+                              ),
+                              onTap: () {},
+                            ),
+                            SizedBox(
+                              width: constraints.maxWidth * 0.05,
+                            ),
+                            Container(
+                              width: constraints.maxWidth * 0.7,
+                              child: LayoutBuilder(
+                                  builder: (context, constraints) {
+                                return Column(
+                                  children: [
+                                    Container(
+                                        alignment: Alignment.centerLeft,
+                                        height: constraints.maxHeight * 0.5,
+                                        child: Regular12px(text: title)),
+                                    Container(
+                                        alignment: Alignment.centerLeft,
+                                        height: constraints.maxHeight * 0.5,
+                                        child: Regular10px(text: username)),
+                                  ],
+                                );
+                              }),
+                            ),
+                          ],
+                        );
+                      }),
+                    ),
+                    Container(
+                      height: constraints.maxHeight * 0.3,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              if (priceSheet == 0) Medium12px(text: 'FREE'),
+                              if (priceSheet > 0) CustomAppBar.coin,
+                              if (priceSheet > 0)
+                                Regular12px(
+                                  text: priceSheet.toString(),
+                                  color: AppColors.orange700,
+                                ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.star,
+                                size: constraints.maxHeight * 0.25,
+                              ),
+                              Light12px(text: '4.5'),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 4,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Medium12px(
-                text: priceSheet == 0 ? 'FREE' : priceSheet.toString(),
-                color: AppColors.primary600,
-              ),
-              Row(
-                children: [
-                  Icon(
-                    Icons.star,
-                    size: 16,
-                  ),
-                  Light12px(text: '4.5'),
-                ],
-              ),
-            ],
+              );
+            }),
           ),
         ],
       );
