@@ -2,6 +2,7 @@ import 'package:cheat_sheet/res/colors.dart';
 import 'package:flutter/material.dart';
 
 import '../../res/components/sheet.dart';
+import '../../res/gap_dimension.dart';
 import '../../res/typo.dart';
 
 class MySheet extends StatelessWidget {
@@ -13,7 +14,7 @@ class MySheet extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Padding(
-      padding: EdgeInsets.all(screenWidth * 0.032),
+      padding: EdgeInsets.all(screenWidth * GapDimension.w0_032),
       child: GridView.builder(
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,

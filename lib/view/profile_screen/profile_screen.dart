@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/colors.dart';
+import 'package:cheat_sheet/res/gap_dimension.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/view/profile_page/my_sheet.dart';
 import 'package:cheat_sheet/view/profile_page/buy_sheet.dart';
@@ -49,18 +50,19 @@ class _ProfileScreenState extends State<ProfileScreen>
                     Container(
                       width: double.infinity,
                       height: screenWidth < 480
-                          ? screenHeight * 0.18
-                          : screenHeight * 0.36,
+                          ? screenHeight * GapDimension.h0_18
+                          : screenHeight * GapDimension.h0_36,
                       child: LayoutBuilder(
                         builder: (context, constraints) {
                           return Row(
                             children: <Widget>[
                               Container(
-                                width: constraints.maxWidth * 0.4,
+                                width: constraints.maxWidth * GapDimension.w0_4,
                                 height: double.infinity,
                                 child: Padding(
                                   padding: EdgeInsets.all(
-                                      constraints.maxHeight * 0.12),
+                                      constraints.maxHeight *
+                                          GapDimension.h0_12),
                                   child: Container(
                                     decoration: BoxDecoration(
                                       image: const DecorationImage(
@@ -79,8 +81,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                               Column(
                                 children: <Widget>[
                                   SizedBox(
-                                    height: constraints.maxHeight * 0.5,
-                                    width: constraints.maxWidth * 0.6,
+                                    height: constraints.maxHeight * GapDimension.h0_5,
+                                    width: constraints.maxWidth * GapDimension.w0_6,
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -94,8 +96,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     ),
                                   ),
                                   SizedBox(
-                                    height: constraints.maxHeight * 0.5,
-                                    width: constraints.maxWidth * 0.6,
+                                    height: constraints.maxHeight * GapDimension.h0_5,
+                                    width: constraints.maxWidth * GapDimension.w0_6,
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,

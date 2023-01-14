@@ -1,9 +1,13 @@
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:cheat_sheet/res/colors.dart';
+import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/utils/routes/routes_name.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
+
+import '../gap_dimension.dart';
 
 class SidebarMenu extends StatefulWidget {
   const SidebarMenu({super.key});
@@ -13,69 +17,80 @@ class SidebarMenu extends StatefulWidget {
 }
 
 class _SidebarMenuState extends State<SidebarMenu> {
-
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-          child: Column(
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    return SizedBox(
+      height: screenHeight,
+      child: Drawer(
+        child: LayoutBuilder(builder: (context, constraints) {
+          return Column(
             children: [
-              Image.network(
-                'https://i.pinimg.com/564x/66/54/99/665499c8cd2c5b902e504c7029a2079a.jpg',
-                width: 100,
-                height: 120,
+              Image.asset(
+                'assets/images/logo.png',
+                width: constraints.maxWidth * 0.48,
               ),
               ListTile(
                   leading: Icon(FluentSystemIcons.ic_fluent_settings_regular),
-                  title: Text('ตั้งค่าการแจ้งเตือน'),
+                  title: Medium20px(
+                    text: 'ตั้งค่าการแจ้งเตือน',
+                    color: AppColors.primary600,
+                  ),
                   onTap: () {
                     AutoRouter.of(context).push(LoginRoute());
                   }),
               ListTile(
                   leading:
                       Icon(FluentSystemIcons.ic_fluent_person_accounts_regular),
-                  title: Text('บัญชีของฉัน'),
+                  title: Medium20px(
+                    text: 'บัญชีของฉัน',
+                    color: AppColors.primary600,
+                  ),
                   onTap: () {
                     print("account");
                   }),
               ListTile(
                   leading: Icon(FluentSystemIcons.ic_fluent_bank_regular),
-                  title: Text('ข้อมูลบัญชีธนาคาร'),
+                  title: Medium20px(
+                    text: 'ข้อมูลบัญชีธนาคาร',
+                    color: AppColors.primary600,
+                  ),
                   onTap: () {
                     print("bank");
                   }),
               ListTile(
                   leading: Icon(FluentSystemIcons.ic_fluent_history_regular),
-                  title: Text('ประวัติการจ่ายเงิน'),
+                  title: Medium20px(
+                    text: 'ประวัติการจ่ายเงิน',
+                    color: AppColors.primary600,
+                  ),
                   onTap: () {
                     print("history");
                   }),
               ListTile(
                   leading: Icon(FluentSystemIcons.ic_fluent_payment_regular),
-                  title: Text('เติมเงิน'),
+                  title: Medium20px(
+                    text: 'เติมเงิน',
+                    color: AppColors.primary600,
+                  ),
                   onTap: () {
                     print("payment");
                   }),
               ListTile(
                 leading: Icon(FluentSystemIcons.ic_fluent_style_guide_regular),
-                title: Text('แนะนำการใช้งาน'),
+                title: Medium20px(
+                  text: 'แนะนำการใช้งาน',
+                  color: AppColors.primary600,
+                ),
                 onTap: () {
                   print("guide");
                 },
               ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: ListTile(
-                      leading:
-                          Icon(FluentSystemIcons.ic_fluent_arrow_enter_regular),
-                      title: Text('เข้าสู่ระบบ'),
-                      onTap: () {
-                        print("Register");
-                      }),
-                ),
-              ),
             ],
-          ),
-        );
-    }
+          );
+        }),
+      ),
+    );
+  }
 }

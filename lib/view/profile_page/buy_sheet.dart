@@ -1,3 +1,4 @@
+import 'package:cheat_sheet/res/gap_dimension.dart';
 import 'package:flutter/material.dart';
 
 import '../../res/colors.dart';
@@ -12,7 +13,7 @@ class BuySheet extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Padding(
-      padding: EdgeInsets.all(screenWidth * 0.032),
+      padding: EdgeInsets.all(screenWidth * GapDimension.w0_032),
       child: GridView.builder(
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
