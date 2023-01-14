@@ -84,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen>
                   return Sheet(
                     sheetTitle: Image.asset('assets/images/logo.png'),
                     title: 'สถิติพื้นฐานooooooooooo',
-                    priceSheet: 0,
+                    priceSheet: 10,
                     username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
                   );
                 },
