@@ -143,7 +143,12 @@ class _ActivityScreenState extends State<ActivityScreen>
               ),
               itemCount: 7,
               itemBuilder: (context, index) {
-                return Sheet();
+                return Sheet(
+                  sheetTitle: Image.asset('assets/images/logo.png'),
+                  title: 'สถิติพื้นฐานooooooooooo',
+                  priceSheet: 0,
+                  username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
+                );
               },
               padding: EdgeInsets.only(
                   bottom: screenHeight * 0.04,
