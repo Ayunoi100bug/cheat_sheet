@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../res/colors.dart';
-import '../res/components/bottom_bar.dart';
-import '../res/components/custom_appbar.dart';
 import '../res/components/sheet.dart';
-import '../res/components/sidebar_menu.dart';
 import '../res/typo.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -81,7 +78,13 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
                 itemCount: 20,
                 itemBuilder: (context, index) {
-                  return Sheet();
+                  return Sheet(
+                    sheetTitle: Image.asset('assets/images/logo.png'),
+                    title: 'สถิติพื้นฐานooooooooooo',
+                    priceSheet: 0,
+                    username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
+                  );
+                  ;
                 },
                 padding: EdgeInsets.only(bottom: 8),
               ),

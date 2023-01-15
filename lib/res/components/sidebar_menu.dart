@@ -25,77 +25,88 @@ class _SidebarMenuState extends State<SidebarMenu> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    var isLandScape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
-    return Drawer(
-      child: ListView(
-        children: [
-          Image.asset(
-            'assets/images/logo.png',
-            height: screenWidth < 480 ? screenHeight * 0.2 : screenHeight * 0.4,
-          ),
-          CustomListTile(
-            icon: Icons.notifications_active_outlined,
-            title: 'ตั้งค่าการแจ้งเตือน',
-            onTap: () {},
-          ),
-          CustomListTile(
-            icon: FluentSystemIcons.ic_fluent_shield_regular,
-            title: 'บัญชีของฉัน',
-            onTap: () {
-              print("account");
-            },
-          ),
-          CustomListTile(
-            icon: FluentSystemIcons.ic_fluent_bank_regular,
-            title: 'ข้อมูลบัญชีธนาคาร',
-            onTap: () {
-              print("bank");
-            },
-          ),
-          CustomListTile(
-            icon: Icons.receipt_outlined,
-            title: 'ประวัติการจ่ายเงิน',
-            onTap: () {
-              print("history");
-            },
-          ),
-          CustomListTile(
-            icon: FontAwesomeIcons.coins,
-            title: 'เติมเงิน',
-            onTap: () {
-              print("payment");
-            },
-          ),
-          CustomListTile(
-            icon: Icons.cast_for_education_outlined,
-            title: 'แนะนำการใช้งาน',
-            onTap: () {
-              print("guide");
-            },
-          ),
-          SizedBox(
-            height: screenHeight * 0.3,
-          ),
-          ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Medium20px(
-                  text: 'เข้าสู่ระบบ',
-                  color: AppColors.tertiary600,
+    return SafeArea(
+      child: LayoutBuilder(builder: (context, constraints) {
+        return Drawer(
+          child: ListView(
+            children: [
+              Image.asset('assets/images/logo.png',
+                  height: isPortrait
+                      ? constraints.maxHeight * 0.2
+                      : constraints.maxHeight * 0.4),
+              SizedBox(
+                height: isPortrait ? constraints.maxHeight * 0.7 : null,
+                child: Column(
+                  children: [
+                    CustomListTile(
+                      icon: Icons.notifications_active_outlined,
+                      title: 'ตั้งค่าการแจ้งเตือน',
+                      onTap: () {},
+                    ),
+                    CustomListTile(
+                      icon: FluentSystemIcons.ic_fluent_shield_regular,
+                      title: 'บัญชีของฉัน',
+                      onTap: () {
+                        print("account");
+                      },
+                    ),
+                    CustomListTile(
+                      icon: FluentSystemIcons.ic_fluent_bank_regular,
+                      title: 'ข้อมูลบัญชีธนาคาร',
+                      onTap: () {
+                        print("bank");
+                      },
+                    ),
+                    CustomListTile(
+                      icon: Icons.receipt_outlined,
+                      title: 'ประวัติการจ่ายเงิน',
+                      onTap: () {
+                        print("history");
+                      },
+                    ),
+                    CustomListTile(
+                      icon: FontAwesomeIcons.coins,
+                      title: 'เติมเงิน',
+                      onTap: () {
+                        print("payment");
+                      },
+                    ),
+                    CustomListTile(
+                      icon: Icons.cast_for_education_outlined,
+                      title: 'แนะนำการใช้งาน',
+                      onTap: () {
+                        print("guide");
+                      },
+                    ),
+                  ],
                 ),
-                Icon(
-                  Icons.login_outlined,
-                  color: AppColors.tertiary600,
+              ),
+              ListTile(
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Medium20px(
+                      text: 'เข้าสู่ระบบ',
+                      color: AppColors.tertiary600,
+                    ),
+                    Icon(
+                      Icons.login_outlined,
+                      color: AppColors.tertiary600,
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            onTap: () {
-              AutoRouter.of(context).push(LoginRoute());
-            },
+                onTap: () {
+                  AutoRouter.of(context).push(LoginRoute());
+                },
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      }),
     );
   }
 }
