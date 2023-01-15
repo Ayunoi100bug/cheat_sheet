@@ -1,9 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cheat_sheet/view_model/hash_password.dart';
+import 'package:uuid/uuid.dart';
 class Users {
   String? username;
   String? email;
   String? password;
   String? uid;
-  String? code;
 
-  Users({this.username, this.email, this.password, this.uid, this.code});
+  Users({this.username, this.email, this.password}) {
+    uid = Uuid().v4();
+  }
+
+  Future<void> storeInFirestore() async {
+    password = await hashPassword(password!);
+    await FirebaseFirestore.instance.collection("users").doc(uid).set({
+      'username': username,
+      'email': email,
+      'uid': uid
+    });
+  }
 }
