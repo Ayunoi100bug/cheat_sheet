@@ -1,4 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/components/sheet.dart';
+import 'package:cheat_sheet/utils/routes/routes.gr.dart';
+import 'package:cheat_sheet/view/home_screen/detail_sheet.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 
@@ -28,6 +31,12 @@ class _HomeScreenState extends State<HomeScreen>
           padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
           child: Column(
             children: [
+              InkWell(
+                onTap: () {
+                  AutoRouter.of(context).push(DetailSheetRoute());
+                },
+                child: Text('Press Here'),
+              ),
               Padding(padding: EdgeInsets.symmetric(vertical: 8)),
               SizedBox(
                 width: double.infinity,
