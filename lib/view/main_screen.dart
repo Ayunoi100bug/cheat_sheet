@@ -9,8 +9,19 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> with RouteAware {
+  @override
+  void didPush() {
+    // TODO: implement didPush
+    print('didPush FirstPage================================');
+  }
 
   @override
   Widget build(BuildContext context) {
