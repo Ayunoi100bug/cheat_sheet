@@ -1,7 +1,9 @@
 import 'package:cheat_sheet/model/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+// This isn't work because don't have uid and code parameter in user.dart
 class AuthService {
+  Users myUser = Users();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Users? _users(User? user) {
