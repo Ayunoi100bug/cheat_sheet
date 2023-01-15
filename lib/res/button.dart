@@ -4,12 +4,16 @@ import 'package:flutter/material.dart';
 
 class PrimaryButton extends StatelessWidget {
   final String text;
+  final Color color;
+  final Color textcolor;
   final double height;
   final double width;
   final void Function() onPressed;
   const PrimaryButton(
       {super.key,
       required this.text,
+      this.color = AppColors.tertiary500,
+      this.textcolor = AppColors.white,
       this.height = 44,
       this.width = 116,
       required this.onPressed});
@@ -19,7 +23,7 @@ class PrimaryButton extends StatelessWidget {
     return MaterialButton(
       height: height,
       minWidth: width,
-      color: AppColors.tertiary500,
+      color: color,
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
@@ -27,7 +31,7 @@ class PrimaryButton extends StatelessWidget {
       onPressed: onPressed,
       child: Regular16px(
         text: text,
-        color: AppColors.white,
+        color: textcolor,
       ),
     );
   }
@@ -35,12 +39,16 @@ class PrimaryButton extends StatelessWidget {
 
 class PrimaryInactiveButton extends StatelessWidget {
   final String text;
+  final Color color;
+  final Color textcolor;
   final double height;
   final double width;
   final void Function() onPressed;
   const PrimaryInactiveButton(
       {super.key,
       required this.text,
+      this.color = AppColors.tertiary500,
+      this.textcolor = AppColors.white,
       this.height = 44,
       this.width = 116,
       required this.onPressed});
@@ -50,7 +58,7 @@ class PrimaryInactiveButton extends StatelessWidget {
     return MaterialButton(
       height: height,
       minWidth: width,
-      color: AppColors.tertiary500.withOpacity(0.4),
+      color: color.withOpacity(0.4),
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
@@ -58,7 +66,7 @@ class PrimaryInactiveButton extends StatelessWidget {
       onPressed: onPressed,
       child: Regular16px(
         text: text,
-        color: AppColors.white,
+        color: textcolor,
       ),
     );
   }
@@ -66,12 +74,16 @@ class PrimaryInactiveButton extends StatelessWidget {
 
 class OutlineButton extends StatelessWidget {
   final String text;
+  final Color color;
+  final Color textcolor;
   final double height;
   final double width;
   final void Function() onPressed;
   const OutlineButton(
       {super.key,
       required this.text,
+      this.color = AppColors.black700,
+      this.textcolor = AppColors.black800,
       this.height = 44,
       this.width = 116,
       required this.onPressed});
@@ -83,13 +95,13 @@ class OutlineButton extends StatelessWidget {
       minWidth: width,
       elevation: 0,
       shape: RoundedRectangleBorder(
-        side: const BorderSide(color: AppColors.black700),
+        side: BorderSide(color: color),
         borderRadius: BorderRadius.circular(10),
       ),
       onPressed: onPressed,
       child: Regular16px(
         text: text,
-        color: AppColors.black800,
+        color: textcolor,
       ),
     );
   }
@@ -97,12 +109,16 @@ class OutlineButton extends StatelessWidget {
 
 class OutlineInactiveButton extends StatelessWidget {
   final String text;
+  final Color color;
+  final Color textcolor;
   final double height;
   final double width;
   final void Function() onPressed;
   const OutlineInactiveButton(
       {super.key,
       required this.text,
+      this.color = AppColors.black700,
+      this.textcolor = AppColors.black800,
       this.height = 44,
       this.width = 116,
       required this.onPressed});
@@ -114,13 +130,13 @@ class OutlineInactiveButton extends StatelessWidget {
       minWidth: width,
       elevation: 0,
       shape: RoundedRectangleBorder(
-        side: BorderSide(color: AppColors.black700.withOpacity(0.3)),
+        side: BorderSide(color: color.withOpacity(0.3)),
         borderRadius: BorderRadius.circular(10),
       ),
       onPressed: onPressed,
       child: Regular16px(
         text: text,
-        color: AppColors.black800.withOpacity(0.3),
+        color: textcolor.withOpacity(0.3),
       ),
     );
   }
@@ -128,12 +144,16 @@ class OutlineInactiveButton extends StatelessWidget {
 
 class TertiaryButton extends StatelessWidget {
   final String text;
+  final Color color;
+  final Color textcolor;
   final double height;
   final double width;
   final void Function() onPressed;
   const TertiaryButton(
       {super.key,
       required this.text,
+      this.color = AppColors.blue600,
+      this.textcolor = AppColors.blue700,
       this.height = 44,
       this.width = 116,
       required this.onPressed});
@@ -145,13 +165,13 @@ class TertiaryButton extends StatelessWidget {
       minWidth: width,
       elevation: 0,
       shape: RoundedRectangleBorder(
-        side: const BorderSide(color: AppColors.blue600),
+        side: BorderSide(color: color),
         borderRadius: BorderRadius.circular(10),
       ),
       onPressed: onPressed,
       child: Regular16px(
         text: text,
-        color: AppColors.blue700,
+        color: textcolor,
       ),
     );
   }
@@ -159,12 +179,16 @@ class TertiaryButton extends StatelessWidget {
 
 class WarningButton extends StatelessWidget {
   final String text;
+  final Color color;
+  final Color textcolor;
   final double height;
   final double width;
   final void Function() onPressed;
   const WarningButton(
       {super.key,
       required this.text,
+      this.color = AppColors.error600,
+      this.textcolor = AppColors.white,
       this.height = 44,
       this.width = 116,
       required this.onPressed});
@@ -174,7 +198,7 @@ class WarningButton extends StatelessWidget {
     return MaterialButton(
       height: height,
       minWidth: width,
-      color: AppColors.error600,
+      color: color,
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
@@ -182,7 +206,7 @@ class WarningButton extends StatelessWidget {
       onPressed: onPressed,
       child: Regular16px(
         text: text,
-        color: AppColors.white,
+        color: textcolor,
       ),
     );
   }
@@ -190,12 +214,16 @@ class WarningButton extends StatelessWidget {
 
 class LongButton extends StatelessWidget {
   final String text;
+  final Color color;
+  final Color textcolor;
   final double height;
   final double width;
   final void Function() onPressed;
   const LongButton(
       {super.key,
       required this.text,
+      this.color = AppColors.tertiary500,
+      this.textcolor = AppColors.white,
       this.height = 40,
       this.width = 160,
       required this.onPressed});
@@ -205,7 +233,7 @@ class LongButton extends StatelessWidget {
     return MaterialButton(
       height: height,
       minWidth: width,
-      color: AppColors.tertiary500,
+      color: color,
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
@@ -213,7 +241,7 @@ class LongButton extends StatelessWidget {
       onPressed: onPressed,
       child: Regular16px(
         text: text,
-        color: AppColors.white,
+        color: textcolor,
       ),
     );
   }
@@ -221,12 +249,16 @@ class LongButton extends StatelessWidget {
 
 class LongInactiveButton extends StatelessWidget {
   final String text;
+  final Color color;
+  final Color textcolor;
   final double height;
   final double width;
   final void Function() onPressed;
   const LongInactiveButton(
       {super.key,
       required this.text,
+      this.color = AppColors.tertiary500,
+      this.textcolor = AppColors.white,
       this.height = 40,
       this.width = 160,
       required this.onPressed});
@@ -236,7 +268,7 @@ class LongInactiveButton extends StatelessWidget {
     return MaterialButton(
       height: height,
       minWidth: width,
-      color: AppColors.tertiary500.withOpacity(0.4),
+      color: color.withOpacity(0.4),
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
@@ -244,7 +276,7 @@ class LongInactiveButton extends StatelessWidget {
       onPressed: onPressed,
       child: Regular16px(
         text: text,
-        color: AppColors.white,
+        color: textcolor,
       ),
     );
   }

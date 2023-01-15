@@ -6,6 +6,10 @@ import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/utils/routes/routes_name.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import '../gap_dimension.dart';
+import 'drawer_list.dart';
 
 import '../gap_dimension.dart';
 
@@ -21,75 +25,76 @@ class _SidebarMenuState extends State<SidebarMenu> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    return SizedBox(
-      height: screenHeight,
-      child: Drawer(
-        child: LayoutBuilder(builder: (context, constraints) {
-          return Column(
-            children: [
-              Image.asset(
-                'assets/images/logo.png',
-                width: constraints.maxWidth * 0.48,
-              ),
-              ListTile(
-                  leading: Icon(FluentSystemIcons.ic_fluent_settings_regular),
-                  title: Medium20px(
-                    text: 'ตั้งค่าการแจ้งเตือน',
-                    color: AppColors.primary600,
-                  ),
-                  onTap: () {
-                    AutoRouter.of(context).push(LoginRoute());
-                  }),
-              ListTile(
-                  leading:
-                      Icon(FluentSystemIcons.ic_fluent_person_accounts_regular),
-                  title: Medium20px(
-                    text: 'บัญชีของฉัน',
-                    color: AppColors.primary600,
-                  ),
-                  onTap: () {
-                    print("account");
-                  }),
-              ListTile(
-                  leading: Icon(FluentSystemIcons.ic_fluent_bank_regular),
-                  title: Medium20px(
-                    text: 'ข้อมูลบัญชีธนาคาร',
-                    color: AppColors.primary600,
-                  ),
-                  onTap: () {
-                    print("bank");
-                  }),
-              ListTile(
-                  leading: Icon(FluentSystemIcons.ic_fluent_history_regular),
-                  title: Medium20px(
-                    text: 'ประวัติการจ่ายเงิน',
-                    color: AppColors.primary600,
-                  ),
-                  onTap: () {
-                    print("history");
-                  }),
-              ListTile(
-                  leading: Icon(FluentSystemIcons.ic_fluent_payment_regular),
-                  title: Medium20px(
-                    text: 'เติมเงิน',
-                    color: AppColors.primary600,
-                  ),
-                  onTap: () {
-                    print("payment");
-                  }),
-              ListTile(
-                leading: Icon(FluentSystemIcons.ic_fluent_style_guide_regular),
-                title: Medium20px(
-                  text: 'แนะนำการใช้งาน',
-                  color: AppColors.primary600,
+
+    return Drawer(
+      child: ListView(
+        children: [
+          Image.asset(
+            'assets/images/logo.png',
+            height: screenWidth < 480 ? screenHeight * 0.2 : screenHeight * 0.4,
+          ),
+          CustomListTile(
+            icon: Icons.notifications_active_outlined,
+            title: 'ตั้งค่าการแจ้งเตือน',
+            onTap: () {},
+          ),
+          CustomListTile(
+            icon: FluentSystemIcons.ic_fluent_shield_regular,
+            title: 'บัญชีของฉัน',
+            onTap: () {
+              print("account");
+            },
+          ),
+          CustomListTile(
+            icon: FluentSystemIcons.ic_fluent_bank_regular,
+            title: 'ข้อมูลบัญชีธนาคาร',
+            onTap: () {
+              print("bank");
+            },
+          ),
+          CustomListTile(
+            icon: Icons.receipt_outlined,
+            title: 'ประวัติการจ่ายเงิน',
+            onTap: () {
+              print("history");
+            },
+          ),
+          CustomListTile(
+            icon: FontAwesomeIcons.coins,
+            title: 'เติมเงิน',
+            onTap: () {
+              print("payment");
+            },
+          ),
+          CustomListTile(
+            icon: Icons.cast_for_education_outlined,
+            title: 'แนะนำการใช้งาน',
+            onTap: () {
+              print("guide");
+            },
+          ),
+          SizedBox(
+            height: screenHeight * 0.3,
+          ),
+          ListTile(
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Medium20px(
+                  text: 'เข้าสู่ระบบ',
+                  color: AppColors.tertiary600,
                 ),
-                onTap: () {
-                  print("guide");
-                },
-              ),
-            ],
-          );
-        }),
+                Icon(
+                  Icons.login_outlined,
+                  color: AppColors.tertiary600,
+                ),
+              ],
+            ),
+            onTap: () {
+              AutoRouter.of(context).push(LoginRoute());
+            },
+          ),
+        ],
       ),
     );
   }
