@@ -1,80 +1,118 @@
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
-class Sheet extends StatefulWidget {
-  const Sheet({super.key});
+import 'custom_appbar.dart';
 
-  @override
-  State<Sheet> createState() => _SheetState();
-}
+class Sheet extends StatelessWidget {
+  final Image sheetTitle;
+  final String title;
+  final String username;
+  final int priceSheet;
+  const Sheet({
+    super.key,
+    required this.sheetTitle,
+    required this.title,
+    required this.username,
+    required this.priceSheet,
+  });
 
-class _SheetState extends State<Sheet> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Column(
-          children: [
-            Container(
-              color: AppColors.black300,
-              height: constraints.maxHeight*0.7,
+    return LayoutBuilder(builder: (context, constraints) {
+      return Column(
+        children: [
+          Container(
+            color: AppColors.black300,
+            height: constraints.maxHeight * 0.7,
+          ),
+          Container(
+            padding: EdgeInsets.only(
+              top: constraints.maxHeight * 0.02,
             ),
-            SizedBox(
-              height: 4,
-            ),
-            Row(
-              children: [
-                InkWell(
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      'https://icons.veryicon.com/png/o/internet--web/55-common-web-icons/person-4.png',
-                    ),
-                    radius: constraints.maxHeight*0.061,
-                  ),
-                  onTap: () {},
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Regular12px(text: 'สถิติพื้นฐานooooooooooo'),
-                      Regular10px(text: 'Macaron1111111111111'),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 4,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Medium12px(
-                  text: 'FREE',
-                  color: AppColors.primary600,
-                ),
-                Row(
+            height: constraints.maxHeight * 0.3,
+            child: LayoutBuilder(builder: (context, constraints) {
+              return SizedBox(
+                child: Column(
                   children: [
-                    Icon(
-                      Icons.star,
-                      size: 16,
+                    Container(
+                      height: constraints.maxHeight * 0.7,
+                      child: LayoutBuilder(builder: (context, constraints) {
+                        return Row(
+                          children: [
+                            InkWell(
+                              child: Container(
+                                width: constraints.maxWidth * 0.25,
+                                child: CircleAvatar(
+                                  backgroundImage: sheetTitle.image,
+                                ),
+                              ),
+                              onTap: () {},
+                            ),
+                            SizedBox(
+                              width: constraints.maxWidth * 0.05,
+                            ),
+                            Container(
+                              width: constraints.maxWidth * 0.7,
+                              child: LayoutBuilder(
+                                  builder: (context, constraints) {
+                                return Column(
+                                  children: [
+                                    Container(
+                                        alignment: Alignment.centerLeft,
+                                        height: constraints.maxHeight * 0.5,
+                                        child: Regular12px(text: title)),
+                                    Container(
+                                        alignment: Alignment.centerLeft,
+                                        height: constraints.maxHeight * 0.5,
+                                        child: Regular10px(text: username)),
+                                  ],
+                                );
+                              }),
+                            ),
+                          ],
+                        );
+                      }),
                     ),
-                    Light12px(text: '4.5'),
+                    Container(
+                      height: constraints.maxHeight * 0.3,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              if (priceSheet == 0) Medium12px(text: 'FREE'),
+                              if (priceSheet > 0) CustomAppBar.coin,
+                              if (priceSheet > 0)
+                                Regular12px(
+                                  text: priceSheet.toString(),
+                                  color: AppColors.orange700,
+                                ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.star,
+                                size: constraints.maxHeight * 0.25,
+                              ),
+                              Light12px(text: '4.5'),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
-              ],
-            ),
-          ],
-        );
-      }
-    );
+              );
+            }),
+          ),
+        ],
+      );
+    });
   }
 }

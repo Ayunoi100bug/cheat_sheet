@@ -1,6 +1,5 @@
 //รูปแบบ App Bar ทั้ง 4 แบบ
 
-
 //AppBarNotLogin
 // appbar: AppBar(
 //       backgroundColor: CustomAppBar.appBarColor,
@@ -8,14 +7,12 @@
 //     ),
 //     endDrawer: SidebarMenu(),
 
-
 // AppBarBackNotLogin
 // appbar: AppBar(
 //       backgroundColor: CustomAppBar.appBarColor,
 //       leading: CustomAppBar.arrowBack,
 //     ),
 //     endDrawer: SidebarMenu(),
-
 
 // AppBarLogin
 //ใส่ไว้ก่อนเริ่มคลาส state
@@ -36,7 +33,6 @@
 //       ),
 //     ],
 // ),
-
 
 // AppBarBackLogin
 //ใส่ไว้ก่อนเริ่มคลาส state
@@ -67,11 +63,28 @@ class CustomAppBar extends AppBar {
 
   static Text textLogo = Text("CHEETSHEET");
 
-  static Image coinImage = Image.asset('assets/images/star.png', width: 22, height: 22,);
-  
-  static InkWell coin = InkWell( onTap: () {}, child: coinImage,);
-  
-  static IconButton notifications = IconButton(onPressed: (){}, icon: Icon(Icons.notifications, size: 24,));
+  static Image coinImage = Image.asset(
+    'assets/images/coin.png',
+    width: 22,
+    height: 22,
+  );
 
-  static IconButton arrowBack = IconButton(onPressed: (){}, icon: Icon(Icons.arrow_back_ios_new_outlined, size: 24,));
+  static InkWell coin = InkWell(
+    onTap: () {},
+    child: coinImage,
+  );
+
+  static IconButton notifications = IconButton(
+      onPressed: () {},
+      icon: Icon(
+        Icons.notifications,
+        size: 24,
+      ));
+
+  static IconButton arrowBack = IconButton(
+      onPressed: () {},
+      icon: Icon(
+        Icons.arrow_back_ios_new_outlined,
+        size: 24,
+      ));
 }
