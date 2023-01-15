@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../res/colors.dart';
-import '../res/components/bottom_bar.dart';
-import '../res/components/custom_appbar.dart';
 import '../res/components/sheet.dart';
-import '../res/components/sidebar_menu.dart';
 import '../res/typo.dart';
 
 class HomeScreen extends StatefulWidget {
