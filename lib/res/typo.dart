@@ -16,6 +16,7 @@ class Bold24px extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoSizeText(
       text,
+      maxLines: 1,
       style: TextStyle(
         fontFamily: 'BaiJamjuree',
         color: color,
@@ -43,6 +44,7 @@ class Medium20px extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoSizeText(
       text,
+      maxLines: 1,
       style: TextStyle(
         fontFamily: 'BaiJamjuree',
         color: color,
@@ -70,6 +72,7 @@ class Medium14px extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoSizeText(
       text,
+      maxLines: 1,
       style: TextStyle(
         fontFamily: 'BaiJamjuree',
         color: color,
@@ -97,6 +100,7 @@ class Medium12px extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoSizeText(
       text,
+      maxLines: 1,
       style: TextStyle(
         fontFamily: 'BaiJamjuree',
         color: color,
@@ -126,6 +130,7 @@ class Light20px extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoSizeText(
       text,
+      maxLines: 1,
       style: TextStyle(
         fontFamily: 'BaiJamjuree',
         color: color,
@@ -156,6 +161,7 @@ class Light12px extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoSizeText(
       text,
+      maxLines: 1,
       style: TextStyle(
         fontFamily: 'BaiJamjuree',
         color: color,
@@ -186,6 +192,7 @@ class Medium16px extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoSizeText(
       text,
+      maxLines: 1,
       style: TextStyle(
         fontFamily: 'BaiJamjuree',
         color: color,
@@ -214,6 +221,7 @@ class Regular16px extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoSizeText(
       text,
+      maxLines: 1,
       style: TextStyle(
         fontFamily: 'BaiJamjuree',
         color: color,
@@ -243,6 +251,7 @@ class Regular14px extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoSizeText(
       text,
+      maxLines: 1,
       style: TextStyle(
         fontFamily: 'BaiJamjuree',
         color: color,
@@ -273,6 +282,7 @@ class Regular12px extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoSizeText(
       text,
+      maxLines: 1,
       style: TextStyle(
         fontFamily: 'BaiJamjuree',
         color: color,
@@ -303,6 +313,7 @@ class Regular10px extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoSizeText(
       text,
+      maxLines: 1,
       style: TextStyle(
         fontFamily: 'BaiJamjuree',
         color: color,

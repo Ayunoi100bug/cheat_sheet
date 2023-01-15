@@ -1,4 +1,5 @@
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
+import 'package:cheat_sheet/view/login.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -20,7 +21,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-
       routerDelegate: _appRouter.delegate(),
       routeInformationParser: _appRouter.defaultRouteParser(),
     );
