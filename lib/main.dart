@@ -1,6 +1,4 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
-import 'package:cheat_sheet/view_model/observer.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -22,10 +20,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      routerDelegate: AutoRouterDelegate(
-        _appRouter,
-        navigatorObservers: () => [MyObserver()],
-      ),
+
+      routerDelegate: _appRouter.delegate(),
       routeInformationParser: _appRouter.defaultRouteParser(),
     );
     // );
