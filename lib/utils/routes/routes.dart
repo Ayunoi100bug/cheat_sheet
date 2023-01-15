@@ -7,6 +7,7 @@ import 'package:cheat_sheet/view/main_screen.dart';
 import 'package:cheat_sheet/view/home_screen/home_screen.dart';
 import 'package:cheat_sheet/view/activity_screen/activity_screen.dart';
 import 'package:cheat_sheet/view/profile_screen/profile_screen.dart';
+import 'package:cheat_sheet/view/register.dart';
 import 'package:cheat_sheet/view/sheet_list_screen/sheet_list_screen.dart';
 
 @MaterialAutoRouter(replaceInRouteName: 'Page,Route', routes: [
@@ -59,6 +60,11 @@ import 'package:cheat_sheet/view/sheet_list_screen/sheet_list_screen.dart';
     path: '/login',
     name: 'LoginRoute',
     page: LoginScreen,
+  ),
+  AutoRoute(
+    path: '/register',
+    name: 'RegisterRoute',
+    page: RegisterScreen,
   ),
 ])
 class $AppRouter {}

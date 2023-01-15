@@ -30,7 +30,13 @@ class MySheet extends StatelessWidget {
         ),
         itemCount: 8,
         itemBuilder: (context, index) {
-          return Sheet();
+          return Sheet(
+            sheetTitle: Image.asset('assets/images/logo.png'),
+            title: 'สถิติพื้นฐานooooooooooo',
+            priceSheet: 0,
+            username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
+          );
+          ;
         },
       ),
     );
