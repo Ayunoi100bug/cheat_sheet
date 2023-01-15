@@ -1,5 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/model/user.dart';
 import 'package:cheat_sheet/res/components/form_field.dart';
+import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -244,7 +246,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               color: AppColors.tertiary500,
                               underline: true,
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              AutoRouter.of(context).replace(LoginRoute());
+                            },
                           ),
                         ],
                       ),
