@@ -34,9 +34,7 @@ class _SidebarMenuState extends State<SidebarMenu> {
           CustomListTile(
             icon: Icons.notifications_active_outlined,
             title: 'ตั้งค่าการแจ้งเตือน',
-            onTap: () {
-              AutoRouter.of(context).push(LoginRoute());
-            },
+            onTap: () {},
           ),
           CustomListTile(
             icon: FluentSystemIcons.ic_fluent_shield_regular,
@@ -74,7 +72,7 @@ class _SidebarMenuState extends State<SidebarMenu> {
             },
           ),
           SizedBox(
-            height: screenHeight * 0.36,
+            height: screenHeight * 0.3,
           ),
           ListTile(
             title: Row(
@@ -91,7 +89,7 @@ class _SidebarMenuState extends State<SidebarMenu> {
               ],
             ),
             onTap: () {
-              print('Lopgin');
+              AutoRouter.of(context).push(LoginRoute());
             },
           ),
         ],
