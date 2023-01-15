@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Container(
                   width: double.infinity,
                   padding: EdgeInsets.only(
-                    top: GapDimension.h0_032,
+                    top: screenHeight * GapDimension.h0_032,
                   ),
                   child: SingleChildScrollView(
                     child: Column(
@@ -56,15 +56,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Medium20px(text: "ยินดีต้อนรับ!"),
-                            SizedBox(height: GapDimension.h0_01),
+                            SizedBox(height: screenHeight * GapDimension.h0_01),
                             Regular16px(text: "ล็อกอินเพื่อเข้าใช้งาน"),
-                            SizedBox(height: GapDimension.h0_024),
+                            SizedBox(
+                                height: screenHeight * GapDimension.h0_024),
                           ],
                         ),
                         Container(
                           height: screenWidth < 480
-                              ? GapDimension.h0_18
-                              : GapDimension.h0_36,
+                              ? screenHeight * GapDimension.h0_18
+                              : screenHeight * GapDimension.h0_36,
                           decoration: const BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage('assets/images/logo.png')),
@@ -72,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         Padding(
                           padding: EdgeInsets.symmetric(
-                            horizontal: GapDimension.w0_096,
+                            horizontal: screenWidth * GapDimension.w0_096,
                           ),
                           child: Form(
                             key: formKey,
@@ -82,7 +83,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   alignment: Alignment.centerLeft,
                                   child: Regular16px(text: "E-mail"),
                                 ),
-                                SizedBox(height: GapDimension.h0_01),
+                                SizedBox(
+                                    height: screenHeight * GapDimension.h0_01),
                                 // I delete username because currently it can't use username to login.
                                 // E-mail
                                 MyTextFormField(
@@ -99,12 +101,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                   keyboardType: TextInputType.emailAddress,
                                   hintText: "example@email.com",
                                 ),
-                                SizedBox(height: GapDimension.h0_02),
+                                SizedBox(
+                                    height: screenHeight * GapDimension.h0_02),
                                 const Align(
                                   alignment: Alignment.centerLeft,
                                   child: Regular16px(text: "รหัสผ่าน"),
                                 ),
-                                SizedBox(height: GapDimension.h0_01),
+                                SizedBox(
+                                    height: screenHeight * GapDimension.h0_01),
                                 // Password
                                 MyTextFormField(
                                   validator: RequiredValidator(
@@ -118,11 +122,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                 SizedBox(
                                     height: screenWidth < 480
-                                        ? GapDimension.h0_03
-                                        : GapDimension.h0_06),
+                                        ? screenHeight * GapDimension.h0_03
+                                        : screenHeight * GapDimension.h0_06),
                                 SizedBox(
                                   height: 40,
-                                  width: GapDimension.w0_4,
+                                  width: screenWidth * GapDimension.w0_4,
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                       alignment: Alignment.center,
@@ -170,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: GapDimension.h0_02),
+                        SizedBox(height: screenHeight * GapDimension.h0_02),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -182,7 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               onPressed: () {},
                             ),
-                            SizedBox(width: GapDimension.w0_128),
+                            SizedBox(width: screenWidth * GapDimension.w0_128),
                             TextButton(
                               child: const Regular12px(
                                 text: "ลืมรหัสผ่าน?",
@@ -198,8 +202,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             Expanded(
                               child: Container(
                                 margin: EdgeInsets.only(
-                                    left: GapDimension.w0_048,
-                                    right: GapDimension.w0_048),
+                                    left: screenWidth * GapDimension.w0_048,
+                                    right: screenWidth * GapDimension.w0_048),
                                 child: const Divider(
                                   thickness: 1,
                                 ),
@@ -212,12 +216,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: AppColors.black600,
                         ),
                         SizedBox(
-                          height: GapDimension.h0_016,
+                          height: screenHeight * GapDimension.h0_016,
                         ),
                         Padding(
                           padding: EdgeInsets.only(
-                              left: GapDimension.w0_044,
-                              right: GapDimension.w0_044),
+                              left: screenWidth * GapDimension.w0_044,
+                              right: screenWidth * GapDimension.w0_044),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
