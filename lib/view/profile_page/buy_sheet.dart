@@ -29,7 +29,13 @@ class BuySheet extends StatelessWidget {
         ),
         itemCount: 12,
         itemBuilder: (context, index) {
-          return Sheet();
+          return Sheet(
+            sheetTitle: Image.asset('assets/images/logo.png'),
+            title: 'สถิติพื้นฐานooooooooooo',
+            priceSheet: 0,
+            username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
+          );
+          ;
         },
       ),
     );

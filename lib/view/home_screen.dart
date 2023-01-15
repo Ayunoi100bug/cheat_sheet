@@ -81,7 +81,13 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
                 itemCount: 20,
                 itemBuilder: (context, index) {
-                  return Sheet();
+                  return Sheet(
+                    sheetTitle: Image.asset('assets/images/logo.png'),
+                    title: 'สถิติพื้นฐานooooooooooo',
+                    priceSheet: 0,
+                    username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
+                  );
+                  ;
                 },
                 padding: EdgeInsets.only(bottom: 8),
               ),
