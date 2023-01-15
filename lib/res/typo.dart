@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cheat_sheet/res/colors.dart';
 import 'package:flutter/cupertino.dart';
 
 class Bold24px extends StatelessWidget {
@@ -8,7 +9,7 @@ class Bold24px extends StatelessWidget {
   final bool underline;
   const Bold24px(
       {super.key,
-      this.color = const Color(0xff000000),
+      this.color = AppColors.black800,
       required this.text,
       this.size = 24,
       this.underline = false});
@@ -35,7 +36,7 @@ class Medium24px extends StatelessWidget {
   final bool underline;
   const Medium24px(
       {super.key,
-      this.color = const Color(0xff000000),
+      this.color = AppColors.black800,
       required this.text,
       this.size = 24,
       this.underline = false});
@@ -60,7 +61,7 @@ class Medium20px extends StatelessWidget {
   final bool underline;
   const Medium20px(
       {super.key,
-      this.color = const Color(0xff000000),
+      this.color = AppColors.black800,
       required this.text,
       this.size = 20,
       this.underline = false});
@@ -88,7 +89,7 @@ class Medium14px extends StatelessWidget {
   final bool underline;
   const Medium14px(
       {super.key,
-      this.color = const Color(0xff000000),
+      this.color = AppColors.black800,
       required this.text,
       this.size = 14,
       this.underline = false});
@@ -116,7 +117,7 @@ class Medium12px extends StatelessWidget {
   final bool underline;
   const Medium12px(
       {super.key,
-      this.color = const Color(0xff000000),
+      this.color = AppColors.black800,
       required this.text,
       this.size = 12,
       this.underline = false});
@@ -145,7 +146,7 @@ class Light20px extends StatelessWidget {
   final bool underline;
   const Light20px(
       {super.key,
-      this.color = const Color(0xff000000),
+      this.color = AppColors.black800,
       required this.text,
       this.size = 20,
       this.overFlow = TextOverflow.ellipsis,
@@ -176,7 +177,7 @@ class Light12px extends StatelessWidget {
   final bool underline;
   const Light12px(
       {super.key,
-      this.color = const Color(0xff000000),
+      this.color = AppColors.black800,
       required this.text,
       this.size = 12,
       this.overFlow = TextOverflow.ellipsis,
@@ -207,7 +208,7 @@ class Medium16px extends StatelessWidget {
   final bool underline;
   const Medium16px(
       {super.key,
-      this.color = const Color(0xff000000),
+      this.color = AppColors.black800,
       required this.text,
       this.size = 16,
       this.overFlow = TextOverflow.ellipsis,
@@ -237,7 +238,7 @@ class Regular16px extends StatelessWidget {
   final bool underline;
   const Regular16px(
       {super.key,
-      this.color = const Color(0xff000000),
+      this.color = AppColors.black800,
       required this.text,
       this.size = 16,
       this.underline = false});
@@ -266,7 +267,7 @@ class Regular14px extends StatelessWidget {
   final bool underline;
   const Regular14px(
       {super.key,
-      this.color = const Color(0xff000000),
+      this.color = AppColors.black800,
       required this.text,
       this.size = 14,
       this.overFlow = TextOverflow.ellipsis,
@@ -297,7 +298,7 @@ class Regular12px extends StatelessWidget {
   final bool underline;
   const Regular12px(
       {super.key,
-      this.color = const Color(0xff000000),
+      this.color = AppColors.black800,
       required this.text,
       this.size = 12,
       this.overFlow = TextOverflow.ellipsis,
@@ -328,7 +329,7 @@ class Regular10px extends StatelessWidget {
   final bool underline;
   const Regular10px(
       {super.key,
-      this.color = const Color(0xff000000),
+      this.color = AppColors.black800,
       required this.text,
       this.size = 10,
       this.overFlow = TextOverflow.ellipsis,
