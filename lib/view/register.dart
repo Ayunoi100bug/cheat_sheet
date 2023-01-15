@@ -1,5 +1,6 @@
 import 'package:cheat_sheet/model/user.dart';
 import 'package:cheat_sheet/res/components/form_field.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,6 +23,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final formKey = GlobalKey<FormState>();
   Users myUser = Users();
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -145,12 +147,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     if (formKey.currentState!.validate()) {
                                       formKey.currentState!.save();
                                       try {
-                                        await FirebaseAuth.instance
-                                            .createUserWithEmailAndPassword(
-                                                // This procress is not create username into firebase yet.
+                                        await FirebaseAuth.instance.createUserWithEmailAndPassword(
                                                 email: myUser.email.toString(),
-                                                password:
-                                                    myUser.password.toString())
+                                                password: myUser.password.toString()
+                                              );
+                                              myUser.storeInFirestore()
                                             .then(
                                           (value) {
                                             Fluttertoast.showToast(
@@ -160,10 +161,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           },
                                         );
                                         /*
-                                              Change route code here.
-                                            */
+                                        Change route code here.
+                                        */
                                       } on FirebaseAuthException catch (e) {
-                                        // debugPrint(e.message);
                                         Fluttertoast.showToast(
                                           msg: e.message.toString(),
                                           gravity: ToastGravity.BOTTOM,
