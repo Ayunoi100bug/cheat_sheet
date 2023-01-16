@@ -8,7 +8,7 @@ class Users {
   String? uid;
 
   Users({this.username, this.email, this.password}) {
-    uid = Uuid().v4();
+    uid = const Uuid().v4();
   }
 
   Future<void> storeInFirestore() async {
