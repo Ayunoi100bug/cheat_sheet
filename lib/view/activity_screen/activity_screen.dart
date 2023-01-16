@@ -74,10 +74,15 @@ class _ActivityScreenState extends State<ActivityScreen>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Medium20px(text: 'ความสำเร็จ'),
-                  Medium14px(
-                    text: 'ดูทั้งหมด',
-                    underline: true,
-                    color: AppColors.blue700,
+                  InkWell(
+                    child: Medium14px(
+                      text: 'ดูทั้งหมด',
+                      underline: true,
+                      color: AppColors.blue700,
+                    ),
+                    onTap: () {
+                      print("show all achievements page");
+                    },
                   ),
                 ],
               ),
@@ -117,11 +122,16 @@ class _ActivityScreenState extends State<ActivityScreen>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Medium20px(text: 'ล่าสุด'),
-                  Regular14px(
-                    text: 'ดูทั้งหมด',
-                    underline: true,
-                    color: AppColors.blue700,
-                  ),
+                  InkWell(
+                    child: Regular14px(
+                      text: 'ดูทั้งหมด',
+                      underline: true,
+                      color: AppColors.blue700,
+                    ),
+                    onTap: () {
+                      print("show all last page");
+                    },
+                  )
                 ],
               ),
             ),
@@ -141,7 +151,57 @@ class _ActivityScreenState extends State<ActivityScreen>
                     : MediaQuery.of(context).size.width /
                         (MediaQuery.of(context).size.height / 0.4),
               ),
-              itemCount: 7,
+              itemCount: 3,
+              itemBuilder: (context, index) {
+                return Sheet(
+                  sheetTitle: Image.asset('assets/images/logo.png'),
+                  title: 'สถิติพื้นฐานooooooooooo',
+                  priceSheet: 0,
+                  username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
+                );
+              },
+              padding: EdgeInsets.only(
+                  bottom: screenHeight * 0.01,
+                  left: screenWidth * 0.04,
+                  right: screenWidth * 0.04),
+            ),
+            SizedBox(
+              height: screenHeight * 0.02,
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                  left: screenWidth * 0.04, right: screenWidth * 0.04),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Medium20px(text: 'ดาวน์โหลด'),
+                  InkWell(
+                    child: Regular14px(
+                      text: 'ดูทั้งหมด',
+                      underline: true,
+                      color: AppColors.blue700,
+                    ),
+                    onTap: () {
+                      print("show all downloads page");
+                    },
+                  )
+                ],
+              ),
+            ),
+            GridView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+                childAspectRatio: screenWidth < 480
+                    ? MediaQuery.of(context).size.width /
+                        (MediaQuery.of(context).size.height / 1.1)
+                    : MediaQuery.of(context).size.width /
+                        (MediaQuery.of(context).size.height / 0.4),
+              ),
+              itemCount: 3,
               itemBuilder: (context, index) {
                 return Sheet(
                   sheetTitle: Image.asset('assets/images/logo.png'),

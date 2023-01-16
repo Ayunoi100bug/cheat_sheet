@@ -31,12 +31,12 @@ class _HomeScreenState extends State<HomeScreen>
           padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
           child: Column(
             children: [
-              InkWell(
-                onTap: () {
-                  AutoRouter.of(context).push(DetailSheetRoute());
-                },
-                child: Text('Press Here'),
-              ),
+              // InkWell(
+              //   onTap: () {
+              //     AutoRouter.of(context).push(DetailSheetRoute());
+              //   },
+              //   child: Text('Press Here'),
+              // ),
               Padding(padding: EdgeInsets.symmetric(vertical: 8)),
               SizedBox(
                 width: double.infinity,

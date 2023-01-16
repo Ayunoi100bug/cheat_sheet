@@ -1,8 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+import '../../utils/routes/routes.gr.dart';
 import 'custom_appbar.dart';
 
 class Sheet extends StatelessWidget {
@@ -29,6 +31,11 @@ class Sheet extends StatelessWidget {
           Container(
             color: AppColors.black300,
             height: constraints.maxHeight * 0.7,
+            child: InkWell(
+              onTap: () {
+                AutoRouter.of(context).push(DetailSheetRoute());
+              },
+            ),
           ),
           Container(
             padding: EdgeInsets.only(
@@ -51,7 +58,9 @@ class Sheet extends StatelessWidget {
                                   backgroundImage: sheetTitle.image,
                                 ),
                               ),
-                              onTap: () {},
+                              onTap: () {
+                                print("click to profile");
+                              },
                             ),
                             SizedBox(
                               width: constraints.maxWidth * 0.05,
@@ -65,11 +74,15 @@ class Sheet extends StatelessWidget {
                                     Container(
                                         alignment: Alignment.centerLeft,
                                         height: constraints.maxHeight * 0.5,
-                                        child: Regular12px(text: title)),
+                                        child: Regular12px(
+                                            text: title,
+                                            activateOverflow: true)),
                                     Container(
                                         alignment: Alignment.centerLeft,
                                         height: constraints.maxHeight * 0.5,
-                                        child: Regular10px(text: username)),
+                                        child: Regular10px(
+                                            text: username,
+                                            activateOverflow: true)),
                                   ],
                                 );
                               }),
