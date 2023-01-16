@@ -3,6 +3,7 @@ import 'package:auto_route/empty_router_widgets.dart';
 import 'package:cheat_sheet/view/create_sheet_screen/create_sheet_screen.dart';
 import 'package:cheat_sheet/view/home_screen/detail_sheet.dart';
 import 'package:cheat_sheet/view/home_screen/read_sheet.dart';
+import 'package:cheat_sheet/view/home_screen/review_sheet.dart';
 import 'package:cheat_sheet/view/login.dart';
 import 'package:cheat_sheet/view/main_screen.dart';
 import 'package:cheat_sheet/view/home_screen/home_screen.dart';
@@ -32,7 +33,12 @@ import 'package:cheat_sheet/view/sheet_list_screen/sheet_list_screen.dart';
                   path: 'read_sheet',
                   name: 'ReadSheetRoute',
                   page: ReadSheet,
-                )
+                ),
+                AutoRoute(
+                  path: 'review_sheet',
+                  name: 'ReviewSheetRoute',
+                  page: ReviewSheet,
+                ),
               ],
             ),
           ]),
