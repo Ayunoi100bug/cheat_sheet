@@ -16,13 +16,19 @@ class _DetailSheetState extends State<DetailSheet> {
     return Scaffold(
       body: SafeArea(
           child: Center(
-        child: Row(
+        child: Column(
           children: [
             Text('Detail Sheet'),
             InkWell(
               child: Text('Read Sheet'),
               onTap: () {
                 AutoRouter.of(context).push(ReadSheetRoute());
+              },
+            ),
+            InkWell(
+              child: Text('Review Sheet'),
+              onTap: () {
+                AutoRouter.of(context).push(ReviewSheetRoute());
               },
             ),
           ],
