@@ -34,7 +34,7 @@ class _ReviewState extends State<Review> {
         MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Container(
-      padding: EdgeInsets.all(screenWidth * 0.016),
+      //padding: EdgeInsets.all(screenWidth * 0.008),
       width: double.infinity,
       child: Card(
         elevation: 4,
