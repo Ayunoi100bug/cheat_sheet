@@ -9,9 +9,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     DateTime timeBackPressed = DateTime.now();
@@ -35,6 +40,7 @@ class MainScreen extends StatelessWidget {
         endDrawer: SidebarMenu(),
         body: AutoTabsScaffold(
           appBarBuilder: (context, tabsRouter) => AppBar(
+            leading: AutoLeadingButton(),
             backgroundColor: CustomAppBar.appBarColor,
             title: CustomAppBar.textLogo,
             actions: [
