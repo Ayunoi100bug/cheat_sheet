@@ -172,7 +172,7 @@ class Light14px extends StatelessWidget {
   final bool underline;
   const Light14px(
       {super.key,
-      this.color = const Color(0xff000000),
+      this.color = AppColors.black800,
       required this.text,
       this.size = 14,
       this.overFlow = TextOverflow.ellipsis,
