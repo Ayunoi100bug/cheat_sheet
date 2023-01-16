@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/model/user.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
+import 'package:cheat_sheet/view_model/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,6 +24,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
   Users myUser = Users();
+  AuthService myAuth = AuthService();
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
 
   @override
@@ -140,17 +142,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                       if (formKey.currentState!.validate()) {
                                         formKey.currentState!.save();
                                         try {
-                                          await FirebaseAuth.instance
-                                              .signInWithEmailAndPassword(
-                                                  // This procress is not create username into firebase yet.
-                                                  email:
-                                                      myUser.email.toString(),
-                                                  password: myUser.password
-                                                      .toString())
-                                              .then((value) {
+                                          myAuth.loginWithEmail()
+                                            .then((value) {
                                             Fluttertoast.showToast(
-                                                msg: 'Success login',
-                                                gravity: ToastGravity.BOTTOM);
+                                              msg: 'Success login',
+                                              gravity: ToastGravity.BOTTOM);
                                             formKey.currentState!.reset();
                                           });
                                           /*
