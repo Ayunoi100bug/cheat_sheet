@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/model/user.dart';
 import 'package:cheat_sheet/res/components/form_field.dart';
+import 'package:cheat_sheet/view_model/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -24,6 +25,7 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final formKey = GlobalKey<FormState>();
   Users myUser = Users();
+  AuthService myAuth = AuthService();
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -149,16 +151,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     if (formKey.currentState!.validate()) {
                                       formKey.currentState!.save();
                                       try {
-                                        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                                                email: myUser.email.toString(),
-                                                password: myUser.password.toString()
-                                              );
-                                              myUser.storeInFirestore()
-                                            .then(
-                                          (value) {
-                                            Fluttertoast.showToast(
-                                                msg: 'Success create user',
-                                                gravity: ToastGravity.BOTTOM);
+                                        myAuth.createUser()
+                                          .then((value) {
+                                          Fluttertoast.showToast(
+                                            msg: 'Success create user',
+                                            gravity: ToastGravity.BOTTOM
+                                          );
                                             formKey.currentState!.reset();
                                           },
                                         );
