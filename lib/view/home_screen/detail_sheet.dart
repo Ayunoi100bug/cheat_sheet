@@ -4,9 +4,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/components/review.dart';
+import 'package:cheat_sheet/res/components/tag.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
+import 'package:cheat_sheet/view/home_screen/review_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:unicons/unicons.dart';
 
 class DetailSheet extends StatefulWidget {
@@ -55,17 +58,20 @@ class _DetailSheetState extends State<DetailSheet> {
                 child: LayoutBuilder(builder: (context, constraints) {
                   return Row(
                     children: [
-                      Container(
-                        padding: const EdgeInsets.only(right: 4),
-                        width: isPortrait
-                            ? constraints.maxWidth * 0.4
-                            : constraints.maxWidth * 0.3,
-                        child: const Image(
-                          image: NetworkImage(
-                              "https://scontent.fbkk22-2.fna.fbcdn.net/v/t1.6435-9/52748949_399475260816189_4259420007764590592_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=8bfeb9&_nc_eui2=AeHBsm5dx349WFV227XrsFZNeucgEgDpTIF65yASAOlMgWbIDtj649GOlYDE58Ak1f2kPrF8Nvhj1U_LTr6mivDE&_nc_ohc=j3UsfhFV2UsAX96ijpb&_nc_ht=scontent.fbkk22-2.fna&oh=00_AfDhwGCl2AHhuEq605bA57Fg_Vn1rWI6zelRKIj1Tkpv-w&oe=63ECB2EB"),
+                      Flexible(
+                        child: Container(
+                          padding: const EdgeInsets.only(right: 4),
+                          width: isPortrait
+                              ? constraints.maxWidth * 0.4
+                              : constraints.maxWidth * 0.3,
+                          child: Image.network(
+                            "https://scontent.fbkk22-2.fna.fbcdn.net/v/t1.6435-9/52748949_399475260816189_4259420007764590592_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=8bfeb9&_nc_eui2=AeHBsm5dx349WFV227XrsFZNeucgEgDpTIF65yASAOlMgWbIDtj649GOlYDE58Ak1f2kPrF8Nvhj1U_LTr6mivDE&_nc_ohc=j3UsfhFV2UsAX96ijpb&_nc_ht=scontent.fbkk22-2.fna&oh=00_AfDhwGCl2AHhuEq605bA57Fg_Vn1rWI6zelRKIj1Tkpv-w&oe=63ECB2EB",
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                       Container(
+                        padding: EdgeInsets.only(left: screenWidth * 0.04),
                         width: isPortrait
                             ? constraints.maxWidth * 0.6
                             : constraints.maxWidth * 0.7,
@@ -79,21 +85,31 @@ class _DetailSheetState extends State<DetailSheet> {
                             ),
                             SizedBox(
                               height: isPortrait
-                                  ? screenHeight * 0.02
-                                  : screenHeight * 0.10,
+                                  ? screenHeight * 0.005
+                                  : screenHeight * 0.05,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
-                                Regular10px(text: "คณิตศาสาตร์"),
-                                Regular10px(text: "คณิตพื้นฐาน"),
-                                Regular10px(text: "สถิติ"),
-                              ],
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Tag(
+                                    subject: "คณิตศาสาตร์",
+                                  ),
+                                  Tag(
+                                    subject: "คณิตพื้นฐาน",
+                                  ),
+                                  Tag(
+                                    subject: "สถิติ",
+                                  ),
+                                ],
+                              ),
                             ),
                             SizedBox(
                               height: isPortrait
-                                  ? screenHeight * 0.02
-                                  : screenHeight * 0.10,
+                                  ? screenHeight * 0.005
+                                  : screenHeight * 0.05,
                             ),
                             Row(
                               children: [
@@ -184,6 +200,7 @@ class _DetailSheetState extends State<DetailSheet> {
                             ),
                             PrimaryButton(
                               text: "อ่านชีท",
+                              size: 16,
                               onPressed: () {
                                 AutoRouter.of(context).push(ReadSheetRoute());
                               },
@@ -227,7 +244,7 @@ class _DetailSheetState extends State<DetailSheet> {
                             color: AppColors.primary600,
                           ),
                           onTap: () {
-                            print("go to write review");
+                            AutoRouter.of(context).push(ReviewSheetRoute());
                           },
                         ),
                       ],
@@ -235,8 +252,8 @@ class _DetailSheetState extends State<DetailSheet> {
                     Container(
                       child: Column(
                         children: [
-                          Review(),
-                          Review(),
+                          Review(userRating: 4),
+                          Review(userRating: 2.5),
                         ],
                       ),
                     ),

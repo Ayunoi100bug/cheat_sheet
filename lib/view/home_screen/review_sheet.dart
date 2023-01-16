@@ -67,7 +67,11 @@ class _ReviewSheetState extends State<ReviewSheet> {
                 padding: EdgeInsets.only(right: screenHeight * 0.032),
                 height: isPortrait ? screenHeight * 0.05 : screenWidth * 0.05,
                 alignment: Alignment.centerRight,
-                child: PrimaryButton(text: 'ส่ง', onPressed: () {}),
+                child: PrimaryButton(
+                  text: 'ส่ง',
+                  onPressed: () {},
+                  size: 16,
+                ),
               ),
               SizedBox(
                 height: screenHeight * 0.04,

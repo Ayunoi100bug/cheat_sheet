@@ -78,7 +78,7 @@ class _ReviewState extends State<Review> {
                                       color: AppColors.warning400,
                                     ),
                                     itemCount: 5,
-                                    itemSize: 25,
+                                    itemSize: 12,
                                   ),
                                 ],
                               );
