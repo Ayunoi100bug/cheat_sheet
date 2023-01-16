@@ -1,3 +1,6 @@
+import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:flutter/material.dart';
 
 class DetailSheet extends StatefulWidget {
@@ -13,7 +16,17 @@ class _DetailSheetState extends State<DetailSheet> {
     return Scaffold(
       body: SafeArea(
           child: Center(
-        child: Text('Detail Sheet'),
+        child: Row(
+          children: [
+            Text('Detail Sheet'),
+            InkWell(
+              child: Text('Read Sheet'),
+              onTap: () {
+                AutoRouter.of(context).push(ReadSheetRoute());
+              },
+            ),
+          ],
+        ),
       )),
     );
   }
