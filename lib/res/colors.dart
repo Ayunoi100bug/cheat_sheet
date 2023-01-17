@@ -1,43 +1,6 @@
 import 'dart:ui';
 
 class AppColors {
-  // static const Color tagtext = Color(0xffdb6e41);
-  // static const Color tagBackground = Color(0xfffff1dd);
-
-  // //placeholder
-  // static const Color gray = Color(0xffa1a2a4);
-  // static const Color white = Color(0xffffffff);
-
-  // //flushbar, important error text
-  // static const Color error = Color(0xffdb2420);
-
-  // //Main app color, search text
-  // static const Color primary = Color(0xff369e77);
-  // //Tab text color
-  // static const Color primaryDarker = Color(0xff25846a);
-  // //flush bar, drop shadow
-  // static const Color secondary = Color(0xff4AB84d);
-  // //button but not in design system
-  // static const Color secondaryLight = Color(0xff7ad475);
-  // //Floating action button
-  // static const Color tertiaryDarker = Color(0xff36929e);
-  // //button color, some text color
-  // static const Color tertiary = Color(0xff4ab5b8);
-
-  // static const Color black800 = Color(0xff292929);
-  // //button outline
-  // static const Color black700 = Color(0xff3d3d3d);
-  // //button outline
-  // static const Color black600 = Color(0xff3d3d3d);
-  // //inactivate icon
-  // static const Color placeholder = Color(0xffa1a2a4);
-  // //button text color,
-  // static const Color blue600 = Color(0xff0b93c3);
-  // //button outline, sometext
-  // static const Color blue700 = Color(0xff086fa3);
-  // //Floating action button
-  // static const Color warning = Color(0xfffff9cc);
-
   static const Color primary900 = Color(0xff0e5852);
   static const Color primary800 = Color(0xff176a5c);
   static const Color primary700 = Color(0xff25846a);
