@@ -142,8 +142,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                           myAuth.loginWithEmail(myUser.email, myUser.password)
                                           .then((value) {
                                             _formKey.currentState!.reset();
-                                            debugPrint("Login Success!");
-                                            // AutoRouter.of(context).push(const MainScreen());
+                                            // debugPrint("Login Success!");
+                                            AutoRouter.of(context).pop();
                                           });
                                         } on FirebaseAuthException catch (e) {
                                           Fluttertoast.showToast(
