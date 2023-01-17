@@ -19,6 +19,10 @@ class _ActivityScreenState extends State<ActivityScreen>
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
+    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    var isLandScape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
@@ -132,14 +136,10 @@ class _ActivityScreenState extends State<ActivityScreen>
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-                childAspectRatio: screenWidth < 480
-                    ? MediaQuery.of(context).size.width /
-                        (MediaQuery.of(context).size.height / 1.1)
-                    : MediaQuery.of(context).size.width /
-                        (MediaQuery.of(context).size.height / 0.4),
+                crossAxisCount: isPortrait ? 3 : 5,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 12,
+                mainAxisExtent: isPortrait ? 200 : 250,
               ),
               itemCount: 7,
               itemBuilder: (context, index) {

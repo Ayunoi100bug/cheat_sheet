@@ -23,96 +23,126 @@ class Sheet extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    return LayoutBuilder(builder: (context, constraints) {
-      return Column(
-        children: [
-          Container(
-            color: AppColors.black300,
-            height: constraints.maxHeight * 0.7,
-          ),
-          Container(
-            padding: EdgeInsets.only(
-              top: constraints.maxHeight * 0.02,
-            ),
-            height: constraints.maxHeight * 0.3,
-            child: LayoutBuilder(builder: (context, constraints) {
-              return SizedBox(
-                child: Column(
-                  children: [
-                    Container(
-                      height: constraints.maxHeight * 0.7,
-                      child: LayoutBuilder(builder: (context, constraints) {
-                        return Row(
-                          children: [
-                            InkWell(
-                              child: Container(
-                                width: constraints.maxWidth * 0.25,
-                                child: CircleAvatar(
-                                  backgroundImage: sheetTitle.image,
-                                ),
-                              ),
-                              onTap: () {},
-                            ),
-                            SizedBox(
-                              width: constraints.maxWidth * 0.05,
-                            ),
-                            Container(
-                              width: constraints.maxWidth * 0.7,
-                              child: LayoutBuilder(
-                                  builder: (context, constraints) {
-                                return Column(
-                                  children: [
-                                    Container(
-                                        alignment: Alignment.centerLeft,
-                                        height: constraints.maxHeight * 0.5,
-                                        child: Regular12px(text: title)),
-                                    Container(
-                                        alignment: Alignment.centerLeft,
-                                        height: constraints.maxHeight * 0.5,
-                                        child: Regular10px(text: username)),
-                                  ],
-                                );
-                              }),
-                            ),
-                          ],
-                        );
-                      }),
-                    ),
-                    Container(
-                      height: constraints.maxHeight * 0.3,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              if (priceSheet == 0) Medium12px(text: 'FREE'),
-                              if (priceSheet > 0) CustomAppBar.coin,
-                              if (priceSheet > 0)
-                                Regular12px(
-                                  text: priceSheet.toString(),
-                                  color: AppColors.orange700,
-                                ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.star,
-                                size: constraints.maxHeight * 0.25,
-                              ),
-                              Light12px(text: '4.5'),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    var isLandScape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
+    return Card(
+      elevation: 4,
+      shadowColor: AppColors.black900,
+      child: LayoutBuilder(builder: (context, constraints) {
+        return Stack(
+          children: [
+            Column(
+              children: [
+                Expanded(
+                  child: Image.network(
+                    'https://i.pinimg.com/originals/3d/83/e4/3d83e4284ba67ebcc3ca74c179ad5c1d.jpg',
+                    fit: BoxFit.fill,
+                    width: constraints.maxWidth,
+                  ),
                 ),
-              );
-            }),
-          ),
-        ],
-      );
-    });
+                SizedBox(
+                  height: constraints.maxHeight * 0.35,
+                  child: LayoutBuilder(builder: (context, constraints) {
+                    return Column(
+                      children: [
+                        SizedBox(
+                          height: constraints.maxHeight * 0.65,
+                          width: constraints.maxWidth,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(
+                                    left: constraints.maxWidth * 0.025,
+                                    right: constraints.maxWidth * 0.025),
+                                alignment: Alignment.center,
+                                height: isPortrait
+                                    ? constraints.maxHeight * 0.45
+                                    : constraints.maxHeight * 0.4,
+                                width: constraints.maxWidth * 0.3,
+                                child: Image.asset(
+                                  'assets/images/logo.png', //userImage
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.only(
+                                  left: constraints.maxWidth * 0.025,
+                                  right: constraints.maxWidth * 0.025,
+                                ),
+                                height: constraints.maxHeight * 0.7,
+                                width: constraints.maxWidth * 0.7,
+                                child: LayoutBuilder(
+                                    builder: (context, constraints) {
+                                  return Column(
+                                    children: [
+                                      Container(
+                                        height: constraints.maxHeight * 0.5,
+                                        width: constraints.maxWidth,
+                                        alignment: Alignment.bottomCenter,
+                                        child: Regular14px(
+                                          text: title,
+                                          activateOverflow: true,
+                                        ),
+                                      ),
+                                      Container(
+                                        height: constraints.maxHeight * 0.5,
+                                        width: constraints.maxWidth,
+                                        alignment: Alignment.topCenter,
+                                        child: Regular12px(
+                                          text: username,
+                                          activateOverflow: true,
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(
+                            left: constraints.maxWidth * 0.025,
+                            right: constraints.maxWidth * 0.025,
+                          ),
+                          height: constraints.maxHeight * 0.35,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  if (priceSheet == 0) Medium12px(text: 'FREE'),
+                                  if (priceSheet > 0) CustomAppBar.coin,
+                                  if (priceSheet > 0)
+                                    Regular12px(
+                                      text: priceSheet.toString(),
+                                      color: AppColors.orange700,
+                                    ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.star,
+                                    size: constraints.maxHeight * 0.25,
+                                  ),
+                                  Light12px(text: '4.5'),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  }),
+                ),
+              ],
+            ),
+          ],
+        );
+      }),
+    );
   }
 }
