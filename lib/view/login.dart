@@ -22,8 +22,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final formKey = GlobalKey<FormState>();
-  Users myUser = Users();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  Users myUser = Users(email: '', password: '', username: '', uid: '');
   AuthService myAuth = AuthService();
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
 
@@ -57,9 +57,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Medium20px(text: "ยินดีต้อนรับ!"),
+                            const Medium20px(text: "ยินดีต้อนรับ!"),
                             SizedBox(height: screenHeight * GapDimension.h0_01),
-                            Regular16px(text: "ล็อกอินเพื่อเข้าใช้งาน"),
+                            const Regular16px(text: "ล็อกอินเพื่อเข้าใช้งาน"),
                             SizedBox(
                                 height: screenHeight * GapDimension.h0_024),
                           ],
@@ -78,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             horizontal: screenWidth * GapDimension.w0_096,
                           ),
                           child: Form(
-                            key: formKey,
+                            key: _formKey,
                             child: Column(
                               children: [
                                 const Align(
@@ -88,7 +88,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 SizedBox(
                                     height: screenHeight * GapDimension.h0_01),
                                 // I delete username because currently it can't use username to login.
-                                // E-mail
                                 MyTextFormField(
                                   validator: MultiValidator([
                                     RequiredValidator(
@@ -98,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             'Format of email is not correct.'),
                                   ]),
                                   onSaved: (value) {
-                                    myUser.email = value;
+                                    myUser.email = value!;
                                   },
                                   keyboardType: TextInputType.emailAddress,
                                   hintText: "example@email.com",
@@ -111,17 +110,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 SizedBox(
                                     height: screenHeight * GapDimension.h0_01),
-                                // Password
                                 MyTextFormField(
                                   validator: RequiredValidator(
                                       errorText: 'Please enter password.'),
                                   onSaved: (value) {
-                                    myUser.password = value;
+                                    myUser.password = value!;
                                   },
                                   obscureText: true,
                                   hintText: "รหัสผ่าน",
                                 ),
-
                                 SizedBox(
                                     height: screenWidth < 480
                                         ? screenHeight * GapDimension.h0_03
@@ -139,24 +136,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                       ),
                                     ),
                                     onPressed: () async {
-                                      if (formKey.currentState!.validate()) {
-                                        formKey.currentState!.save();
+                                      if (_formKey.currentState!.validate()) {
+                                        _formKey.currentState!.save();
                                         try {
-                                          myAuth.loginWithEmail()
-                                            .then((value) {
-                                            Fluttertoast.showToast(
-                                              msg: 'Success login',
-                                              gravity: ToastGravity.BOTTOM);
-                                            formKey.currentState!.reset();
+                                          myAuth.loginWithEmail(myUser.email, myUser.password)
+                                          .then((value) {
+                                            _formKey.currentState!.reset();
+                                            debugPrint("Login Success!");
+                                            // AutoRouter.of(context).push(const MainScreen());
                                           });
-                                          /*
-                                              Change route code here.
-                                            */
                                         } on FirebaseAuthException catch (e) {
-                                          // debugPrint(e.message);
                                           Fluttertoast.showToast(
-                                              msg: e.message.toString(),
-                                              gravity: ToastGravity.BOTTOM);
+                                            msg: e.message.toString(),
+                                            gravity: ToastGravity.BOTTOM);
                                         }
                                       }
                                     },
