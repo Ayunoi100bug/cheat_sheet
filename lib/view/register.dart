@@ -23,8 +23,8 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final formKey = GlobalKey<FormState>();
-  Users myUser = Users();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  Users myUser = Users(email: '', password: '', username: '', uid: '');
   AuthService myAuth = AuthService();
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -79,7 +79,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           horizontal: screenWidth *GapDimension.w0_096,
                         ),
                         child: Form(
-                          key: formKey,
+                          key: _formKey,
                           child: Column(
                             children: [
                               const Align(
@@ -92,7 +92,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 validator: RequiredValidator(
                                     errorText: 'Please enter username.'),
                                 onSaved: (value) {
-                                  myUser.username = value;
+                                  myUser.username = value!;
                                 },
                                 hintText: "ชื่อ",
                               ),
@@ -112,7 +112,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           'Format of email is not correct.'),
                                 ]),
                                 onSaved: (value) {
-                                  myUser.email = value;
+                                  myUser.email = value!;
                                 },
                                 keyboardType: TextInputType.emailAddress,
                                 hintText: "example@email.com",
@@ -128,7 +128,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 validator: RequiredValidator(
                                     errorText: 'Please enter password.'),
                                 onSaved: (value) {
-                                  myUser.password = value;
+                                  myUser.password = value!;
                                 },
                                 obscureText: true,
                                 hintText: "รหัสผ่าน",
@@ -148,21 +148,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     ),
                                   ),
                                   onPressed: () async {
-                                    if (formKey.currentState!.validate()) {
-                                      formKey.currentState!.save();
+                                    if (_formKey.currentState!.validate()) {
+                                      _formKey.currentState!.save();
                                       try {
-                                        myAuth.createUser()
-                                          .then((value) {
-                                          Fluttertoast.showToast(
-                                            msg: 'Success create user',
-                                            gravity: ToastGravity.BOTTOM
-                                          );
-                                            formKey.currentState!.reset();
+                                        myAuth.createUser(myUser.email, myUser.password)
+                                        .then((value) {
+                                            _formKey.currentState!.reset();
+                                            debugPrint("Register Success");
+                                            // AutoRouter.of(context).push(const MainScreen());
                                           },
                                         );
-                                        /*
-                                        Change route code here.
-                                        */
                                       } on FirebaseAuthException catch (e) {
                                         Fluttertoast.showToast(
                                           msg: e.message.toString(),
