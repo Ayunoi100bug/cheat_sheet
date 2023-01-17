@@ -2,9 +2,9 @@ import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp;
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 

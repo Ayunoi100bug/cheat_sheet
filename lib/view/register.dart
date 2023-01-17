@@ -154,8 +154,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         myAuth.createUser(myUser.email, myUser.password)
                                         .then((value) {
                                             _formKey.currentState!.reset();
-                                            debugPrint("Register Success");
-                                            // AutoRouter.of(context).push(const MainScreen());
+                                            // debugPrint("Register Success");
+                                            AutoRouter.of(context).pop();
                                           },
                                         );
                                       } on FirebaseAuthException catch (e) {
