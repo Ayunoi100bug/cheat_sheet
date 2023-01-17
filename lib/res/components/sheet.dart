@@ -32,9 +32,7 @@ class Sheet extends StatelessWidget {
             color: AppColors.black300,
             height: constraints.maxHeight * 0.7,
             child: InkWell(
-              onTap: () {
-                AutoRouter.of(context).push(DetailSheetRoute());
-              },
+              onTap: () {},
             ),
           ),
           Container(
