@@ -151,7 +151,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     if (_formKey.currentState!.validate()) {
                                       _formKey.currentState!.save();
                                       try {
-                                        myAuth.createUser(myUser.email, myUser.password)
+                                        myAuth.createUser(myUser.email, myUser.password, myUser.username)
                                         .then((value) {
                                             _formKey.currentState!.reset();
                                             // debugPrint("Register Success");

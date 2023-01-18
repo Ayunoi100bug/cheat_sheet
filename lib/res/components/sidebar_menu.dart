@@ -25,6 +25,7 @@ class SidebarMenu extends StatefulWidget {
 
 class _SidebarMenuState extends State<SidebarMenu> {
   AuthService myAuth = AuthService();
+  final _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,7 @@ class _SidebarMenuState extends State<SidebarMenu> {
         MediaQuery.of(context).orientation == Orientation.landscape;
     
     return StreamBuilder(
-      stream: FirebaseAuth.instance.authStateChanges(),
+      stream: _auth.authStateChanges(),
       builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
         if (snapshot.hasData) {
           return SafeArea(

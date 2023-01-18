@@ -16,16 +16,19 @@ class AuthService {
     }
   }
 
-  Future<void> createUser(String argEmail, String argPassword) async {
-    await _auth.createUserWithEmailAndPassword(
+  Future<void> createUser(String argEmail, String argPassword, String argUsername) async {
+    UserCredential result =  await _auth.createUserWithEmailAndPassword(
       email: argEmail.toString().trim(),
       password: argPassword.toString().trim()
     );
-    myCollection.createUserCollection();
+    User? user = result.user;
+    user!.updateDisplayName(argUsername);
+    myCollection.createUserCollection(argUsername, argEmail, _auth.currentUser!.uid);
   }
 
   Future<void> loginWithEmail(String argEmail, String argPassword) async {
     await _auth.signInWithEmailAndPassword(
+
       email: argEmail.toString().trim(),
       password: argPassword.toString().trim()
     );

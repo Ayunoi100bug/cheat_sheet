@@ -7,12 +7,14 @@ class CreateCollection {
   final FirebaseFirestore _firestoreDb = FirebaseFirestore.instance;
   Users myUser = Users(email: '', password: '', username: '', uid: '');
 
-  Future<void> createUserCollection() async {
-    await _firestoreDb.collection("users").doc(myUser.uid).set({
-      'username': myUser.username.toString().trim(),
-      'email': myUser.email.toString().trim(),
-      'uid': myUser.uid.toString().trim(),
-      'profileImage': myUser.profileImage.toString().trim()
+  Future<void> createUserCollection(String argUsername, String argEmail, String argUid) async {
+    await _firestoreDb.collection("users").doc(argUid).set({
+      'username': argUsername.toString().trim(),
+      'email': argEmail.toString().trim(),
+      'uid': argUid.toString().trim(),
+      'profileImage': myUser.profileImage.toString().trim(),
+      'follower': myUser.follower,
+      'following': myUser.following,
     });
   }
 }
