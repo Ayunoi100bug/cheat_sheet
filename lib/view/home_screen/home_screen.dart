@@ -6,6 +6,7 @@ import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../res/colors.dart';
+import '../../res/gap_dimension.dart';
 import '../../res/typo.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -24,11 +25,15 @@ class _HomeScreenState extends State<HomeScreen>
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
+    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    var isLandScape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+          padding: EdgeInsets.all(screenWidth * GapDimension.w0_032),
           child: Column(
             children: [
               InkWell(
@@ -79,16 +84,12 @@ class _HomeScreenState extends State<HomeScreen>
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
-                  childAspectRatio: screenWidth < 480
-                      ? MediaQuery.of(context).size.width /
-                          (MediaQuery.of(context).size.height / 1.1)
-                      : MediaQuery.of(context).size.width /
-                          (MediaQuery.of(context).size.height / 0.4),
+                  crossAxisCount: isPortrait ? 3 : 5,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 16,
+                  mainAxisExtent: isPortrait ? 200 : 250,
                 ),
-                itemCount: 20,
+                itemCount: 10,
                 itemBuilder: (context, index) {
                   return Sheet(
                     sheetTitle: Image.asset('assets/images/logo.png'),
