@@ -8,6 +8,7 @@ class PrimaryButton extends StatelessWidget {
   final Color textcolor;
   final double height;
   final double width;
+  final double size;
   final void Function() onPressed;
   const PrimaryButton(
       {super.key,
@@ -16,6 +17,7 @@ class PrimaryButton extends StatelessWidget {
       this.textcolor = AppColors.white,
       this.height = 44,
       this.width = 116,
+      this.size = 16,
       required this.onPressed});
 
   @override
@@ -32,6 +34,7 @@ class PrimaryButton extends StatelessWidget {
       child: Regular16px(
         text: text,
         color: textcolor,
+        size: size,
       ),
     );
   }

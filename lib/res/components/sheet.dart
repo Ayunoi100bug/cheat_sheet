@@ -1,8 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+import '../../utils/routes/routes.gr.dart';
 import 'custom_appbar.dart';
 
 class Sheet extends StatelessWidget {
