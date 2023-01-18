@@ -17,13 +17,16 @@ class Tag extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
+    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    var isLandScape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
     return Padding(
-      padding: const EdgeInsets.only(left: 4),
+      padding: const EdgeInsets.only(right: 4),
       child: PrimaryButton(
-        height: screenHeight * 0.03,
-        width: screenWidth * 0.01,
+        height: isPortrait ? screenHeight * 0.03 : screenHeight * 0.015,
+        width: isPortrait ? screenHeight * 0.01 : screenHeight * 0.015,
         text: subject,
-        size: 10,
+        size: isPortrait ? 10 : 15,
         onPressed: () {},
         textcolor: AppColors.orange600,
         color: AppColors.orange100,

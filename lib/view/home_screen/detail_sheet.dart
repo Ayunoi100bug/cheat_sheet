@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:blinking_text/blinking_text.dart';
 import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/components/review.dart';
@@ -10,9 +11,11 @@ import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/view/home_screen/review_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:unicons/unicons.dart';
 
 class DetailSheet extends StatefulWidget {
+  // final int sheetId;
   // final String sheetName;
   // final Array tag;
   // final int star;
@@ -21,10 +24,11 @@ class DetailSheet extends StatefulWidget {
   // final Image sheetImage;
   // final Array demoSheetImage;
   // final String detail;
-  // final Array review;
+  // final double sheetReview;
 
   const DetailSheet({
     super.key,
+    // required this.sheetId
     // required this.sheetName,
     // required this.tag,
     // required this.star,
@@ -32,7 +36,8 @@ class DetailSheet extends StatefulWidget {
     // required this.userName,
     // required this.sheetImage,
     // required this.detail,
-    // required this.review, required this.demoSheetImage
+    // required this.sheetReview,
+    // required this.demoSheetImage
   });
 
   @override
@@ -54,29 +59,154 @@ class _DetailSheetState extends State<DetailSheet> {
           child: Column(
             children: [
               Container(
-                padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
+                height: isPortrait ? screenHeight * 0.4 : screenHeight * 0.8,
+                padding: EdgeInsets.only(
+                    top: screenHeight * 0.016,
+                    left: screenHeight * 0.016,
+                    right: screenHeight * 0.016),
                 child: LayoutBuilder(builder: (context, constraints) {
                   return Row(
                     children: [
-                      Flexible(
-                        child: Container(
-                          padding: const EdgeInsets.only(right: 4),
-                          width: isPortrait
-                              ? constraints.maxWidth * 0.4
-                              : constraints.maxWidth * 0.3,
-                          child: Image.network(
-                            "https://scontent.fbkk22-2.fna.fbcdn.net/v/t1.6435-9/52748949_399475260816189_4259420007764590592_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=8bfeb9&_nc_eui2=AeHBsm5dx349WFV227XrsFZNeucgEgDpTIF65yASAOlMgWbIDtj649GOlYDE58Ak1f2kPrF8Nvhj1U_LTr6mivDE&_nc_ohc=j3UsfhFV2UsAX96ijpb&_nc_ht=scontent.fbkk22-2.fna&oh=00_AfDhwGCl2AHhuEq605bA57Fg_Vn1rWI6zelRKIj1Tkpv-w&oe=63ECB2EB",
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                      Container(
+                        width: isPortrait
+                            ? constraints.maxWidth * 0.5
+                            : constraints.maxWidth * 0.4,
+                        height: constraints.maxHeight * 0.9,
+                        child: LayoutBuilder(builder: (context, constraints) {
+                          return InkWell(
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Expanded(
+                                    child: Image.network(
+                                      "https://static.trueplookpanya.com/tppy/member/m_665000_667500/665461/cms/images/%E0%B9%84%E0%B8%AD%E0%B9%80%E0%B8%94%E0%B8%B5%E0%B8%A2%E0%B8%88%E0%B8%94%E0%B8%8A%E0%B8%B5%E0%B8%97%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B_04.jpg",
+                                      color: AppColors.black400,
+                                      colorBlendMode: BlendMode.modulate,
+                                      fit: BoxFit.cover,
+                                      height: constraints.maxHeight,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    child: Medium16px(
+                                      text: 'ดูตัวอย่างชีทที่นี่',
+                                      color: AppColors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              onTap: (() {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                          content: Stack(
+                                        children: [
+                                          Container(
+                                            alignment: Alignment.center,
+                                            height: screenHeight * 0.7,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                SingleChildScrollView(
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  child: Container(
+                                                    height: screenHeight * 0.6,
+                                                    child: Row(
+                                                      children: [
+                                                        Container(
+                                                          margin: EdgeInsets.only(
+                                                              right:
+                                                                  screenHeight *
+                                                                      0.025),
+                                                          decoration: BoxDecoration(
+                                                              border: Border.all(
+                                                                  color: AppColors
+                                                                      .primary500)),
+                                                          child: Image.network(
+                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
+                                                            fit: BoxFit.fill,
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          margin: EdgeInsets.only(
+                                                              right:
+                                                                  screenHeight *
+                                                                      0.025),
+                                                          decoration: BoxDecoration(
+                                                              border: Border.all(
+                                                                  color: AppColors
+                                                                      .primary500)),
+                                                          child: Image.network(
+                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
+                                                            fit: BoxFit.fill,
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          margin: EdgeInsets.only(
+                                                              right:
+                                                                  screenHeight *
+                                                                      0.025),
+                                                          decoration: BoxDecoration(
+                                                              border: Border.all(
+                                                                  color: AppColors
+                                                                      .primary500)),
+                                                          child: Image.network(
+                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
+                                                            fit: BoxFit.fill,
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          margin: EdgeInsets.only(
+                                                              right:
+                                                                  screenHeight *
+                                                                      0.025),
+                                                          decoration: BoxDecoration(
+                                                              border: Border.all(
+                                                                  color: AppColors
+                                                                      .primary500)),
+                                                          child: Image.network(
+                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
+                                                            fit: BoxFit.fill,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(child: Container()),
+                                                BlinkText(
+                                                    'สามารถเลื่อนไปทางขวาได้',
+                                                    style: TextStyle(
+                                                        fontSize: 20,
+                                                        color:
+                                                            AppColors.black800),
+                                                    beginColor:
+                                                        AppColors.black800,
+                                                    endColor: AppColors.white,
+                                                    times: 20,
+                                                    duration:
+                                                        Duration(seconds: 1)),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ));
+                                    });
+                              }));
+                        }),
                       ),
                       Container(
-                        padding: EdgeInsets.only(left: screenWidth * 0.04),
+                        padding: EdgeInsets.only(
+                            left: screenWidth * 0.04,
+                            top: constraints.maxHeight * 0.1,
+                            bottom: constraints.maxHeight * 0.1),
                         width: isPortrait
-                            ? constraints.maxWidth * 0.6
-                            : constraints.maxWidth * 0.7,
+                            ? constraints.maxWidth * 0.5
+                            : constraints.maxWidth * 0.6,
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
@@ -85,8 +215,8 @@ class _DetailSheetState extends State<DetailSheet> {
                             ),
                             SizedBox(
                               height: isPortrait
-                                  ? screenHeight * 0.005
-                                  : screenHeight * 0.05,
+                                  ? constraints.maxHeight * 0.02
+                                  : constraints.maxHeight * 0.01,
                             ),
                             SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
@@ -108,35 +238,19 @@ class _DetailSheetState extends State<DetailSheet> {
                             ),
                             SizedBox(
                               height: isPortrait
-                                  ? screenHeight * 0.005
-                                  : screenHeight * 0.05,
+                                  ? constraints.maxHeight * 0.02
+                                  : constraints.maxHeight * 0.01,
                             ),
                             Row(
                               children: [
-                                const Icon(
-                                  Icons.star,
-                                  size: 12,
-                                  color: AppColors.black600,
-                                ),
-                                const Icon(
-                                  Icons.star,
-                                  size: 12,
-                                  color: AppColors.black600,
-                                ),
-                                const Icon(
-                                  Icons.star,
-                                  size: 12,
-                                  color: AppColors.black600,
-                                ),
-                                const Icon(
-                                  Icons.star,
-                                  size: 12,
-                                  color: AppColors.black600,
-                                ),
-                                const Icon(
-                                  Icons.star,
-                                  size: 12,
-                                  color: AppColors.black600,
+                                RatingBarIndicator(
+                                  rating: 4,
+                                  itemBuilder: (context, index) => Icon(
+                                    Icons.star,
+                                    color: AppColors.warning400,
+                                  ),
+                                  itemCount: 5,
+                                  itemSize: screenWidth * 0.04,
                                 ),
                                 SizedBox(
                                   width: screenWidth * 0.01,
@@ -146,8 +260,8 @@ class _DetailSheetState extends State<DetailSheet> {
                             ),
                             SizedBox(
                               height: isPortrait
-                                  ? screenHeight * 0.02
-                                  : screenHeight * 0.10,
+                                  ? constraints.maxHeight * 0.04
+                                  : constraints.maxHeight * 0.02,
                             ),
                             Row(
                               children: [
@@ -164,39 +278,45 @@ class _DetailSheetState extends State<DetailSheet> {
                             ),
                             SizedBox(
                               height: isPortrait
-                                  ? screenHeight * 0.02
-                                  : screenHeight * 0.10,
+                                  ? constraints.maxHeight * 0.04
+                                  : constraints.maxHeight * 0.02,
                             ),
                             Row(
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.favorite_outline,
                                   color: AppColors.black600,
+                                  size: isPortrait ? 24 : 32,
                                 ),
                                 SizedBox(
                                   width: screenWidth * 0.016,
                                 ),
-                                const Icon(
+                                Icon(
                                   UniconsLine.plus_square,
                                   color: AppColors.black600,
+                                  size: isPortrait ? 24 : 32,
                                 ),
                                 SizedBox(
                                   width: screenWidth * 0.016,
                                 ),
-                                const Icon(
+                                Icon(
                                   UniconsLine.cloud_download,
                                   color: AppColors.black600,
+                                  size: isPortrait ? 24 : 32,
                                 ),
                                 SizedBox(
                                   width: screenWidth * 0.016,
                                 ),
-                                const Icon(UniconsLine.share),
+                                Icon(
+                                  UniconsLine.share,
+                                  size: isPortrait ? 24 : 32,
+                                ),
                               ],
                             ),
                             SizedBox(
                               height: isPortrait
-                                  ? screenHeight * 0.02
-                                  : screenHeight * 0.10,
+                                  ? constraints.maxHeight * 0.04
+                                  : constraints.maxHeight * 0.02,
                             ),
                             PrimaryButton(
                               text: "อ่านชีท",

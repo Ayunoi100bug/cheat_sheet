@@ -50,6 +50,7 @@ dependencies:
   uuid: ^3.0.7
   unicons: any
   flutter_rating_bar: ^4.0.1
+  blinking_text: ^1.0.2
 
 dev_dependencies:
   percent_indicator: ^4.2.2
