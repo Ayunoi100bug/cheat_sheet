@@ -364,7 +364,7 @@ class _DetailSheetState extends State<DetailSheet> {
                             color: AppColors.primary600,
                           ),
                           onTap: () {
-                            AutoRouter.of(context).push(ReviewSheetRoute());
+                            AutoRouter.of(context).push(CreateReviewRoute());
                           },
                         ),
                       ],
@@ -387,7 +387,7 @@ class _DetailSheetState extends State<DetailSheet> {
                         color: AppColors.primary600,
                       ),
                       onTap: () {
-                        print("go to review page");
+                        AutoRouter.of(context).push(ReviewSheetRoute());
                       },
                     ),
                     SizedBox(

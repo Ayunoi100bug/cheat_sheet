@@ -36,6 +36,12 @@ class _HomeScreenState extends State<HomeScreen>
           padding: EdgeInsets.all(screenWidth * GapDimension.w0_032),
           child: Column(
             children: [
+              InkWell(
+                child: Text('Detail Sheet'),
+                onTap: () {
+                  AutoRouter.of(context).push(DetailSheetRoute());
+                },
+              ),
               Padding(padding: EdgeInsets.symmetric(vertical: 8)),
               SizedBox(
                 width: double.infinity,
