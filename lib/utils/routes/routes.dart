@@ -1,6 +1,8 @@
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/empty_router_widgets.dart';
+import 'package:cheat_sheet/view/create_sheet_screen/create_detail_sheet.dart';
 import 'package:cheat_sheet/view/create_sheet_screen/create_sheet_screen.dart';
+import 'package:cheat_sheet/view/home_screen/create_review.dart';
 import 'package:cheat_sheet/view/home_screen/detail_sheet.dart';
 import 'package:cheat_sheet/view/home_screen/read_sheet.dart';
 import 'package:cheat_sheet/view/home_screen/review_sheet.dart';
@@ -39,6 +41,11 @@ import 'package:cheat_sheet/view/sheet_list_screen/sheet_list_screen.dart';
                   name: 'ReviewSheetRoute',
                   page: ReviewSheet,
                 ),
+                AutoRoute(
+                  path: 'create_review',
+                  name: 'CreateReviewRoute',
+                  page: CreateReview,
+                ),
               ],
             ),
           ]),
@@ -55,6 +62,10 @@ import 'package:cheat_sheet/view/sheet_list_screen/sheet_list_screen.dart';
           page: EmptyRouterPage,
           children: [
             AutoRoute(path: '', page: CreateSheetScreen),
+            AutoRoute(
+                path: 'create_detail_sheet',
+                name: 'CreateDetailSheetRoute',
+                page: CreateDetailSheet),
           ]),
       AutoRoute(
           path: 'sheet_list',

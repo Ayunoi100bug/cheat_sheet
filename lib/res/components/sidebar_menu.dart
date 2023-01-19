@@ -3,10 +3,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
+
 import 'package:cheat_sheet/utils/routes/routes_name.dart';
 import 'package:cheat_sheet/view_model/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

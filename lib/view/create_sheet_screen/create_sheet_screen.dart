@@ -1,5 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/colors.dart';
+import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -21,6 +23,12 @@ class _CreateSheetScreenState extends State<CreateSheetScreen>
       body: LayoutBuilder(builder: (context, constraints) {
         return Column(
           children: <Widget>[
+            InkWell(
+              child: Text('text form'),
+              onTap: () {
+                AutoRouter.of(context).push(CreateDetailSheetRoute());
+              },
+            ),
             SizedBox(
               width: screenWidth,
               height: screenWidth < 420
