@@ -1,25 +1,40 @@
 import 'package:cheat_sheet/model/user.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cheat_sheet/view_model/create_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
-  Users myUser = Users();
-  final Future<FirebaseApp> firebase = Firebase.initializeApp();
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final User? _user = FirebaseAuth.instance.currentUser;
+  Users myUser = Users(email: '', password: '', username: '', uid: '');
+  CreateCollection myCollection = CreateCollection();
 
-  Future<void> createUser() async {
-    await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: myUser.email.toString(),
-      password: myUser.password.toString()
-    ); 
-    myUser.storeInFirestore();
+  Future<bool> isLogged() async {
+    if (_user != null) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  Future<void> loginWithEmail() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: myUser.email.toString(),
-      password: myUser.password.toString()
+  Future<void> createUser(String argEmail, String argPassword, String argUsername) async {
+    UserCredential result =  await _auth.createUserWithEmailAndPassword(
+      email: argEmail.toString().trim(),
+      password: argPassword.toString().trim()
     );
+    User? user = result.user;
+    user!.updateDisplayName(argUsername);
+    myCollection.createUserCollection(argUsername, argEmail, _auth.currentUser!.uid);
+  }
+
+  Future<void> loginWithEmail(String argEmail, String argPassword) async {
+    await _auth.signInWithEmailAndPassword(
+
+      email: argEmail.toString().trim(),
+      password: argPassword.toString().trim()
+    );
+  }
+
+  Future<void> sighOut() async {
+    await _auth.signOut();
   }
 }

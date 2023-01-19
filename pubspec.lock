@@ -64,20 +64,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0"
-  bcrypt:
-    dependency: "direct main"
-    description:
-      name: bcrypt
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.3"
-  blinking_text:
-    dependency: "direct main"
-    description:
-      name: blinking_text
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.2"
   boolean_selector:
     dependency: transitive
     description:
@@ -295,6 +281,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  firebase_storage:
+    dependency: "direct main"
+    description:
+      name: firebase_storage
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "11.0.10"
+  firebase_storage_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_storage_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.1.26"
+  firebase_storage_web:
+    dependency: transitive
+    description:
+      name: firebase_storage_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.3.19"
   fixnum:
     dependency: transitive
     description:
@@ -728,20 +735,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.1"
-  unicons:
-    dependency: "direct main"
-    description:
-      name: unicons
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.0"
-  uuid:
-    dependency: "direct main"
-    description:
-      name: uuid
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.7"
   vector_math:
     dependency: transitive
     description:

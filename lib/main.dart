@@ -1,9 +1,10 @@
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
-import 'package:cheat_sheet/view/login.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
