@@ -42,7 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen>
     double screenHeight = MediaQuery.of(context).size.height;
 
     return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-      stream: _firestore.collection("users").doc(_auth.currentUser!.uid).snapshots(),
+      stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (!snapshot.hasData) {
           return const Center(child: CircularProgressIndicator(),);
