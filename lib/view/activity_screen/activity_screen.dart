@@ -188,6 +188,9 @@ class _ActivityScreenState extends State<ActivityScreen>
                 ],
               ),
             ),
+            SizedBox(
+              height: screenHeight * 0.02,
+            ),
             GridView.builder(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
