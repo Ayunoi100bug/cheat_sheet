@@ -4,7 +4,6 @@ import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 
-import 'package:cheat_sheet/utils/routes/routes_name.dart';
 import 'package:cheat_sheet/view_model/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -36,7 +35,7 @@ class _SidebarMenuState extends State<SidebarMenu> {
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     var isLandScape =
         MediaQuery.of(context).orientation == Orientation.landscape;
-    
+
     return StreamBuilder(
       stream: _auth.authStateChanges(),
       builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
