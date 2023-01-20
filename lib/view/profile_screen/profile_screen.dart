@@ -120,16 +120,16 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                   MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 Column(
-                                                  children: const [
-                                                    Medium20px(text: "120"),
-                                                    Regular14px(
+                                                  children: [
+                                                    Medium20px(text: data['follower']),
+                                                    const Regular14px(
                                                         text: "ผู้ติดตาม"),
                                                   ],
                                                 ),
                                                 Column(
-                                                  children: const [
-                                                    Medium20px(text: "120"),
-                                                    Regular14px(
+                                                  children: [
+                                                    Medium20px(text: data['following']),
+                                                    const Regular14px(
                                                         text: "กำลังติตดาม"),
                                                   ],
                                                 )
