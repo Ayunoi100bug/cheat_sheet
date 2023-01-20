@@ -1,13 +1,9 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/gap_dimension.dart';
 import 'package:cheat_sheet/res/typo.dart';
-import 'package:cheat_sheet/view/profile_page/my_sheet.dart';
-import 'package:cheat_sheet/view/profile_page/buy_sheet.dart';
+import 'package:cheat_sheet/view/profile_screen/profile_sub_page/my_sheet.dart';
+import 'package:cheat_sheet/view/profile_screen/profile_sub_page/buy_sheet.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -47,7 +43,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               SliverToBoxAdapter(
                 child: Column(
                   children: [
-                    Container(
+                    SizedBox(
                       width: double.infinity,
                       height: screenWidth < 480
                           ? screenHeight * GapDimension.h0_18
@@ -56,7 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         builder: (context, constraints) {
                           return Row(
                             children: <Widget>[
-                              Container(
+                              SizedBox(
                                 width: constraints.maxWidth * GapDimension.w0_4,
                                 height: double.infinity,
                                 child: Padding(
@@ -81,23 +77,27 @@ class _ProfileScreenState extends State<ProfileScreen>
                               Column(
                                 children: <Widget>[
                                   SizedBox(
-                                    height: constraints.maxHeight * GapDimension.h0_5,
-                                    width: constraints.maxWidth * GapDimension.w0_6,
+                                    height: constraints.maxHeight *
+                                        GapDimension.h0_5,
+                                    width: constraints.maxWidth *
+                                        GapDimension.w0_6,
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: <Widget>[
                                         const Medium24px(text: "BookyZ"),
                                         IconButton(
-                                          icon: Icon(Icons.edit),
+                                          icon: const Icon(Icons.edit),
                                           onPressed: () {},
                                         ),
                                       ],
                                     ),
                                   ),
                                   SizedBox(
-                                    height: constraints.maxHeight * GapDimension.h0_5,
-                                    width: constraints.maxWidth * GapDimension.w0_6,
+                                    height: constraints.maxHeight *
+                                        GapDimension.h0_5,
+                                    width: constraints.maxWidth *
+                                        GapDimension.w0_6,
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
