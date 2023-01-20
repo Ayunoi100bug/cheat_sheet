@@ -50,6 +50,7 @@ dependencies:
   firebase_storage: ^11.0.10
   unicons: any
   blinking_text: ^1.0.2
+  dotted_border: ^2.0.0+3
 
 dev_dependencies:
   percent_indicator: ^4.2.2
