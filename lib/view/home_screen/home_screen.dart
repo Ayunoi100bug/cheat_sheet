@@ -37,10 +37,10 @@ class _HomeScreenState extends State<HomeScreen>
           child: Column(
             children: [
               InkWell(
+                child: Text('Detail Sheet'),
                 onTap: () {
                   AutoRouter.of(context).push(DetailSheetRoute());
                 },
-                child: Text('Press Here'),
               ),
               Padding(padding: EdgeInsets.symmetric(vertical: 8)),
               SizedBox(
