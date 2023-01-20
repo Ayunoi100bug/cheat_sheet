@@ -8,7 +8,7 @@ class ThreeStar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: 6,
+      itemCount: 1,
       shrinkWrap: true,
       itemBuilder: (context, index) {
         return Review(userRating: 5);
