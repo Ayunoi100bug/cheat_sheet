@@ -10,8 +10,6 @@ class ReadSheet extends StatefulWidget {
 class _ReadSheetState extends State<ReadSheet> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(child: Text('Read Sheet')),
-    );
+    return Container();
   }
 }
