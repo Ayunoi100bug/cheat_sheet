@@ -12,7 +12,7 @@ class Popup {
       margin: EdgeInsets.all(8),
       icon: icon,
       shouldIconPulse: false,
-      messageText: Regular12px(
+      messageText: Regular14px(
         text: message,
         color: AppColors.white,
       ),
