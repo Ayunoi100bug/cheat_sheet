@@ -3,7 +3,6 @@ import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/components/form_field.dart';
 import 'package:cheat_sheet/res/typo.dart';
-import 'package:cheat_sheet/view/profile_page/my_sheet.dart';
 import 'package:cheat_sheet/view_model/create_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -39,7 +38,6 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   CreateCollection myCollection = CreateCollection();
   SheetType? _sheetType = SheetType.free;
-  CollectionReference sheet = FirebaseFirestore.instance.collection('sheet');
 
   @override
   Widget build(BuildContext context) {
