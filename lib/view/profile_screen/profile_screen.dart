@@ -41,145 +41,178 @@ class _ProfileScreenState extends State<ProfileScreen>
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-      stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        if (!snapshot.hasData) {
-          return const Center(child: CircularProgressIndicator(),);
-        } else {
-            Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-            return Scaffold(
-              body: SafeArea(
-                child: DefaultTabController(
-                  length: 2,
-                  child: NestedScrollView(
-                    scrollDirection: Axis.vertical,
-                    headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                      SliverToBoxAdapter(
-                        child: Column(
-                          children: [
-                            Container(
-                              width: double.infinity,
-                              height: screenWidth < 480
-                                  ? screenHeight * GapDimension.h0_18
-                                  : screenHeight * GapDimension.h0_36,
-                              child: LayoutBuilder(
-                                builder: (context, constraints) {
-                                  return Row(
-                                    children: <Widget>[
-                                      Container(
-                                        width: constraints.maxWidth *
-                                            GapDimension.w0_4,
-                                        height: double.infinity,
-                                        child: Padding(
-                                          padding: EdgeInsets.all(
-                                              constraints.maxHeight *
-                                                  GapDimension.h0_12),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: AssetImage(data['profileImage']),
-                                                // fit: BoxFit.fill,
+  return StreamBuilder(
+      stream: _auth.authStateChanges(),
+      builder: (context, AsyncSnapshot<User?> snapshot) {
+        if (snapshot.hasData) {
+          return StreamBuilder<DocumentSnapshot>(
+              stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<DocumentSnapshot> snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(
+                    child: Text("This is login, but data is not load"),
+                  );
+                } else {
+                  Map<String, dynamic> data =
+                      snapshot.data!.data() as Map<String, dynamic>;
+                  return Scaffold(
+                    body: SafeArea(
+                      child: DefaultTabController(
+                        length: 2,
+                        child: NestedScrollView(
+                          scrollDirection: Axis.vertical,
+                          headerSliverBuilder:
+                              (context, innerBoxIsScrolled) => [
+                            SliverToBoxAdapter(
+                              child: Column(
+                                children: [
+                                  Container(
+                                    width: double.infinity,
+                                    height: screenWidth < 480
+                                        ? screenHeight * GapDimension.h0_18
+                                        : screenHeight * GapDimension.h0_36,
+                                    child: LayoutBuilder(
+                                      builder: (context, constraints) {
+                                        return Row(
+                                          children: <Widget>[
+                                            Container(
+                                              width: constraints.maxWidth *
+                                                  GapDimension.w0_4,
+                                              height: double.infinity,
+                                              child: Padding(
+                                                padding: EdgeInsets.all(
+                                                    constraints.maxHeight *
+                                                        GapDimension.h0_12),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                      image: AssetImage(data[
+                                                          'profileImage']),
+                                                      // fit: BoxFit.fill,
+                                                    ),
+                                                    border: Border.all(
+                                                        color: AppColors
+                                                            .black800,
+                                                        width: 2.0),
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                ),
                                               ),
-                                              border: Border.all(
-                                                  color: AppColors.black800,
-                                                  width: 2.0),
-                                              shape: BoxShape.circle,
                                             ),
-                                          ),
-                                        ),
-                                      ),
-                                      Column(
-                                        children: <Widget>[
-                                          SizedBox(
-                                            height: constraints.maxHeight *
-                                                GapDimension.h0_5,
-                                            width: constraints.maxWidth *
-                                                GapDimension.w0_6,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                            Column(
                                               children: <Widget>[
-                                                Medium24px(
-                                                  // text: _auth.currentUser!.displayName.toString()),
-                                                  text: data['username']),
-                                                IconButton(
-                                                  icon: Icon(Icons.edit),
-                                                  onPressed: () {},
+                                                SizedBox(
+                                                  height:
+                                                      constraints.maxHeight *
+                                                          GapDimension.h0_5,
+                                                  width:
+                                                      constraints.maxWidth *
+                                                          GapDimension.w0_6,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: <Widget>[
+                                                      Medium24px(
+                                                          text: data[
+                                                              'username']),
+                                                      IconButton(
+                                                        icon:
+                                                            Icon(Icons.edit),
+                                                        onPressed: () {},
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height:
+                                                      constraints.maxHeight *
+                                                          GapDimension.h0_5,
+                                                  width:
+                                                      constraints.maxWidth *
+                                                          GapDimension.w0_6,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      Column(
+                                                        children: [
+                                                          Medium20px(
+                                                              text: data[
+                                                                      'follower']
+                                                                  .toString()),
+                                                          const Regular14px(
+                                                              text:
+                                                                  "ผู้ติดตาม"),
+                                                        ],
+                                                      ),
+                                                      Column(
+                                                        children: [
+                                                          Medium20px(
+                                                              text: data[
+                                                                      'following']
+                                                                  .toString()),
+                                                          const Regular14px(
+                                                              text:
+                                                                  "กำลังติตดาม"),
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
                                               ],
                                             ),
-                                          ),
-                                          SizedBox(
-                                            height: constraints.maxHeight *
-                                                GapDimension.h0_5,
-                                            width: constraints.maxWidth *
-                                                GapDimension.w0_6,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Column(
-                                                  children: [
-                                                    Medium20px(text: data['follower']),
-                                                    const Regular14px(
-                                                        text: "ผู้ติดตาม"),
-                                                  ],
-                                                ),
-                                                Column(
-                                                  children: [
-                                                    Medium20px(text: data['following']),
-                                                    const Regular14px(
-                                                        text: "กำลังติตดาม"),
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ],
+                                          ],
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  TabBar(
+                                    controller: tabController,
+                                    labelStyle: const TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: 'BaiJamjuree',
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    labelColor: AppColors.primary700,
+                                    indicatorWeight: 1,
+                                    indicatorColor: AppColors.primary700,
+                                    unselectedLabelColor: AppColors.black400,
+                                    tabs: const [
+                                      Tab(
+                                        text: 'ชีทของฉัน',
+                                      ),
+                                      Tab(
+                                        text: 'ชีทที่ซื้อ',
                                       ),
                                     ],
-                                  );
-                                },
+                                  ),
+                                ],
                               ),
-                            ),
-                            TabBar(
-                              controller: tabController,
-                              labelStyle: const TextStyle(
-                                fontSize: 16,
-                                fontFamily: 'BaiJamjuree',
-                                fontWeight: FontWeight.w500,
-                              ),
-                              labelColor: AppColors.primary700,
-                              indicatorWeight: 1,
-                              indicatorColor: AppColors.primary700,
-                              unselectedLabelColor: AppColors.black400,
-                              tabs: const [
-                                Tab(
-                                  text: 'ชีทของฉัน',
-                                ),
-                                Tab(
-                                  text: 'ชีทที่ซื้อ',
-                                ),
-                              ],
                             ),
                           ],
+                          body: TabBarView(
+                            controller: tabController,
+                            children: const [
+                              MySheet(),
+                              BuySheet(),
+                            ],
+                          ),
                         ),
                       ),
-                    ],
-                    body: TabBarView(
-                      controller: tabController,
-                      children: const [
-                        MySheet(),
-                        BuySheet(),
-                      ],
                     ),
-                  ),
-                ),
-              ),
-            );
+                  );
+                }
+              });
+          } else {
+          return const Center(
+            child: Text("This is page when not login"),
+          );
+
           }
-        });
+      });
   }
 
   @override

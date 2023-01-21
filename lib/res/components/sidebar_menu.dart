@@ -99,7 +99,7 @@ class _SidebarMenuState extends State<SidebarMenu> {
                     ListTile(
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
+                        children: const <Widget>[
                           Icon(
                             Icons.logout_outlined,
                             color: AppColors.error500,
@@ -111,8 +111,8 @@ class _SidebarMenuState extends State<SidebarMenu> {
                         ],
                       ),
                       onTap: () {
-                        myAuth.sighOut();
-                        // AutoRouter.of(context).push(LoginRoute());
+                        myAuth.logOut();
+                        // AutoRouter.of(context).push(MainScreen());
                       },
                     ),
                   ],
@@ -180,7 +180,7 @@ class _SidebarMenuState extends State<SidebarMenu> {
                     ListTile(
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
+                        children: const <Widget>[
                           Medium20px(
                             text: 'เข้าสู่ระบบ',
                             color: AppColors.tertiary600,
