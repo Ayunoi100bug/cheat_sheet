@@ -1,15 +1,14 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/gap_dimension.dart';
 import 'package:cheat_sheet/res/typo.dart';
-import 'package:cheat_sheet/view/profile_page/my_sheet.dart';
-import 'package:cheat_sheet/view/profile_page/buy_sheet.dart';
+
+import 'package:cheat_sheet/view/profile_screen/profile_sub_page/my_sheet.dart';
+import 'package:cheat_sheet/view/profile_screen/profile_sub_page/buy_sheet.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -19,7 +18,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen>
-  with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   late TabController tabController;
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
@@ -210,7 +209,6 @@ class _ProfileScreenState extends State<ProfileScreen>
           return const Center(
             child: Text("This is page when not login"),
           );
-
           }
       });
   }
