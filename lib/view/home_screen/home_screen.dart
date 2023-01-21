@@ -1,4 +1,6 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cheat_sheet/res/button.dart';
+import 'package:cheat_sheet/res/components/popup.dart';
 import 'package:cheat_sheet/res/components/sheet.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/view/home_screen/detail_sheet.dart';
@@ -36,6 +38,16 @@ class _HomeScreenState extends State<HomeScreen>
           padding: EdgeInsets.all(screenWidth * GapDimension.w0_032),
           child: Column(
             children: [
+              PrimaryButton(
+                  text: "Top snackBar",
+                  onPressed: () => Popup.showSnackBar(
+                      context,
+                      false,
+                      Icon(
+                        Icons.celebration_outlined,
+                        color: AppColors.white,
+                      ),
+                      'ความสำเร็จเสร็จสิ้น "เช็คอินครบ 5 วัน"')),
               InkWell(
                 child: Text('Detail Sheet'),
                 onTap: () {
