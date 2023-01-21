@@ -1,15 +1,14 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/gap_dimension.dart';
 import 'package:cheat_sheet/res/typo.dart';
-import 'package:cheat_sheet/view/profile_page/my_sheet.dart';
-import 'package:cheat_sheet/view/profile_page/buy_sheet.dart';
+
+import 'package:cheat_sheet/view/profile_screen/profile_sub_page/my_sheet.dart';
+import 'package:cheat_sheet/view/profile_screen/profile_sub_page/buy_sheet.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -19,7 +18,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen>
-  with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   late TabController tabController;
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
@@ -42,12 +41,19 @@ class _ProfileScreenState extends State<ProfileScreen>
     double screenHeight = MediaQuery.of(context).size.height;
 
     return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-      stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        if (!snapshot.hasData) {
-          return const Center(child: CircularProgressIndicator(),);
-        } else {
-            Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+        stream: _firestore
+            .collection("users")
+            .doc(_auth.currentUser?.uid)
+            .snapshots(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            Map<String, dynamic> data =
+                snapshot.data!.data() as Map<String, dynamic>;
             return Scaffold(
               body: SafeArea(
                 child: DefaultTabController(
@@ -78,7 +84,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                           child: Container(
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
-                                                image: AssetImage(data['profileImage']),
+                                                image: AssetImage(
+                                                    data['profileImage']),
                                                 // fit: BoxFit.fill,
                                               ),
                                               border: Border.all(
@@ -101,8 +108,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                   MainAxisAlignment.center,
                                               children: <Widget>[
                                                 Medium24px(
-                                                  // text: _auth.currentUser!.displayName.toString()),
-                                                  text: data['username']),
+                                                    // text: _auth.currentUser!.displayName.toString()),
+                                                    text: data['username']),
                                                 IconButton(
                                                   icon: Icon(Icons.edit),
                                                   onPressed: () {},
@@ -120,16 +127,20 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                   MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 Column(
-                                                  children: const [
-                                                    Medium20px(text: "120"),
-                                                    Regular14px(
+                                                  children: [
+                                                    Medium20px(
+                                                        text: data['follower']
+                                                            .toString()),
+                                                    const Regular14px(
                                                         text: "ผู้ติดตาม"),
                                                   ],
                                                 ),
                                                 Column(
-                                                  children: const [
-                                                    Medium20px(text: "120"),
-                                                    Regular14px(
+                                                  children: [
+                                                    Medium20px(
+                                                        text: data['following']
+                                                            .toString()),
+                                                    const Regular14px(
                                                         text: "กำลังติตดาม"),
                                                   ],
                                                 )

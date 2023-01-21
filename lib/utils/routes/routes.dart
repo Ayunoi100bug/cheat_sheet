@@ -2,6 +2,7 @@ import 'package:auto_route/annotations.dart';
 import 'package:auto_route/empty_router_widgets.dart';
 import 'package:cheat_sheet/view/create_sheet_screen/create_detail_sheet.dart';
 import 'package:cheat_sheet/view/create_sheet_screen/create_sheet_screen.dart';
+import 'package:cheat_sheet/view/home_screen/ask_question.dart';
 import 'package:cheat_sheet/view/home_screen/create_review.dart';
 import 'package:cheat_sheet/view/home_screen/detail_sheet.dart';
 import 'package:cheat_sheet/view/home_screen/read_sheet.dart';
@@ -34,7 +35,14 @@ import 'package:cheat_sheet/view/sheet_list_screen/sheet_list_screen.dart';
                 AutoRoute(
                   path: 'read_sheet',
                   name: 'ReadSheetRoute',
-                  page: ReadSheet,
+                  page: EmptyRouterPage,
+                  children: [
+                    AutoRoute(path: '', page: ReadSheet),
+                    AutoRoute(
+                        path: 'ask_question',
+                        name: 'AskQuestionRoute',
+                        page: AskQuestion),
+                  ],
                 ),
                 AutoRoute(
                   path: 'review_sheet',
