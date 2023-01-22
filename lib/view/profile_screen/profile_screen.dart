@@ -1,5 +1,10 @@
+// ignore_for_file: avoid_print
+
 import 'package:auto_route/auto_route.dart';
+import 'package:cheat_sheet/model/user.dart';
+import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/colors.dart';
+import 'package:cheat_sheet/res/components/form_field.dart';
 import 'package:cheat_sheet/res/gap_dimension.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
@@ -11,8 +16,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
-
-const String userId = 'fakeIdRorPeteMaGae';
+import 'package:flutter/rendering.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -23,9 +29,11 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen>
     with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late TabController tabController;
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
+  Users users = Users(username: '', password: '', email: '', uid: '');
 
   @override
   void initState() {
@@ -43,6 +51,10 @@ class _ProfileScreenState extends State<ProfileScreen>
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    var isLandScape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+    String newUsername;
 
     return StreamBuilder(
         stream: _auth.authStateChanges(),
@@ -127,11 +139,94 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                           icon:
                                                               Icon(Icons.edit),
                                                           onPressed: () {
-                                                            AutoRouter.of(
-                                                                    context)
-                                                                .push(EditProfileRoute(
-                                                                    userId:
-                                                                        userId));
+                                                            showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return AlertDialog(
+                                                                    content:
+                                                                        Container(
+                                                                      width: double
+                                                                          .infinity,
+                                                                      height:
+                                                                          screenHeight *
+                                                                              0.4,
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .center,
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                        children: [
+                                                                          Container(
+                                                                            height:
+                                                                                screenHeight * 0.2,
+                                                                            decoration:
+                                                                                BoxDecoration(
+                                                                              image: DecorationImage(
+                                                                                image: AssetImage(data['profileImage']),
+                                                                                // fit: BoxFit.fill,
+                                                                              ),
+                                                                              shape: BoxShape.circle,
+                                                                            ),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                screenHeight * 0.012,
+                                                                          ),
+                                                                          Container(
+                                                                            height:
+                                                                                screenHeight * 0.05,
+                                                                            child:
+                                                                                InkWell(
+                                                                              child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                                                                                Icon(FontAwesomeIcons.camera),
+                                                                                SizedBox(
+                                                                                  width: screenWidth * 0.012,
+                                                                                ),
+                                                                                Regular12px(text: 'Photo')
+                                                                              ]),
+                                                                              onTap: () {},
+                                                                            ),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                screenHeight * 0.012,
+                                                                          ),
+                                                                          Form(
+                                                                            key:
+                                                                                _formKey,
+                                                                            child: MyTextFormField(
+                                                                                hintText: data['username'],
+                                                                                validator: RequiredValidator(errorText: 'Please enter new username.'),
+                                                                                onSaved: (value) {
+                                                                                  users.username = value!;
+                                                                                }),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                screenHeight * 0.012,
+                                                                          ),
+                                                                          Align(
+                                                                            alignment:
+                                                                                Alignment.centerRight,
+                                                                            child: PrimaryButton(
+                                                                                text: 'เสร็จสิ้น',
+                                                                                onPressed: () {
+                                                                                  _formKey.currentState!.save();
+                                                                                  _firestore.collection('users').doc(data['uid']).update({'username': users.username}).then((value) => print("User Updated")).catchError((error) => print("Failed to update user: $error"));
+                                                                                  _formKey.currentState!.reset();
+                                                                                  AutoRouter.of(context).pop();
+                                                                                }),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                });
                                                           },
                                                         ),
                                                       ],

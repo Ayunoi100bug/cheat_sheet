@@ -50,6 +50,7 @@ dependencies:
   firebase_storage: ^11.0.10
   unicons: any
   blinking_text: ^1.0.2
+  file_picker: ^5.2.5
 
   flushbar: ^1.10.4
 
