@@ -27,35 +27,23 @@ import 'package:cheat_sheet/view/sheet_list_screen/sheet_list_screen.dart';
           children: [
             AutoRoute(path: '', page: HomeScreen),
             AutoRoute(
-              path: 'detail_sheet',
-              name: 'DetailSheetRoute',
-              page: EmptyRouterPage,
-              children: [
-                AutoRoute(path: '', page: DetailSheet),
-                AutoRoute(
-                  path: 'read_sheet',
-                  name: 'ReadSheetRoute',
-                  page: EmptyRouterPage,
-                  children: [
-                    AutoRoute(path: '', page: ReadSheet),
-                    AutoRoute(
-                        path: 'ask_question',
-                        name: 'AskQuestionRoute',
-                        page: AskQuestion),
-                  ],
-                ),
-                AutoRoute(
-                  path: 'review_sheet',
-                  name: 'ReviewSheetRoute',
-                  page: ReviewSheet,
-                ),
-                AutoRoute(
-                  path: 'create_review',
-                  name: 'CreateReviewRoute',
-                  page: CreateReview,
-                ),
-              ],
-            ),
+                path: ':sheetId', name: 'DetailSheetRoute', page: DetailSheet),
+            AutoRoute(
+                path: ':sheetId/read_sheet',
+                name: 'ReadSheetRoute',
+                page: ReadSheet),
+            AutoRoute(
+                path: ':sheetId/read_sheet/ask_question',
+                name: 'AskQuestionRoute',
+                page: AskQuestion),
+            AutoRoute(
+                path: ':sheetId/review_sheet',
+                name: 'ReviewSheetRoute',
+                page: ReviewSheet),
+            AutoRoute(
+                path: ':sheetId/create_review',
+                name: 'CreateReviewRoute',
+                page: CreateReview),
           ]),
       AutoRoute(
           path: 'activity',

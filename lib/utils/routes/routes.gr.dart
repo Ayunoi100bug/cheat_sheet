@@ -18,12 +18,12 @@ import 'package:flutter/material.dart' as _i17;
 import '../../view/activity_screen/activity_screen.dart' as _i11;
 import '../../view/create_sheet_screen/create_detail_sheet.dart' as _i13;
 import '../../view/create_sheet_screen/create_sheet_screen.dart' as _i12;
-import '../../view/home_screen/ask_question.dart' as _i10;
-import '../../view/home_screen/create_review.dart' as _i8;
+import '../../view/home_screen/ask_question.dart' as _i8;
+import '../../view/home_screen/create_review.dart' as _i10;
 import '../../view/home_screen/detail_sheet.dart' as _i6;
 import '../../view/home_screen/home_screen.dart' as _i5;
-import '../../view/home_screen/read_sheet.dart' as _i9;
-import '../../view/home_screen/review_sheet.dart' as _i7;
+import '../../view/home_screen/read_sheet.dart' as _i7;
+import '../../view/home_screen/review_sheet.dart' as _i9;
 import '../../view/login.dart' as _i2;
 import '../../view/main_screen.dart' as _i1;
 import '../../view/profile_screen/profile_screen.dart' as _i15;
@@ -91,45 +91,68 @@ class AppRouter extends _i16.RootStackRouter {
       );
     },
     DetailSheetRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<DetailSheetRouteArgs>(
+          orElse: () =>
+              DetailSheetRouteArgs(sheetId: pathParams.getInt('sheetId')));
       return _i16.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i4.EmptyRouterPage(),
-      );
-    },
-    DetailSheet.name: (routeData) {
-      return _i16.MaterialPageX<dynamic>(
-        routeData: routeData,
-        child: const _i6.DetailSheet(),
+        child: _i6.DetailSheet(
+          key: args.key,
+          sheetId: args.sheetId,
+        ),
       );
     },
     ReadSheetRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<ReadSheetRouteArgs>(
+          orElse: () =>
+              ReadSheetRouteArgs(sheetId: pathParams.getInt('sheetId')));
       return _i16.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i4.EmptyRouterPage(),
-      );
-    },
-    ReviewSheetRoute.name: (routeData) {
-      return _i16.MaterialPageX<dynamic>(
-        routeData: routeData,
-        child: const _i7.ReviewSheet(),
-      );
-    },
-    CreateReviewRoute.name: (routeData) {
-      return _i16.MaterialPageX<dynamic>(
-        routeData: routeData,
-        child: const _i8.CreateReview(),
-      );
-    },
-    ReadSheet.name: (routeData) {
-      return _i16.MaterialPageX<dynamic>(
-        routeData: routeData,
-        child: const _i9.ReadSheet(),
+        child: _i7.ReadSheet(
+          key: args.key,
+          sheetId: args.sheetId,
+        ),
       );
     },
     AskQuestionRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<AskQuestionRouteArgs>(
+          orElse: () =>
+              AskQuestionRouteArgs(sheetId: pathParams.getInt('sheetId')));
       return _i16.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i10.AskQuestion(),
+        child: _i8.AskQuestion(
+          key: args.key,
+          sheetId: args.sheetId,
+        ),
+      );
+    },
+    ReviewSheetRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<ReviewSheetRouteArgs>(
+          orElse: () =>
+              ReviewSheetRouteArgs(sheetId: pathParams.get('sheetId')));
+      return _i16.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _i9.ReviewSheet(
+          key: args.key,
+          sheetId: args.sheetId,
+        ),
+      );
+    },
+    CreateReviewRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<CreateReviewRouteArgs>(
+          orElse: () =>
+              CreateReviewRouteArgs(sheetId: pathParams.getInt('sheetId')));
+      return _i16.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _i10.CreateReview(
+          key: args.key,
+          sheetId: args.sheetId,
+        ),
       );
     },
     ActivityScreen.name: (routeData) {
@@ -182,42 +205,28 @@ class AppRouter extends _i16.RootStackRouter {
                 ),
                 _i16.RouteConfig(
                   DetailSheetRoute.name,
-                  path: 'detail_sheet',
+                  path: ':sheetId',
                   parent: HomeRoute.name,
-                  children: [
-                    _i16.RouteConfig(
-                      DetailSheet.name,
-                      path: '',
-                      parent: DetailSheetRoute.name,
-                    ),
-                    _i16.RouteConfig(
-                      ReadSheetRoute.name,
-                      path: 'read_sheet',
-                      parent: DetailSheetRoute.name,
-                      children: [
-                        _i16.RouteConfig(
-                          ReadSheet.name,
-                          path: '',
-                          parent: ReadSheetRoute.name,
-                        ),
-                        _i16.RouteConfig(
-                          AskQuestionRoute.name,
-                          path: 'ask_question',
-                          parent: ReadSheetRoute.name,
-                        ),
-                      ],
-                    ),
-                    _i16.RouteConfig(
-                      ReviewSheetRoute.name,
-                      path: 'review_sheet',
-                      parent: DetailSheetRoute.name,
-                    ),
-                    _i16.RouteConfig(
-                      CreateReviewRoute.name,
-                      path: 'create_review',
-                      parent: DetailSheetRoute.name,
-                    ),
-                  ],
+                ),
+                _i16.RouteConfig(
+                  ReadSheetRoute.name,
+                  path: ':sheetId/read_sheet',
+                  parent: HomeRoute.name,
+                ),
+                _i16.RouteConfig(
+                  AskQuestionRoute.name,
+                  path: ':sheetId/read_sheet/ask_question',
+                  parent: HomeRoute.name,
+                ),
+                _i16.RouteConfig(
+                  ReviewSheetRoute.name,
+                  path: ':sheetId/review_sheet',
+                  parent: HomeRoute.name,
+                ),
+                _i16.RouteConfig(
+                  CreateReviewRoute.name,
+                  path: ':sheetId/create_review',
+                  parent: HomeRoute.name,
                 ),
               ],
             ),
@@ -402,89 +411,178 @@ class HomeScreen extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i4.EmptyRouterPage]
-class DetailSheetRoute extends _i16.PageRouteInfo<void> {
-  const DetailSheetRoute({List<_i16.PageRouteInfo>? children})
-      : super(
+/// [_i6.DetailSheet]
+class DetailSheetRoute extends _i16.PageRouteInfo<DetailSheetRouteArgs> {
+  DetailSheetRoute({
+    _i17.Key? key,
+    required int sheetId,
+  }) : super(
           DetailSheetRoute.name,
-          path: 'detail_sheet',
-          initialChildren: children,
+          path: ':sheetId',
+          args: DetailSheetRouteArgs(
+            key: key,
+            sheetId: sheetId,
+          ),
+          rawPathParams: {'sheetId': sheetId},
         );
 
   static const String name = 'DetailSheetRoute';
 }
 
-/// generated route for
-/// [_i6.DetailSheet]
-class DetailSheet extends _i16.PageRouteInfo<void> {
-  const DetailSheet()
-      : super(
-          DetailSheet.name,
-          path: '',
-        );
+class DetailSheetRouteArgs {
+  const DetailSheetRouteArgs({
+    this.key,
+    required this.sheetId,
+  });
 
-  static const String name = 'DetailSheet';
+  final _i17.Key? key;
+
+  final int sheetId;
+
+  @override
+  String toString() {
+    return 'DetailSheetRouteArgs{key: $key, sheetId: $sheetId}';
+  }
 }
 
 /// generated route for
-/// [_i4.EmptyRouterPage]
-class ReadSheetRoute extends _i16.PageRouteInfo<void> {
-  const ReadSheetRoute({List<_i16.PageRouteInfo>? children})
-      : super(
+/// [_i7.ReadSheet]
+class ReadSheetRoute extends _i16.PageRouteInfo<ReadSheetRouteArgs> {
+  ReadSheetRoute({
+    _i17.Key? key,
+    required int sheetId,
+  }) : super(
           ReadSheetRoute.name,
-          path: 'read_sheet',
-          initialChildren: children,
+          path: ':sheetId/read_sheet',
+          args: ReadSheetRouteArgs(
+            key: key,
+            sheetId: sheetId,
+          ),
+          rawPathParams: {'sheetId': sheetId},
         );
 
   static const String name = 'ReadSheetRoute';
 }
 
+class ReadSheetRouteArgs {
+  const ReadSheetRouteArgs({
+    this.key,
+    required this.sheetId,
+  });
+
+  final _i17.Key? key;
+
+  final int sheetId;
+
+  @override
+  String toString() {
+    return 'ReadSheetRouteArgs{key: $key, sheetId: $sheetId}';
+  }
+}
+
 /// generated route for
-/// [_i7.ReviewSheet]
-class ReviewSheetRoute extends _i16.PageRouteInfo<void> {
-  const ReviewSheetRoute()
-      : super(
+/// [_i8.AskQuestion]
+class AskQuestionRoute extends _i16.PageRouteInfo<AskQuestionRouteArgs> {
+  AskQuestionRoute({
+    _i17.Key? key,
+    required int sheetId,
+  }) : super(
+          AskQuestionRoute.name,
+          path: ':sheetId/read_sheet/ask_question',
+          args: AskQuestionRouteArgs(
+            key: key,
+            sheetId: sheetId,
+          ),
+          rawPathParams: {'sheetId': sheetId},
+        );
+
+  static const String name = 'AskQuestionRoute';
+}
+
+class AskQuestionRouteArgs {
+  const AskQuestionRouteArgs({
+    this.key,
+    required this.sheetId,
+  });
+
+  final _i17.Key? key;
+
+  final int sheetId;
+
+  @override
+  String toString() {
+    return 'AskQuestionRouteArgs{key: $key, sheetId: $sheetId}';
+  }
+}
+
+/// generated route for
+/// [_i9.ReviewSheet]
+class ReviewSheetRoute extends _i16.PageRouteInfo<ReviewSheetRouteArgs> {
+  ReviewSheetRoute({
+    _i17.Key? key,
+    dynamic sheetId,
+  }) : super(
           ReviewSheetRoute.name,
-          path: 'review_sheet',
+          path: ':sheetId/review_sheet',
+          args: ReviewSheetRouteArgs(
+            key: key,
+            sheetId: sheetId,
+          ),
+          rawPathParams: {'sheetId': sheetId},
         );
 
   static const String name = 'ReviewSheetRoute';
 }
 
+class ReviewSheetRouteArgs {
+  const ReviewSheetRouteArgs({
+    this.key,
+    this.sheetId,
+  });
+
+  final _i17.Key? key;
+
+  final dynamic sheetId;
+
+  @override
+  String toString() {
+    return 'ReviewSheetRouteArgs{key: $key, sheetId: $sheetId}';
+  }
+}
+
 /// generated route for
-/// [_i8.CreateReview]
-class CreateReviewRoute extends _i16.PageRouteInfo<void> {
-  const CreateReviewRoute()
-      : super(
+/// [_i10.CreateReview]
+class CreateReviewRoute extends _i16.PageRouteInfo<CreateReviewRouteArgs> {
+  CreateReviewRoute({
+    _i17.Key? key,
+    required int sheetId,
+  }) : super(
           CreateReviewRoute.name,
-          path: 'create_review',
+          path: ':sheetId/create_review',
+          args: CreateReviewRouteArgs(
+            key: key,
+            sheetId: sheetId,
+          ),
+          rawPathParams: {'sheetId': sheetId},
         );
 
   static const String name = 'CreateReviewRoute';
 }
 
-/// generated route for
-/// [_i9.ReadSheet]
-class ReadSheet extends _i16.PageRouteInfo<void> {
-  const ReadSheet()
-      : super(
-          ReadSheet.name,
-          path: '',
-        );
+class CreateReviewRouteArgs {
+  const CreateReviewRouteArgs({
+    this.key,
+    required this.sheetId,
+  });
 
-  static const String name = 'ReadSheet';
-}
+  final _i17.Key? key;
 
-/// generated route for
-/// [_i10.AskQuestion]
-class AskQuestionRoute extends _i16.PageRouteInfo<void> {
-  const AskQuestionRoute()
-      : super(
-          AskQuestionRoute.name,
-          path: 'ask_question',
-        );
+  final int sheetId;
 
-  static const String name = 'AskQuestionRoute';
+  @override
+  String toString() {
+    return 'CreateReviewRouteArgs{key: $key, sheetId: $sheetId}';
+  }
 }
 
 /// generated route for

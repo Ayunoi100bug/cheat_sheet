@@ -3,7 +3,8 @@ import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:flutter/material.dart';
 
 class ReadSheet extends StatefulWidget {
-  const ReadSheet({super.key});
+  final int sheetId;
+  const ReadSheet({super.key, @PathParam() required this.sheetId});
 
   @override
   State<ReadSheet> createState() => _ReadSheetState();
@@ -19,7 +20,8 @@ class _ReadSheetState extends State<ReadSheet> {
           InkWell(
             child: Text('Ask Question'),
             onTap: () {
-              AutoRouter.of(context).push(AskQuestionRoute());
+              AutoRouter.of(context)
+                  .push(AskQuestionRoute(sheetId: widget.sheetId));
             },
           )
         ],

@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/colors.dart';
 
@@ -7,7 +8,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../res/components/review.dart';
 
 class ReviewSheet extends StatefulWidget {
-  const ReviewSheet({super.key});
+  final sheetId;
+  const ReviewSheet({super.key, @PathParam() this.sheetId});
 
   @override
   State<ReviewSheet> createState() => _ReviewSheetState();
