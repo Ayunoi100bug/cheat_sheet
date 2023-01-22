@@ -7,12 +7,8 @@ class CreateCollection {
   final User? firebaseUser = FirebaseAuth.instance.currentUser;
   final FirebaseFirestore _firestoreDb = FirebaseFirestore.instance;
   Users myUser = Users(email: '', password: '', username: '', uid: '');
-  Sheets mySheet = Sheets(
-      sheetName: '',
-      detailSheet: '',
-      sid: '',
-      sheetTypeFree: true,
-      authorId: '');
+  Sheets mySheet =
+      Sheets(sheetName: '', detailSheet: '', sheetTypeFree: true, authorId: '');
 
   Future<void> createUserCollection(
       String argUsername, String argEmail, String argUid) async {
@@ -27,11 +23,10 @@ class CreateCollection {
   }
 
   Future<void> createSheetCollection(String argSheetName, String argDetailSheet,
-      String argSid, bool argSheetType, int? argPrice, String argUid) async {
-    await _firestoreDb.collection("sheet").doc(argSid).set({
+      bool argSheetType, int? argPrice, String argUid) async {
+    await _firestoreDb.collection("sheet").doc(mySheet.sid).set({
       'sheetName': argSheetName.toString().trim(),
       'detailSheet': argDetailSheet.toString().trim(),
-      'sid': argSid.toString().trim(),
       'sheetTypeFree': argSheetType,
       'price': argPrice,
       'uid': argUid,

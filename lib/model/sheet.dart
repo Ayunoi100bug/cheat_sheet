@@ -1,7 +1,11 @@
+import 'package:uuid/uuid.dart';
+
+const uuid = Uuid();
+
 class Sheets {
   String sheetName;
   String detailSheet;
-  String sid;
+  String sid = uuid.v1();
   bool sheetTypeFree;
   int? price;
   String authorId;
@@ -9,7 +13,6 @@ class Sheets {
   Sheets({
     required this.sheetName,
     required this.detailSheet,
-    required this.sid,
     required this.sheetTypeFree,
     this.price,
     required this.authorId,

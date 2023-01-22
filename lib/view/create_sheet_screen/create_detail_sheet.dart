@@ -31,7 +31,6 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
   Sheets mySheet = Sheets(
       sheetName: '',
       detailSheet: '',
-      sid: '',
       sheetTypeFree: true,
       price: null,
       authorId: '');
@@ -273,15 +272,11 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                               text: 'เสร็จสิ้น',
                               onPressed: () async {
                                 _formKey.currentState!.save();
-                                const uuid = Uuid();
-                                var sid = uuid.v1();
-                                mySheet.sid = sid;
                                 try {
                                   myCollection
                                       .createSheetCollection(
                                     mySheet.sheetName,
                                     mySheet.detailSheet,
-                                    mySheet.sid,
                                     mySheet.sheetTypeFree,
                                     mySheet.price,
                                     FirebaseAuth.instance.currentUser!.uid,
