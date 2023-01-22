@@ -48,12 +48,6 @@ class _HomeScreenState extends State<HomeScreen>
                         color: AppColors.white,
                       ),
                       'ความสำเร็จเสร็จสิ้น "เช็คอินครบ 5 วัน"')),
-              InkWell(
-                child: Text('Detail Sheet'),
-                onTap: () {
-                  AutoRouter.of(context).push(DetailSheetRoute(sheetId: 5));
-                },
-              ),
               Padding(padding: EdgeInsets.symmetric(vertical: 8)),
               SizedBox(
                 width: double.infinity,
@@ -108,6 +102,7 @@ class _HomeScreenState extends State<HomeScreen>
                     title: 'สถิติพื้นฐานooooooooooo',
                     priceSheet: 10,
                     username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
+                    sheetId: index + 1,
                   );
                 },
                 padding: EdgeInsets.only(bottom: 8),
