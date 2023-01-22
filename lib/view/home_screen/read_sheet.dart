@@ -16,7 +16,8 @@ class _ReadSheetState extends State<ReadSheet> {
     return Scaffold(
       body: Column(
         children: [
-          Text('Read Sheet'),
+          Text('This is Read Sheet Page of Sheet number ' +
+              widget.sheetId.toString()),
           InkWell(
             child: Text('Ask Question'),
             onTap: () {

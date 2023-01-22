@@ -158,6 +158,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                   title: 'สถิติพื้นฐานooooooooooo',
                   priceSheet: 0,
                   username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
+                  sheetId: index + 1,
                 );
               },
               padding: EdgeInsets.only(
@@ -211,6 +212,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                   title: 'สถิติพื้นฐานooooooooooo',
                   priceSheet: 0,
                   username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
+                  sheetId: index + 1,
                 );
               },
               padding: EdgeInsets.only(
