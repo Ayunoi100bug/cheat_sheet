@@ -4,12 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final User? _user = FirebaseAuth.instance.currentUser;
   Users myUser = Users(email: '', password: '', username: '', uid: '');
   CreateCollection myCollection = CreateCollection();
 
   Future<bool> isLogged() async {
-    if (_user != null) {
+    User? user = await _auth.currentUser;
+    if (user != null) {
       return true;
     } else {
       return false;
@@ -23,18 +23,17 @@ class AuthService {
     );
     User? user = result.user;
     user!.updateDisplayName(argUsername);
-    myCollection.createUserCollection(argUsername, argEmail, _auth.currentUser!.uid);
+    await myCollection.createUserCollection(argUsername, argEmail, _auth.currentUser!.uid);
   }
 
   Future<void> loginWithEmail(String argEmail, String argPassword) async {
     await _auth.signInWithEmailAndPassword(
-
       email: argEmail.toString().trim(),
       password: argPassword.toString().trim()
     );
   }
 
-  Future<void> sighOut() async {
+  Future logOut() async {
     await _auth.signOut();
   }
 }
