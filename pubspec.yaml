@@ -55,6 +55,7 @@ dependencies:
 
   dotted_border: ^2.0.0+3
   uuid: ^3.0.7
+  google_sign_in: ^5.4.3
 
 
 dev_dependencies:

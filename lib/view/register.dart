@@ -151,7 +151,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     if (_formKey.currentState!.validate()) {
                                       _formKey.currentState!.save();
                                       try {
-                                        myAuth.createUser(myUser.email, myUser.password, myUser.username)
+                                        myAuth.createUserWithEmail(myUser.email, myUser.password, myUser.username)
                                         .then((value) {
                                             _formKey.currentState!.reset();
                                             // debugPrint("Register Success");
@@ -200,7 +200,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                try {
+                                myAuth.loginWithGoogle()
+                                  .then((value) {
+                                    // debugPrint("Register Success!");
+                                    AutoRouter.of(context).pop();
+                                  });
+                                } on FirebaseAuthException catch (e) {
+                                  Fluttertoast.showToast(
+                                    msg: e.message.toString(),
+                                    gravity: ToastGravity.BOTTOM);
+                                }
+                              },
                               icon: const Icon(
                                 FontAwesomeIcons.google,
                                 color: Colors.red,

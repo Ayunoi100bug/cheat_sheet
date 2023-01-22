@@ -1,6 +1,7 @@
 import 'package:cheat_sheet/model/user.dart';
 import 'package:cheat_sheet/view_model/create_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -16,7 +17,7 @@ class AuthService {
     }
   }
 
-  Future<void> createUser(String argEmail, String argPassword, String argUsername) async {
+  Future<void> createUserWithEmail(String argEmail, String argPassword, String argUsername) async {
     UserCredential result =  await _auth.createUserWithEmailAndPassword(
       email: argEmail.toString().trim(),
       password: argPassword.toString().trim()
@@ -33,7 +34,19 @@ class AuthService {
     );
   }
 
+  Future<void> loginWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken
+    );
+    final User? user = (await _auth.signInWithCredential(credential)).user;
+    myCollection.createGoogleUserCollection(user);
+  }
+
   Future logOut() async {
+    await GoogleSignIn().signOut();
     await _auth.signOut();
   }
 }
