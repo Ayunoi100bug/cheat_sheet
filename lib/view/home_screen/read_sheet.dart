@@ -1,6 +1,9 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:flutter/material.dart';
+
+import '../../res/colors.dart';
 
 class ReadSheet extends StatefulWidget {
   final int sheetId;
@@ -13,6 +16,10 @@ class ReadSheet extends StatefulWidget {
 class _ReadSheetState extends State<ReadSheet> {
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+
     return Scaffold(
       body: Column(
         children: [

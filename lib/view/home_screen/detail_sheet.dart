@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:blinking_text/blinking_text.dart';
 import 'package:cheat_sheet/res/button.dart';
@@ -10,7 +8,6 @@ import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/view/home_screen/create_review.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:unicons/unicons.dart';
 
