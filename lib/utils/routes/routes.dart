@@ -11,6 +11,7 @@ import 'package:cheat_sheet/view/login.dart';
 import 'package:cheat_sheet/view/main_screen.dart';
 import 'package:cheat_sheet/view/home_screen/home_screen.dart';
 import 'package:cheat_sheet/view/activity_screen/activity_screen.dart';
+import 'package:cheat_sheet/view/profile_screen/edit_profile.dart';
 import 'package:cheat_sheet/view/profile_screen/profile_screen.dart';
 import 'package:cheat_sheet/view/register.dart';
 import 'package:cheat_sheet/view/sheet_list_screen/sheet_list_screen.dart';
@@ -76,6 +77,8 @@ import 'package:cheat_sheet/view/sheet_list_screen/sheet_list_screen.dart';
           page: EmptyRouterPage,
           children: [
             AutoRoute(path: '', page: ProfileScreen),
+            AutoRoute(
+                path: ':userId', name: 'EditProfileRoute', page: EditProfile),
           ]),
     ],
   ),
