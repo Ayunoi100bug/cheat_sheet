@@ -15,7 +15,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:unicons/unicons.dart';
 
 class DetailSheet extends StatefulWidget {
-  // final int sheetId;
+  final int sheetId;
   // final String sheetName;
   // final Array tag;
   // final int star;
@@ -26,19 +26,17 @@ class DetailSheet extends StatefulWidget {
   // final String detail;
   // final double sheetReview;
 
-  const DetailSheet({
-    super.key,
-    // required this.sheetId
-    // required this.sheetName,
-    // required this.tag,
-    // required this.star,
-    // required this.userAvatar,
-    // required this.userName,
-    // required this.sheetImage,
-    // required this.detail,
-    // required this.sheetReview,
-    // required this.demoSheetImage
-  });
+  const DetailSheet({super.key, @PathParam() required this.sheetId
+      // required this.sheetName,
+      // required this.tag,
+      // required this.star,
+      // required this.userAvatar,
+      // required this.userName,
+      // required this.sheetImage,
+      // required this.detail,
+      // required this.sheetReview,
+      // required this.demoSheetImage
+      });
 
   @override
   State<DetailSheet> createState() => _DetailSheetState();
@@ -322,7 +320,8 @@ class _DetailSheetState extends State<DetailSheet> {
                               text: "อ่านชีท",
                               size: 16,
                               onPressed: () {
-                                AutoRouter.of(context).push(ReadSheetRoute());
+                                AutoRouter.of(context).push(
+                                    ReadSheetRoute(sheetId: widget.sheetId));
                               },
                             ),
                           ],
@@ -364,7 +363,8 @@ class _DetailSheetState extends State<DetailSheet> {
                             color: AppColors.primary600,
                           ),
                           onTap: () {
-                            AutoRouter.of(context).push(CreateReviewRoute());
+                            AutoRouter.of(context).push(
+                                CreateReviewRoute(sheetId: widget.sheetId));
                           },
                         ),
                       ],
@@ -387,7 +387,8 @@ class _DetailSheetState extends State<DetailSheet> {
                         color: AppColors.primary600,
                       ),
                       onTap: () {
-                        AutoRouter.of(context).push(ReviewSheetRoute());
+                        AutoRouter.of(context)
+                            .push(ReviewSheetRoute(sheetId: widget.sheetId));
                       },
                     ),
                     SizedBox(

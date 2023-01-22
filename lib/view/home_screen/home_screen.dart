@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen>
               InkWell(
                 child: Text('Detail Sheet'),
                 onTap: () {
-                  AutoRouter.of(context).push(DetailSheetRoute());
+                  AutoRouter.of(context).push(DetailSheetRoute(sheetId: 5));
                 },
               ),
               Padding(padding: EdgeInsets.symmetric(vertical: 8)),

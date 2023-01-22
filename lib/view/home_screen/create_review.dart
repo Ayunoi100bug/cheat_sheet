@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 
 import '../../res/colors.dart';
@@ -11,7 +12,8 @@ import '../review_sub_page/_5star.dart';
 import '../review_sub_page/all.dart';
 
 class CreateReview extends StatefulWidget {
-  const CreateReview({super.key});
+  final int sheetId;
+  const CreateReview({super.key, @PathParam() required this.sheetId});
 
   @override
   State<CreateReview> createState() => _CreateReviewState();
