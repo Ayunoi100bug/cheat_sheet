@@ -133,7 +133,7 @@ class AppRouter extends _i16.RootStackRouter {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<ReviewSheetRouteArgs>(
           orElse: () =>
-              ReviewSheetRouteArgs(sheetId: pathParams.get('sheetId')));
+              ReviewSheetRouteArgs(sheetId: pathParams.getInt('sheetId')));
       return _i16.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i9.ReviewSheet(
@@ -520,7 +520,7 @@ class AskQuestionRouteArgs {
 class ReviewSheetRoute extends _i16.PageRouteInfo<ReviewSheetRouteArgs> {
   ReviewSheetRoute({
     _i17.Key? key,
-    dynamic sheetId,
+    required int sheetId,
   }) : super(
           ReviewSheetRoute.name,
           path: ':sheetId/review_sheet',
@@ -537,12 +537,12 @@ class ReviewSheetRoute extends _i16.PageRouteInfo<ReviewSheetRouteArgs> {
 class ReviewSheetRouteArgs {
   const ReviewSheetRouteArgs({
     this.key,
-    this.sheetId,
+    required this.sheetId,
   });
 
   final _i17.Key? key;
 
-  final dynamic sheetId;
+  final int sheetId;
 
   @override
   String toString() {

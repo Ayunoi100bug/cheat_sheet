@@ -1,87 +1,133 @@
 import 'package:auto_route/annotations.dart';
-import 'package:cheat_sheet/res/button.dart';
-import 'package:cheat_sheet/res/colors.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-import '../../res/components/review.dart';
+import '../../res/colors.dart';
+import '../../res/typo.dart';
+
+import '../review_sub_page/_1star.dart';
+import '../review_sub_page/_2star.dart';
+import '../review_sub_page/_3star.dart';
+import '../review_sub_page/_4star.dart';
+import '../review_sub_page/_5star.dart';
+import '../review_sub_page/all.dart';
 
 class ReviewSheet extends StatefulWidget {
-  final sheetId;
-  const ReviewSheet({super.key, @PathParam() this.sheetId});
+  final int sheetId;
+  const ReviewSheet({super.key, @PathParam() required this.sheetId});
 
   @override
   State<ReviewSheet> createState() => _ReviewSheetState();
 }
 
-class _ReviewSheetState extends State<ReviewSheet> {
+int currentTab = 0;
+
+class _ReviewSheetState extends State<ReviewSheet>
+    with SingleTickerProviderStateMixin {
+  late TabController tabController;
+
+  @override
+  void initState() {
+    tabController = TabController(length: 6, vsync: this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    var isLandScape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+
+    final tabs = [
+      const SizedBox(
+        width: 70,
+        child: Tab(
+          child: Regular16px(text: 'ทั้งหมด'),
+        ),
+      ),
+      tabReview('5'),
+      tabReview('4'),
+      tabReview('3'),
+      tabReview('2'),
+      tabReview('1'),
+    ];
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(child: LayoutBuilder(builder: (context, constraints) {
-        return SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                width: double.infinity,
-                height: screenHeight * 0.15,
-                alignment: Alignment.center,
-                child: RatingBar.builder(
-                  minRating: 1,
-                  allowHalfRating: true,
-                  itemBuilder: (context, _) => Icon(
-                    Icons.star,
-                    color: AppColors.warning400,
-                  ),
-                  onRatingUpdate: (rating) {
-                    print(rating);
-                  },
-                ),
-              ),
-              Container(
-                width: isPortrait ? screenWidth : screenWidth * 0.6,
-                height: isPortrait ? screenHeight * 0.3 : screenHeight * 0.5,
-                padding: EdgeInsets.all(screenHeight * 0.032),
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: AppColors.black800),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: TextField(
-                    maxLines: null,
-                    scrollPadding: const EdgeInsets.all(20.0),
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'แสดงความคิดเห็นที่นี่...',
-                    ),
+      body: SafeArea(
+        child: Container(
+          margin: EdgeInsets.all(screenWidth * 0.016),
+          width: screenWidth,
+          height: screenHeight,
+          child: DefaultTabController(
+            length: 6,
+            child: NestedScrollView(
+              scrollDirection: Axis.vertical,
+              headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      TabBar(
+                        onTap: (int index) {
+                          currentTab = index;
+                        },
+                        isScrollable: true,
+                        controller: tabController,
+                        labelStyle: const TextStyle(
+                          fontSize: 16,
+                          fontFamily: 'BaiJamjuree',
+                          fontWeight: FontWeight.w500,
+                        ),
+                        labelColor: AppColors.tertiary500,
+                        indicator: BoxDecoration(
+                          border: Border.all(
+                              color: AppColors.tertiary500, width: 2),
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        unselectedLabelColor: AppColors.black400,
+                        tabs: tabs,
+                      ),
+                    ],
                   ),
                 ),
+              ],
+              body: TabBarView(
+                controller: tabController,
+                children: const [
+                  All(),
+                  FiveStar(),
+                  FourStar(),
+                  ThreeStar(),
+                  TwoStar(),
+                  OneStar(),
+                ],
               ),
-              Container(
-                padding: EdgeInsets.only(right: screenHeight * 0.032),
-                height: isPortrait ? screenHeight * 0.05 : screenWidth * 0.05,
-                alignment: Alignment.centerRight,
-                child: PrimaryButton(
-                  text: 'ส่ง',
-                  onPressed: () {},
-                  size: 16,
-                ),
-              ),
-              SizedBox(
-                height: screenHeight * 0.04,
-              )
-            ],
+            ),
           ),
-        );
-      })),
+        ),
+      ),
     );
   }
+}
+
+SizedBox tabReview(String text) {
+  return SizedBox(
+    width: 70,
+    child: Tab(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Regular16px(text: text),
+          const Icon(
+            Icons.star,
+            color: AppColors.warning300,
+            size: 14,
+          )
+        ],
+      ),
+    ),
+  );
 }

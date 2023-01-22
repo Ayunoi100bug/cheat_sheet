@@ -8,7 +8,7 @@ import 'package:cheat_sheet/res/components/review.dart';
 import 'package:cheat_sheet/res/components/tag.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
-import 'package:cheat_sheet/view/home_screen/review_sheet.dart';
+import 'package:cheat_sheet/view/home_screen/create_review.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
