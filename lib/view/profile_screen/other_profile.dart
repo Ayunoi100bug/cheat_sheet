@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../../res/button.dart';
 import '../../res/colors.dart';
 import '../../res/components/sheet.dart';
-import '../../res/gap_dimension.dart';
 import '../../res/typo.dart';
 import '../../utils/routes/routes.gr.dart';
 
@@ -36,11 +35,11 @@ class _OtherProfileState extends State<OtherProfile> {
                     return Row(
                       children: <Widget>[
                         SizedBox(
-                          width: constraints.maxWidth * GapDimension.w0_4,
+                          width: constraints.maxWidth * 0.4,
                           height: double.infinity,
                           child: Padding(
-                            padding: EdgeInsets.all(
-                                constraints.maxHeight * GapDimension.h0_12),
+                            padding:
+                                EdgeInsets.all(constraints.maxHeight * 0.12),
                             child: Container(
                               decoration: BoxDecoration(
                                 image: DecorationImage(
@@ -58,7 +57,7 @@ class _OtherProfileState extends State<OtherProfile> {
                           children: <Widget>[
                             SizedBox(
                               height: constraints.maxHeight * 0.4,
-                              width: constraints.maxWidth * GapDimension.w0_6,
+                              width: constraints.maxWidth * 0.6,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
@@ -75,7 +74,7 @@ class _OtherProfileState extends State<OtherProfile> {
                             ),
                             SizedBox(
                               height: constraints.maxHeight * 0.3,
-                              width: constraints.maxWidth * GapDimension.w0_6,
+                              width: constraints.maxWidth * 0.6,
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
