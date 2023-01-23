@@ -214,7 +214,19 @@ class _LoginScreenState extends State<LoginScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () async {
+                                  try {
+                                  myAuth.loginWithGoogle()
+                                    .then((value) {
+                                      // debugPrint("Login Success!");
+                                      AutoRouter.of(context).pop();
+                                    });
+                                  } on FirebaseAuthException catch (e) {
+                                    Fluttertoast.showToast(
+                                      msg: e.message.toString(),
+                                      gravity: ToastGravity.BOTTOM);
+                                  }
+                                },
                                 icon: const Icon(
                                   FontAwesomeIcons.google,
                                   color: Colors.red,
