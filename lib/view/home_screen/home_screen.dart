@@ -38,6 +38,12 @@ class _HomeScreenState extends State<HomeScreen>
           padding: EdgeInsets.all(screenWidth * GapDimension.w0_032),
           child: Column(
             children: [
+              InkWell(
+                onTap: () {
+                  AutoRouter.of(context).push(TestUIRoute());
+                },
+                child: Text('กด ตรงนี้ นะ บุ๊คคค'),
+              ),
               PrimaryButton(
                   text: "Top snackBar",
                   onPressed: () => Popup.showSnackBar(

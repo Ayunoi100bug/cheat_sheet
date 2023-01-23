@@ -15,6 +15,7 @@ import 'package:cheat_sheet/view/profile_screen/edit_profile.dart';
 import 'package:cheat_sheet/view/profile_screen/profile_screen.dart';
 import 'package:cheat_sheet/view/register.dart';
 import 'package:cheat_sheet/view/sheet_list_screen/sheet_list_screen.dart';
+import 'package:cheat_sheet/view/test_ui_book.dart';
 
 @MaterialAutoRouter(replaceInRouteName: 'Page,Route', routes: [
   AutoRoute(
@@ -27,6 +28,7 @@ import 'package:cheat_sheet/view/sheet_list_screen/sheet_list_screen.dart';
           page: EmptyRouterPage,
           children: [
             AutoRoute(path: '', page: HomeScreen),
+            AutoRoute(path: 'test_ui', name: 'TestUIRoute', page: TestUIPage),
             AutoRoute(
                 path: ':sheetId', name: 'DetailSheetRoute', page: DetailSheet),
             AutoRoute(
