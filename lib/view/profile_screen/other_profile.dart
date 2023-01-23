@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../../res/button.dart';
 import '../../res/colors.dart';
+import '../../res/components/sheet.dart';
 import '../../res/gap_dimension.dart';
 import '../../res/typo.dart';
 import '../../utils/routes/routes.gr.dart';
@@ -18,21 +20,22 @@ class _OtherProfileState extends State<OtherProfile> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 width: double.infinity,
                 height: screenWidth < 480
-                    ? screenHeight * GapDimension.h0_18
-                    : screenHeight * GapDimension.h0_36,
+                    ? screenHeight * 0.24
+                    : screenHeight * 0.48,
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     return Row(
                       children: <Widget>[
-                        Container(
+                        SizedBox(
                           width: constraints.maxWidth * GapDimension.w0_4,
                           height: double.infinity,
                           child: Padding(
@@ -54,7 +57,7 @@ class _OtherProfileState extends State<OtherProfile> {
                         Column(
                           children: <Widget>[
                             SizedBox(
-                              height: constraints.maxHeight * GapDimension.h0_5,
+                              height: constraints.maxHeight * 0.4,
                               width: constraints.maxWidth * GapDimension.w0_6,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -71,7 +74,7 @@ class _OtherProfileState extends State<OtherProfile> {
                               ),
                             ),
                             SizedBox(
-                              height: constraints.maxHeight * GapDimension.h0_5,
+                              height: constraints.maxHeight * 0.3,
                               width: constraints.maxWidth * GapDimension.w0_6,
                               child: Row(
                                 mainAxisAlignment:
@@ -92,9 +95,37 @@ class _OtherProfileState extends State<OtherProfile> {
                                 ],
                               ),
                             ),
+                            PrimaryButton(
+                              text: "ติดตาม",
+                              onPressed: () {},
+                            )
                           ],
                         ),
                       ],
+                    );
+                  },
+                ),
+              ),
+              const Divider(thickness: 1, height: 1),
+              Padding(
+                padding: EdgeInsets.all(screenWidth * 0.032),
+                child: GridView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: isPortrait ? 3 : 5,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 16,
+                    mainAxisExtent: isPortrait ? 200 : 250,
+                  ),
+                  itemCount: 10,
+                  itemBuilder: (context, index) {
+                    return Sheet(
+                      sheetTitle: Image.asset('assets/images/logo.png'),
+                      title: 'สถิติพื้นฐานooooooooooo',
+                      priceSheet: 10,
+                      username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
+                      sheetId: index + 1,
                     );
                   },
                 ),
