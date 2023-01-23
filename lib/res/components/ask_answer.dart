@@ -1,5 +1,6 @@
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/typo.dart';
+import 'package:cheat_sheet/view/home_screen/ask_question.dart';
 import 'package:flutter/material.dart';
 
 class AskAnswer extends StatefulWidget {
@@ -34,7 +35,7 @@ class _AskAnswerState extends State<AskAnswer> {
     return Padding(
       padding: EdgeInsets.only(
           left: screenWidth * 0.032,
-          top: screenWidth * 0.024,
+          //top: screenWidth * 0.016,
           right: screenWidth * 0.032,
           bottom: screenWidth * 0.024),
       child: Card(
