@@ -47,17 +47,13 @@ class DiaryQuest extends StatelessWidget {
                         children: [
                           Container(
                             height: constraints.maxHeight * 0.5,
-                            width: constraints.maxWidth * 0.8,
+                            width: constraints.maxWidth * 0.7,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                SizedBox(
-                                  height: constraints.maxHeight * 0.15,
-                                ),
                                 Row(
                                   children: [
-                                    SizedBox(
-                                        width: constraints.maxWidth * 0.05),
                                     Regular16px(text: questName),
                                   ],
                                 ),
@@ -66,18 +62,20 @@ class DiaryQuest extends StatelessWidget {
                           ),
                           Container(
                             height: constraints.maxHeight * 0.5,
-                            width: constraints.maxWidth * 0.2,
-                            child: Row(children: [
-                              SizedBox(
-                                width: constraints.maxWidth * 0.05,
-                              ),
-                              Text(recievePoint.toString()),
-                              Icon(
-                                Icons.monetization_on_outlined,
-                                color: AppColors.warning500,
-                                size: screenHeight * 0.024,
-                              )
-                            ]),
+                            width: constraints.maxWidth * 0.3,
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  SizedBox(
+                                    width: constraints.maxWidth * 0.05,
+                                  ),
+                                  Text(recievePoint.toString()),
+                                  Icon(
+                                    Icons.monetization_on_outlined,
+                                    color: AppColors.warning500,
+                                    size: screenHeight * 0.024,
+                                  )
+                                ]),
                           ),
                         ],
                       ),
