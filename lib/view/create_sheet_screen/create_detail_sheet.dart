@@ -1,10 +1,21 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/colors.dart';
+import 'package:cheat_sheet/res/components/form_field.dart';
 import 'package:cheat_sheet/res/typo.dart';
+import 'package:cheat_sheet/view_model/create_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:form_field_validator/form_field_validator.dart';
+import 'package:uuid/uuid.dart';
+
+import '../../model/sheet.dart';
 
 class CreateDetailSheet extends StatefulWidget {
   const CreateDetailSheet({super.key});
@@ -16,6 +27,15 @@ class CreateDetailSheet extends StatefulWidget {
 enum SheetType { free, sell }
 
 class _CreateDetailSheetState extends State<CreateDetailSheet> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  Sheets mySheet = Sheets(
+      sheetName: '',
+      detailSheet: '',
+      sheetTypeFree: true,
+      price: null,
+      authorId: '');
+  final Future<FirebaseApp> firebase = Firebase.initializeApp();
+  CreateCollection myCollection = CreateCollection();
   SheetType? _sheetType = SheetType.free;
 
   @override
@@ -27,219 +47,267 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
     var isLandScape =
         MediaQuery.of(context).orientation == Orientation.landscape;
 
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Center(
-            child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.all(
-                  isPortrait ? screenHeight * 0.024 : screenHeight * 0.048),
-              height: isPortrait ? screenHeight * 0.35 : screenHeight * 0.6,
-              child: Image(
-                image: NetworkImage(
-                    'https://static.trueplookpanya.com/tppy/member/m_665000_667500/665461/cms/images/%E0%B9%84%E0%B8%AD%E0%B9%80%E0%B8%94%E0%B8%B5%E0%B8%A2%E0%B8%88%E0%B8%94%E0%B8%8A%E0%B8%B5%E0%B8%97%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B_15.jpg'),
+    return FutureBuilder(
+        future: firebase,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Scaffold(
+              appBar: AppBar(title: const Text('Error')),
+              body: Center(
+                child: Text("${snapshot.error}"),
               ),
-            ),
-            Container(
-                margin:
-                    EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
-                padding: EdgeInsets.only(
-                    left: screenHeight * 0.024,
-                    top:
-                        isPortrait ? screenHeight * 0.04 : screenHeight * 0.08),
-                alignment: Alignment.centerLeft,
-                child: const Medium16px(text: 'ชื่อ')),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                width: isPortrait ? screenWidth : screenWidth * 0.3,
-                padding: EdgeInsets.all(
-                    isPortrait ? screenHeight * 0.002 : screenHeight * 0.004),
-                margin: EdgeInsets.only(
-                    left: isPortrait ? screenHeight * 0.024 : screenWidth * 0.2,
-                    right: isPortrait
-                        ? screenHeight * 0.024
-                        : screenHeight * 0.048),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: TextField(
-                    decoration: InputDecoration(
-                        hintText: 'ชื่อ',
-                        hintStyle: const TextStyle(fontSize: 12),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.all(screenHeight * 0.008))),
-              ),
-            ),
-            Container(
-                width: isPortrait ? screenWidth : screenWidth * 0.6,
-                padding: EdgeInsets.only(
-                    left: screenHeight * 0.024, top: screenHeight * 0.02),
-                alignment: Alignment.centerLeft,
-                child: const Medium16px(text: 'รายละเอียด')),
-            Container(
-              width: isPortrait ? screenWidth : screenWidth * 0.6,
-              height: isPortrait ? screenHeight * 0.15 : screenHeight * 0.25,
-              padding: EdgeInsets.all(screenHeight * 0.002),
-              margin: EdgeInsets.only(
-                  left: screenHeight * 0.024, right: screenHeight * 0.024),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: TextField(
-                maxLines: null,
-                scrollPadding: const EdgeInsets.all(20.0),
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'รายละเอียด',
-                    hintStyle: const TextStyle(fontSize: 12),
-                    contentPadding: EdgeInsets.all(screenHeight * 0.008)),
-              ),
-            ),
-            Container(
-                margin:
-                    EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
-                padding: EdgeInsets.only(
-                    left: screenHeight * 0.024,
-                    top:
-                        isPortrait ? screenHeight * 0.02 : screenHeight * 0.04),
-                alignment: Alignment.centerLeft,
-                child: const Medium16px(text: 'แท็ก')),
-            Row(
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    margin: EdgeInsets.only(
-                        left: isPortrait
+            );
+          }
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Scaffold(
+              body: SingleChildScrollView(
+                child: Center(
+                    child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(isPortrait
                             ? screenHeight * 0.024
-                            : screenWidth * 0.2,
-                        top: screenHeight * 0.01),
-                    width: isPortrait ? screenWidth * 0.2 : screenWidth * 0.1,
-                    height:
-                        isPortrait ? screenHeight * 0.05 : screenHeight * 0.1,
-                    child: DottedBorder(
-                      borderType: BorderType.RRect,
-                      radius: const Radius.circular(30),
-                      child: const Align(
-                          alignment: Alignment.center,
-                          child: Icon(FontAwesomeIcons.add)),
-                      dashPattern: [10, 10],
-                    ),
+                            : screenHeight * 0.048),
+                        height: isPortrait
+                            ? screenHeight * 0.35
+                            : screenHeight * 0.6,
+                        child: Image(
+                          image: NetworkImage(
+                              'https://static.trueplookpanya.com/tppy/member/m_665000_667500/665461/cms/images/%E0%B9%84%E0%B8%AD%E0%B9%80%E0%B8%94%E0%B8%B5%E0%B8%A2%E0%B8%88%E0%B8%94%E0%B8%8A%E0%B8%B5%E0%B8%97%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B_15.jpg'),
+                        ),
+                      ),
+                      Container(
+                          margin: EdgeInsets.only(
+                              left: isPortrait ? 0 : screenWidth * 0.2),
+                          padding: EdgeInsets.only(
+                              left: screenHeight * 0.024,
+                              top: isPortrait
+                                  ? screenHeight * 0.04
+                                  : screenHeight * 0.08),
+                          alignment: Alignment.centerLeft,
+                          child: const Medium16px(text: 'ชื่อ')),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          width: isPortrait ? screenWidth : screenWidth * 0.3,
+                          padding: EdgeInsets.all(isPortrait
+                              ? screenHeight * 0.002
+                              : screenHeight * 0.004),
+                          margin: EdgeInsets.only(
+                              left: isPortrait
+                                  ? screenHeight * 0.024
+                                  : screenWidth * 0.2,
+                              right: isPortrait
+                                  ? screenHeight * 0.024
+                                  : screenHeight * 0.048),
+                          child: MyTextFormField(
+                            validator: RequiredValidator(
+                                errorText: 'Please enter sheet name.'),
+                            onSaved: (value) {
+                              mySheet.sheetName = value!;
+                            },
+                          ),
+                        ),
+                      ),
+                      Container(
+                          width: isPortrait ? screenWidth : screenWidth * 0.6,
+                          padding: EdgeInsets.only(
+                              left: screenHeight * 0.024,
+                              top: screenHeight * 0.02),
+                          alignment: Alignment.centerLeft,
+                          child: const Medium16px(text: 'รายละเอียด')),
+                      Container(
+                        width: isPortrait ? screenWidth : screenWidth * 0.6,
+                        height: isPortrait
+                            ? screenHeight * 0.15
+                            : screenHeight * 0.25,
+                        padding: EdgeInsets.all(screenHeight * 0.002),
+                        margin: EdgeInsets.only(
+                            left: screenHeight * 0.024,
+                            right: screenHeight * 0.024),
+                        child: MyTextFormFieldLarge(
+                          validator: RequiredValidator(
+                              errorText: 'Please enter detail.'),
+                          onSaved: (value) {
+                            mySheet.detailSheet = value!;
+                          },
+                        ),
+                      ),
+                      Container(
+                          margin: EdgeInsets.only(
+                              left: isPortrait ? 0 : screenWidth * 0.2),
+                          padding: EdgeInsets.only(
+                              left: screenHeight * 0.024,
+                              top: isPortrait
+                                  ? screenHeight * 0.02
+                                  : screenHeight * 0.04),
+                          alignment: Alignment.centerLeft,
+                          child: const Medium16px(text: 'แท็ก')),
+                      Row(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                  left: isPortrait
+                                      ? screenHeight * 0.024
+                                      : screenWidth * 0.2,
+                                  top: screenHeight * 0.01),
+                              width: isPortrait
+                                  ? screenWidth * 0.2
+                                  : screenWidth * 0.1,
+                              height: isPortrait
+                                  ? screenHeight * 0.05
+                                  : screenHeight * 0.1,
+                              child: DottedBorder(
+                                borderType: BorderType.RRect,
+                                radius: const Radius.circular(30),
+                                child: const Align(
+                                    alignment: Alignment.center,
+                                    child: Icon(FontAwesomeIcons.add)),
+                                dashPattern: [10, 10],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                          margin: EdgeInsets.only(
+                              left: isPortrait ? 0 : screenWidth * 0.2),
+                          padding: EdgeInsets.only(
+                              left: screenHeight * 0.024,
+                              top: screenHeight * 0.02),
+                          alignment: Alignment.centerLeft,
+                          child: const Medium16px(text: 'ประเภทของชีท')),
+                      Container(
+                        margin: EdgeInsets.only(
+                            left: isPortrait ? 0 : screenWidth * 0.2),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              title: const Medium16px(text: 'ฟรี'),
+                              leading: Radio<SheetType>(
+                                value: SheetType.free,
+                                groupValue: _sheetType,
+                                onChanged: (SheetType? value) {
+                                  setState(() {
+                                    _sheetType = value;
+                                    mySheet.sheetTypeFree = true;
+                                  });
+                                },
+                              ),
+                            ),
+                            ListTile(
+                              title: const Medium16px(text: 'ขาย'),
+                              leading: Radio<SheetType>(
+                                value: SheetType.sell,
+                                groupValue: _sheetType,
+                                onChanged: (SheetType? value) {
+                                  setState(() {
+                                    _sheetType = value;
+                                    mySheet.sheetTypeFree = false;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (_sheetType == SheetType.sell)
+                        Container(
+                            margin: EdgeInsets.only(
+                                left: isPortrait ? 0 : screenWidth * 0.2),
+                            padding: EdgeInsets.only(
+                                left: screenHeight * 0.024,
+                                bottom: screenHeight * 0.01),
+                            alignment: Alignment.centerLeft,
+                            child: const Medium16px(text: 'ราคา')),
+                      if (_sheetType == SheetType.sell)
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            padding: EdgeInsets.all(screenHeight * 0.002),
+                            margin: EdgeInsets.only(
+                                left: isPortrait
+                                    ? screenHeight * 0.024
+                                    : screenWidth * 0.2,
+                                right: screenHeight * 0.024),
+                            width: isPortrait
+                                ? screenWidth * 0.25
+                                : screenWidth * 0.125,
+                            height: isPortrait
+                                ? screenHeight * 0.04
+                                : screenHeight * 0.08,
+                            child: MyTextFormField(
+                                hintText: 'หน่วย coin',
+                                keyboardType: TextInputType.number,
+                                validator: RequiredValidator(
+                                    errorText: 'Please enter price.'),
+                                onSaved: (value) {
+                                  mySheet.price = int.parse(value!);
+                                }),
+                          ),
+                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(
+                                left: isPortrait ? 0 : screenWidth * 0.2,
+                                top: isPortrait ? 0 : screenHeight * 0.04),
+                            padding: EdgeInsets.all(screenHeight * 0.024),
+                            child: OutlineButton(
+                              text: 'ยกเลิก',
+                              onPressed: () {},
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(
+                                right: isPortrait ? 0 : screenWidth * 0.2,
+                                top: isPortrait ? 0 : screenHeight * 0.04),
+                            padding: EdgeInsets.all(screenHeight * 0.024),
+                            child: PrimaryButton(
+                              text: 'เสร็จสิ้น',
+                              onPressed: () async {
+                                _formKey.currentState!.save();
+                                try {
+                                  myCollection
+                                      .createSheetCollection(
+                                    mySheet.sheetName,
+                                    mySheet.detailSheet,
+                                    mySheet.sheetTypeFree,
+                                    mySheet.price,
+                                    FirebaseAuth.instance.currentUser!.uid,
+                                  )
+                                      .then(
+                                    (value) {
+                                      _formKey.currentState!.reset();
+                                      // debugPrint("Register Success");
+                                      AutoRouter.of(context).pop();
+                                    },
+                                  );
+                                } on FirebaseAuthException catch (e) {
+                                  Fluttertoast.showToast(
+                                    msg: e.message.toString(),
+                                    gravity: ToastGravity.BOTTOM,
+                                  );
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-            Container(
-                margin:
-                    EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
-                padding: EdgeInsets.only(
-                    left: screenHeight * 0.024, top: screenHeight * 0.02),
-                alignment: Alignment.centerLeft,
-                child: const Medium16px(text: 'ประเภทของชีท')),
-            Container(
-              margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
-              child: Column(
-                children: [
-                  ListTile(
-                    title: const Medium16px(text: 'ฟรี'),
-                    leading: Radio<SheetType>(
-                      value: SheetType.free,
-                      groupValue: _sheetType,
-                      onChanged: (SheetType? value) {
-                        setState(() {
-                          _sheetType = value;
-                        });
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    title: const Medium16px(text: 'ขาย'),
-                    leading: Radio<SheetType>(
-                      value: SheetType.sell,
-                      groupValue: _sheetType,
-                      onChanged: (SheetType? value) {
-                        setState(() {
-                          _sheetType = value;
-                        });
-                      },
-                    ),
-                  ),
-                ],
+                )),
               ),
-            ),
-            if (_sheetType == SheetType.sell)
-              Container(
-                  margin:
-                      EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
-                  padding: EdgeInsets.only(
-                      left: screenHeight * 0.024, bottom: screenHeight * 0.01),
-                  alignment: Alignment.centerLeft,
-                  child: const Medium16px(text: 'ราคา')),
-            if (_sheetType == SheetType.sell)
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  padding: EdgeInsets.all(screenHeight * 0.002),
-                  margin: EdgeInsets.only(
-                      left:
-                          isPortrait ? screenHeight * 0.024 : screenWidth * 0.2,
-                      right: screenHeight * 0.024),
-                  width: isPortrait ? screenWidth * 0.25 : screenWidth * 0.125,
-                  height:
-                      isPortrait ? screenHeight * 0.04 : screenHeight * 0.08,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      width: 1,
-                    ),
-                  ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'หน่วย coin',
-                        hintStyle: const TextStyle(fontSize: 12),
-                        contentPadding: EdgeInsets.all(isPortrait
-                            ? screenHeight * 0.016
-                            : screenHeight * 0.032)),
-                  ),
-                ),
-              ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(
-                      left: isPortrait ? 0 : screenWidth * 0.2,
-                      top: isPortrait ? 0 : screenHeight * 0.04),
-                  padding: EdgeInsets.all(screenHeight * 0.024),
-                  child: OutlineButton(
-                    text: 'ยกเลิก',
-                    onPressed: () {},
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                      right: isPortrait ? 0 : screenWidth * 0.2,
-                      top: isPortrait ? 0 : screenHeight * 0.04),
-                  padding: EdgeInsets.all(screenHeight * 0.024),
-                  child: PrimaryButton(
-                    text: 'เสร็จสิ้น',
-                    onPressed: () {},
-                  ),
-                ),
-              ],
-            ),
-          ],
-        )),
-      ),
-    );
+            );
+          }
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        });
   }
 }

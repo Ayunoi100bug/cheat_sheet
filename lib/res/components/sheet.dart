@@ -12,13 +12,14 @@ class Sheet extends StatelessWidget {
   final String title;
   final String username;
   final int priceSheet;
-  const Sheet({
-    super.key,
-    required this.sheetTitle,
-    required this.title,
-    required this.username,
-    required this.priceSheet,
-  });
+  final int sheetId;
+  const Sheet(
+      {super.key,
+      required this.sheetTitle,
+      required this.title,
+      required this.username,
+      required this.priceSheet,
+      required this.sheetId});
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +39,16 @@ class Sheet extends StatelessWidget {
             Column(
               children: [
                 Expanded(
-                  child: Image.network(
-                    'https://i.pinimg.com/originals/3d/83/e4/3d83e4284ba67ebcc3ca74c179ad5c1d.jpg',
-                    fit: BoxFit.fill,
-                    width: constraints.maxWidth,
+                  child: InkWell(
+                    onTap: () {
+                      AutoRouter.of(context)
+                          .navigateNamed('/home/' + sheetId.toString());
+                    },
+                    child: Image.network(
+                      'https://i.pinimg.com/originals/3d/83/e4/3d83e4284ba67ebcc3ca74c179ad5c1d.jpg',
+                      fit: BoxFit.fill,
+                      width: constraints.maxWidth,
+                    ),
                   ),
                 ),
                 SizedBox(

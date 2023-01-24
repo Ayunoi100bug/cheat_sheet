@@ -2,6 +2,9 @@ import 'package:auto_route/annotations.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/components/ask_answer.dart';
 import 'package:clickable_list_wheel_view/clickable_list_wheel_widget.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:cheat_sheet/utils/routes/routes.gr.dart';
+import 'package:cheat_sheet/view/home_screen/detail_question.dart';
 import 'package:flutter/material.dart';
 
 import '../../res/components/ask_answer.dart';
@@ -38,7 +41,10 @@ class _AskQuestionState extends State<AskQuestion> {
           color: AppColors.warning100,
           size: 40,
         ),
-        onPressed: () {},
+        onPressed: () {
+              AutoRouter.of(context).push(
+                  DetailQuestionRoute(sheetId: widget.sheetId, questionId: 1));
+            },
         backgroundColor: AppColors.error300,
       ),
       //body: Text('Ask Question from sheet number' + widget.sheetId.toString()),
