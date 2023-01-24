@@ -3,6 +3,8 @@ import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/view/home_screen/ask_question.dart';
 import 'package:flutter/material.dart';
 
+import '../button.dart';
+
 class AskAnswer extends StatefulWidget {
   // final Image userImage;
   // final String userName;
@@ -10,14 +12,21 @@ class AskAnswer extends StatefulWidget {
   // final Text review;
   // final int like;
   // final int dislike;
-  // const AskAnswer(
-  //     {super.key,
-  //     required this.userImage,
-  //     required this.userName,
-  //     required this.userRating,
-  //     required this.review,
-  //     required this.like,
-  //     required this.dislike});
+  final int selectedIndex;
+  final int currentIndex;
+  final bool focus;
+  const AskAnswer({
+    super.key,
+    required this.focus,
+    required this.selectedIndex,
+    required this.currentIndex,
+    //     required this.userImage,
+    //     required this.userName,
+    //     required this.userRating,
+    //     required this.review,
+    //     required this.like,
+    //     required this.dislike
+  });
 
   @override
   State<AskAnswer> createState() => _AskAnswerState();
@@ -35,12 +44,12 @@ class _AskAnswerState extends State<AskAnswer> {
     return Padding(
       padding: EdgeInsets.only(
           left: screenWidth * 0.032,
-          //top: screenWidth * 0.016,
           right: screenWidth * 0.032,
           bottom: screenWidth * 0.024),
       child: Card(
-        elevation: 4,
-        shadowColor: AppColors.black900,
+        color: widget.focus ? AppColors.warning100 : AppColors.white,
+        elevation: 6,
+        shadowColor: widget.focus ? AppColors.error600 : AppColors.black600,
         child: LayoutBuilder(builder: (context, constraints) {
           return Column(
             mainAxisSize: MainAxisSize.min,
@@ -48,13 +57,18 @@ class _AskAnswerState extends State<AskAnswer> {
             children: [
               Row(
                 children: [
-                  Container(
-                    width: isPortrait
-                        ? constraints.maxWidth * 0.1
-                        : constraints.maxWidth * 0.05,
-                    child: Image.asset(
-                      'assets/images/logo.png', //userImage
+                  InkWell(
+                    child: Container(
+                      width: isPortrait
+                          ? constraints.maxWidth * 0.1
+                          : constraints.maxWidth * 0.05,
+                      child: Image.asset(
+                        'assets/images/logo.png', //userImage
+                      ),
                     ),
+                    onTap: () {
+                      print("${widget.selectedIndex + widget.currentIndex}");
+                    },
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,7 +87,7 @@ class _AskAnswerState extends State<AskAnswer> {
                               width: isPortrait
                                   ? constraints.maxWidth * 0.6
                                   : constraints.maxWidth * 0.625,
-                              child: Regular16px(text: "User Name"), //userName
+                              child: Regular16px(text: "userName"), //userName
                             ),
                             Container(
                               padding: EdgeInsets.only(
@@ -145,8 +159,10 @@ class _AskAnswerState extends State<AskAnswer> {
                             ? constraints.maxWidth * 0.9
                             : constraints.maxWidth * 0.95,
                         child: Regular16px(
-                            text:
-                                "ขอบคุณมากครับที่ทำสรุปดีๆแบบนี้ออกมาแนะนำเลยครับนักเขียนคนนี้เขียนดีทุกสรุปเลยครับ"),
+                          text:
+                              "ขอบคุณมากครับที่ทำสรุปดีๆแบบนี้ออกมาแนะนำเลยครับนักเขียนคนนี้เขียนดีทุกสรุปเลยครับ",
+                          activateOverflow: true,
+                        ),
                       ),
                     ],
                   ),

@@ -1,59 +1,119 @@
 import 'package:auto_route/annotations.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/components/ask_answer.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:clickable_list_wheel_view/clickable_list_wheel_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:inview_notifier_list/inview_notifier_list.dart';
 
 import '../../res/components/ask_answer.dart';
 
 class AskQuestion extends StatefulWidget {
   final sheetId;
-  final Widget? inViewArea;
-
-  const AskQuestion(
-      {super.key, @PathParam() required this.sheetId, this.inViewArea});
+  const AskQuestion({super.key, @PathParam() required this.sheetId});
 
   @override
   State<AskQuestion> createState() => _AskQuestionState();
 }
 
 class _AskQuestionState extends State<AskQuestion> {
+  late int currentIndex = 0;
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // double screenWidth = MediaQuery.of(context).size.width;
-    // double screenHeight = MediaQuery.of(context).size.height;
-    // var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    // var isLandScape =
-    //     MediaQuery.of(context).orientation == Orientation.landscape;
-
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    var isLandScape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+    final _scrollController = FixedExtentScrollController();
+    final data = List.generate(20, (index) => 'Item $index');
     return Scaffold(
-      //body: Text('Ask Question from sheet number' + widget.sheetId.toString()),
-      body: Container(
-        color: AppColors.black400,
-        height: 700,
-        child: InViewNotifierList(
-          isInViewPortCondition:
-              (double deltaTop, double deltaBottom, double vpHeight) {
-            return deltaTop < (0.7 * vpHeight) &&
-                deltaBottom > (0.9 * vpHeight);
-          },
-          itemCount: 10,
-          builder: (BuildContext context, int index) {
-            return InViewNotifierWidget(
-              id: '$index',
-              builder: (BuildContext context, bool isInView, child) {
-                return Container(
-                  height: 200.0,
-                  color: isInView ? Colors.green : Colors.red,
-                  child: Text(
-                    isInView ? 'Is in view' : 'Not in view',
-                  ),
-                );
-              },
-            );
-          },
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.back_hand_outlined,
+          color: AppColors.warning100,
+          size: 40,
         ),
+        onPressed: () {},
+        backgroundColor: AppColors.error300,
+      ),
+      //body: Text('Ask Question from sheet number' + widget.sheetId.toString()),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(top: screenHeight * 0.024),
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(
+                        top: screenHeight * 0.020,
+                        left: screenHeight * 0.036,
+                        right: screenHeight * 0.036),
+                    height: isPortrait
+                        ? constraints.maxHeight * 0.6
+                        : screenWidth * 0.4,
+                    child: SizedBox(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: AppColors.error300,
+                          image: DecorationImage(
+                            image: NetworkImage(
+                                "https://static.trueplookpanya.com/tppy/member/m_665000_667500/665461/cms/images/%E0%B9%84%E0%B8%AD%E0%B9%80%E0%B8%94%E0%B8%B5%E0%B8%A2%E0%B8%88%E0%B8%94%E0%B8%8A%E0%B8%B5%E0%B8%97%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B_04.jpg"),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: isPortrait
+                        ? constraints.maxHeight * 0.4
+                        : screenWidth * 0.6,
+                    child: ClickableListWheelScrollView(
+                      scrollController: _scrollController,
+                      itemHeight: 120,
+                      itemCount: data.length,
+                      onItemTapCallback: (index) {
+                        print("$index");
+                      },
+                      child: ListWheelScrollView.useDelegate(
+                        controller: _scrollController,
+                        itemExtent: 90,
+                        physics: FixedExtentScrollPhysics(),
+                        perspective: 0.0000001,
+                        onSelectedItemChanged: (value) {
+                          setState(() {
+                            currentIndex = value;
+                          });
+                          print('Index: ${value}');
+                        },
+                        squeeze: 1.1,
+                        childDelegate: ListWheelChildBuilderDelegate(
+                          childCount: 4,
+                          builder: (context, index) => index == currentIndex
+                              ? AskAnswer(
+                                  focus: true,
+                                  selectedIndex: index,
+                                  currentIndex: currentIndex,
+                                )
+                              : AskAnswer(
+                                  focus: false,
+                                  selectedIndex: index,
+                                  currentIndex: currentIndex,
+                                ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
