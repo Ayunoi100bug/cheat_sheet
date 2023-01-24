@@ -5,6 +5,7 @@ import 'package:cheat_sheet/view/create_sheet_screen/create_sheet_screen.dart';
 import 'package:cheat_sheet/view/home_screen/ask_question.dart';
 import 'package:cheat_sheet/view/home_screen/create_question.dart';
 import 'package:cheat_sheet/view/home_screen/create_review.dart';
+import 'package:cheat_sheet/view/home_screen/detail_question.dart';
 import 'package:cheat_sheet/view/home_screen/detail_sheet.dart';
 import 'package:cheat_sheet/view/home_screen/read_sheet.dart';
 import 'package:cheat_sheet/view/home_screen/review_sheet.dart';
@@ -16,7 +17,9 @@ import 'package:cheat_sheet/view/profile_screen/edit_profile.dart';
 import 'package:cheat_sheet/view/profile_screen/profile_screen.dart';
 import 'package:cheat_sheet/view/register.dart';
 import 'package:cheat_sheet/view/sheet_list_screen/sheet_list_screen.dart';
+import 'package:cheat_sheet/view/test.dart';
 import 'package:cheat_sheet/view/test_ui_book.dart';
+
 
 @MaterialAutoRouter(replaceInRouteName: 'Page,Route', routes: [
   AutoRoute(
@@ -44,6 +47,10 @@ import 'package:cheat_sheet/view/test_ui_book.dart';
                 path: ':sheetId/read_sheet/ask_question/create_question',
                 name: 'CreateQuestionRoute',
                 page: CreateQuestion),
+            AutoRoute(
+                path: ':sheetId/read_sheet/ask_question/:questionId',
+                name: 'DetailQuestionRoute',
+                page: DetailQuestion),
             AutoRoute(
                 path: ':sheetId/review_sheet',
                 name: 'ReviewSheetRoute',
@@ -77,6 +84,7 @@ import 'package:cheat_sheet/view/test_ui_book.dart';
           page: EmptyRouterPage,
           children: [
             AutoRoute(path: '', page: SheetListScreen),
+            AutoRoute(path: 'test', name: 'TestRoute', page: Test),
           ]),
       AutoRoute(
           path: 'profile',
