@@ -27,7 +27,7 @@ class Achievement extends StatelessWidget {
       child: LayoutBuilder(builder: (context, constraints) {
         return Row(
           children: [
-            Container(
+            SizedBox(
               height: constraints.maxHeight,
               width: constraints.maxWidth * 0.15,
               child: LayoutBuilder(
@@ -35,21 +35,21 @@ class Achievement extends StatelessWidget {
                   return Icon(
                     FontAwesomeIcons.trophy,
                     color: AppColors.warning500,
-                    size: constraints.maxHeight * 0.7,
+                    size: constraints.maxHeight * 0.6,
                   );
                 },
               ),
             ),
-            Container(
+            SizedBox(
                 width: constraints.maxWidth * 0.85,
                 child: LayoutBuilder(builder: (context, constraints) {
                   return Column(
                     children: [
                       Row(
                         children: [
-                          Container(
+                          SizedBox(
                             height: constraints.maxHeight * 0.5,
-                            width: constraints.maxWidth * 0.8,
+                            width: constraints.maxWidth * 0.7,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -58,28 +58,28 @@ class Achievement extends StatelessWidget {
                                 ),
                                 Row(
                                   children: [
-                                    SizedBox(
-                                        width: constraints.maxWidth * 0.05),
                                     Regular16px(text: achievementName),
                                   ],
                                 ),
                               ],
                             ),
                           ),
-                          Container(
+                          SizedBox(
                             height: constraints.maxHeight * 0.5,
-                            width: constraints.maxWidth * 0.2,
-                            child: Row(children: [
-                              SizedBox(
-                                width: constraints.maxWidth * 0.05,
-                              ),
-                              Text(recievePoint.toString()),
-                              Icon(
-                                Icons.monetization_on_outlined,
-                                color: AppColors.warning500,
-                                size: screenHeight * 0.024,
-                              )
-                            ]),
+                            width: constraints.maxWidth * 0.3,
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  SizedBox(
+                                    width: constraints.maxWidth * 0.05,
+                                  ),
+                                  Text(recievePoint.toString()),
+                                  Icon(
+                                    Icons.monetization_on_outlined,
+                                    color: AppColors.warning500,
+                                    size: screenHeight * 0.024,
+                                  )
+                                ]),
                           ),
                         ],
                       ),
@@ -95,7 +95,7 @@ class Achievement extends StatelessWidget {
                               height: constraints.maxHeight * 0.25,
                               child: LayoutBuilder(
                                   builder: (context, constraints) {
-                                return Container(
+                                return SizedBox(
                                   child: LinearPercentIndicator(
                                     padding: EdgeInsets.zero,
                                     width: constraints.maxWidth,
