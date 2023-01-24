@@ -50,12 +50,12 @@ dependencies:
   firebase_storage: ^11.0.10
   unicons: any
   blinking_text: ^1.0.2
-
   flushbar: ^1.10.4
-
   dotted_border: ^2.0.0+3
   uuid: ^3.0.7
   google_sign_in: ^5.4.3
+  flutter_facebook_auth: ^5.0.7
+  cached_network_image: ^3.2.3
 
 
 dev_dependencies:
