@@ -1,5 +1,9 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:cheat_sheet/data/network/pdf_api.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/typo.dart';
+import 'package:cheat_sheet/utils/pdf_openner.dart';
+import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -46,7 +50,14 @@ class _SheetListScreenState extends State<SheetListScreen>
                         ),
                       ],
                     ),
-                    onTap: () {},
+                    onTap: () async {
+                      final url =
+                          'https://www.africau.edu/images/default/sample.pdf';
+                      final file = await PDFApi.loadNetwork(url);
+                      // final file = await PDFApi.pickFile();
+                      if (file == null) return;
+                      PDFOpenner.openPDF(context, file);
+                    },
                   ),
                 ),
                 Padding(
