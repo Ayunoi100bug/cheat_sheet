@@ -1,5 +1,6 @@
-// ignore_for_file: avoid_print
+import 'dart:io';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/model/user.dart';
 import 'package:cheat_sheet/res/button.dart';
@@ -11,14 +12,19 @@ import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 
 import 'package:cheat_sheet/view/profile_screen/profile_sub_page/my_sheet.dart';
 import 'package:cheat_sheet/view/profile_screen/profile_sub_page/buy_sheet.dart';
+import 'package:cheat_sheet/view_model/create_firestore.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -29,11 +35,12 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen>
     with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late TabController tabController;
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
   Users users = Users(username: '', password: '', email: '', uid: '');
+  final firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
 
   @override
   void initState() {
@@ -51,10 +58,6 @@ class _ProfileScreenState extends State<ProfileScreen>
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    var isLandScape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
-    String newUsername;
 
     return StreamBuilder(
         stream: _auth.authStateChanges(),
@@ -85,7 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                               SliverToBoxAdapter(
                                 child: Column(
                                   children: [
-                                    Container(
+                                    SizedBox(
                                       width: double.infinity,
                                       height: screenWidth < 480
                                           ? screenHeight * GapDimension.h0_18
@@ -94,7 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                         builder: (context, constraints) {
                                           return Row(
                                             children: <Widget>[
-                                              Container(
+                                              SizedBox(
                                                 width: constraints.maxWidth *
                                                     GapDimension.w0_4,
                                                 height: double.infinity,
@@ -103,17 +106,16 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                       constraints.maxHeight *
                                                           GapDimension.h0_12),
                                                   child: Container(
-                                                    decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                        image: AssetImage(data[
-                                                            'profileImage']),
-                                                        // fit: BoxFit.fill,
-                                                      ),
-                                                      border: Border.all(
-                                                          color: AppColors
-                                                              .black800,
-                                                          width: 2.0),
+                                                    decoration:
+                                                        const BoxDecoration(
                                                       shape: BoxShape.circle,
+                                                      color: AppColors.black300,
+                                                    ),
+                                                    child: CircleAvatar(
+                                                      backgroundImage:
+                                                          NetworkImage(data[
+                                                              'profileImage']),
+                                                      radius: 100,
                                                     ),
                                                   ),
                                                 ),
@@ -136,97 +138,17 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                             text: data[
                                                                 'username']),
                                                         IconButton(
-                                                          icon:
-                                                              Icon(Icons.edit),
+                                                          icon: const Icon(
+                                                            Icons.edit,
+                                                            color: AppColors
+                                                                .tertiary600,
+                                                          ),
                                                           onPressed: () {
-                                                            showDialog(
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
-                                                                  return AlertDialog(
-                                                                    content:
-                                                                        Container(
-                                                                      width: double
-                                                                          .infinity,
-                                                                      height:
-                                                                          screenHeight *
-                                                                              0.4,
-                                                                      alignment:
-                                                                          Alignment
-                                                                              .center,
-                                                                      child:
-                                                                          Column(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.center,
-                                                                        children: [
-                                                                          Container(
-                                                                            height:
-                                                                                screenHeight * 0.2,
-                                                                            decoration:
-                                                                                BoxDecoration(
-                                                                              image: DecorationImage(
-                                                                                image: AssetImage(data['profileImage']),
-                                                                                // fit: BoxFit.fill,
-                                                                              ),
-                                                                              shape: BoxShape.circle,
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                screenHeight * 0.012,
-                                                                          ),
-                                                                          Container(
-                                                                            height:
-                                                                                screenHeight * 0.05,
-                                                                            child:
-                                                                                InkWell(
-                                                                              child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                                                                                Icon(FontAwesomeIcons.camera),
-                                                                                SizedBox(
-                                                                                  width: screenWidth * 0.012,
-                                                                                ),
-                                                                                Regular12px(text: 'Photo')
-                                                                              ]),
-                                                                              onTap: () {},
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                screenHeight * 0.012,
-                                                                          ),
-                                                                          Form(
-                                                                            key:
-                                                                                _formKey,
-                                                                            child: MyTextFormField(
-                                                                                hintText: data['username'],
-                                                                                validator: RequiredValidator(errorText: 'Please enter new username.'),
-                                                                                onSaved: (value) {
-                                                                                  users.username = value!;
-                                                                                }),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                screenHeight * 0.012,
-                                                                          ),
-                                                                          Align(
-                                                                            alignment:
-                                                                                Alignment.centerRight,
-                                                                            child: PrimaryButton(
-                                                                                text: 'เสร็จสิ้น',
-                                                                                onPressed: () {
-                                                                                  _formKey.currentState!.save();
-                                                                                  _firestore.collection('users').doc(data['uid']).update({'username': users.username}).then((value) => print("User Updated")).catchError((error) => print("Failed to update user: $error"));
-                                                                                  _formKey.currentState!.reset();
-                                                                                  AutoRouter.of(context).pop();
-                                                                                }),
-                                                                          )
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                  );
-                                                                });
+                                                            AutoRouter.of(
+                                                                    context)
+                                                                .push(EditProfileRoute(
+                                                                    userId: data[
+                                                                        'uid']));
                                                           },
                                                         ),
                                                       ],

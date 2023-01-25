@@ -51,6 +51,7 @@ dependencies:
   unicons: any
   blinking_text: ^1.0.2
   file_picker: ^5.2.5
+  image_picker: ^0.8.6+1
 
   flushbar: ^1.10.4
 
