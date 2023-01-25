@@ -37,15 +37,15 @@ class _AskQuestionState extends State<AskQuestion> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(
-          Icons.back_hand_outlined,
-          color: AppColors.warning100,
+          Icons.add,
+          color: AppColors.white,
           size: 40,
         ),
         onPressed: () {
-              AutoRouter.of(context).push(
-                  DetailQuestionRoute(sheetId: widget.sheetId, questionId: 1));
-            },
-        backgroundColor: AppColors.error300,
+          AutoRouter.of(context).push(
+              DetailQuestionRoute(sheetId: widget.sheetId, questionId: 1));
+        },
+        backgroundColor: AppColors.tertiary600,
       ),
       //body: Text('Ask Question from sheet number' + widget.sheetId.toString()),
       body: LayoutBuilder(
