@@ -6,12 +6,6 @@ import 'package:flutter/material.dart';
 import '../button.dart';
 
 class AskAnswer extends StatefulWidget {
-  // final Image userImage;
-  // final String userName;
-  // final int userRating;
-  // final Text review;
-  // final int like;
-  // final int dislike;
   final int selectedIndex;
   final int currentIndex;
   final bool focus;
@@ -20,12 +14,6 @@ class AskAnswer extends StatefulWidget {
     required this.focus,
     required this.selectedIndex,
     required this.currentIndex,
-    //     required this.userImage,
-    //     required this.userName,
-    //     required this.userRating,
-    //     required this.review,
-    //     required this.like,
-    //     required this.dislike
   });
 
   @override
