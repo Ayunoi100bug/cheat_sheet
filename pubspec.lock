@@ -169,6 +169,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.2"
+  clickable_list_wheel_view:
+    dependency: "direct main"
+    description:
+      name: clickable_list_wheel_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0"
   clock:
     dependency: transitive
     description:
@@ -604,6 +611,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.17.0"
+  inview_notifier_list:
+    dependency: "direct main"
+    description:
+      name: inview_notifier_list
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.0"
   io:
     dependency: transitive
     description:
