@@ -41,6 +41,7 @@ class AuthService {
     final LoginResult loginResult = await FacebookAuth.i.login(
       permissions: ['email, public_profile, user_photos']
     );
+    if (loginResult.accessToken == null) return;
     OAuthCredential? facebookAuthCredential = FacebookAuthProvider.credential(
       loginResult.accessToken!.token
     );

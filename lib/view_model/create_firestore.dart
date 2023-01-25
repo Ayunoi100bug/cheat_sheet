@@ -47,18 +47,18 @@ class CreateCollection {
 
   Future<void> createFacebookUserCollection(User? currentuser) async {
     final userRef = _firestoreDb.collection("users").doc(currentuser?.uid);
-    final userData = await FacebookAuth.i.getUserData(fields: 'picture.width(200), id');
+    final userData = await FacebookAuth.i.getUserData();
     DocumentSnapshot userDoc = await userRef.get();
     if (!userDoc.exists) {
       String? fullName = currentuser?.displayName;
       List<String>? cutName = fullName?.split(" ");
       String? firstName = cutName?[0];
-      String facebookId = userData['id'];
+      String profileImage = userData['picture']['data']['url'];
       await _firestoreDb.collection("users").doc(currentuser?.uid).set({
         'username': firstName,
         'email': currentuser?.email,
         'uid': currentuser?.uid,
-        'profileImage': "https://graph.facebook.com/$facebookId/picture?type=normal",
+        'profileImage': profileImage,
         'follower': myUser.follower,
         'following': myUser.following,
       });
