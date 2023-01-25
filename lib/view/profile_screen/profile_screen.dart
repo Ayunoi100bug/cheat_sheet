@@ -87,8 +87,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                   child: Container(
                                                     decoration: BoxDecoration(
                                                       image: DecorationImage(
-                                                        image: NetworkImage(data['profileImage']),
-                                                        // fit: BoxFit.fill,
+                                                        image: CachedNetworkImageProvider(data['profileImage']),
+                                                        fit: BoxFit.cover,
                                                       ),
                                                       border: Border.all(
                                                           color: AppColors
