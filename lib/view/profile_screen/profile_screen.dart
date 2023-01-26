@@ -3,13 +3,11 @@ import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/gap_dimension.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cheat_sheet/view/profile_screen/profile_sub_page/my_sheet.dart';
 import 'package:cheat_sheet/view/profile_screen/profile_sub_page/buy_sheet.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:flutter/material.dart';
 
 const String userId = 'fakeIdRorPeteMaGae';
@@ -22,7 +20,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen>
-    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+  with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   late TabController tabController;
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
@@ -60,8 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       child: Text("This is login, but data is not load"),
                     );
                   } else {
-                    Map<String, dynamic> data =
-                        snapshot.data!.data() as Map<String, dynamic>;
+                    Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
                     return Scaffold(
                       body: SafeArea(
                         child: DefaultTabController(
@@ -93,8 +90,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                   child: Container(
                                                     decoration: BoxDecoration(
                                                       image: DecorationImage(
-                                                        image: AssetImage(data[
-                                                            'profileImage']),
+                                                        image: NetworkImage(data['profileImage']),
                                                         // fit: BoxFit.fill,
                                                       ),
                                                       border: Border.all(

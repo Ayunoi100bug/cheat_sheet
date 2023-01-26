@@ -2,20 +2,12 @@ import 'package:cheat_sheet/model/user.dart';
 import 'package:cheat_sheet/view_model/create_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  Users myUser = Users(email: '', password: '', username: '', uid: '');
+  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
   CreateCollection myCollection = CreateCollection();
-
-  Future<bool> isLogged() async {
-    User? user = await _auth.currentUser;
-    if (user != null) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 
   Future<void> createUserWithEmail(String argEmail, String argPassword, String argUsername) async {
     UserCredential result =  await _auth.createUserWithEmailAndPassword(
@@ -42,11 +34,21 @@ class AuthService {
       idToken: googleAuth?.idToken
     );
     final User? user = (await _auth.signInWithCredential(credential)).user;
-    myCollection.createGoogleUserCollection(user);
+    await myCollection.createOauthUserCollection(user);
+  }
+
+  Future<void> loginWithFacebook() async {
+    final LoginResult loginResult = await FacebookAuth.instance.login();
+    OAuthCredential? facebookAuthCredential = FacebookAuthProvider.credential(
+      loginResult.accessToken!.token
+    );
+    final User? user = (await _auth.signInWithCredential(facebookAuthCredential)).user;
+    await myCollection.createOauthUserCollection(user);
   }
 
   Future logOut() async {
     await GoogleSignIn().signOut();
+    await FacebookAuth.instance.logOut();
     await _auth.signOut();
   }
 }

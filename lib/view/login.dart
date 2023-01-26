@@ -23,7 +23,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  Users myUser = Users(email: '', password: '', username: '', uid: '');
+  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
   AuthService myAuth = AuthService();
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
 
@@ -234,7 +234,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () async {
+                                  try {
+                                  myAuth.loginWithFacebook()
+                                    .then((value) {
+                                      // debugPrint("Login Success!");
+                                      AutoRouter.of(context).pop();
+                                    });
+                                  } on FirebaseAuthException catch (e) {
+                                    Fluttertoast.showToast(
+                                      msg: e.message.toString(),
+                                      gravity: ToastGravity.BOTTOM);
+                                  }
+                                },
                                 icon: const Icon(
                                   FontAwesomeIcons.facebook,
                                   color: Colors.blue,
