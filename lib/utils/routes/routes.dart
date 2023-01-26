@@ -2,6 +2,7 @@ import 'package:auto_route/annotations.dart';
 import 'package:auto_route/empty_router_widgets.dart';
 import 'package:cheat_sheet/view/create_sheet_screen/create_detail_sheet.dart';
 import 'package:cheat_sheet/view/create_sheet_screen/create_sheet_screen.dart';
+import 'package:cheat_sheet/view/create_sheet_screen/view_import_sheet.dart';
 import 'package:cheat_sheet/view/home_screen/ask_question.dart';
 import 'package:cheat_sheet/view/home_screen/create_question.dart';
 import 'package:cheat_sheet/view/home_screen/create_review.dart';
@@ -19,7 +20,6 @@ import 'package:cheat_sheet/view/register.dart';
 import 'package:cheat_sheet/view/sheet_list_screen/sheet_list_screen.dart';
 import 'package:cheat_sheet/view/test.dart';
 import 'package:cheat_sheet/view/test_ui_book.dart';
-
 
 @MaterialAutoRouter(replaceInRouteName: 'Page,Route', routes: [
   AutoRoute(
@@ -77,6 +77,10 @@ import 'package:cheat_sheet/view/test_ui_book.dart';
                 path: 'create_detail_sheet',
                 name: 'CreateDetailSheetRoute',
                 page: CreateDetailSheet),
+            AutoRoute(
+                path: 'view_import_sheet',
+                name: 'ViewImportSheetRoute',
+                page: ViewImportSheet),
           ]),
       AutoRoute(
           path: 'sheet_list',
