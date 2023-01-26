@@ -34,21 +34,24 @@ class AuthService {
       idToken: googleAuth?.idToken
     );
     final User? user = (await _auth.signInWithCredential(credential)).user;
-    await myCollection.createOauthUserCollection(user);
+    await myCollection.createGoogleUserCollection(user);
   }
 
   Future<void> loginWithFacebook() async {
-    final LoginResult loginResult = await FacebookAuth.instance.login();
+    final LoginResult loginResult = await FacebookAuth.i.login(
+      permissions: ['email, public_profile, user_photos']
+    );
+    if (loginResult.accessToken == null) return;
     OAuthCredential? facebookAuthCredential = FacebookAuthProvider.credential(
       loginResult.accessToken!.token
     );
     final User? user = (await _auth.signInWithCredential(facebookAuthCredential)).user;
-    await myCollection.createOauthUserCollection(user);
+    await myCollection.createFacebookUserCollection(user);
   }
 
   Future logOut() async {
     await GoogleSignIn().signOut();
-    await FacebookAuth.instance.logOut();
+    await FacebookAuth.i.logOut();
     await _auth.signOut();
   }
 }

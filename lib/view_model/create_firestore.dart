@@ -3,6 +3,7 @@ import 'package:cheat_sheet/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class CreateCollection {
   final User? firebaseUser = FirebaseAuth.instance.currentUser;
@@ -26,7 +27,7 @@ class CreateCollection {
     });
   }
 
-  Future<void> createOauthUserCollection(User? currentuser) async {
+  Future<void> createGoogleUserCollection(User? currentuser) async {
     final userRef = _firestoreDb.collection("users").doc(currentuser?.uid);
     DocumentSnapshot userDoc = await userRef.get();
     if (!userDoc.exists) {
@@ -38,6 +39,26 @@ class CreateCollection {
         'email': currentuser?.email,
         'uid': currentuser?.uid,
         'profileImage': currentuser?.photoURL,
+        'follower': myUser.follower,
+        'following': myUser.following,
+      });
+    }
+  }
+
+  Future<void> createFacebookUserCollection(User? currentuser) async {
+    final userRef = _firestoreDb.collection("users").doc(currentuser?.uid);
+    final userData = await FacebookAuth.i.getUserData();
+    DocumentSnapshot userDoc = await userRef.get();
+    if (!userDoc.exists) {
+      String? fullName = currentuser?.displayName;
+      List<String>? cutName = fullName?.split(" ");
+      String? firstName = cutName?[0];
+      String profileImage = userData['picture']['data']['url'];
+      await _firestoreDb.collection("users").doc(currentuser?.uid).set({
+        'username': firstName,
+        'email': currentuser?.email,
+        'uid': currentuser?.uid,
+        'profileImage': profileImage,
         'follower': myUser.follower,
         'following': myUser.following,
       });

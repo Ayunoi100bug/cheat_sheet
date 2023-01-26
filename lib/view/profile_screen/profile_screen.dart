@@ -47,15 +47,12 @@ class _ProfileScreenState extends State<ProfileScreen>
         builder: (context, AsyncSnapshot<User?> snapshot) {
           if (snapshot.hasData) {
             return StreamBuilder<DocumentSnapshot>(
-                stream: _firestore
-                    .collection("users")
-                    .doc(_auth.currentUser?.uid)
-                    .snapshots(),
+                stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  if (!snapshot.hasData) {
+                  if (!snapshot.hasData || snapshot.data!.data() == null) {
                     return const Center(
-                      child: Text("This is login, but data is not load"),
+                      child: CircularProgressIndicator(),
                     );
                   } else {
                     Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
@@ -90,8 +87,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                   child: Container(
                                                     decoration: BoxDecoration(
                                                       image: DecorationImage(
-                                                        image: NetworkImage(data['profileImage']),
-                                                        // fit: BoxFit.fill,
+                                                        image: CachedNetworkImageProvider(data['profileImage']),
+                                                        fit: BoxFit.cover,
                                                       ),
                                                       border: Border.all(
                                                           color: AppColors
