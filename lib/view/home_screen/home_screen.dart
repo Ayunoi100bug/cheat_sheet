@@ -25,11 +25,8 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
 
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    var isLandScape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -38,6 +35,12 @@ class _HomeScreenState extends State<HomeScreen>
           padding: EdgeInsets.all(screenWidth * GapDimension.w0_032),
           child: Column(
             children: [
+              InkWell(
+                onTap: () {
+                  AutoRouter.of(context).push(TestUIRoute());
+                },
+                child: Text('กด ตรงนี้ นะ บุ๊คคค'),
+              ),
               PrimaryButton(
                   text: "Top snackBar",
                   onPressed: () => Popup.showSnackBar(

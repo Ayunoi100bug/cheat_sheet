@@ -24,7 +24,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  Users myUser = Users(email: '', password: '', username: '', uid: '');
+  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
   AuthService myAuth = AuthService();
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -151,7 +151,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     if (_formKey.currentState!.validate()) {
                                       _formKey.currentState!.save();
                                       try {
-                                        myAuth.createUser(myUser.email, myUser.password, myUser.username)
+                                        myAuth.createUserWithEmail(myUser.email, myUser.password, myUser.username)
                                         .then((value) {
                                             _formKey.currentState!.reset();
                                             // debugPrint("Register Success");
@@ -200,7 +200,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                try {
+                                myAuth.loginWithGoogle()
+                                  .then((value) {
+                                    // debugPrint("Register Success!");
+                                    AutoRouter.of(context).pop();
+                                  });
+                                } on FirebaseAuthException catch (e) {
+                                  Fluttertoast.showToast(
+                                    msg: e.message.toString(),
+                                    gravity: ToastGravity.BOTTOM);
+                                }
+                              },
                               icon: const Icon(
                                 FontAwesomeIcons.google,
                                 color: Colors.red,
@@ -208,7 +220,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                             ),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                try {
+                                myAuth.loginWithFacebook()
+                                  .then((value) {
+                                    // debugPrint("Login Success!");
+                                    AutoRouter.of(context).pop();
+                                  });
+                                } on FirebaseAuthException catch (e) {
+                                  Fluttertoast.showToast(
+                                    msg: e.message.toString(),
+                                    gravity: ToastGravity.BOTTOM);
+                                }
+                              },
                               icon: const Icon(
                                 FontAwesomeIcons.facebook,
                                 color: Colors.blue,

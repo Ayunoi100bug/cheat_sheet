@@ -9,7 +9,7 @@ import 'package:cheat_sheet/res/components/form_field.dart';
 import 'package:cheat_sheet/res/gap_dimension.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cheat_sheet/view/profile_screen/profile_sub_page/my_sheet.dart';
 import 'package:cheat_sheet/view/profile_screen/profile_sub_page/buy_sheet.dart';
 import 'package:cheat_sheet/view_model/create_firestore.dart';
@@ -34,7 +34,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen>
-    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+  with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   late TabController tabController;
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
@@ -64,19 +64,15 @@ class _ProfileScreenState extends State<ProfileScreen>
         builder: (context, AsyncSnapshot<User?> snapshot) {
           if (snapshot.hasData) {
             return StreamBuilder<DocumentSnapshot>(
-                stream: _firestore
-                    .collection("users")
-                    .doc(_auth.currentUser?.uid)
-                    .snapshots(),
+                stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  if (!snapshot.hasData) {
+                  if (!snapshot.hasData || snapshot.data!.data() == null) {
                     return const Center(
-                      child: Text("This is login, but data is not load"),
+                      child: CircularProgressIndicator(),
                     );
                   } else {
-                    Map<String, dynamic> data =
-                        snapshot.data!.data() as Map<String, dynamic>;
+                    Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
                     return Scaffold(
                       body: SafeArea(
                         child: DefaultTabController(
@@ -106,8 +102,15 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                       constraints.maxHeight *
                                                           GapDimension.h0_12),
                                                   child: Container(
-                                                    decoration:
-                                                        const BoxDecoration(
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                        image: CachedNetworkImageProvider(data['profileImage']),
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                      border: Border.all(
+                                                          color: AppColors
+                                                              .black800,
+                                                          width: 2.0),
                                                       shape: BoxShape.circle,
                                                       color: AppColors.black300,
                                                     ),
