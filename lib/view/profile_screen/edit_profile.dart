@@ -28,7 +28,7 @@ class _EditProfileState extends State<EditProfile> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
-  Users users = Users(username: '', password: '', email: '', uid: '');
+  Users users = Users(username: '', password: '', email: '', uid: '', profileImage: '');
   final firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
   File? _pickedImage;
