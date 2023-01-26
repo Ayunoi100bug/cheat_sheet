@@ -47,7 +47,7 @@ class _ReadSheetState extends State<ReadSheet> {
             children: [
               Container(
                 width: screenWidth,
-                padding: EdgeInsets.only(top: 12),
+                padding: EdgeInsets.only(top: screenHeight * 0.012),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
