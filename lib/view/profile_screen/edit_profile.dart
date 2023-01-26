@@ -35,15 +35,17 @@ class _EditProfileState extends State<EditProfile> {
   String? urlImage;
 
   Future<void> uploadImage() async {
-    Reference ref =
-        storage.ref().child('${widget.userId}/images').child('profileImage');
+    Reference ref = storage
+        .ref()
+        .child('${_auth.currentUser?.uid}/images')
+        .child('profileImage');
     await ref.putFile(_pickedImage!);
 
     urlImage = await ref.getDownloadURL();
 
     await _firestore
         .collection("users")
-        .doc(widget.userId)
+        .doc(_auth.currentUser?.uid)
         .update({'profileImage': urlImage});
   }
 
@@ -83,157 +85,150 @@ class _EditProfileState extends State<EditProfile> {
     var isLandScape =
         MediaQuery.of(context).orientation == Orientation.landscape;
 
-    return StreamBuilder(
-        stream: _auth.authStateChanges(),
-        builder: (context, AsyncSnapshot<User?> snapshot) {
-          if (snapshot.hasData) {
-            return StreamBuilder<DocumentSnapshot>(
-                stream: _firestore
-                    .collection("users")
-                    .doc(_auth.currentUser?.uid)
-                    .snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center(
-                      child: Text("This is login, but data is not load"),
-                    );
-                  } else {
-                    Map<String, dynamic> data =
-                        snapshot.data!.data() as Map<String, dynamic>;
-                    return Scaffold(
-                      body: SafeArea(
-                        child: Container(
-                          padding: EdgeInsets.only(
-                              top: isPortrait
-                                  ? screenHeight * 0.016
-                                  : screenWidth * 0.016),
-                          width: double.infinity,
-                          height:
-                              isPortrait ? screenHeight * 0.5 : double.infinity,
-                          alignment: Alignment.center,
-                          child: SingleChildScrollView(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  height: isPortrait
-                                      ? screenHeight * 0.2
-                                      : screenWidth * 0.2,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.black300,
-                                  ),
-                                  child: _pickedImage == null
-                                      ? CircleAvatar(
-                                          backgroundImage: NetworkImage(
-                                              data['profileImage']),
-                                          radius: 100.0,
-                                        )
-                                      : CircleAvatar(
-                                          backgroundImage:
-                                              FileImage(_pickedImage!),
-                                          radius: 100.0,
-                                        ),
-                                ),
-                                SizedBox(
-                                  height: isPortrait
-                                      ? screenHeight * 0.012
-                                      : screenWidth * 0.012,
-                                ),
-                                SizedBox(
-                                  height: isPortrait
-                                      ? screenHeight * 0.05
-                                      : screenWidth * 0.05,
-                                  child: InkWell(
-                                    child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          const Icon(FontAwesomeIcons.camera),
-                                          SizedBox(
-                                            width: screenWidth * 0.012,
-                                          ),
-                                          const Regular12px(
-                                              text: 'เลือกรูปภาพ'),
-                                        ]),
-                                    onTap: () {
-                                      _pickImage();
-                                    },
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: isPortrait
-                                      ? screenHeight * 0.012
-                                      : screenWidth * 0.012,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      right: isPortrait
-                                          ? screenWidth * 0.45
-                                          : screenHeight * 0.45),
-                                  child: const Align(
-                                    alignment: Alignment.center,
-                                    child: Medium16px(text: 'ชื่อ'),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: isPortrait
-                                      ? screenWidth * 0.5
-                                      : screenHeight * 0.5,
-                                  child: Form(
-                                    key: _formKey,
-                                    child: MyTextFormField(
-                                        hintText: data['username'],
-                                        validator: RequiredValidator(
-                                            errorText:
-                                                'Please enter new username.'),
-                                        onSaved: (value) {
-                                          users.username = value!;
-                                        }),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: isPortrait
-                                      ? screenHeight * 0.016
-                                      : screenWidth * 0.016,
-                                ),
-                                PrimaryButton(
-                                    text: 'เสร็จสิ้น',
-                                    onPressed: () {
-                                      uploadImage();
-                                      _formKey.currentState!.save();
-                                      _firestore
-                                          .collection('users')
-                                          .doc(data['uid'])
-                                          .update({
-                                            'username': users.username,
-                                          })
-                                          .then(
-                                              (value) => print("User Updated"))
-                                          .catchError((error) => print(
-                                              "Failed to update user: $error"));
-                                      _formKey.currentState!.reset();
-                                      AutoRouter.of(context).pop();
-                                    }),
-                                SizedBox(
-                                  height: isPortrait
-                                      ? screenHeight * 0.016
-                                      : screenWidth * 0.016,
-                                ),
-                              ],
+    return StreamBuilder(builder: (context, AsyncSnapshot<User?> snapshot) {
+      if (snapshot.hasData) {
+        return StreamBuilder<DocumentSnapshot>(
+            stream: _firestore
+                .collection("users")
+                .doc(_auth.currentUser?.uid)
+                .snapshots(),
+            builder: (BuildContext context,
+                AsyncSnapshot<DocumentSnapshot> snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: Text("This is login, but data is not load"),
+                );
+              } else {
+                Map<String, dynamic> data =
+                    snapshot.data!.data() as Map<String, dynamic>;
+                return Scaffold(
+                  body: SafeArea(
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          top: isPortrait
+                              ? screenHeight * 0.016
+                              : screenWidth * 0.016),
+                      width: double.infinity,
+                      height: isPortrait ? screenHeight * 0.5 : double.infinity,
+                      alignment: Alignment.center,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: isPortrait
+                                  ? screenHeight * 0.2
+                                  : screenWidth * 0.2,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColors.black300,
+                              ),
+                              child: _pickedImage == null
+                                  ? CircleAvatar(
+                                      backgroundImage:
+                                          NetworkImage(data['profileImage']),
+                                      radius: 100.0,
+                                    )
+                                  : CircleAvatar(
+                                      backgroundImage: FileImage(_pickedImage!),
+                                      radius: 100.0,
+                                    ),
                             ),
-                          ),
+                            SizedBox(
+                              height: isPortrait
+                                  ? screenHeight * 0.012
+                                  : screenWidth * 0.012,
+                            ),
+                            SizedBox(
+                              height: isPortrait
+                                  ? screenHeight * 0.05
+                                  : screenWidth * 0.05,
+                              child: InkWell(
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(FontAwesomeIcons.camera),
+                                      SizedBox(
+                                        width: screenWidth * 0.012,
+                                      ),
+                                      const Regular12px(text: 'เลือกรูปภาพ'),
+                                    ]),
+                                onTap: () {
+                                  _pickImage();
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: isPortrait
+                                  ? screenHeight * 0.012
+                                  : screenWidth * 0.012,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  right: isPortrait
+                                      ? screenWidth * 0.45
+                                      : screenHeight * 0.45),
+                              child: const Align(
+                                alignment: Alignment.center,
+                                child: Medium16px(text: 'ชื่อ'),
+                              ),
+                            ),
+                            SizedBox(
+                              width: isPortrait
+                                  ? screenWidth * 0.5
+                                  : screenHeight * 0.5,
+                              child: Form(
+                                key: _formKey,
+                                child: MyTextFormField(
+                                    hintText: data['username'],
+                                    validator: RequiredValidator(
+                                        errorText:
+                                            'Please enter new username.'),
+                                    onSaved: (value) {
+                                      users.username = value!;
+                                    }),
+                              ),
+                            ),
+                            SizedBox(
+                              height: isPortrait
+                                  ? screenHeight * 0.016
+                                  : screenWidth * 0.016,
+                            ),
+                            PrimaryButton(
+                                text: 'เสร็จสิ้น',
+                                onPressed: () {
+                                  uploadImage();
+                                  _formKey.currentState!.save();
+                                  _firestore
+                                      .collection('users')
+                                      .doc(data['uid'])
+                                      .update({
+                                        'username': users.username,
+                                      })
+                                      .then((value) => print("User Updated"))
+                                      .catchError((error) => print(
+                                          "Failed to update user: $error"));
+                                  _formKey.currentState!.reset();
+                                  AutoRouter.of(context).pop();
+                                }),
+                            SizedBox(
+                              height: isPortrait
+                                  ? screenHeight * 0.016
+                                  : screenWidth * 0.016,
+                            ),
+                          ],
                         ),
                       ),
-                    );
-                  }
-                });
-          } else {
-            return const Center(
-              child: Text("This is page when not login"),
-            );
-          }
-        });
+                    ),
+                  ),
+                );
+              }
+            });
+      } else {
+        return const Center(
+          child: Text("This is page when not login"),
+        );
+      }
+    });
   }
 }
