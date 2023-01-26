@@ -75,50 +75,10 @@ class _CreateQuestionState extends State<CreateQuestion> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
-                                width: isPortrait
-                                    ? screenHeight * 0.044
-                                    : screenWidth * 0.044,
-                                height: isPortrait
-                                    ? screenHeight * 0.044
-                                    : screenWidth * 0.044,
-                                decoration: BoxDecoration(
-                                  color: AppColors.primary400,
-                                ),
-                              ),
-                              Container(
-                                width: isPortrait
-                                    ? screenHeight * 0.044
-                                    : screenWidth * 0.044,
-                                height: isPortrait
-                                    ? screenHeight * 0.044
-                                    : screenWidth * 0.044,
-                                decoration: BoxDecoration(
-                                  color: AppColors.secondary400,
-                                ),
-                              ),
-                              Container(
-                                width: isPortrait
-                                    ? screenHeight * 0.044
-                                    : screenWidth * 0.044,
-                                height: isPortrait
-                                    ? screenHeight * 0.044
-                                    : screenWidth * 0.044,
-                                decoration: BoxDecoration(
-                                  color: AppColors.tertiary400,
-                                ),
-                              ),
-                              Container(
-                                width: isPortrait
-                                    ? screenHeight * 0.044
-                                    : screenWidth * 0.044,
-                                height: isPortrait
-                                    ? screenHeight * 0.044
-                                    : screenWidth * 0.044,
-                                decoration: BoxDecoration(
-                                  color: AppColors.warning400,
-                                ),
-                              ),
+                              boxColor(context, AppColors.primary400),
+                              boxColor(context, AppColors.secondary400),
+                              boxColor(context, AppColors.tertiary400),
+                              boxColor(context, AppColors.error400),
                             ],
                           ),
                         ),
@@ -188,4 +148,18 @@ class _CreateQuestionState extends State<CreateQuestion> {
       ),
     );
   }
+}
+
+Container boxColor(BuildContext context, Color color) {
+  double screenWidth = MediaQuery.of(context).size.width;
+  double screenHeight = MediaQuery.of(context).size.height;
+  var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+  var isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
+  return Container(
+    width: isPortrait ? screenHeight * 0.044 : screenWidth * 0.044,
+    height: isPortrait ? screenHeight * 0.044 : screenWidth * 0.044,
+    decoration: BoxDecoration(
+      color: color,
+    ),
+  );
 }
