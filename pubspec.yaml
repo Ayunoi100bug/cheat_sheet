@@ -50,6 +50,9 @@ dependencies:
   firebase_storage: ^11.0.10
   unicons: any
   blinking_text: ^1.0.2
+  file_picker: ^5.2.5
+  image_picker: ^0.8.6+1
+
   flushbar: ^1.10.4
   dotted_border: ^2.0.0+3
   inview_notifier_list: ^3.0.0
