@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:blinking_text/blinking_text.dart';
 import 'package:cheat_sheet/res/button.dart';
@@ -10,7 +8,6 @@ import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/view/home_screen/create_review.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:unicons/unicons.dart';
 
@@ -75,14 +72,12 @@ class _DetailSheetState extends State<DetailSheet> {
                               child: Stack(
                                 alignment: Alignment.center,
                                 children: [
-                                  SizedBox(
-                                    child: Image.network(
-                                      "https://static.trueplookpanya.com/tppy/member/m_665000_667500/665461/cms/images/%E0%B9%84%E0%B8%AD%E0%B9%80%E0%B8%94%E0%B8%B5%E0%B8%A2%E0%B8%88%E0%B8%94%E0%B8%8A%E0%B8%B5%E0%B8%97%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B_04.jpg",
-                                      color: AppColors.black400,
-                                      colorBlendMode: BlendMode.modulate,
-                                      fit: BoxFit.cover,
-                                      height: constraints.maxHeight,
-                                    ),
+                                  Image.network(
+                                    "https://static.trueplookpanya.com/tppy/member/m_665000_667500/665461/cms/images/%E0%B9%84%E0%B8%AD%E0%B9%80%E0%B8%94%E0%B8%B5%E0%B8%A2%E0%B8%88%E0%B8%94%E0%B8%8A%E0%B8%B5%E0%B8%97%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B_04.jpg",
+                                    color: AppColors.black400,
+                                    colorBlendMode: BlendMode.modulate,
+                                    fit: BoxFit.cover,
+                                    height: constraints.maxHeight,
                                   ),
                                   SizedBox(
                                     child: Medium16px(
