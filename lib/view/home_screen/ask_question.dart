@@ -42,8 +42,7 @@ class _AskQuestionState extends State<AskQuestion> {
           size: 40,
         ),
         onPressed: () {
-          AutoRouter.of(context).push(
-              DetailQuestionRoute(sheetId: widget.sheetId, questionId: 1));
+          AutoRouter.of(context).push(CreateQuestionRoute());
         },
         backgroundColor: AppColors.tertiary600,
       ),
