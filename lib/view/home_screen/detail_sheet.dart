@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:unicons/unicons.dart';
 
+import '../../data/network/pdf_api.dart';
+
 class DetailSheet extends StatefulWidget {
   final int sheetId;
   // final String sheetName;
@@ -275,9 +277,12 @@ class _DetailSheetState extends State<DetailSheet> {
                             PrimaryButton(
                               text: "อ่านชีท",
                               size: 16,
-                              onPressed: () {
-                                AutoRouter.of(context).push(
-                                    ReadSheetRoute(sheetId: widget.sheetId));
+                              onPressed: () async {
+                                final url =
+                                    'https://www.africau.edu/images/default/sample.pdf';
+                                final file = await PDFApi.loadNetwork(url);
+                                AutoRouter.of(context).push(ReadSheetRoute(
+                                    sheetId: widget.sheetId, file: file));
                               },
                             ),
                           ],
