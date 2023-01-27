@@ -49,14 +49,7 @@ class _SheetListScreenState extends State<SheetListScreen>
                         ),
                       ],
                     ),
-                    onTap: () async {
-                      final url =
-                          'https://www.africau.edu/images/default/sample.pdf';
-                      final file = await PDFApi.loadNetwork(url);
-                      // final file = await PDFApi.pickFile(context);
-                      // if (file == null) return;
-                      AutoRouter.of(context).push(TestRoute(file: file));
-                    },
+                    onTap: () {},
                   ),
                 ),
                 Padding(
