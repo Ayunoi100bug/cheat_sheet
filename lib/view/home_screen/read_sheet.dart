@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../res/colors.dart';
 import '../../res/components/bottom_sheet.dart';
+import '../../utils/routes/routes.gr.dart';
 
 class ReadSheet extends StatefulWidget {
   final int sheetId;
@@ -32,7 +33,10 @@ class _ReadSheetState extends State<ReadSheet> {
           splashColor: AppColors.warning100,
           backgroundColor: AppColors.warning200.withOpacity(0.7),
           elevation: 0,
-          onPressed: () {},
+          onPressed: () {
+            AutoRouter.of(context)
+                .push(AskQuestionRoute(sheetId: widget.sheetId));
+          },
           child: const Icon(
             Icons.back_hand_outlined,
             color: AppColors.warning600,
