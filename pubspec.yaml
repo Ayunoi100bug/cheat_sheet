@@ -63,6 +63,7 @@ dependencies:
   google_sign_in: ^5.4.3
   flutter_facebook_auth: ^5.0.7
   cached_network_image: ^3.2.3
+  pdf: ^3.8.4
 
 dev_dependencies:
   percent_indicator: ^4.2.2

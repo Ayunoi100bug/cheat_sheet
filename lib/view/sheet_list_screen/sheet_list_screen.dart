@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/data/network/pdf_api.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/typo.dart';
-import 'package:cheat_sheet/utils/pdf_openner.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -54,9 +53,9 @@ class _SheetListScreenState extends State<SheetListScreen>
                       final url =
                           'https://www.africau.edu/images/default/sample.pdf';
                       final file = await PDFApi.loadNetwork(url);
-                      // final file = await PDFApi.pickFile();
-                      if (file == null) return;
-                      PDFOpenner.openPDF(context, file);
+                      // final file = await PDFApi.pickFile(context);
+                      // if (file == null) return;
+                      AutoRouter.of(context).push(TestRoute(file: file));
                     },
                   ),
                 ),
