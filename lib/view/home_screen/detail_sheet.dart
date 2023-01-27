@@ -62,31 +62,13 @@ class _DetailSheetState extends State<DetailSheet> {
                 child: LayoutBuilder(builder: (context, constraints) {
                   return Row(
                     children: [
-                      Container(
+                      SizedBox(
                         width: isPortrait
                             ? constraints.maxWidth * 0.5
                             : constraints.maxWidth * 0.4,
                         height: constraints.maxHeight * 0.9,
                         child: LayoutBuilder(builder: (context, constraints) {
                           return InkWell(
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Image.network(
-                                    "https://static.trueplookpanya.com/tppy/member/m_665000_667500/665461/cms/images/%E0%B9%84%E0%B8%AD%E0%B9%80%E0%B8%94%E0%B8%B5%E0%B8%A2%E0%B8%88%E0%B8%94%E0%B8%8A%E0%B8%B5%E0%B8%97%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B_04.jpg",
-                                    color: AppColors.black400,
-                                    colorBlendMode: BlendMode.modulate,
-                                    fit: BoxFit.cover,
-                                    height: constraints.maxHeight,
-                                  ),
-                                  SizedBox(
-                                    child: Medium16px(
-                                      text: 'ดูตัวอย่างชีทที่นี่',
-                                      color: AppColors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
                               onTap: (() {
                                 showDialog(
                                     context: context,
@@ -187,36 +169,43 @@ class _DetailSheetState extends State<DetailSheet> {
                                         ],
                                       ));
                                     });
-                              }));
+                              }),
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Image.network(
+                                    "https://static.trueplookpanya.com/tppy/member/m_665000_667500/665461/cms/images/%E0%B9%84%E0%B8%AD%E0%B9%80%E0%B8%94%E0%B8%B5%E0%B8%A2%E0%B8%88%E0%B8%94%E0%B8%8A%E0%B8%B5%E0%B8%97%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B_04.jpg",
+                                    color: AppColors.black400,
+                                    colorBlendMode: BlendMode.modulate,
+                                    fit: BoxFit.cover,
+                                    height: constraints.maxHeight,
+                                  ),
+                                  const Medium16px(
+                                    text: 'ดูตัวอย่างชีทที่นี่',
+                                    color: AppColors.white,
+                                  ),
+                                ],
+                              ));
                         }),
                       ),
                       Container(
-                        padding: EdgeInsets.only(
-                            left: screenWidth * 0.04,
-                            top: constraints.maxHeight * 0.1,
-                            bottom: constraints.maxHeight * 0.1),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: constraints.maxWidth * 0.03,
+                          vertical: constraints.maxHeight * 0.05,
+                        ),
                         width: isPortrait
                             ? constraints.maxWidth * 0.5
                             : constraints.maxWidth * 0.6,
                         child: Column(
-                          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              width: double.infinity,
-                              child: Medium20px(text: "ลิมิต ม.ปลาย"),
-                            ),
-                            SizedBox(
-                              height: isPortrait
-                                  ? constraints.maxHeight * 0.02
-                                  : constraints.maxHeight * 0.01,
-                            ),
+                            const Medium20px(text: "ลิมิต ม.ปลาย"),
                             SingleChildScrollView(
+                              padding: EdgeInsets.zero,
                               scrollDirection: Axis.horizontal,
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
+                                children: const [
                                   Tag(
                                     subject: "คณิตศาสาตร์",
                                   ),
@@ -228,11 +217,6 @@ class _DetailSheetState extends State<DetailSheet> {
                                   ),
                                 ],
                               ),
-                            ),
-                            SizedBox(
-                              height: isPortrait
-                                  ? constraints.maxHeight * 0.02
-                                  : constraints.maxHeight * 0.01,
                             ),
                             Row(
                               children: [
@@ -251,11 +235,6 @@ class _DetailSheetState extends State<DetailSheet> {
                                 const Regular12px(text: "5"),
                               ],
                             ),
-                            SizedBox(
-                              height: isPortrait
-                                  ? constraints.maxHeight * 0.04
-                                  : constraints.maxHeight * 0.02,
-                            ),
                             Row(
                               children: [
                                 const CircleAvatar(
@@ -269,47 +248,29 @@ class _DetailSheetState extends State<DetailSheet> {
                                 const Regular14px(text: "Macaron"),
                               ],
                             ),
-                            SizedBox(
-                              height: isPortrait
-                                  ? constraints.maxHeight * 0.04
-                                  : constraints.maxHeight * 0.02,
-                            ),
-                            Row(
+                            Wrap(
+                              spacing: 10,
                               children: [
                                 Icon(
                                   Icons.favorite_outline,
                                   color: AppColors.black600,
-                                  size: isPortrait ? 24 : 32,
-                                ),
-                                SizedBox(
-                                  width: screenWidth * 0.016,
+                                  size: isPortrait ? 32 : 36,
                                 ),
                                 Icon(
                                   UniconsLine.plus_square,
                                   color: AppColors.black600,
-                                  size: isPortrait ? 24 : 32,
-                                ),
-                                SizedBox(
-                                  width: screenWidth * 0.016,
+                                  size: isPortrait ? 32 : 36,
                                 ),
                                 Icon(
                                   UniconsLine.cloud_download,
                                   color: AppColors.black600,
-                                  size: isPortrait ? 24 : 32,
-                                ),
-                                SizedBox(
-                                  width: screenWidth * 0.016,
+                                  size: isPortrait ? 32 : 36,
                                 ),
                                 Icon(
                                   UniconsLine.share,
-                                  size: isPortrait ? 24 : 32,
+                                  size: isPortrait ? 32 : 36,
                                 ),
                               ],
-                            ),
-                            SizedBox(
-                              height: isPortrait
-                                  ? constraints.maxHeight * 0.04
-                                  : constraints.maxHeight * 0.02,
                             ),
                             PrimaryButton(
                               text: "อ่านชีท",
@@ -327,24 +288,30 @@ class _DetailSheetState extends State<DetailSheet> {
                 }),
               ),
               Container(
-                padding: const EdgeInsets.only(
-                    top: 20, left: 16, right: 16, bottom: 56),
+                padding: EdgeInsets.symmetric(
+                    horizontal: screenWidth * 0.04,
+                    vertical: screenWidth * 0.04),
                 width: screenWidth,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Medium16px(text: "รายละเอียด"),
-                    SizedBox(
-                      height: screenHeight * 0.01,
-                    ),
-                    const Regular12px(
-                        text:
-                            "เนื้อหาจะประกอบไปด้วย\nการหาค่าเฉลี่ยแบบไม่แจกแจงความถี่\nการหาค่าเฉลี่ยแบบแจกแจงความถี่\nการหาค่าเฉลี่ยแบบถ่วงน้ำหนัก\nการหาค่าเฉลี่ยเลขคณิตรวม\nการหาค่าเฉลี่ยเลขคณิตโดยวิธีทอนค่าข้อมูล")
-                  ],
-                ),
+                child: LayoutBuilder(builder: (context, constraints) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Medium16px(text: "รายละเอียด"),
+                      Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: screenWidth * 0.01),
+                        child: Regular12px(
+                            text:
+                                "เนื้อหาจะประกอบไปด้วย\nการหาค่าเฉลี่ยแบบไม่แจกแจงความถี่\nการหาค่าเฉลี่ยแบบแจกแจงความถี่\nการหาค่าเฉลี่ยแบบถ่วงน้ำหนัก\nการหาค่าเฉลี่ยเลขคณิตรวม\nการหาค่าเฉลี่ยเลขคณิตโดยวิธีทอนค่าข้อมูล"),
+                      )
+                    ],
+                  );
+                }),
               ),
               Container(
-                padding: const EdgeInsets.only(left: 16, right: 16),
+                padding: EdgeInsets.symmetric(
+                  horizontal: screenWidth * 0.04,
+                ),
                 child: Column(
                   children: [
                     Row(
@@ -352,7 +319,7 @@ class _DetailSheetState extends State<DetailSheet> {
                       children: [
                         const Medium16px(text: "รีวิว"),
                         InkWell(
-                          child: const Regular12px(
+                          child: const Regular14px(
                             text: "เขียนรีวิว",
                             underline: true,
                             color: AppColors.primary600,
@@ -364,30 +331,26 @@ class _DetailSheetState extends State<DetailSheet> {
                         ),
                       ],
                     ),
-                    Container(
-                      child: Column(
-                        children: [
-                          Review(userRating: 4),
-                          Review(userRating: 2.5),
-                        ],
+                    Column(
+                      children: [
+                        Review(userRating: 4),
+                        Review(userRating: 2.5),
+                      ],
+                    ),
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: screenWidth * 0.04),
+                      child: InkWell(
+                        child: const Regular14px(
+                          text: "ดูทั้งหมด",
+                          underline: true,
+                          color: AppColors.primary600,
+                        ),
+                        onTap: () {
+                          AutoRouter.of(context)
+                              .push(ReviewSheetRoute(sheetId: widget.sheetId));
+                        },
                       ),
-                    ),
-                    SizedBox(
-                      height: screenHeight * 0.02,
-                    ),
-                    InkWell(
-                      child: const Regular12px(
-                        text: "ดูทั้งหมด",
-                        underline: true,
-                        color: AppColors.primary600,
-                      ),
-                      onTap: () {
-                        AutoRouter.of(context)
-                            .push(ReviewSheetRoute(sheetId: widget.sheetId));
-                      },
-                    ),
-                    SizedBox(
-                      height: screenHeight * 0.01,
                     ),
                   ],
                 ),

@@ -50,17 +50,9 @@ class Achievement extends StatelessWidget {
                           SizedBox(
                             height: constraints.maxHeight * 0.5,
                             width: constraints.maxWidth * 0.7,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            child: Row(
                               children: [
-                                SizedBox(
-                                  height: constraints.maxHeight * 0.15,
-                                ),
-                                Row(
-                                  children: [
-                                    Regular16px(text: achievementName),
-                                  ],
-                                ),
+                                Regular16px(text: achievementName),
                               ],
                             ),
                           ),
@@ -70,9 +62,6 @@ class Achievement extends StatelessWidget {
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  SizedBox(
-                                    width: constraints.maxWidth * 0.05,
-                                  ),
                                   Text(recievePoint.toString()),
                                   Icon(
                                     Icons.monetization_on_outlined,
