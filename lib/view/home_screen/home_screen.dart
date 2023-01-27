@@ -3,8 +3,6 @@ import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/components/popup.dart';
 import 'package:cheat_sheet/res/components/sheet.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
-import 'package:cheat_sheet/view/home_screen/detail_sheet.dart';
-import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../res/colors.dart';

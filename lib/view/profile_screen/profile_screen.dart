@@ -1,16 +1,30 @@
+import 'dart:io';
+
+import 'package:another_flushbar/flushbar.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:cheat_sheet/model/user.dart';
+import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/colors.dart';
+import 'package:cheat_sheet/res/components/form_field.dart';
 import 'package:cheat_sheet/res/gap_dimension.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cheat_sheet/view/profile_screen/profile_sub_page/my_sheet.dart';
 import 'package:cheat_sheet/view/profile_screen/profile_sub_page/buy_sheet.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:cheat_sheet/view_model/create_firestore.dart';
 
-const String userId = 'fakeIdRorPeteMaGae';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:form_field_validator/form_field_validator.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -24,6 +38,9 @@ class _ProfileScreenState extends State<ProfileScreen>
   late TabController tabController;
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
+  Users users = Users(username: '', password: '', email: '', uid: '', profileImage: '');
+  final firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
 
   @override
   void initState() {
@@ -47,15 +64,12 @@ class _ProfileScreenState extends State<ProfileScreen>
         builder: (context, AsyncSnapshot<User?> snapshot) {
           if (snapshot.hasData) {
             return StreamBuilder<DocumentSnapshot>(
-                stream: _firestore
-                    .collection("users")
-                    .doc(_auth.currentUser?.uid)
-                    .snapshots(),
+                stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  if (!snapshot.hasData) {
+                  if (!snapshot.hasData || snapshot.data!.data() == null) {
                     return const Center(
-                      child: Text("This is login, but data is not load"),
+                      child: CircularProgressIndicator(),
                     );
                   } else {
                     Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
@@ -70,7 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                               SliverToBoxAdapter(
                                 child: Column(
                                   children: [
-                                    Container(
+                                    SizedBox(
                                       width: double.infinity,
                                       height: screenWidth < 480
                                           ? screenHeight * GapDimension.h0_18
@@ -79,7 +93,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                         builder: (context, constraints) {
                                           return Row(
                                             children: <Widget>[
-                                              Container(
+                                              SizedBox(
                                                 width: constraints.maxWidth *
                                                     GapDimension.w0_4,
                                                 height: double.infinity,
@@ -90,14 +104,21 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                   child: Container(
                                                     decoration: BoxDecoration(
                                                       image: DecorationImage(
-                                                        image: NetworkImage(data['profileImage']),
-                                                        // fit: BoxFit.fill,
+                                                        image: CachedNetworkImageProvider(data['profileImage']),
+                                                        fit: BoxFit.cover,
                                                       ),
                                                       border: Border.all(
                                                           color: AppColors
                                                               .black800,
                                                           width: 2.0),
                                                       shape: BoxShape.circle,
+                                                      color: AppColors.black300,
+                                                    ),
+                                                    child: CircleAvatar(
+                                                      backgroundImage:
+                                                          NetworkImage(data[
+                                                              'profileImage']),
+                                                      radius: 100,
                                                     ),
                                                   ),
                                                 ),
@@ -120,14 +141,17 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                             text: data[
                                                                 'username']),
                                                         IconButton(
-                                                          icon:
-                                                              Icon(Icons.edit),
+                                                          icon: const Icon(
+                                                            Icons.edit,
+                                                            color: AppColors
+                                                                .tertiary600,
+                                                          ),
                                                           onPressed: () {
                                                             AutoRouter.of(
                                                                     context)
                                                                 .push(EditProfileRoute(
-                                                                    userId:
-                                                                        userId));
+                                                                    userId: data[
+                                                                        'uid']));
                                                           },
                                                         ),
                                                       ],
