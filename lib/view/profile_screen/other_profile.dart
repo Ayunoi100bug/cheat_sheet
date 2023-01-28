@@ -120,7 +120,7 @@ class _OtherProfileState extends State<OtherProfile> {
                   itemCount: 10,
                   itemBuilder: (context, index) {
                     return Sheet(
-                      sheetTitle: Image.asset('assets/images/logo.png'),
+                      authorImage: 'assets/images/logo.png',
                       title: 'สถิติพื้นฐานooooooooooo',
                       priceSheet: 10,
                       username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',

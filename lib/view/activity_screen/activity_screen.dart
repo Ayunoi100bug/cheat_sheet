@@ -154,7 +154,7 @@ class _ActivityScreenState extends State<ActivityScreen>
               itemCount: 3,
               itemBuilder: (context, index) {
                 return Sheet(
-                  sheetTitle: Image.asset('assets/images/logo.png'),
+                  authorImage: 'assets/images/logo.png',
                   title: 'สถิติพื้นฐานooooooooooo',
                   priceSheet: 0,
                   username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
@@ -208,7 +208,7 @@ class _ActivityScreenState extends State<ActivityScreen>
               itemCount: 3,
               itemBuilder: (context, index) {
                 return Sheet(
-                  sheetTitle: Image.asset('assets/images/logo.png'),
+                  authorImage: 'assets/images/logo.png',
                   title: 'สถิติพื้นฐานooooooooooo',
                   priceSheet: 0,
                   username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
