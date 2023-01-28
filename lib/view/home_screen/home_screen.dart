@@ -125,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 title: sheet?["sheetName"],
                                 priceSheet: sheet?["price"],
                                 username: userSnapshot.data?["username"],
-                                sheetId: (index + 1).toString(),
+                                sheetId: sheet?["sid"],
                               );
                             }
                           },
