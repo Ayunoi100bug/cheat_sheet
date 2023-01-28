@@ -54,25 +54,6 @@ class _CreateSheetScreenState extends State<CreateSheetScreen>
                 ],
               ),
             ),
-            Container(
-              height: screenWidth < 420
-                  ? constraints.maxHeight * 0.5
-                  : constraints.maxHeight * 0.4,
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                padding: EdgeInsets.all(screenWidth * 0.032),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    OutlineButton(text: 'ยกเลิก', onPressed: () {}),
-                    PrimaryButton(
-                      text: 'ตกลง',
-                      onPressed: () {},
-                    )
-                  ],
-                ),
-              ),
-            )
           ],
         );
       }),

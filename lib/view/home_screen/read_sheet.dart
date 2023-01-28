@@ -34,9 +34,6 @@ class _ReadSheetState extends State<ReadSheet> {
     return Scaffold(
       key: _scaffoldKey,
       floatingActionButton: Container(
-        padding: !isOpen
-            ? EdgeInsets.only(bottom: screenWidth * 0.04)
-            : EdgeInsets.only(bottom: screenWidth * 0.18),
         child: FloatingActionButton(
           splashColor: AppColors.warning100,
           backgroundColor: AppColors.warning200.withOpacity(0.7),
@@ -138,25 +135,6 @@ class _ReadSheetState extends State<ReadSheet> {
                 ),
               ),
             ),
-            // Container(
-            //   alignment: Alignment.center,
-            //   height:
-            //       isOpen ? screenHeight * 0.11 - 37 : screenHeight * 0.13 - 37,
-            //   child: Container(
-            //     padding: EdgeInsets.symmetric(horizontal: 28, vertical: 2),
-            //     decoration: BoxDecoration(
-            //       color: AppColors.black400,
-            //       border: Border.all(color: AppColors.black400),
-            //       borderRadius: BorderRadius.all(
-            //         Radius.circular(20),
-            //       ),
-            //     ),
-            //     child: Regular16px(
-            //       text: "1/5",
-            //       color: AppColors.white,
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),

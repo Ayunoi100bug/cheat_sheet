@@ -1,7 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/empty_router_widgets.dart';
 import 'package:cheat_sheet/view/create_sheet_screen/create_detail_sheet.dart';
-import 'package:cheat_sheet/view/create_sheet_screen/create_sheet_screen.dart';
+import 'package:cheat_sheet/view/create_sheet_screen/import_sheet_screen.dart';
 import 'package:cheat_sheet/view/create_sheet_screen/view_import_sheet.dart';
 import 'package:cheat_sheet/view/home_screen/ask_question.dart';
 import 'package:cheat_sheet/view/home_screen/create_question.dart';
