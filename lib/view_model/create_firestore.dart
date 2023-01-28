@@ -82,6 +82,7 @@ class CreateCollection {
       'detailSheet': argDetailSheet.toString().trim(),
       'sheetTypeFree': argSheetType,
       'price': argPrice,
+      'sid': mySheet.sid,
       'uid': argUid,
     });
   }
