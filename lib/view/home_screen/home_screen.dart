@@ -19,7 +19,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen>
-  with AutomaticKeepAliveClientMixin {
+    with AutomaticKeepAliveClientMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _firestore = FirebaseFirestore.instance;
 
@@ -67,8 +67,7 @@ class _HomeScreenState extends State<HomeScreen>
                           side: BorderSide(
                             color: AppColors.secondary800,
                           ),
-                          borderRadius:
-                            BorderRadius.all(Radius.circular(12)),
+                          borderRadius: BorderRadius.all(Radius.circular(12)),
                         ),
                         child: Row(
                           children: const [
@@ -110,17 +109,23 @@ class _HomeScreenState extends State<HomeScreen>
                       itemBuilder: (context, index) {
                         var sheet = snapshot.data?.docs[index];
                         return StreamBuilder<DocumentSnapshot>(
-                          stream: _firestore.collection("users").doc(sheet?["uid"]).snapshots(),
+                          stream: _firestore
+                              .collection("users")
+                              .doc(sheet?["uid"])
+                              .snapshots(),
                           builder: (context, userSnapshot) {
-                            if (!userSnapshot.hasData || userSnapshot.data!.data() == null) {
-                              return const Center(child: CircularProgressIndicator(),);
+                            if (!userSnapshot.hasData ||
+                                userSnapshot.data!.data() == null) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
                             } else {
                               return Sheet(
                                 authorImage: userSnapshot.data?["profileImage"],
                                 title: sheet?["sheetName"],
                                 priceSheet: sheet?["price"],
                                 username: userSnapshot.data?["username"],
-                                sheetId: index + 1,
+                                sheetId: (index + 1).toString(),
                               );
                             }
                           },

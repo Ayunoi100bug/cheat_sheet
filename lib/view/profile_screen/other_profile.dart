@@ -124,7 +124,7 @@ class _OtherProfileState extends State<OtherProfile> {
                       title: 'สถิติพื้นฐานooooooooooo',
                       priceSheet: 10,
                       username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
-                      sheetId: index + 1,
+                      sheetId: (index + 1).toString(),
                     );
                   },
                 ),

@@ -10,7 +10,7 @@ import '../../res/components/bottom_sheet.dart';
 import '../../utils/routes/routes.gr.dart';
 
 class ReadSheet extends StatefulWidget {
-  final int sheetId;
+  final String sheetId;
   final File file;
   const ReadSheet(
       {super.key, @PathParam() required this.sheetId, required this.file});

@@ -14,7 +14,7 @@ import 'package:unicons/unicons.dart';
 import '../../data/network/pdf_api.dart';
 
 class DetailSheet extends StatefulWidget {
-  final int sheetId;
+  final String sheetId;
   // final String sheetName;
   // final Array tag;
   // final int star;

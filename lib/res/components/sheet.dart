@@ -13,7 +13,7 @@ class Sheet extends StatelessWidget {
   final String title;
   final String username;
   final int priceSheet;
-  final int sheetId;
+  final String sheetId;
   const Sheet(
       {super.key,
       required this.authorImage,
@@ -42,11 +42,11 @@ class Sheet extends StatelessWidget {
                 Expanded(
                   child: InkWell(
                     onTap: () {
-                      AutoRouter.of(context)
-                        .navigateNamed('/home/' + sheetId.toString());
+                      AutoRouter.of(context).navigateNamed('/home/' + sheetId);
                     },
                     child: CachedNetworkImage(
-                      imageUrl: 'https://i.pinimg.com/originals/3d/83/e4/3d83e4284ba67ebcc3ca74c179ad5c1d.jpg',
+                      imageUrl:
+                          'https://i.pinimg.com/originals/3d/83/e4/3d83e4284ba67ebcc3ca74c179ad5c1d.jpg',
                       fit: BoxFit.fill,
                       width: constraints.maxWidth,
                     ),
@@ -74,7 +74,8 @@ class Sheet extends StatelessWidget {
                                 width: constraints.maxWidth * 0.3,
                                 child: CircleAvatar(
                                   radius: 50,
-                                  backgroundImage: CachedNetworkImageProvider(authorImage),
+                                  backgroundImage:
+                                      CachedNetworkImageProvider(authorImage),
                                 ),
                               ),
                               Container(
