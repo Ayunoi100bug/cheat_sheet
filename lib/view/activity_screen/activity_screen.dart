@@ -59,21 +59,18 @@ class _ActivityScreenState extends State<ActivityScreen>
               itemCount: 3,
               itemBuilder: (context, index) {
                 return DiaryQuest(
-                    questName: 'อ่านชีทครบ 3 ครั้ง',
-                    completeTime: 3,
-                    doingTime: 1,
-                    recievePoint: 10,
-                    );
+                  questName: 'อ่านชีทครบ 3 ครั้ง',
+                  completeTime: 3,
+                  doingTime: 1,
+                  recievePoint: 10,
+                );
               },
               padding: EdgeInsets.only(
                   right: screenWidth * 0.04, left: screenWidth * 0.04),
             ),
-            SizedBox(
-              height: screenHeight * 0.02,
-            ),
             Padding(
-              padding: EdgeInsets.only(
-                  left: screenWidth * 0.04, right: screenWidth * 0.04),
+              padding: EdgeInsets.symmetric(
+                  horizontal: screenWidth * 0.04, vertical: screenWidth * 0.01),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -91,7 +88,6 @@ class _ActivityScreenState extends State<ActivityScreen>
                 ],
               ),
             ),
-            SizedBox(height: screenHeight * 0.01),
             GridView.builder(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -113,15 +109,12 @@ class _ActivityScreenState extends State<ActivityScreen>
                   recievePoint: 100,
                 );
               },
-              padding: EdgeInsets.only(
-                  right: screenWidth * 0.04, left: screenWidth * 0.04),
-            ),
-            SizedBox(
-              height: screenHeight * 0.02,
             ),
             Padding(
-              padding: EdgeInsets.only(
-                  left: screenWidth * 0.04, right: screenWidth * 0.04),
+              padding: EdgeInsets.symmetric(
+                horizontal: screenWidth * 0.04,
+                vertical: screenWidth * 0.01,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -139,9 +132,6 @@ class _ActivityScreenState extends State<ActivityScreen>
                 ],
               ),
             ),
-            SizedBox(
-              height: screenHeight * 0.02,
-            ),
             GridView.builder(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -149,7 +139,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                 crossAxisCount: isPortrait ? 3 : 5,
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 12,
-                mainAxisExtent: isPortrait ? 200 : 250,
+                mainAxisExtent: isPortrait ? 180 : 210,
               ),
               itemCount: 3,
               itemBuilder: (context, index) {
@@ -162,16 +152,13 @@ class _ActivityScreenState extends State<ActivityScreen>
                 );
               },
               padding: EdgeInsets.only(
-                  bottom: screenHeight * 0.01,
+                  bottom: screenHeight * 0.02,
                   left: screenWidth * 0.04,
                   right: screenWidth * 0.04),
             ),
-            SizedBox(
-              height: screenHeight * 0.02,
-            ),
             Padding(
-              padding: EdgeInsets.only(
-                  left: screenWidth * 0.04, right: screenWidth * 0.04),
+              padding: EdgeInsets.symmetric(
+                  horizontal: screenWidth * 0.04, vertical: screenWidth * 0.01),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -189,21 +176,14 @@ class _ActivityScreenState extends State<ActivityScreen>
                 ],
               ),
             ),
-            SizedBox(
-              height: screenHeight * 0.02,
-            ),
             GridView.builder(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-                childAspectRatio: screenWidth < 480
-                    ? MediaQuery.of(context).size.width /
-                        (MediaQuery.of(context).size.height / 1.1)
-                    : MediaQuery.of(context).size.width /
-                        (MediaQuery.of(context).size.height / 0.4),
+                crossAxisCount: isPortrait ? 3 : 5,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 12,
+                mainAxisExtent: isPortrait ? 180 : 210,
               ),
               itemCount: 3,
               itemBuilder: (context, index) {
@@ -216,7 +196,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                 );
               },
               padding: EdgeInsets.only(
-                  bottom: screenHeight * 0.04,
+                  bottom: screenHeight * 0.02,
                   left: screenWidth * 0.04,
                   right: screenWidth * 0.04),
             ),

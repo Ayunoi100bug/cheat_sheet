@@ -273,6 +273,7 @@ class Regular16px extends StatelessWidget {
   final Color color;
   final String text;
   final double size;
+  final FontWeight fontWeight;
   final bool activateOverflow;
   final bool underline;
   const Regular16px(
@@ -280,6 +281,7 @@ class Regular16px extends StatelessWidget {
       this.color = AppColors.black800,
       required this.text,
       this.size = 16,
+      this.fontWeight = FontWeight.w400,
       this.activateOverflow = false,
       this.underline = false});
 
@@ -291,7 +293,7 @@ class Regular16px extends StatelessWidget {
         fontFamily: 'BaiJamjuree',
         color: color,
         fontSize: size,
-        fontWeight: FontWeight.w400,
+        fontWeight: fontWeight,
         decoration: underline ? TextDecoration.underline : TextDecoration.none,
       ),
       overflow: activateOverflow ? TextOverflow.ellipsis : null,

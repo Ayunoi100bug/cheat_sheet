@@ -94,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen>
                   crossAxisCount: isPortrait ? 3 : 5,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 16,
-                  mainAxisExtent: isPortrait ? 200 : 250,
+                  mainAxisExtent: isPortrait ? 180 : 210,
                 ),
                 itemCount: 10,
                 itemBuilder: (context, index) {
