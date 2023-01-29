@@ -7,9 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class CreateCollection {
@@ -28,6 +25,7 @@ class CreateCollection {
     final Reference storageRef = _storage.ref().child(defaultPath);
     final String url = await storageRef.getDownloadURL();
     await _firestoreDb.collection("users").doc(argUid).set({
+      'timestamp': myUser.timestamp,
       'username': argUsername.toString().trim(),
       'email': argEmail.toString().trim(),
       'uid': argUid.toString().trim(),
@@ -45,6 +43,7 @@ class CreateCollection {
       List<String>? cutName = fullName?.split(" ");
       String? firstName = cutName?[0];
       await _firestoreDb.collection("users").doc(currentuser?.uid).set({
+        'timestamp': myUser.timestamp,
         'username': firstName,
         'email': currentuser?.email,
         'uid': currentuser?.uid,
@@ -65,6 +64,7 @@ class CreateCollection {
       String? firstName = cutName?[0];
       String profileImage = userData['picture']['data']['url'];
       await _firestoreDb.collection("users").doc(currentuser?.uid).set({
+        'timestamp': myUser.timestamp,
         'username': firstName,
         'email': currentuser?.email,
         'uid': currentuser?.uid,
@@ -78,6 +78,7 @@ class CreateCollection {
   Future<void> createSheetCollection(String argSheetName, String argDetailSheet,
       bool argSheetType, int? argPrice, String argUid) async {
     await _firestoreDb.collection("sheet").doc(mySheet.sid).set({
+      'timestamp': mySheet.timestamp,
       'sheetName': argSheetName.toString().trim(),
       'detailSheet': argDetailSheet.toString().trim(),
       'sheetTypeFree': argSheetType,

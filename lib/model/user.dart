@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Users {
+  FieldValue timestamp = FieldValue.serverTimestamp();
   String username;
   String email;
   String password;
@@ -16,7 +19,8 @@ class Users {
   });
 
   Users.fromJson(Map<String, dynamic> json)
-    : username = json['username'],
+    : timestamp = json['timestamp'],
+    username = json['username'],
     email = json['email'],
     password = json['password'],
     uid = json['uid'],
@@ -25,6 +29,7 @@ class Users {
     following = json['following'];
 
   Map<String, dynamic> toJson() => {
+    'timestamp' : timestamp,
     'username': username,
     'email': email,
     'password': password,

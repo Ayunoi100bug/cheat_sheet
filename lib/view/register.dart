@@ -154,8 +154,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         myAuth.createUserWithEmail(myUser.email, myUser.password, myUser.username)
                                         .then((value) {
                                             _formKey.currentState!.reset();
-                                            // debugPrint("Register Success");
-                                            AutoRouter.of(context).pop();
+                                            AutoRouter.of(context).navigateNamed("/home/");
                                           },
                                         );
                                       } on FirebaseAuthException catch (e) {
@@ -204,8 +203,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 try {
                                 myAuth.loginWithGoogle()
                                   .then((value) {
-                                    // debugPrint("Register Success!");
-                                    AutoRouter.of(context).pop();
+                                    AutoRouter.of(context).navigateNamed("/home/");
                                   });
                                 } on FirebaseAuthException catch (e) {
                                   Fluttertoast.showToast(
@@ -224,8 +222,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 try {
                                 myAuth.loginWithFacebook()
                                   .then((value) {
-                                    // debugPrint("Login Success!");
-                                    AutoRouter.of(context).pop();
+                                    AutoRouter.of(context).navigateNamed("/home/");
                                   });
                                 } on FirebaseAuthException catch (e) {
                                   Fluttertoast.showToast(

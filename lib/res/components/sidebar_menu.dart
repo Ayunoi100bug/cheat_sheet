@@ -112,7 +112,7 @@ class _SidebarMenuState extends State<SidebarMenu> {
                       ),
                       onTap: () {
                         myAuth.logOut();
-                        // AutoRouter.of(context).push(MainScreen());
+                        AutoRouter.of(context).navigateNamed("/home/");
                       },
                     ),
                   ],

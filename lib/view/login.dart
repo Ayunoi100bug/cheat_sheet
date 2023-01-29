@@ -142,8 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           myAuth.loginWithEmail(myUser.email, myUser.password)
                                           .then((value) {
                                             _formKey.currentState!.reset();
-                                            // debugPrint("Login Success!");
-                                            AutoRouter.of(context).pop();
+                                            AutoRouter.of(context).navigateNamed("/home/");
                                           });
                                         } on FirebaseAuthException catch (e) {
                                           Fluttertoast.showToast(
@@ -218,8 +217,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   try {
                                   myAuth.loginWithGoogle()
                                     .then((value) {
-                                      // debugPrint("Login Success!");
-                                      AutoRouter.of(context).pop();
+                                      AutoRouter.of(context).navigateNamed("/home/");
                                     });
                                   } on FirebaseAuthException catch (e) {
                                     Fluttertoast.showToast(
@@ -238,8 +236,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   try {
                                   myAuth.loginWithFacebook()
                                     .then((value) {
-                                      // debugPrint("Login Success!");
-                                      AutoRouter.of(context).pop();
+                                      AutoRouter.of(context).navigateNamed("/home/");
                                     });
                                   } on FirebaseAuthException catch (e) {
                                     Fluttertoast.showToast(
