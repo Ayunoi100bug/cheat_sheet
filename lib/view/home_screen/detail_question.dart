@@ -2,7 +2,7 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 
 class DetailQuestion extends StatefulWidget {
-  final int sheetId;
+  final String sheetId;
   final int questionId;
   const DetailQuestion(
       {super.key,
@@ -18,7 +18,7 @@ class _DetailQuestionState extends State<DetailQuestion> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Text('นี่คือหน้ารายละเอียดคำถาม ของชีท ' +
-          widget.sheetId.toString() +
+          widget.sheetId +
           ' และของคำถามที่ ' +
           widget.questionId.toString()),
     );

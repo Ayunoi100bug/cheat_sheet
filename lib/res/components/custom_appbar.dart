@@ -61,7 +61,7 @@ import 'package:flutter/material.dart';
 class CustomAppBar extends AppBar {
   static Color appBarColor = AppColors.primary600;
 
-  static Text textLogo = Text("CHEETSHEET");
+  static Text textLogo = const Text("CHEATSHEET");
 
   static Image coinImage = Image.asset(
     'assets/images/coin.png',

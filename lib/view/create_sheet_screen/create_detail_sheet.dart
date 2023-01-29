@@ -32,7 +32,7 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
       sheetName: '',
       detailSheet: '',
       sheetTypeFree: true,
-      price: null,
+      price: 0,
       authorId: '');
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   CreateCollection myCollection = CreateCollection();

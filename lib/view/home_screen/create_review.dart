@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class CreateReview extends StatefulWidget {
-  final int sheetId;
+  final String sheetId;
   const CreateReview({super.key, @PathParam() required this.sheetId});
 
   @override

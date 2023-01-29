@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:flutter/material.dart';
@@ -8,14 +9,14 @@ import '../../utils/routes/routes.gr.dart';
 import 'custom_appbar.dart';
 
 class Sheet extends StatelessWidget {
-  final Image sheetTitle;
+  final String authorImage;
   final String title;
   final String username;
   final int priceSheet;
-  final int sheetId;
+  final String sheetId;
   const Sheet(
       {super.key,
-      required this.sheetTitle,
+      required this.authorImage,
       required this.title,
       required this.username,
       required this.priceSheet,
@@ -41,11 +42,11 @@ class Sheet extends StatelessWidget {
                 Expanded(
                   child: InkWell(
                     onTap: () {
-                      AutoRouter.of(context)
-                          .navigateNamed('/home/' + sheetId.toString());
+                      AutoRouter.of(context).navigateNamed('/home/' + sheetId);
                     },
-                    child: Image.network(
-                      'https://i.pinimg.com/originals/3d/83/e4/3d83e4284ba67ebcc3ca74c179ad5c1d.jpg',
+                    child: CachedNetworkImage(
+                      imageUrl:
+                          'https://i.pinimg.com/originals/3d/83/e4/3d83e4284ba67ebcc3ca74c179ad5c1d.jpg',
                       fit: BoxFit.fill,
                       width: constraints.maxWidth,
                     ),
@@ -71,8 +72,10 @@ class Sheet extends StatelessWidget {
                                     ? constraints.maxHeight * 0.45
                                     : constraints.maxHeight * 0.4,
                                 width: constraints.maxWidth * 0.3,
-                                child: Image.asset(
-                                  'assets/images/logo.png', //userImage
+                                child: CircleAvatar(
+                                  radius: 50,
+                                  backgroundImage:
+                                      CachedNetworkImageProvider(authorImage),
                                 ),
                               ),
                               Container(

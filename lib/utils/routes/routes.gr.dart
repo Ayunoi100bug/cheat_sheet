@@ -107,7 +107,7 @@ class AppRouter extends _i21.RootStackRouter {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<DetailSheetRouteArgs>(
           orElse: () =>
-              DetailSheetRouteArgs(sheetId: pathParams.getInt('sheetId')));
+              DetailSheetRouteArgs(sheetId: pathParams.getString('sheetId')));
       return _i21.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i7.DetailSheet(
@@ -131,7 +131,7 @@ class AppRouter extends _i21.RootStackRouter {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<AskQuestionRouteArgs>(
           orElse: () =>
-              AskQuestionRouteArgs(sheetId: pathParams.get('sheetId')));
+              AskQuestionRouteArgs(sheetId: pathParams.getString('sheetId')));
       return _i21.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i9.AskQuestion(
@@ -150,7 +150,7 @@ class AppRouter extends _i21.RootStackRouter {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<DetailQuestionRouteArgs>(
           orElse: () => DetailQuestionRouteArgs(
-                sheetId: pathParams.getInt('sheetId'),
+                sheetId: pathParams.getString('sheetId'),
                 questionId: pathParams.getInt('questionId'),
               ));
       return _i21.MaterialPageX<dynamic>(
@@ -166,7 +166,7 @@ class AppRouter extends _i21.RootStackRouter {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<ReviewSheetRouteArgs>(
           orElse: () =>
-              ReviewSheetRouteArgs(sheetId: pathParams.getInt('sheetId')));
+              ReviewSheetRouteArgs(sheetId: pathParams.getString('sheetId')));
       return _i21.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i12.ReviewSheet(
@@ -179,7 +179,7 @@ class AppRouter extends _i21.RootStackRouter {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<CreateReviewRouteArgs>(
           orElse: () =>
-              CreateReviewRouteArgs(sheetId: pathParams.getInt('sheetId')));
+              CreateReviewRouteArgs(sheetId: pathParams.getString('sheetId')));
       return _i21.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i13.CreateReview(
@@ -508,7 +508,7 @@ class TestUIRoute extends _i21.PageRouteInfo<void> {
 class DetailSheetRoute extends _i21.PageRouteInfo<DetailSheetRouteArgs> {
   DetailSheetRoute({
     _i22.Key? key,
-    required int sheetId,
+    required String sheetId,
   }) : super(
           DetailSheetRoute.name,
           path: ':sheetId',
@@ -530,7 +530,7 @@ class DetailSheetRouteArgs {
 
   final _i22.Key? key;
 
-  final int sheetId;
+  final String sheetId;
 
   @override
   String toString() {
@@ -543,7 +543,7 @@ class DetailSheetRouteArgs {
 class ReadSheetRoute extends _i21.PageRouteInfo<ReadSheetRouteArgs> {
   ReadSheetRoute({
     _i22.Key? key,
-    required int sheetId,
+    required String sheetId,
     required _i23.File file,
   }) : super(
           ReadSheetRoute.name,
@@ -568,7 +568,7 @@ class ReadSheetRouteArgs {
 
   final _i22.Key? key;
 
-  final int sheetId;
+  final String sheetId;
 
   final _i23.File file;
 
@@ -583,7 +583,7 @@ class ReadSheetRouteArgs {
 class AskQuestionRoute extends _i21.PageRouteInfo<AskQuestionRouteArgs> {
   AskQuestionRoute({
     _i22.Key? key,
-    required dynamic sheetId,
+    required String sheetId,
   }) : super(
           AskQuestionRoute.name,
           path: ':sheetId/read_sheet/ask_question',
@@ -605,7 +605,7 @@ class AskQuestionRouteArgs {
 
   final _i22.Key? key;
 
-  final dynamic sheetId;
+  final String sheetId;
 
   @override
   String toString() {
@@ -630,7 +630,7 @@ class CreateQuestionRoute extends _i21.PageRouteInfo<void> {
 class DetailQuestionRoute extends _i21.PageRouteInfo<DetailQuestionRouteArgs> {
   DetailQuestionRoute({
     _i22.Key? key,
-    required int sheetId,
+    required String sheetId,
     required int questionId,
   }) : super(
           DetailQuestionRoute.name,
@@ -658,7 +658,7 @@ class DetailQuestionRouteArgs {
 
   final _i22.Key? key;
 
-  final int sheetId;
+  final String sheetId;
 
   final int questionId;
 
@@ -673,7 +673,7 @@ class DetailQuestionRouteArgs {
 class ReviewSheetRoute extends _i21.PageRouteInfo<ReviewSheetRouteArgs> {
   ReviewSheetRoute({
     _i22.Key? key,
-    required int sheetId,
+    required String sheetId,
   }) : super(
           ReviewSheetRoute.name,
           path: ':sheetId/review_sheet',
@@ -695,7 +695,7 @@ class ReviewSheetRouteArgs {
 
   final _i22.Key? key;
 
-  final int sheetId;
+  final String sheetId;
 
   @override
   String toString() {
@@ -708,7 +708,7 @@ class ReviewSheetRouteArgs {
 class CreateReviewRoute extends _i21.PageRouteInfo<CreateReviewRouteArgs> {
   CreateReviewRoute({
     _i22.Key? key,
-    required int sheetId,
+    required String sheetId,
   }) : super(
           CreateReviewRoute.name,
           path: ':sheetId/create_review',
@@ -730,7 +730,7 @@ class CreateReviewRouteArgs {
 
   final _i22.Key? key;
 
-  final int sheetId;
+  final String sheetId;
 
   @override
   String toString() {

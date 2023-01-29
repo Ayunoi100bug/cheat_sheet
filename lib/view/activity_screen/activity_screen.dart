@@ -59,11 +59,11 @@ class _ActivityScreenState extends State<ActivityScreen>
               itemCount: 3,
               itemBuilder: (context, index) {
                 return DiaryQuest(
-                    questName: 'อ่านชีทครบ 3 ครั้ง',
-                    completeTime: 3,
-                    doingTime: 1,
-                    recievePoint: 10,
-                    );
+                  questName: 'อ่านชีทครบ 3 ครั้ง',
+                  completeTime: 3,
+                  doingTime: 1,
+                  recievePoint: 10,
+                );
               },
               padding: EdgeInsets.only(
                   right: screenWidth * 0.04, left: screenWidth * 0.04),
@@ -154,11 +154,11 @@ class _ActivityScreenState extends State<ActivityScreen>
               itemCount: 3,
               itemBuilder: (context, index) {
                 return Sheet(
-                  sheetTitle: Image.asset('assets/images/logo.png'),
+                  authorImage: 'assets/images/logo.png',
                   title: 'สถิติพื้นฐานooooooooooo',
                   priceSheet: 0,
                   username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
-                  sheetId: index + 1,
+                  sheetId: (index + 1).toString(),
                 );
               },
               padding: EdgeInsets.only(
@@ -208,11 +208,11 @@ class _ActivityScreenState extends State<ActivityScreen>
               itemCount: 3,
               itemBuilder: (context, index) {
                 return Sheet(
-                  sheetTitle: Image.asset('assets/images/logo.png'),
+                  authorImage: 'assets/images/logo.png',
                   title: 'สถิติพื้นฐานooooooooooo',
                   priceSheet: 0,
                   username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
-                  sheetId: index + 1,
+                  sheetId: (index + 1).toString(),
                 );
               },
               padding: EdgeInsets.only(
