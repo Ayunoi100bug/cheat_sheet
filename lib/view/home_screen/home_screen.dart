@@ -33,22 +33,22 @@ class _HomeScreenState extends State<HomeScreen>
           padding: EdgeInsets.all(screenWidth * GapDimension.w0_032),
           child: Column(
             children: [
-              InkWell(
-                onTap: () {
-                  AutoRouter.of(context).push(TestUIRoute());
-                },
-                child: Text('กด ตรงนี้ นะ บุ๊คคค'),
-              ),
-              PrimaryButton(
-                  text: "Top snackBar",
-                  onPressed: () => Popup.showSnackBar(
-                      context,
-                      false,
-                      Icon(
-                        Icons.celebration_outlined,
-                        color: AppColors.white,
-                      ),
-                      'ความสำเร็จเสร็จสิ้น "เช็คอินครบ 5 วัน"')),
+              // InkWell(
+              //   onTap: () {
+              //     AutoRouter.of(context).push(TestUIRoute());
+              //   },
+              //   child: Text('กด ตรงนี้ นะ บุ๊คคค'),
+              // ),
+              // PrimaryButton(
+              //     text: "Top snackBar",
+              //     onPressed: () => Popup.showSnackBar(
+              //         context,
+              //         false,
+              //         Icon(
+              //           Icons.celebration_outlined,
+              //           color: AppColors.white,
+              //         ),
+              //         'ความสำเร็จเสร็จสิ้น "เช็คอินครบ 5 วัน"')),
               Padding(padding: EdgeInsets.symmetric(vertical: 8)),
               SizedBox(
                 width: double.infinity,

@@ -62,20 +62,47 @@ class _TestUIPageState extends State<TestUIPage> {
                 //         );
                 //       }),
                 // ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: screenHeight * 0.020,
-                    left: screenHeight * 0.036,
-                    right: screenHeight * 0.036,
-                    bottom: screenHeight * 0.020,
+                SingleChildScrollView(
+                  child: Container(
+                    color: Colors.amber,
+                    height: screenHeight * 0.3,
+                    child: Column(
+                      children: [
+                        Ask(
+                          focus: true,
+                          selectedIndex: 0,
+                          currentIndex: 0,
+                        ),
+                        ListView.builder(
+                          itemCount: 3,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return Answer(
+                              focus: false,
+                              selectedIndex: 0,
+                              currentIndex: 0,
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                  child: LongButton(
-                    text: "เพิ่มความคิดเห็น",
-                    height: 42,
-                    width: screenWidth,
-                    onPressed: () {},
-                  ),
-                )
+                ),
+
+                // Padding(
+                //   padding: EdgeInsets.only(
+                //     top: screenHeight * 0.020,
+                //     left: screenHeight * 0.036,
+                //     right: screenHeight * 0.036,
+                //     bottom: screenHeight * 0.020,
+                //   ),
+                //   child: LongButton(
+                //     text: "เพิ่มความคิดเห็น",
+                //     height: 42,
+                //     width: screenWidth,
+                //     onPressed: () {},
+                //   ),
+                // )
               ],
             ),
           );
