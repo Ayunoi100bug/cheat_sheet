@@ -242,10 +242,27 @@ class LongButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       onPressed: onPressed,
-      child: Regular16px(
-        text: text,
-        color: textcolor,
-      ),
+      child: LayoutBuilder(builder: (context, constraints) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Transform.scale(
+              scaleX: -1,
+              child: Icon(
+                Icons.message_outlined,
+                color: AppColors.white,
+              ),
+            ),
+            SizedBox(
+              width: constraints.maxWidth * 0.03,
+            ),
+            Regular16px(
+              text: text,
+              color: textcolor,
+            ),
+          ],
+        );
+      }),
     );
   }
 }

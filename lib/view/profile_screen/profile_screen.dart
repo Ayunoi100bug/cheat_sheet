@@ -34,11 +34,12 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen>
-  with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   late TabController tabController;
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
-  Users users = Users(username: '', password: '', email: '', uid: '', profileImage: '');
+  Users users =
+      Users(username: '', password: '', email: '', uid: '', profileImage: '');
   final firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
 
@@ -64,7 +65,10 @@ class _ProfileScreenState extends State<ProfileScreen>
         builder: (context, AsyncSnapshot<User?> snapshot) {
           if (snapshot.hasData) {
             return StreamBuilder<DocumentSnapshot>(
-                stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
+                stream: _firestore
+                    .collection("users")
+                    .doc(_auth.currentUser?.uid)
+                    .snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<DocumentSnapshot> snapshot) {
                   if (!snapshot.hasData || snapshot.data!.data() == null) {
@@ -72,7 +76,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                       child: CircularProgressIndicator(),
                     );
                   } else {
-                    Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+                    Map<String, dynamic> data =
+                        snapshot.data!.data() as Map<String, dynamic>;
                     return Scaffold(
                       body: SafeArea(
                         child: DefaultTabController(
@@ -104,13 +109,11 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                   child: Container(
                                                     decoration: BoxDecoration(
                                                       image: DecorationImage(
-                                                        image: CachedNetworkImageProvider(data['profileImage']),
+                                                        image: CachedNetworkImageProvider(
+                                                            data[
+                                                                'profileImage']),
                                                         fit: BoxFit.cover,
                                                       ),
-                                                      border: Border.all(
-                                                          color: AppColors
-                                                              .black800,
-                                                          width: 2.0),
                                                       shape: BoxShape.circle,
                                                       color: AppColors.black300,
                                                     ),

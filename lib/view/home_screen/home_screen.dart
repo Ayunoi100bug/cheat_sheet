@@ -28,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen>
     double screenWidth = MediaQuery.of(context).size.width;
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
 
+
     return StreamBuilder<QuerySnapshot>(
       stream: _firestore.collection("sheet").snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -82,6 +83,7 @@ class _HomeScreenState extends State<HomeScreen>
                           ],
                         ),
                       ),
+
                     ),
                     const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
                     Container(
@@ -136,10 +138,34 @@ class _HomeScreenState extends State<HomeScreen>
                   ],
                 ),
               ),
-            ),
-          );
-        }
-      },
+
+              Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+              GridView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: isPortrait ? 3 : 5,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 16,
+                  mainAxisExtent: isPortrait ? 180 : 210,
+                ),
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return Sheet(
+                    sheetTitle: Image.asset('assets/images/logo.png'),
+                    title: 'สถิติพื้นฐานooooooooooo',
+                    priceSheet: 10,
+                    username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
+                    sheetId: index + 1,
+                  );
+                },
+                padding: EdgeInsets.only(bottom: 8),
+              ),
+            ],
+          ),
+        ),
+      ),
+
     );
   }
 
