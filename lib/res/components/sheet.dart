@@ -62,6 +62,7 @@ class Sheet extends StatelessWidget {
                           width: constraints.maxWidth,
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Container(
                                 padding: EdgeInsets.only(
@@ -92,7 +93,7 @@ class Sheet extends StatelessWidget {
                                       Container(
                                         height: constraints.maxHeight * 0.5,
                                         width: constraints.maxWidth,
-                                        alignment: Alignment.bottomCenter,
+                                        alignment: Alignment.bottomLeft,
                                         child: Regular14px(
                                           text: title,
                                           activateOverflow: true,
@@ -101,7 +102,7 @@ class Sheet extends StatelessWidget {
                                       Container(
                                         height: constraints.maxHeight * 0.5,
                                         width: constraints.maxWidth,
-                                        alignment: Alignment.topCenter,
+                                        alignment: Alignment.topLeft,
                                         child: Regular12px(
                                           text: username,
                                           activateOverflow: true,
