@@ -192,7 +192,11 @@ class _EditProfileState extends State<EditProfile> {
                                             errorText:
                                                 'Please enter new username.'),
                                         onSaved: (value) {
-                                          users.username = value!;
+                                          if (value == '') {
+                                            users.username = data['username'];
+                                          } else {
+                                            users.username = value!;
+                                          }
                                         }),
                                   ),
                                 ),
