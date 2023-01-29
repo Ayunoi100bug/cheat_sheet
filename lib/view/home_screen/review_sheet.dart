@@ -12,7 +12,7 @@ import '../review_sub_page/_5star.dart';
 import '../review_sub_page/all.dart';
 
 class ReviewSheet extends StatefulWidget {
-  final int sheetId;
+  final String sheetId;
   const ReviewSheet({super.key, @PathParam() required this.sheetId});
 
   @override

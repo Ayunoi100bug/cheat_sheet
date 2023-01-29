@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import '../../res/components/ask.dart';
 
 class AskQuestion extends StatefulWidget {
-  final sheetId;
+  final String sheetId;
   const AskQuestion({super.key, @PathParam() required this.sheetId});
 
   @override
