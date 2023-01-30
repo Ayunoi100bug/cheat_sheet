@@ -23,7 +23,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
+  Users myUser =
+      Users(email: '', password: '', username: '', uid: '', profileImage: '');
   AuthService myAuth = AuthService();
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
 
@@ -139,15 +140,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                       if (_formKey.currentState!.validate()) {
                                         _formKey.currentState!.save();
                                         try {
-                                          myAuth.loginWithEmail(myUser.email, myUser.password)
-                                          .then((value) {
+                                          myAuth
+                                              .loginWithEmail(
+                                                  myUser.email, myUser.password)
+                                              .then((value) {
                                             _formKey.currentState!.reset();
-                                            AutoRouter.of(context).navigateNamed("/home/");
+                                            AutoRouter.of(context)
+                                                .navigateNamed("/home/");
                                           });
                                         } on FirebaseAuthException catch (e) {
                                           Fluttertoast.showToast(
-                                            msg: e.message.toString(),
-                                            gravity: ToastGravity.BOTTOM);
+                                              msg: e.message.toString(),
+                                              gravity: ToastGravity.BOTTOM);
                                         }
                                       }
                                     },
@@ -215,14 +219,14 @@ class _LoginScreenState extends State<LoginScreen> {
                               IconButton(
                                 onPressed: () async {
                                   try {
-                                  myAuth.loginWithGoogle()
-                                    .then((value) {
-                                      AutoRouter.of(context).navigateNamed("/home/");
+                                    myAuth.loginWithGoogle().then((value) {
+                                      AutoRouter.of(context)
+                                          .navigateNamed("/home/");
                                     });
                                   } on FirebaseAuthException catch (e) {
                                     Fluttertoast.showToast(
-                                      msg: e.message.toString(),
-                                      gravity: ToastGravity.BOTTOM);
+                                        msg: e.message.toString(),
+                                        gravity: ToastGravity.BOTTOM);
                                   }
                                 },
                                 icon: const Icon(
@@ -234,14 +238,14 @@ class _LoginScreenState extends State<LoginScreen> {
                               IconButton(
                                 onPressed: () async {
                                   try {
-                                  myAuth.loginWithFacebook()
-                                    .then((value) {
-                                      AutoRouter.of(context).navigateNamed("/home/");
+                                    myAuth.loginWithFacebook().then((value) {
+                                      AutoRouter.of(context)
+                                          .navigateNamed("/home/");
                                     });
                                   } on FirebaseAuthException catch (e) {
                                     Fluttertoast.showToast(
-                                      msg: e.message.toString(),
-                                      gravity: ToastGravity.BOTTOM);
+                                        msg: e.message.toString(),
+                                        gravity: ToastGravity.BOTTOM);
                                   }
                                 },
                                 icon: const Icon(
