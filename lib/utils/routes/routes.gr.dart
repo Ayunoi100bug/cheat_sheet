@@ -151,7 +151,7 @@ class AppRouter extends _i21.RootStackRouter {
       final args = routeData.argsAs<DetailQuestionRouteArgs>(
           orElse: () => DetailQuestionRouteArgs(
                 sheetId: pathParams.getString('sheetId'),
-                questionId: pathParams.getInt('questionId'),
+                questionId: pathParams.getString('questionId'),
               ));
       return _i21.MaterialPageX<dynamic>(
         routeData: routeData,
@@ -631,7 +631,7 @@ class DetailQuestionRoute extends _i21.PageRouteInfo<DetailQuestionRouteArgs> {
   DetailQuestionRoute({
     _i22.Key? key,
     required String sheetId,
-    required int questionId,
+    required String questionId,
   }) : super(
           DetailQuestionRoute.name,
           path: ':sheetId/read_sheet/ask_question/:questionId',
@@ -660,7 +660,7 @@ class DetailQuestionRouteArgs {
 
   final String sheetId;
 
-  final int questionId;
+  final String questionId;
 
   @override
   String toString() {
