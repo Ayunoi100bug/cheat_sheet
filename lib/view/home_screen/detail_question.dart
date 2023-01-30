@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class DetailQuestion extends StatefulWidget {
   final String sheetId;
-  final int questionId;
+  final String questionId;
   const DetailQuestion(
       {super.key,
       @PathParam() required this.sheetId,
@@ -20,7 +20,7 @@ class _DetailQuestionState extends State<DetailQuestion> {
       body: Text('นี่คือหน้ารายละเอียดคำถาม ของชีท ' +
           widget.sheetId +
           ' และของคำถามที่ ' +
-          widget.questionId.toString()),
+          widget.questionId),
     );
   }
 }
