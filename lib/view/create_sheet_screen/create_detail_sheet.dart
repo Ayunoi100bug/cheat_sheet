@@ -260,7 +260,9 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                             padding: EdgeInsets.all(screenHeight * 0.024),
                             child: OutlineButton(
                               text: 'ยกเลิก',
-                              onPressed: () {},
+                              onPressed: () {
+                                AutoRouter.of(context).popUntilRoot();
+                              },
                             ),
                           ),
                           Container(
@@ -285,7 +287,7 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                                     (value) {
                                       _formKey.currentState!.reset();
                                       // debugPrint("Register Success");
-                                      AutoRouter.of(context).pop();
+                                      AutoRouter.of(context).popUntilRoot();
                                     },
                                   );
                                 } on FirebaseAuthException catch (e) {
