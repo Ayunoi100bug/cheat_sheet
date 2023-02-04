@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 
 import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/components/flushbar.dart';
+import 'package:cheat_sheet/res/components/popupDialog.dart';
 import 'package:cheat_sheet/res/components/sheet.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -41,12 +42,21 @@ class _HomeScreenState extends State<HomeScreen>
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    // InkWell(
-                    //   onTap: () {
-                    //     AutoRouter.of(context).push(const TestUIRoute());
-                    //   },
-                    //   child: const Text('กด ตรงนี้ นะ บุ๊คคค'),
-                    // ),
+                    // ElevatedButton(
+                    //     onPressed: () {
+                    //       openDialog();
+                    //     },
+                    //     child: Text("data")),
+                    InkWell(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              Popup_DeletePage(context),
+                        );
+                      },
+                      child: Text('Popup Dialog'),
+                    ),
                     Padding(
                         padding:
                             EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
@@ -142,6 +152,20 @@ class _HomeScreenState extends State<HomeScreen>
       },
     );
   }
+
+  // Future openDialog() => showDialog(
+  //       context: context,
+  //       builder: (context) => AlertDialog(
+  //         title: Text('Title'),
+  //         content: Text('Content'),
+  //         actions: [
+  //           TextButton(
+  //             child: Text('Submit'),
+  //             onPressed: () {},
+  //           ),
+  //         ],
+  //       ),
+  //     );
 
   @override
   // TODO: implement wantKeepAlive
