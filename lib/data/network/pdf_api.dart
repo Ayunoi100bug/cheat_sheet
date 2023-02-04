@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:cheat_sheet/res/components/popup.dart';
+import 'package:cheat_sheet/res/components/flushbar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +24,7 @@ class PDFApi {
     if (result == null) return null;
     final fileNameExtension = extension(result.names[0]!);
     if (fileNameExtension != '.pdf') {
-      Popup.showSnackBar(
+      FlushbarPopup.showSnackBar(
           context,
           true,
           Icon(

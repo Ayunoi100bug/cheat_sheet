@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class Popup {
+class FlushbarPopup {
   static showSnackBar(context, bool error, Icon icon, String message) {
     return Flushbar(
       backgroundColor: error ? AppColors.error600 : AppColors.secondary500,
