@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 
 import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/components/flushbar.dart';
+import 'package:cheat_sheet/res/components/popup_dialog.dart';
 import 'package:cheat_sheet/res/components/sheet.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -47,6 +48,16 @@ class _HomeScreenState extends State<HomeScreen>
                     //   },
                     //   child: const Text('กด ตรงนี้ นะ บุ๊คคค'),
                     // ),
+                    InkWell(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              Popup_DeletePage(context),
+                        );
+                      },
+                      child: Text('Popup Dialog'),
+                    ),
                     Padding(
                         padding:
                             EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
