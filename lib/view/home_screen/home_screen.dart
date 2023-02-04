@@ -42,11 +42,12 @@ class _HomeScreenState extends State<HomeScreen>
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    // ElevatedButton(
-                    //     onPressed: () {
-                    //       openDialog();
-                    //     },
-                    //     child: Text("data")),
+                    // InkWell(
+                    //   onTap: () {
+                    //     AutoRouter.of(context).push(const TestUIRoute());
+                    //   },
+                    //   child: const Text('กด ตรงนี้ นะ บุ๊คคค'),
+                    // ),
                     InkWell(
                       onTap: () {
                         showDialog(
