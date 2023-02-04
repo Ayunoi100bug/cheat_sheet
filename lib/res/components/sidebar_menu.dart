@@ -83,7 +83,8 @@ class _SidebarMenuState extends State<SidebarMenu> {
                             icon: FontAwesomeIcons.coins,
                             title: 'เติมเงิน',
                             onTap: () {
-                              print("payment");
+                              Navigator.pop(context);
+                              AutoRouter.of(context).push(TopUpRoute());
                             },
                           ),
                           CustomListTile(
@@ -165,7 +166,8 @@ class _SidebarMenuState extends State<SidebarMenu> {
                             icon: FontAwesomeIcons.coins,
                             title: 'เติมเงิน',
                             onTap: () {
-                              print("payment");
+                              Navigator.pop(context);
+                              AutoRouter.of(context).push(TopUpRoute());
                             },
                           ),
                           CustomListTile(
