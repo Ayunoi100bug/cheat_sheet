@@ -6,7 +6,7 @@ import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import '../../res/colors.dart';
-import '../../res/components/popup.dart';
+import '../../res/components/flushbar.dart';
 import '../../res/typo.dart';
 
 class ViewImportSheet extends StatefulWidget {
