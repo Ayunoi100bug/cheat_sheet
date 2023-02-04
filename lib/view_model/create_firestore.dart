@@ -1,6 +1,8 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:cheat_sheet/model/sheet.dart';
+import 'package:cheat_sheet/model/sheet_list.dart';
 import 'package:cheat_sheet/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,11 +18,15 @@ class CreateCollection {
   final User? firebaseUser = FirebaseAuth.instance.currentUser;
   final FirebaseFirestore _firestoreDb = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
-  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
+  Users myUser =
+      Users(email: '', password: '', username: '', uid: '', profileImage: '');
   Sheets mySheet =
       Sheets(sheetName: '', detailSheet: '', sheetTypeFree: true, authorId: '');
+  SheetLists _sheetLists =
+      SheetLists(sheetListName: '', sid: [], uid: '', sheetListId: '');
 
-  Future<void> createUserCollection(String argUsername, String argEmail, String argUid) async {
+  Future<void> createUserCollection(
+      String argUsername, String argEmail, String argUid) async {
     const String defaultPath = "images/default_profile.png";
     final Reference storageRef = _storage.ref().child(defaultPath);
     final String url = await storageRef.getDownloadURL();
@@ -32,6 +38,7 @@ class CreateCollection {
       'profileImage': url,
       'follower': myUser.follower,
       'following': myUser.following,
+      'sheetLists': myUser.sheetLists,
     });
   }
 
@@ -85,6 +92,17 @@ class CreateCollection {
       'price': argPrice,
       'sid': mySheet.sid,
       'uid': argUid,
+    });
+  }
+
+  Future<void> createSheetListCollection(String argSheetListName, List? argSid,
+      String argUid, String argSheetListId) async {
+    await _firestoreDb.collection("sheetList").doc(argSheetListId).set({
+      'timestamp': mySheet.timestamp,
+      'sheetListName': argSheetListName.toString().trim(),
+      'sid': argSid,
+      'uid': argUid,
+      'sheetListId': argSheetListId,
     });
   }
 }

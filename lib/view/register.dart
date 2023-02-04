@@ -24,7 +24,8 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
+  Users myUser =
+      Users(email: '', password: '', username: '', uid: '', profileImage: '');
   AuthService myAuth = AuthService();
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -60,15 +61,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           const Medium20px(text: "ยินดีต้อนรับ!"),
-                          SizedBox(height: screenHeight *GapDimension.h0_01),
+                          SizedBox(height: screenHeight * GapDimension.h0_01),
                           const Regular16px(text: "สร้างบัญชีเพื่อเข้าใช้งาน"),
-                          SizedBox(height: screenHeight *GapDimension.h0_024),
+                          SizedBox(height: screenHeight * GapDimension.h0_024),
                         ],
                       ),
                       Container(
                         height: screenWidth < 480
-                            ? screenHeight *GapDimension.h0_18
-                            : screenHeight *GapDimension.h0_36,
+                            ? screenHeight * GapDimension.h0_18
+                            : screenHeight * GapDimension.h0_36,
                         decoration: const BoxDecoration(
                           image: DecorationImage(
                               image: AssetImage('assets/images/logo.png')),
@@ -76,7 +77,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(
-                          horizontal: screenWidth *GapDimension.w0_096,
+                          horizontal: screenWidth * GapDimension.w0_096,
                         ),
                         child: Form(
                           key: _formKey,
@@ -86,7 +87,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 alignment: Alignment.centerLeft,
                                 child: Regular16px(text: "ชื่อ"),
                               ),
-                              SizedBox(height: screenHeight *GapDimension.h0_01),
+                              SizedBox(
+                                  height: screenHeight * GapDimension.h0_01),
                               // Username
                               MyTextFormField(
                                 validator: RequiredValidator(
@@ -96,12 +98,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 },
                                 hintText: "ชื่อ",
                               ),
-                              SizedBox(height: screenHeight *GapDimension.h0_02),
+                              SizedBox(
+                                  height: screenHeight * GapDimension.h0_02),
                               const Align(
                                 alignment: Alignment.centerLeft,
                                 child: Regular16px(text: "E-mail"),
                               ),
-                              SizedBox(height: screenHeight *GapDimension.h0_01),
+                              SizedBox(
+                                  height: screenHeight * GapDimension.h0_01),
                               // E-mail
                               MyTextFormField(
                                 validator: MultiValidator([
@@ -117,12 +121,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 keyboardType: TextInputType.emailAddress,
                                 hintText: "example@email.com",
                               ),
-                              SizedBox(height: screenHeight *GapDimension.h0_02),
+                              SizedBox(
+                                  height: screenHeight * GapDimension.h0_02),
                               const Align(
                                 alignment: Alignment.centerLeft,
                                 child: Regular16px(text: "รหัสผ่าน"),
                               ),
-                              SizedBox(height: screenHeight *GapDimension.h0_01),
+                              SizedBox(
+                                  height: screenHeight * GapDimension.h0_01),
                               // Password
                               MyTextFormField(
                                 validator: RequiredValidator(
@@ -134,10 +140,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 hintText: "รหัสผ่าน",
                                 helperText: "ต้องใช้ตัวอักษร 6-12 ตัวอักษร",
                               ),
-                              SizedBox(height: screenHeight *GapDimension.h0_03),
+                              SizedBox(
+                                  height: screenHeight * GapDimension.h0_03),
                               SizedBox(
                                 height: 40,
-                                width: screenWidth *GapDimension.w0_4,
+                                width: screenWidth * GapDimension.w0_4,
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     alignment: Alignment.center,
@@ -151,10 +158,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     if (_formKey.currentState!.validate()) {
                                       _formKey.currentState!.save();
                                       try {
-                                        myAuth.createUserWithEmail(myUser.email, myUser.password, myUser.username)
-                                        .then((value) {
+                                        myAuth
+                                            .createUserWithEmail(
+                                                myUser.email,
+                                                myUser.password,
+                                                myUser.username)
+                                            .then(
+                                          (value) {
                                             _formKey.currentState!.reset();
-                                            AutoRouter.of(context).navigateNamed("/home/");
+                                            AutoRouter.of(context)
+                                                .navigateNamed("/home/");
                                           },
                                         );
                                       } on FirebaseAuthException catch (e) {
@@ -175,11 +188,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: screenHeight *GapDimension.h0_02),
+                      SizedBox(height: screenHeight * GapDimension.h0_02),
                       Container(
                         margin: EdgeInsets.only(
-                            left: screenWidth *GapDimension.w0_048,
-                            right: screenWidth *GapDimension.w0_048),
+                            left: screenWidth * GapDimension.w0_048,
+                            right: screenWidth * GapDimension.w0_048),
                         child: const Divider(
                           thickness: 1,
                         ),
@@ -189,26 +202,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         color: AppColors.black600,
                       ),
                       SizedBox(
-                        height: screenHeight *GapDimension.h0_01,
+                        height: screenHeight * GapDimension.h0_01,
                       ),
                       Padding(
                         padding: EdgeInsets.only(
-                            left: screenWidth *GapDimension.w0_044,
-                            right: screenWidth *GapDimension.w0_044),
+                            left: screenWidth * GapDimension.w0_044,
+                            right: screenWidth * GapDimension.w0_044),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             IconButton(
                               onPressed: () async {
                                 try {
-                                myAuth.loginWithGoogle()
-                                  .then((value) {
-                                    AutoRouter.of(context).navigateNamed("/home/");
+                                  myAuth.loginWithGoogle().then((value) {
+                                    AutoRouter.of(context)
+                                        .navigateNamed("/home/");
                                   });
                                 } on FirebaseAuthException catch (e) {
                                   Fluttertoast.showToast(
-                                    msg: e.message.toString(),
-                                    gravity: ToastGravity.BOTTOM);
+                                      msg: e.message.toString(),
+                                      gravity: ToastGravity.BOTTOM);
                                 }
                               },
                               icon: const Icon(
@@ -220,14 +233,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             IconButton(
                               onPressed: () async {
                                 try {
-                                myAuth.loginWithFacebook()
-                                  .then((value) {
-                                    AutoRouter.of(context).navigateNamed("/home/");
+                                  myAuth.loginWithFacebook().then((value) {
+                                    AutoRouter.of(context)
+                                        .navigateNamed("/home/");
                                   });
                                 } on FirebaseAuthException catch (e) {
                                   Fluttertoast.showToast(
-                                    msg: e.message.toString(),
-                                    gravity: ToastGravity.BOTTOM);
+                                      msg: e.message.toString(),
+                                      gravity: ToastGravity.BOTTOM);
                                 }
                               },
                               icon: const Icon(
