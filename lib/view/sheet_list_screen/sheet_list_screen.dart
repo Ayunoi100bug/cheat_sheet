@@ -55,50 +55,7 @@ class _SheetListScreenState extends State<SheetListScreen>
                       ],
                     ),
                     onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        useRootNavigator: true,
-                        shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(10),
-                        )),
-                        builder: (BuildContext context) {
-                          return SizedBox(
-                            height: 300,
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  const Regular16px(
-                                    text: 'ชีทลิสต์ใหม่',
-                                  ),
-                                  Container(
-                                    width: 150,
-                                    decoration: BoxDecoration(
-                                      border:
-                                          Border.all(color: AppColors.black400),
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: const TextField(
-                                      textAlign: TextAlign.center,
-                                      maxLines: 1,
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: 'ชื่อชีทลิสต์',
-                                      ),
-                                    ),
-                                  ),
-                                  PrimaryButton(
-                                    text: 'บันทึก',
-                                    onPressed: () {},
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      );
+                      _BottomSheet(context);
                     },
                   ),
                 ),
@@ -168,4 +125,49 @@ class _SheetListScreenState extends State<SheetListScreen>
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
+}
+
+void _BottomSheet(context) {
+  showModalBottomSheet(
+    context: context,
+    useRootNavigator: true,
+    shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+      top: Radius.circular(10),
+    )),
+    builder: (BuildContext context) {
+      return SizedBox(
+        height: 300,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const Regular16px(
+                text: 'ชีทลิสต์ใหม่',
+              ),
+              Container(
+                width: 150,
+                decoration: BoxDecoration(
+                  border: Border.all(color: AppColors.black400),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const TextField(
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'ชื่อชีทลิสต์',
+                  ),
+                ),
+              ),
+              PrimaryButton(
+                text: 'บันทึก',
+                onPressed: () {},
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }
