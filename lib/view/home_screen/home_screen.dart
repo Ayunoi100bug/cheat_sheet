@@ -10,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../res/colors.dart';
+import '../../res/components/popup_create_tag.dart';
 import '../../res/gap_dimension.dart';
 import '../../res/typo.dart';
 
@@ -68,6 +69,16 @@ class _HomeScreenState extends State<HomeScreen>
                         );
                       },
                       child: Text('Popup Login'),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              Popup_CreateTag(context),
+                        );
+                      },
+                      child: Text('Popup Create Tag'),
                     ),
                     Padding(
                         padding:
