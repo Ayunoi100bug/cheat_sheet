@@ -3,6 +3,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/components/flushbar.dart';
 import 'package:cheat_sheet/res/components/popup_dialog.dart';
+import 'package:cheat_sheet/res/components/popup_login.dart';
 import 'package:cheat_sheet/res/components/sheet.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -53,10 +54,20 @@ class _HomeScreenState extends State<HomeScreen>
                         showDialog(
                           context: context,
                           builder: (BuildContext context) =>
-                              Popup_DeletePage(context),
+                              Popup_DeleteSheet(context),
                         );
                       },
                       child: Text('Popup Dialog'),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              Popup_Login(context),
+                        );
+                      },
+                      child: Text('Popup Login'),
                     ),
                     Padding(
                         padding:

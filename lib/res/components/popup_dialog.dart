@@ -18,7 +18,13 @@ Widget Popup_DeletePage(BuildContext context) {
           'assets/images/error.png',
           width: 70,
         ),
+        SizedBox(
+          height: screenHeight * 0.008,
+        ),
         Regular14px(text: 'ต้องการที่จะลบหน้านี้หรือไม่?'),
+        SizedBox(
+          height: screenHeight * 0.008,
+        ),
         Regular12px(
           text: 'หน้านี้จะถูกลบถาวร',
           color: AppColors.black600,
@@ -53,7 +59,13 @@ Widget Popup_DeleteSheet(BuildContext context) {
           'assets/images/error.png',
           width: 70,
         ),
+        SizedBox(
+          height: screenHeight * 0.008,
+        ),
         Regular14px(text: 'ต้องการที่จะลบชีทหรือไม่?'),
+        SizedBox(
+          height: screenHeight * 0.008,
+        ),
         Regular12px(
           text: 'ชีทนี้จะถูกลบถาวร',
           color: AppColors.black600,
@@ -88,7 +100,13 @@ Widget Popup_DeleteSheetList(BuildContext context) {
           'assets/images/error.png',
           width: 70,
         ),
+        SizedBox(
+          height: screenHeight * 0.008,
+        ),
         Regular14px(text: 'ต้องการที่จะลบชีทลิสต์หรือไม่?'),
+        SizedBox(
+          height: screenHeight * 0.008,
+        ),
         Regular12px(
           text: 'ชีทลิสต์นี้จะถูกลบถาวร',
           color: AppColors.black600,
