@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:another_flushbar/flushbar.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/data/network/pdf_api.dart';
@@ -22,7 +20,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:uuid/uuid.dart';
 import '../../res/gap_dimension.dart';
-import '../../res/components/review.dart';
 
 const uuid = Uuid();
 
@@ -38,7 +35,6 @@ class _SheetListScreenState extends State<SheetListScreen>
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       resizeToAvoidBottomInset: true,

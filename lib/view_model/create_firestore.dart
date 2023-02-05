@@ -1,8 +1,6 @@
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:cheat_sheet/model/sheet.dart';
-import 'package:cheat_sheet/model/sheet_list.dart';
 import 'package:cheat_sheet/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,8 +20,6 @@ class CreateCollection {
       Users(email: '', password: '', username: '', uid: '', profileImage: '');
   Sheets mySheet =
       Sheets(sheetName: '', detailSheet: '', sheetTypeFree: true, authorId: '');
-  SheetLists _sheetLists =
-      SheetLists(sheetListName: '', sid: [], uid: '', sheetListId: '');
 
   Future<void> createUserCollection(
       String argUsername, String argEmail, String argUid) async {
