@@ -5,6 +5,7 @@ import '../colors.dart';
 class MyTextFormField extends StatelessWidget {
   final String? hintText;
   final String? helperText;
+  final AutovalidateMode autovalidateMode;
   final FormFieldValidator<String> validator;
   final FormFieldSetter<String> onSaved;
   final TextInputType? keyboardType;
@@ -14,6 +15,7 @@ class MyTextFormField extends StatelessWidget {
     super.key,
     this.hintText,
     this.helperText,
+    required this.autovalidateMode,
     required this.validator,
     required this.onSaved,
     this.keyboardType = TextInputType.text,
@@ -38,6 +40,20 @@ class MyTextFormField extends StatelessWidget {
             Radius.circular(10),
           ),
         ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+              width: 1, color: AppColors.error500, style: BorderStyle.solid),
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+              width: 1, color: AppColors.error500, style: BorderStyle.solid),
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
+          ),
+        ),
         contentPadding: EdgeInsets.fromLTRB(20.0, 12.0, 20.0, 12.0),
         hintText: hintText,
         helperText: helperText,
@@ -45,6 +61,7 @@ class MyTextFormField extends StatelessWidget {
       ),
       style: TextStyle(fontSize: 14),
       validator: validator,
+      autovalidateMode: autovalidateMode,
       keyboardType: keyboardType,
       obscureText: obscureText,
       onSaved: onSaved,
@@ -55,6 +72,7 @@ class MyTextFormField extends StatelessWidget {
 class MyTextFormFieldLarge extends StatelessWidget {
   final String? hintText;
   final String? helperText;
+  final AutovalidateMode autovalidateMode;
   final FormFieldValidator<String> validator;
   final FormFieldSetter<String> onSaved;
   final TextInputType? keyboardType;
@@ -64,6 +82,7 @@ class MyTextFormFieldLarge extends StatelessWidget {
     super.key,
     this.hintText,
     this.helperText,
+    required this.autovalidateMode,
     required this.validator,
     required this.onSaved,
     this.keyboardType = TextInputType.text,
@@ -94,14 +113,30 @@ class MyTextFormFieldLarge extends StatelessWidget {
             Radius.circular(10),
           ),
         ),
-        contentPadding: EdgeInsets.all(
-            isPortrait ? screenWidth * 0.12 : screenWidth * 0.05),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+              width: 1, color: AppColors.error500, style: BorderStyle.solid),
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+              width: 1, color: AppColors.error500, style: BorderStyle.solid),
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
+          ),
+        ),
+        contentPadding: EdgeInsets.symmetric(
+            vertical: isPortrait ? screenWidth * 0.12 : screenWidth * 0.05,
+            horizontal: isPortrait ? screenWidth * 0.03 : screenWidth * 0.01),
         hintText: hintText,
         helperText: helperText,
         isDense: true,
       ),
       style: TextStyle(fontSize: 14),
       validator: validator,
+      autovalidateMode: autovalidateMode,
       keyboardType: keyboardType,
       obscureText: obscureText,
       onSaved: onSaved,

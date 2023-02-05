@@ -103,6 +103,8 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                                   ? screenHeight * 0.024
                                   : screenHeight * 0.048),
                           child: MyTextFormField(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             validator: RequiredValidator(
                                 errorText: 'Please enter sheet name.'),
                             onSaved: (value) {
@@ -128,6 +130,7 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                             left: screenHeight * 0.024,
                             right: screenHeight * 0.024),
                         child: MyTextFormFieldLarge(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: RequiredValidator(
                               errorText: 'Please enter detail.'),
                           onSaved: (value) {
@@ -243,6 +246,8 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                             child: MyTextFormField(
                                 hintText: 'หน่วย coin',
                                 keyboardType: TextInputType.number,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 validator: RequiredValidator(
                                     errorText: 'Please enter price.'),
                                 onSaved: (value) {

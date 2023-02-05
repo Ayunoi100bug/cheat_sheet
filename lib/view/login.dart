@@ -90,6 +90,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     height: screenHeight * GapDimension.h0_01),
                                 // I delete username because currently it can't use username to login.
                                 MyTextFormField(
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   validator: MultiValidator([
                                     RequiredValidator(
                                         errorText: 'Please enter e-mail.'),
@@ -112,6 +114,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 SizedBox(
                                     height: screenHeight * GapDimension.h0_01),
                                 MyTextFormField(
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   validator: RequiredValidator(
                                       errorText: 'Please enter password.'),
                                   onSaved: (value) {
