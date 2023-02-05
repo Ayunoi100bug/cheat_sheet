@@ -38,7 +38,7 @@ class _EditProfileState extends State<EditProfile> {
   Future<void> uploadImage() async {
     Reference ref = storage
         .ref()
-        .child('${_auth.currentUser?.uid}/images')
+        .child('images/${_auth.currentUser?.uid}')
         .child('profileImage');
     await ref.putFile(_pickedImage!);
 

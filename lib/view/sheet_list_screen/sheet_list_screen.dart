@@ -1,18 +1,27 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/data/network/pdf_api.dart';
+import 'package:cheat_sheet/model/sheet_list.dart';
+import 'package:cheat_sheet/model/user.dart';
 import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/colors.dart';
+import 'package:cheat_sheet/res/components/form_field.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
+import 'package:cheat_sheet/view_model/create_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:form_field_validator/form_field_validator.dart';
+import 'package:uuid/uuid.dart';
 import '../../res/gap_dimension.dart';
 
-import '../../res/components/review.dart';
+const uuid = Uuid();
 
 class SheetListScreen extends StatefulWidget {
   const SheetListScreen({super.key});
@@ -26,9 +35,9 @@ class _SheetListScreenState extends State<SheetListScreen>
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: LayoutBuilder(builder: (context, constraints) {
           return SingleChildScrollView(
@@ -128,7 +137,18 @@ class _SheetListScreenState extends State<SheetListScreen>
 }
 
 void _BottomSheet(context) {
+  double screenHeight = MediaQuery.of(context).size.height;
+  Users myUser =
+      Users(email: '', password: '', username: '', uid: '', profileImage: '');
+  final FirebaseFirestore _firestoreDb = FirebaseFirestore.instance;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final SheetLists _sheetLists =
+      SheetLists(sheetListName: '', sid: [], uid: '', sheetListId: '');
+  final Future<FirebaseApp> firebase = Firebase.initializeApp();
+  CreateCollection myCollection = CreateCollection();
+
   showModalBottomSheet(
+    isScrollControlled: true,
     context: context,
     useRootNavigator: true,
     shape: const RoundedRectangleBorder(
@@ -136,36 +156,81 @@ void _BottomSheet(context) {
       top: Radius.circular(10),
     )),
     builder: (BuildContext context) {
-      return SizedBox(
-        height: 300,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              const Regular16px(
-                text: 'ชีทลิสต์ใหม่',
-              ),
-              Container(
+      return Container(
+        height: MediaQuery.of(context).viewInsets.bottom == 0
+            ? screenHeight * 0.3
+            : MediaQuery.of(context).size.height -
+                MediaQuery.of(context).viewInsets.bottom,
+        child: Column(
+          children: [
+            SizedBox(
+              height: screenHeight * 0.03,
+            ),
+            const Regular16px(
+              text: 'ชีทลิสต์ใหม่',
+            ),
+            SizedBox(
+              height: screenHeight * 0.03,
+            ),
+            Form(
+              key: _formKey,
+              child: Container(
                 width: 150,
                 decoration: BoxDecoration(
                   border: Border.all(color: AppColors.black400),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const TextField(
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'ชื่อชีทลิสต์',
-                  ),
+                child: MyTextFormField(
+                  hintText: 'ชื่อชีทลิสต์',
+                  onSaved: (value) {
+                    _sheetLists.sheetListName = value!;
+                  },
+                  validator: RequiredValidator(
+                      errorText: 'Please enter sheet list name.'),
                 ),
               ),
-              PrimaryButton(
-                text: 'บันทึก',
-                onPressed: () {},
-              ),
-            ],
-          ),
+            ),
+            SizedBox(
+              height: screenHeight * 0.03,
+            ),
+            PrimaryButton(
+              text: 'บันทึก',
+              onPressed: () async {
+                _formKey.currentState!.save();
+                try {
+                  myCollection
+                      .createSheetListCollection(
+                    _sheetLists.sheetListName,
+                    _sheetLists.sid = [],
+                    FirebaseAuth.instance.currentUser!.uid,
+                    _sheetLists.sheetListId = uuid.v4(),
+                  )
+                      .then(
+                    (value) {
+                      _formKey.currentState!.reset();
+                      // debugPrint("Register Success");
+                      AutoRouter.of(context).popUntilRoot();
+                    },
+                  );
+                  await _firestoreDb
+                      .collection('users')
+                      .doc(FirebaseAuth.instance.currentUser!.uid)
+                      .update({
+                    'sheetLists':
+                        FieldValue.arrayUnion([_sheetLists.sheetListId])
+                  });
+                } on FirebaseAuthException catch (e) {
+                  Fluttertoast.showToast(
+                    msg: e.message.toString(),
+                    gravity: ToastGravity.BOTTOM,
+                  );
+                }
+              },
+            ),
+            SizedBox(
+              height: screenHeight * 0.03,
+            ),
+          ],
         ),
       );
     },
