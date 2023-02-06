@@ -91,6 +91,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   height: screenHeight * GapDimension.h0_01),
                               // Username
                               MyTextFormField(
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 validator: RequiredValidator(
                                     errorText: 'Please enter username.'),
                                 onSaved: (value) {
@@ -108,6 +110,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   height: screenHeight * GapDimension.h0_01),
                               // E-mail
                               MyTextFormField(
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 validator: MultiValidator([
                                   RequiredValidator(
                                       errorText: 'Please enter e-mail.'),
@@ -131,6 +135,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   height: screenHeight * GapDimension.h0_01),
                               // Password
                               MyTextFormField(
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 validator: RequiredValidator(
                                     errorText: 'Please enter password.'),
                                 onSaved: (value) {

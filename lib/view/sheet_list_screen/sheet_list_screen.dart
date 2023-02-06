@@ -181,6 +181,7 @@ void _BottomSheet(context) {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: MyTextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   hintText: 'ชื่อชีทลิสต์',
                   onSaved: (value) {
                     _sheetLists.sheetListName = value!;

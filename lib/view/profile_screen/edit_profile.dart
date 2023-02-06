@@ -38,7 +38,7 @@ class _EditProfileState extends State<EditProfile> {
   Future<void> uploadImage() async {
     Reference ref = storage
         .ref()
-        .child('images/${_auth.currentUser?.uid}')
+        .child('${_auth.currentUser?.uid}/images')
         .child('profileImage');
     await ref.putFile(_pickedImage!);
 
@@ -187,6 +187,8 @@ class _EditProfileState extends State<EditProfile> {
                                   child: Form(
                                     key: _formKey,
                                     child: MyTextFormField(
+                                        autovalidateMode:
+                                            AutovalidateMode.onUserInteraction,
                                         hintText: data['username'],
                                         validator: RequiredValidator(
                                             errorText:
