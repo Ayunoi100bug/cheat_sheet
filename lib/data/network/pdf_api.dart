@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cheat_sheet/res/components/flushbar.dart';
+import 'package:cheat_sheet/res/components/flushbar_icon.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,14 +25,7 @@ class PDFApi {
     if (result == null) return null;
     final fileNameExtension = extension(result.names[0]!);
     if (fileNameExtension != '.pdf') {
-      FlushbarPopup.showSnackBar(
-          context,
-          true,
-          Icon(
-            Icons.warning_amber_rounded,
-            color: Colors.white,
-          ),
-          message);
+      FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, message);
       return null;
     }
 
