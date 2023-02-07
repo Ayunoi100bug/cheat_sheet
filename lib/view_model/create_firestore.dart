@@ -79,7 +79,7 @@ class CreateCollection {
   }
 
   Future<void> createSheetCollection(String argSheetName, String argDetailSheet,
-      bool argSheetType, int? argPrice, String argUid) async {
+      bool argSheetType, int? argPrice, String argAuthorId) async {
     await _firestoreDb.collection("sheet").doc(mySheet.sid).set({
       'timestamp': mySheet.timestamp,
       'sheetName': argSheetName.toString().trim(),
@@ -87,17 +87,17 @@ class CreateCollection {
       'sheetTypeFree': argSheetType,
       'price': argPrice,
       'sid': mySheet.sid,
-      'uid': argUid,
+      'authorId': argAuthorId,
     });
   }
 
   Future<void> createSheetListCollection(String argSheetListName, List? argSid,
-      String argUid, String argSheetListId) async {
+      String argAuthorId, String argSheetListId) async {
     await _firestoreDb.collection("sheetList").doc(argSheetListId).set({
       'timestamp': mySheet.timestamp,
       'sheetListName': argSheetListName.toString().trim(),
       'sid': argSid,
-      'uid': argUid,
+      'authorId': argAuthorId,
       'sheetListId': argSheetListId,
     });
   }
