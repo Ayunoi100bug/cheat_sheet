@@ -15,12 +15,13 @@ class MySheet extends StatelessWidget {
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
 
     return StreamBuilder<QuerySnapshot>(
-      stream: _firestore.collection("sheet").snapshots(),
+        stream: _firestore.collection("sheet").snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData || snapshot.data == null) {
             return const Center(child: CircularProgressIndicator());
           } else {
-            final mySheets = snapshot.data!.docs.where((document) => document["uid"] == FirebaseAuth.instance.currentUser?.uid);
+            final mySheets = snapshot.data!.docs.where((document) =>
+                document["authorId"] == FirebaseAuth.instance.currentUser?.uid);
             return Padding(
               padding: EdgeInsets.all(screenWidth * GapDimension.w0_032),
               child: GridView.builder(
@@ -36,13 +37,18 @@ class MySheet extends StatelessWidget {
                 itemCount: mySheets.length,
                 itemBuilder: (context, index) {
                   var sheet = mySheets.elementAt(index);
-                  if (sheet["uid"] != FirebaseAuth.instance.currentUser?.uid) {
+                  if (sheet["authorId"] !=
+                      FirebaseAuth.instance.currentUser?.uid) {
                     return Container();
                   }
                   return StreamBuilder<DocumentSnapshot>(
-                    stream: _firestore.collection("users").doc(sheet["uid"]).snapshots(),
-                    builder: (context, userSnapshot) {
-                        if (!userSnapshot.hasData || userSnapshot.data!.data() == null) {
+                      stream: _firestore
+                          .collection("users")
+                          .doc(sheet["authorId"])
+                          .snapshots(),
+                      builder: (context, userSnapshot) {
+                        if (!userSnapshot.hasData ||
+                            userSnapshot.data!.data() == null) {
                           return const Center(
                             child: CircularProgressIndicator(),
                           );

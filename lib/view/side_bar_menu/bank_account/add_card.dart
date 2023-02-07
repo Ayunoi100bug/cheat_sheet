@@ -1,0 +1,17 @@
+import 'package:flutter/material.dart';
+
+class AddCard extends StatefulWidget {
+  const AddCard({super.key});
+
+  @override
+  State<AddCard> createState() => _AddCardState();
+}
+
+class _AddCardState extends State<AddCard> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(child: Text('นี่คือหน้าเพิ่มบัตร')),
+    );
+  }
+}

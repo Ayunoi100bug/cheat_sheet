@@ -5,12 +5,12 @@ class SheetLists {
   String sheetListName;
   String sheetListId;
   List? sid;
-  String uid;
+  String authorId;
 
   SheetLists({
     required this.sheetListName,
     required this.sid,
-    required this.uid,
+    required this.authorId,
     required this.sheetListId,
   });
 
@@ -18,14 +18,14 @@ class SheetLists {
       : timestamp = json['timestamp'],
         sheetListName = json['sheetListName'],
         sid = json['sid'],
-        uid = json['uid'],
+        authorId = json['authorId'],
         sheetListId = json['sheetListId'];
 
   Map<String, dynamic> toJson() => {
         'timestamp': timestamp,
         'sheetListName': sheetListName,
         'sid': sid,
-        'uid': uid,
+        'authorId': authorId,
         'sheetListId': sheetListId,
       };
 }

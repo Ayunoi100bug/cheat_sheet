@@ -293,7 +293,8 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                                     mySheet.detailSheet,
                                     mySheet.sheetTypeFree,
                                     mySheet.price,
-                                    FirebaseAuth.instance.currentUser!.uid,
+                                    mySheet.authorId =
+                                        FirebaseAuth.instance.currentUser!.uid,
                                   )
                                       .then(
                                     (value) async {

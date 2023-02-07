@@ -21,21 +21,21 @@ class Sheets {
   });
 
   Sheets.fromJson(Map<String, dynamic> json)
-    : timestamp = json['timestamp'],
-    sheetName = json['sheetName'],
-    detailSheet = json['detailSheet'],
-    sid = json['sid'],
-    sheetTypeFree = json['sheetType'],
-    price = json['price'],
-    authorId = json['authorId'];
+      : timestamp = json['timestamp'],
+        sheetName = json['sheetName'],
+        detailSheet = json['detailSheet'],
+        sid = json['sid'],
+        sheetTypeFree = json['sheetType'],
+        price = json['price'],
+        authorId = json['authorId'];
 
   Map<String, dynamic> toJson() => {
-    'timestamp': timestamp,
-    'sheetName': sheetName,
-    'detailSheet': detailSheet,
-    'sid': sid,
-    'sheetTypeFree': sheetTypeFree,
-    'price': price,
-    'uid': authorId,
-  };
+        'timestamp': timestamp,
+        'sheetName': sheetName,
+        'detailSheet': detailSheet,
+        'sid': sid,
+        'sheetTypeFree': sheetTypeFree,
+        'price': price,
+        'authorId': authorId,
+      };
 }
