@@ -40,7 +40,7 @@ class PDFApi {
       String userId,
       String sheetId) async {
     if (inputFile == null) {
-      final String message = 'ไฟล์มีค่าเป็น null';
+      final String message = 'มีบางอย่างผิดปกติ กรุณาลองอีกครั้ง';
       FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, message);
       return null;
     }

@@ -3,12 +3,10 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/data/network/pdf_api.dart';
 import 'package:cheat_sheet/res/button.dart';
-import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/components/form_field.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/view_model/create_firestore.dart';
 import 'package:cheat_sheet/view_model/file_passer.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -19,7 +17,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebaseStorage;
 
 import '../../model/sheet.dart';
@@ -87,10 +84,6 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                         child: PDFView(
                           filePath: pdfFile?.path,
                         ),
-                        // Image(
-                        //   image: NetworkImage(
-                        //       'https://static.trueplookpanya.com/tppy/member/m_665000_667500/665461/cms/images/%E0%B9%84%E0%B8%AD%E0%B9%80%E0%B8%94%E0%B8%B5%E0%B8%A2%E0%B8%88%E0%B8%94%E0%B8%8A%E0%B8%B5%E0%B8%97%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B_15.jpg'),
-                        // ),
                       ),
                       Container(
                           margin: EdgeInsets.only(
