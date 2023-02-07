@@ -55,7 +55,7 @@ class _SheetListScreenState extends State<SheetListScreen>
                     );
                   } else {
                     final mySheetLists = snapshot.data!.docs.where((document) =>
-                        document["uid"] ==
+                        document["authorId"] ==
                         FirebaseAuth.instance.currentUser?.uid);
                     return Scaffold(
                       resizeToAvoidBottomInset: true,
@@ -190,7 +190,7 @@ void _BottomSheet(context) {
   final FirebaseFirestore _firestoreDb = FirebaseFirestore.instance;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final SheetLists _sheetLists =
-      SheetLists(sheetListName: '', sid: [], uid: '', sheetListId: '');
+      SheetLists(sheetListName: '', sid: [], authorId: '', sheetListId: '');
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   CreateCollection myCollection = CreateCollection();
 
@@ -250,7 +250,8 @@ void _BottomSheet(context) {
                       .createSheetListCollection(
                     _sheetLists.sheetListName,
                     _sheetLists.sid = [],
-                    FirebaseAuth.instance.currentUser!.uid,
+                    _sheetLists.authorId =
+                        FirebaseAuth.instance.currentUser!.uid,
                     _sheetLists.sheetListId = uuid.v4(),
                   )
                       .then(

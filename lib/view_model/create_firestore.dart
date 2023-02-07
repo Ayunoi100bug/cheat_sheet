@@ -92,12 +92,12 @@ class CreateCollection {
   }
 
   Future<void> createSheetListCollection(String argSheetListName, List? argSid,
-      String argUid, String argSheetListId) async {
+      String argAuthorId, String argSheetListId) async {
     await _firestoreDb.collection("sheetList").doc(argSheetListId).set({
       'timestamp': mySheet.timestamp,
       'sheetListName': argSheetListName.toString().trim(),
       'sid': argSid,
-      'uid': argUid,
+      'authorId': argAuthorId,
       'sheetListId': argSheetListId,
     });
   }
