@@ -2,8 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
+import 'package:cheat_sheet/view_model/file_passer.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 import '../../data/network/pdf_api.dart';
 
@@ -48,8 +50,9 @@ class _CreateSheetScreenState extends State<CreateSheetScreen>
                       onPressed: () async {
                         final file = await PDFApi.pickFile(context);
                         if (file == null) return;
-                        AutoRouter.of(context)
-                            .push(ViewImportSheetRoute(file: file));
+                        Provider.of<FilePasser>(context, listen: false)
+                            .setFile(file);
+                        AutoRouter.of(context).push(ViewImportSheetRoute());
                       }),
                 ],
               ),

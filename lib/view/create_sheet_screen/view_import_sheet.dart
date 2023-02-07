@@ -3,15 +3,16 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
+import 'package:cheat_sheet/view_model/file_passer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:provider/provider.dart';
 import '../../res/colors.dart';
 import '../../res/components/flushbar.dart';
 import '../../res/typo.dart';
 
 class ViewImportSheet extends StatefulWidget {
-  final File file;
-  const ViewImportSheet({super.key, required this.file});
+  const ViewImportSheet({super.key});
 
   @override
   State<ViewImportSheet> createState() => _ViewImportSheetState();
@@ -21,10 +22,14 @@ class _ViewImportSheetState extends State<ViewImportSheet> {
   late PDFViewController controller;
   int numberPages = 0;
   int currentPage = 0;
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
+    File? pdfFile = Provider.of<FilePasser>(context).getFile();
+
     return Column(
       children: [
         Container(
@@ -40,7 +45,7 @@ class _ViewImportSheetState extends State<ViewImportSheet> {
           width: screenWidth * 0.9,
           height: screenHeight * 0.64,
           child: PDFView(
-            filePath: widget.file.path,
+            filePath: pdfFile?.path,
             pageSnap: false,
             pageFling: false,
             onRender: (pages) => setState(() => this.numberPages = pages!),
