@@ -193,6 +193,7 @@ void _BottomSheet(context) {
       SheetLists(sheetListName: '', sid: [], authorId: '', sheetListId: '');
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   CreateCollection myCollection = CreateCollection();
+  final _auth = FirebaseAuth.instance;
 
   showModalBottomSheet(
     isScrollControlled: true,
@@ -250,8 +251,7 @@ void _BottomSheet(context) {
                       .createSheetListCollection(
                     _sheetLists.sheetListName,
                     _sheetLists.sid = [],
-                    _sheetLists.authorId =
-                        FirebaseAuth.instance.currentUser!.uid,
+                    _sheetLists.authorId = _auth.currentUser!.uid,
                     _sheetLists.sheetListId = uuid.v4(),
                   )
                       .then(
@@ -263,7 +263,7 @@ void _BottomSheet(context) {
                   );
                   await _firestoreDb
                       .collection('users')
-                      .doc(FirebaseAuth.instance.currentUser!.uid)
+                      .doc(_auth.currentUser!.uid)
                       .update({
                     'sheetLists':
                         FieldValue.arrayUnion([_sheetLists.sheetListId])
