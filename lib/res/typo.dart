@@ -269,6 +269,38 @@ class Medium16px extends StatelessWidget {
   }
 }
 
+class Regular20px extends StatelessWidget {
+  final Color color;
+  final String text;
+  final double size;
+  final FontWeight fontWeight;
+  final bool activateOverflow;
+  final bool underline;
+  const Regular20px(
+      {super.key,
+      this.color = AppColors.black800,
+      required this.text,
+      this.size = 20,
+      this.fontWeight = FontWeight.w400,
+      this.activateOverflow = false,
+      this.underline = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontFamily: 'BaiJamjuree',
+        color: color,
+        fontSize: size,
+        fontWeight: fontWeight,
+        decoration: underline ? TextDecoration.underline : TextDecoration.none,
+      ),
+      overflow: activateOverflow ? TextOverflow.ellipsis : null,
+    );
+  }
+}
+
 class Regular16px extends StatelessWidget {
   final Color color;
   final String text;
