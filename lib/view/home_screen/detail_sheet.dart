@@ -7,39 +7,19 @@ import 'package:cheat_sheet/res/components/review.dart';
 import 'package:cheat_sheet/res/components/tag.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
-import 'package:cheat_sheet/view/home_screen/create_review.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:path/path.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:unicons/unicons.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../data/network/pdf_api.dart';
+import '../../res/components/form_field.dart';
 
 class DetailSheet extends StatefulWidget {
   final String sheetId;
-  // final String sheetName;
-  // final Array tag;
-  // final int star;
-  // final Image userAvatar;
-  // final String userName;
-  // final Image sheetImage;
-  // final Array demoSheetImage;
-  // final String detail;
-  // final double sheetReview;
 
-  const DetailSheet({super.key, @PathParam() required this.sheetId
-      // required this.sheetName,
-      // required this.tag,
-      // required this.star,
-      // required this.userAvatar,
-      // required this.userName,
-      // required this.sheetImage,
-      // required this.detail,
-      // required this.sheetReview,
-      // required this.demoSheetImage
-      });
+  const DetailSheet({super.key, @PathParam() required this.sheetId});
 
   @override
   State<DetailSheet> createState() => _DetailSheetState();
@@ -307,19 +287,29 @@ class _DetailSheetState extends State<DetailSheet> {
                                           color: AppColors.black600,
                                           size: isPortrait ? 32 : 36,
                                         ),
-                                        Icon(
-                                          UniconsLine.plus_square,
-                                          color: AppColors.black600,
-                                          size: isPortrait ? 32 : 36,
+                                        InkWell(
+                                          child: Icon(
+                                            UniconsLine.plus_square,
+                                            color: AppColors.black600,
+                                            size: isPortrait ? 32 : 36,
+                                          ),
+                                          onTap: () {
+                                            _BottomSheetList(context);
+                                          },
                                         ),
                                         Icon(
                                           UniconsLine.cloud_download,
                                           color: AppColors.black600,
                                           size: isPortrait ? 32 : 36,
                                         ),
-                                        Icon(
-                                          UniconsLine.share,
-                                          size: isPortrait ? 32 : 36,
+                                        InkWell(
+                                          child: Icon(
+                                            UniconsLine.share,
+                                            size: isPortrait ? 32 : 36,
+                                          ),
+                                          onTap: () {
+                                            _shareSheet(context);
+                                          },
                                         ),
                                       ],
                                     ),
@@ -419,4 +409,166 @@ class _DetailSheetState extends State<DetailSheet> {
           }
         });
   }
+}
+
+void _BottomSheetList(context) {
+  double screenWidth = MediaQuery.of(context).size.width;
+
+  showModalBottomSheet(
+    context: context,
+    shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+      top: Radius.circular(10),
+    )),
+    builder: (BuildContext context) {
+      return Container(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 20, right: 24, top: 28, bottom: 28),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Regular16px(
+                    text: 'บันทึกชีทนี้ลง...',
+                  ),
+                  InkWell(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.tertiary500),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Icon(
+                        FontAwesomeIcons.add,
+                        color: AppColors.tertiary500,
+                        size: 24,
+                      ),
+                    ),
+                    onTap: () {
+                      print("add list");
+                    },
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
+void _shareSheet(context) {
+  double screenWidth = MediaQuery.of(context).size.width;
+  var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+
+  showModalBottomSheet(
+    context: context,
+    shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+      top: Radius.circular(10),
+    )),
+    builder: (BuildContext context) {
+      return SingleChildScrollView(
+        child: Container(
+          height: isPortrait ? screenWidth * 0.52 : screenWidth * 0.29,
+          child: Padding(
+            padding: EdgeInsets.only(
+                top: screenWidth * 0.040,
+                bottom: isPortrait ? screenWidth * 0.040 : screenWidth * 0.012),
+            child: Column(
+              children: [
+                Regular16px(
+                  text: 'แชร์ชีทไป...',
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      top:
+                          isPortrait ? screenWidth * 0.04 : screenWidth * 0.020,
+                      left:
+                          isPortrait ? screenWidth * 0.32 : screenWidth * 0.4),
+                  child: InkWell(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.facebook,
+                          color: Colors.blue,
+                          size: 36,
+                        ),
+                        SizedBox(
+                          width: screenWidth * 0.08,
+                        ),
+                        Regular16px(text: 'Facebook'),
+                      ],
+                    ),
+                    onTap: () {
+                      print("Facebook");
+                    },
+                  ),
+                ),
+                InkWell(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        top: isPortrait
+                            ? screenWidth * 0.04
+                            : screenWidth * 0.020,
+                        left: isPortrait
+                            ? screenWidth * 0.32
+                            : screenWidth * 0.4),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.instagram,
+                          color: Colors.pink,
+                          size: 36,
+                        ),
+                        SizedBox(
+                          width: screenWidth * 0.08,
+                        ),
+                        Regular16px(text: 'Instagram'),
+                      ],
+                    ),
+                  ),
+                  onTap: () {
+                    print("Instagram");
+                  },
+                ),
+                InkWell(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        top: isPortrait
+                            ? screenWidth * 0.04
+                            : screenWidth * 0.020,
+                        left: isPortrait
+                            ? screenWidth * 0.32
+                            : screenWidth * 0.4),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.twitter,
+                          color: Colors.blue,
+                          size: 36,
+                        ),
+                        SizedBox(
+                          width: screenWidth * 0.08,
+                        ),
+                        Regular16px(text: 'Twitter'),
+                      ],
+                    ),
+                  ),
+                  onTap: () {
+                    print("Twitter");
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
 }
