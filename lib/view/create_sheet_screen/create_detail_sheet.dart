@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:cheat_sheet/data/network/pdf_api.dart';
 import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/components/form_field.dart';
@@ -19,8 +20,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebaseStorage;
 
 import '../../model/sheet.dart';
+import '../../res/components/flushbar.dart';
+import '../../res/components/flushbar_icon.dart';
 
 class CreateDetailSheet extends StatefulWidget {
   const CreateDetailSheet({super.key});
@@ -299,10 +303,26 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                                     FirebaseAuth.instance.currentUser!.uid,
                                   )
                                       .then(
-                                    (value) {
+                                    (value) async {
                                       _formKey.currentState!.reset();
                                       // debugPrint("Register Success");
-                                      AutoRouter.of(context).popUntilRoot();
+                                      firebaseStorage.UploadTask? task =
+                                          await PDFApi.uploadToFirebase(
+                                              context,
+                                              pdfFile,
+                                              FirebaseAuth
+                                                  .instance.currentUser!.uid,
+                                              mySheet.sid);
+                                      Future.delayed(
+                                          const Duration(milliseconds: 500),
+                                          () {
+                                        AutoRouter.of(context).popUntilRoot();
+
+                                        final String message =
+                                            'อัพโหลดชีทสำเร็จ!';
+                                        FlushbarPopup.successFlushbar(context,
+                                            FlushbarIcon.errorIcon, message);
+                                      });
                                     },
                                   );
                                 } on FirebaseAuthException catch (e) {
