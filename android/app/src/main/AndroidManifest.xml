@@ -48,8 +48,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        <queries>
-          <package android:name="com.facebook.katana"/>
-        </queries>
     </application>
+    <queries>
+      <package android:name="com.facebook.katana"/>
+    </queries>
 </manifest>
