@@ -223,9 +223,7 @@ class AppRouter extends _i25.RootStackRouter {
       );
     },
     ViewImportSheetRoute.name: (routeData) {
-
-      return _i22.MaterialPageX<dynamic>(
-
+      return _i25.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i18.ViewImportSheet(),
       );
@@ -858,35 +856,15 @@ class CreateDetailSheetRoute extends _i25.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i18.ViewImportSheet]
-
-class ViewImportSheetRoute extends _i22.PageRouteInfo<void> {
+class ViewImportSheetRoute extends _i25.PageRouteInfo<void> {
   const ViewImportSheetRoute()
       : super(
-
           ViewImportSheetRoute.name,
           path: 'view_import_sheet',
         );
 
   static const String name = 'ViewImportSheetRoute';
 }
-
-
-class ViewImportSheetRouteArgs {
-  const ViewImportSheetRouteArgs({
-    this.key,
-    required this.file,
-  });
-
-  final _i26.Key? key;
-
-  final _i27.File file;
-
-  @override
-  String toString() {
-    return 'ViewImportSheetRouteArgs{key: $key, file: $file}';
-  }
-}
-
 
 /// generated route for
 /// [_i19.SheetListScreen]
