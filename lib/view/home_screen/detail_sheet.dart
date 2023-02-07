@@ -415,9 +415,7 @@ void _BottomSheetList(context) {
   double screenWidth = MediaQuery.of(context).size.width;
 
   showModalBottomSheet(
-    //isScrollControlled: true,
     context: context,
-    //useRootNavigator: true,
     shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
       top: Radius.circular(10),
@@ -466,9 +464,7 @@ void _shareSheet(context) {
   var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
 
   showModalBottomSheet(
-    //isScrollControlled: true,
     context: context,
-    //useRootNavigator: true,
     shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
       top: Radius.circular(10),
