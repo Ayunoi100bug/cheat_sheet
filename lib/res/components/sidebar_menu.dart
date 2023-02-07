@@ -69,7 +69,8 @@ class _SidebarMenuState extends State<SidebarMenu> {
                             icon: FluentSystemIcons.ic_fluent_bank_regular,
                             title: 'ข้อมูลบัญชีธนาคาร',
                             onTap: () {
-                              print("bank");
+                              Navigator.pop(context);
+                              AutoRouter.of(context).push(BankAccountRoute());
                             },
                           ),
                           CustomListTile(
@@ -152,7 +153,8 @@ class _SidebarMenuState extends State<SidebarMenu> {
                             icon: FluentSystemIcons.ic_fluent_bank_regular,
                             title: 'ข้อมูลบัญชีธนาคาร',
                             onTap: () {
-                              print("bank");
+                              Navigator.pop(context);
+                              AutoRouter.of(context).push(BankAccountRoute());
                             },
                           ),
                           CustomListTile(
