@@ -18,6 +18,9 @@ import 'package:cheat_sheet/view/profile_screen/edit_profile.dart';
 import 'package:cheat_sheet/view/profile_screen/profile_screen.dart';
 import 'package:cheat_sheet/view/register.dart';
 import 'package:cheat_sheet/view/sheet_list_screen/sheet_list_screen.dart';
+import 'package:cheat_sheet/view/side_bar_menu/bank_account/add_card.dart';
+import 'package:cheat_sheet/view/side_bar_menu/bank_account/add_payment_methods.dart';
+import 'package:cheat_sheet/view/side_bar_menu/bank_account/bank_account.dart';
 import 'package:cheat_sheet/view/side_bar_menu/top_up.dart';
 import 'package:cheat_sheet/view/test_ui_book.dart';
 
@@ -111,5 +114,20 @@ import 'package:cheat_sheet/view/test_ui_book.dart';
     page: RegisterScreen,
   ),
   AutoRoute(path: '/top_up', name: 'TopUpRoute', page: TopUp),
+  AutoRoute(
+      path: '/bank_account',
+      name: 'BankAccountRoute',
+      page: EmptyRouterPage,
+      children: [
+        AutoRoute(path: '', page: BankAccount),
+        AutoRoute(
+            path: 'add_payment_methods',
+            name: 'AddPaymentMethodsRoute',
+            page: AddPaymentMethods),
+        AutoRoute(
+            path: 'add_payment_methods/add_card',
+            name: 'AddCardRoute',
+            page: AddCard)
+      ]),
 ])
 class $AppRouter {}
