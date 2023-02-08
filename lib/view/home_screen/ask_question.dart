@@ -21,7 +21,7 @@ class _AskQuestionState extends State<AskQuestion> {
   late int currentIndex = 0;
   late ScrollController _scrollController;
 
-  final int _itemCount = 10;
+  final int _itemCount = 100;
 
   int _cardPosition = 0;
 
@@ -29,7 +29,8 @@ class _AskQuestionState extends State<AskQuestion> {
     int itemCount = _itemCount;
     double scrollOffset = _scrollController.position.pixels;
     double viewportHeight = _scrollController.position.viewportDimension;
-    double scrollRange = _scrollController.position.maxScrollExtent * 0.99 -
+    double scrollRange = _scrollController.position.maxScrollExtent -
+        1 -
         _scrollController.position.minScrollExtent;
     int firstVisibleItemIndex =
         (scrollOffset / (scrollRange + viewportHeight) * itemCount).floor();

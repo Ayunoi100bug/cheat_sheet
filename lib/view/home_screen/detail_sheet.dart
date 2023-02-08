@@ -287,18 +287,20 @@ class _DetailSheetState extends State<DetailSheet> {
                                           color: AppColors.black600,
                                           size: isPortrait ? 32 : 36,
                                         ),
+
                                         InkWell(
                                           child: Icon(
-                                            UniconsLine.plus_square,
+                                            Icons.playlist_add_rounded,
                                             color: AppColors.black600,
                                             size: isPortrait ? 32 : 36,
                                           ),
                                           onTap: () {
                                             _BottomSheetList(context);
                                           },
+
                                         ),
                                         Icon(
-                                          UniconsLine.cloud_download,
+                                          UniconsLine.arrow_circle_down,
                                           color: AppColors.black600,
                                           size: isPortrait ? 32 : 36,
                                         ),

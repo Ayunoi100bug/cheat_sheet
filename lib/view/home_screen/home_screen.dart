@@ -44,12 +44,6 @@ class _HomeScreenState extends State<HomeScreen>
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    // InkWell(
-                    //   onTap: () {
-                    //     AutoRouter.of(context).push(const TestUIRoute());
-                    //   },
-                    //   child: const Text('กด ตรงนี้ นะ บุ๊คคค'),
-                    // ),
                     InkWell(
                       onTap: () {
                         showDialog(
@@ -83,28 +77,35 @@ class _HomeScreenState extends State<HomeScreen>
                     Padding(
                         padding:
                             EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 35,
-                      child: Card(
-                        shape: const RoundedRectangleBorder(
-                          side: BorderSide(
-                            color: AppColors.secondary800,
-                          ),
-                          borderRadius: BorderRadius.all(Radius.circular(12)),
-                        ),
-                        child: Row(
-                          children: const [
-                            Icon(
-                              Icons.search,
-                              color: AppColors.secondary800,
-                            ),
-                            Light20px(
-                              text: 'Search',
-                              color: AppColors.primary600,
-                            )
-                          ],
-                        ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: screenWidth * 0.04,
+                          vertical: screenWidth * 0.02),
+                      child: TextField(
+                        cursorColor: AppColors.black900,
+                        decoration: InputDecoration(
+                            isDense: true,
+                            fillColor: AppColors.black200,
+                            filled: true,
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(50),
+                                borderSide: BorderSide(
+                                    width: 1, color: AppColors.primary800)),
+                            hintText: 'Search',
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(50),
+                                borderSide: BorderSide(
+                                    width: 1, color: AppColors.primary800)),
+                            hintStyle:
+                                TextStyle(color: Colors.grey, fontSize: 18),
+                            prefixIcon: Container(
+                              padding: EdgeInsets.all(15),
+                              child: Icon(
+                                Icons.search,
+                                color: AppColors.primary800,
+                              ),
+                              width: 18,
+                            )),
                       ),
                     ),
                     Padding(

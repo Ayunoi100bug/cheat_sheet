@@ -7,6 +7,8 @@ import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -230,10 +232,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       gravity: ToastGravity.BOTTOM);
                                 }
                               },
-                              icon: const Icon(
-                                FontAwesomeIcons.google,
-                                color: Colors.red,
-                                size: 36,
+                              icon: Image.asset(
+                                "assets/images/google.png",
                               ),
                             ),
                             IconButton(

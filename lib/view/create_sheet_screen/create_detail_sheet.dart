@@ -176,7 +176,7 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                                 radius: const Radius.circular(30),
                                 child: const Align(
                                     alignment: Alignment.center,
-                                    child: Icon(FontAwesomeIcons.add)),
+                                    child: Icon(FontAwesomeIcons.plus)),
                                 dashPattern: [10, 10],
                               ),
                             ),
