@@ -142,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen>
                           return StreamBuilder<DocumentSnapshot>(
                             stream: _firestore
                                 .collection("users")
-                                .doc(sheet?["uid"])
+                                .doc(sheet?["authorId"])
                                 .snapshots(),
                             builder: (context, userSnapshot) {
                               if (!userSnapshot.hasData ||
