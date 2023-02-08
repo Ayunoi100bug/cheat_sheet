@@ -2,6 +2,7 @@ import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Review extends StatefulWidget {
   // final Image userImage;
@@ -107,6 +108,18 @@ class _ReviewState extends State<Review> {
                                         : constraints.maxWidth * 0.05,
                                   ),
                                   Regular14px(text: "100"), //like
+                                  SizedBox(
+                                    width: isPortrait
+                                        ? constraints.maxWidth * 0.1
+                                        : constraints.maxWidth * 0.05,
+                                  ),
+                                  InkWell(
+                                    onTap: () {},
+                                    child: Icon(
+                                      FontAwesomeIcons.ellipsisV,
+                                      size: 16,
+                                    ),
+                                  ),
                                 ],
                               );
                             }),
