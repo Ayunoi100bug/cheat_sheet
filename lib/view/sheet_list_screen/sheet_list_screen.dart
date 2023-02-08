@@ -5,7 +5,10 @@ import 'package:cheat_sheet/model/sheet_list.dart';
 import 'package:cheat_sheet/model/user.dart';
 import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/colors.dart';
+import 'package:cheat_sheet/res/components/flushbar.dart';
+import 'package:cheat_sheet/res/components/flushbar_icon.dart';
 import 'package:cheat_sheet/res/components/form_field.dart';
+import 'package:cheat_sheet/res/components/popup_login.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/view_model/create_firestore.dart';
@@ -174,9 +177,7 @@ class _SheetListScreenState extends State<SheetListScreen>
                   }
                 });
           } else {
-            return const Center(
-              child: Text("This is page when not login"),
-            );
+            return Popup_Login(context);
           }
         });
   }
@@ -260,7 +261,6 @@ void _BottomSheet(context) {
                       .then(
                     (value) {
                       _formKey.currentState!.reset();
-                      // debugPrint("Register Success");
                       AutoRouter.of(context).popUntilRoot();
                     },
                   );
@@ -272,10 +272,8 @@ void _BottomSheet(context) {
                         FieldValue.arrayUnion([_sheetLists.sheetListId])
                   });
                 } on FirebaseAuthException catch (e) {
-                  Fluttertoast.showToast(
-                    msg: e.message.toString(),
-                    gravity: ToastGravity.BOTTOM,
-                  );
+                  FlushbarPopup.errorFlushbar(
+                      context, FlushbarIcon.errorIcon, e.toString());
                 }
               },
             ),
