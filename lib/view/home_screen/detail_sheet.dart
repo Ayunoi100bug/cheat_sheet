@@ -577,7 +577,7 @@ void _BottomSheetList(context, sheetId) {
                                                 BorderRadius.circular(5),
                                           ),
                                           child: Icon(
-                                            FontAwesomeIcons.add,
+                                            FontAwesomeIcons.plus,
                                             color: AppColors.tertiary500,
                                             size: 24,
                                           ),
