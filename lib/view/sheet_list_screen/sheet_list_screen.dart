@@ -75,6 +75,15 @@ class _SheetListScreenState extends State<SheetListScreen>
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
+                                        ElevatedButton(
+                                            onPressed: () {
+                                              AutoRouter.of(context).push(
+                                                SheetListDetailRoute(
+                                                    sheetId: '5'),
+                                              );
+                                            },
+                                            child: Text(
+                                                'นี่คือปุ่มดูหน้าชีทไม่ใช่หน้าใครหน้าไหน')),
                                         Container(
                                           decoration: BoxDecoration(
                                             border: Border.all(
