@@ -287,7 +287,6 @@ class _DetailSheetState extends State<DetailSheet> {
                                           color: AppColors.black600,
                                           size: isPortrait ? 32 : 36,
                                         ),
-
                                         InkWell(
                                           child: Icon(
                                             Icons.playlist_add_rounded,
@@ -297,7 +296,6 @@ class _DetailSheetState extends State<DetailSheet> {
                                           onTap: () {
                                             _BottomSheetList(context);
                                           },
-
                                         ),
                                         Icon(
                                           UniconsLine.arrow_circle_down,
@@ -442,7 +440,7 @@ void _BottomSheetList(context) {
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: Icon(
-                        FontAwesomeIcons.add,
+                        FontAwesomeIcons.plus,
                         color: AppColors.tertiary500,
                         size: 24,
                       ),

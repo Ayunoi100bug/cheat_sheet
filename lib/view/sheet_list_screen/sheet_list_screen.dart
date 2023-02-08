@@ -63,7 +63,6 @@ class _SheetListScreenState extends State<SheetListScreen>
                         child: LayoutBuilder(builder: (context, constraints) {
                           return SingleChildScrollView(
                             child: Column(
-
                               children: [
                                 Container(
                                   padding: EdgeInsets.only(
@@ -81,7 +80,7 @@ class _SheetListScreenState extends State<SheetListScreen>
                                                 BorderRadius.circular(5),
                                           ),
                                           child: Icon(
-                                            FontAwesomeIcons.add,
+                                            FontAwesomeIcons.plus,
                                             color: AppColors.tertiary500,
                                             size: 30,
                                           ),
