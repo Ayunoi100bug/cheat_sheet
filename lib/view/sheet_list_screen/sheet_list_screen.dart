@@ -5,7 +5,10 @@ import 'package:cheat_sheet/model/sheet_list.dart';
 import 'package:cheat_sheet/model/user.dart';
 import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/colors.dart';
+import 'package:cheat_sheet/res/components/flushbar.dart';
+import 'package:cheat_sheet/res/components/flushbar_icon.dart';
 import 'package:cheat_sheet/res/components/form_field.dart';
+import 'package:cheat_sheet/res/components/popup_login.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/view_model/create_firestore.dart';
@@ -54,7 +57,7 @@ class _SheetListScreenState extends State<SheetListScreen>
                       child: CircularProgressIndicator(),
                     );
                   } else {
-                    final mySheetLists = snapshot.data!.docs.where((document) =>
+                    final mySheetLists = snapshot.data?.docs.where((document) =>
                         document["authorId"] ==
                         FirebaseAuth.instance.currentUser?.uid);
                     return Scaffold(
@@ -115,11 +118,11 @@ class _SheetListScreenState extends State<SheetListScreen>
                                                       .height /
                                                   0.4),
                                     ),
-                                    itemCount: mySheetLists.length,
+                                    itemCount: mySheetLists?.length,
                                     itemBuilder: (context, index) {
                                       var sheetLists =
-                                          mySheetLists.elementAt(index);
-                                      var mySheet = sheetLists['sid'];
+                                          mySheetLists?.elementAt(index);
+                                      var mySheet = sheetLists!['sid'];
                                       return Container(
                                         child: LayoutBuilder(
                                           builder: (context, constraints) {
@@ -131,28 +134,31 @@ class _SheetListScreenState extends State<SheetListScreen>
                                                           0.8,
                                                   color: AppColors.black300,
                                                 ),
-                                                Container(
-                                                  height:
-                                                      constraints.maxHeight *
-                                                          0.2,
-                                                  child: LayoutBuilder(
-                                                    builder:
-                                                        (context, constraints) {
-                                                      return Container(
-                                                        padding: EdgeInsets.only(
-                                                            top: screenWidth *
-                                                                0.02),
-                                                        alignment:
-                                                            Alignment.topLeft,
-                                                        height: constraints
-                                                                .maxHeight *
-                                                            0.5,
-                                                        child: Regular16px(
-                                                            text: sheetLists[
-                                                                'sheetListName']),
-                                                      );
-                                                    },
+                                                InkWell(
+                                                  child: Container(
+                                                    height:
+                                                        constraints.maxHeight *
+                                                            0.2,
+                                                    child: LayoutBuilder(
+                                                      builder: (context,
+                                                          constraints) {
+                                                        return Container(
+                                                          padding: EdgeInsets.only(
+                                                              top: screenWidth *
+                                                                  0.02),
+                                                          alignment: Alignment
+                                                              .topCenter,
+                                                          height: constraints
+                                                                  .maxHeight *
+                                                              0.5,
+                                                          child: Regular16px(
+                                                              text: sheetLists[
+                                                                  'sheetListName']),
+                                                        );
+                                                      },
+                                                    ),
                                                   ),
+                                                  onTap: () {},
                                                 ),
                                               ],
                                             );
@@ -171,9 +177,7 @@ class _SheetListScreenState extends State<SheetListScreen>
                   }
                 });
           } else {
-            return const Center(
-              child: Text("This is page when not login"),
-            );
+            return Popup_Login(context);
           }
         });
   }
@@ -257,7 +261,6 @@ void _BottomSheet(context) {
                       .then(
                     (value) {
                       _formKey.currentState!.reset();
-                      // debugPrint("Register Success");
                       AutoRouter.of(context).popUntilRoot();
                     },
                   );
@@ -269,10 +272,8 @@ void _BottomSheet(context) {
                         FieldValue.arrayUnion([_sheetLists.sheetListId])
                   });
                 } on FirebaseAuthException catch (e) {
-                  Fluttertoast.showToast(
-                    msg: e.message.toString(),
-                    gravity: ToastGravity.BOTTOM,
-                  );
+                  FlushbarPopup.errorFlushbar(
+                      context, FlushbarIcon.errorIcon, e.toString());
                 }
               },
             ),
