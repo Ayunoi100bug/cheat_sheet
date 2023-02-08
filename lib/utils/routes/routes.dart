@@ -22,6 +22,10 @@ import 'package:cheat_sheet/view/sheet_list_screen/sheet_list_screen.dart';
 import 'package:cheat_sheet/view/side_bar_menu/bank_account/add_card.dart';
 import 'package:cheat_sheet/view/side_bar_menu/bank_account/add_payment_methods.dart';
 import 'package:cheat_sheet/view/side_bar_menu/bank_account/bank_account.dart';
+import 'package:cheat_sheet/view/side_bar_menu/my_account/change_email.dart';
+import 'package:cheat_sheet/view/side_bar_menu/my_account/change_password.dart';
+import 'package:cheat_sheet/view/side_bar_menu/my_account/my_account.dart';
+import 'package:cheat_sheet/view/side_bar_menu/notification_setting.dart';
 import 'package:cheat_sheet/view/side_bar_menu/top_up.dart';
 import 'package:cheat_sheet/view/test_ui_book.dart';
 
@@ -118,6 +122,23 @@ import 'package:cheat_sheet/view/test_ui_book.dart';
     name: 'RegisterRoute',
     page: RegisterScreen,
   ),
+  AutoRoute(
+      path: '/notification_setting',
+      name: 'NotificationSettingRoute',
+      page: NotificationSetting),
+  AutoRoute(
+      path: '/my_account',
+      name: 'MyAccountRoute',
+      page: EmptyRouterPage,
+      children: [
+        AutoRoute(path: '', page: MyAccount),
+        AutoRoute(
+            path: 'change_email', name: 'ChangeEmailRoute', page: ChangeEmail),
+        AutoRoute(
+            path: 'change_password',
+            name: 'ChangePasswordRoute',
+            page: ChangePassword),
+      ]),
   AutoRoute(path: '/top_up', name: 'TopUpRoute', page: TopUp),
   AutoRoute(
       path: '/bank_account',
