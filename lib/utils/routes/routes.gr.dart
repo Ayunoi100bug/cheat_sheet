@@ -223,13 +223,9 @@ class AppRouter extends _i25.RootStackRouter {
       );
     },
     ViewImportSheetRoute.name: (routeData) {
-      final args = routeData.argsAs<ViewImportSheetRouteArgs>();
       return _i25.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i18.ViewImportSheet(
-          key: args.key,
-          file: args.file,
-        ),
+        child: const _i18.ViewImportSheet(),
       );
     },
     SheetListScreen.name: (routeData) {
@@ -860,37 +856,14 @@ class CreateDetailSheetRoute extends _i25.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i18.ViewImportSheet]
-class ViewImportSheetRoute
-    extends _i25.PageRouteInfo<ViewImportSheetRouteArgs> {
-  ViewImportSheetRoute({
-    _i26.Key? key,
-    required _i27.File file,
-  }) : super(
+class ViewImportSheetRoute extends _i25.PageRouteInfo<void> {
+  const ViewImportSheetRoute()
+      : super(
           ViewImportSheetRoute.name,
           path: 'view_import_sheet',
-          args: ViewImportSheetRouteArgs(
-            key: key,
-            file: file,
-          ),
         );
 
   static const String name = 'ViewImportSheetRoute';
-}
-
-class ViewImportSheetRouteArgs {
-  const ViewImportSheetRouteArgs({
-    this.key,
-    required this.file,
-  });
-
-  final _i26.Key? key;
-
-  final _i27.File file;
-
-  @override
-  String toString() {
-    return 'ViewImportSheetRouteArgs{key: $key, file: $file}';
-  }
 }
 
 /// generated route for
