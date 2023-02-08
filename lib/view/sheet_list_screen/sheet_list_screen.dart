@@ -56,7 +56,7 @@ class _SheetListScreenState extends State<SheetListScreen>
                             borderRadius: BorderRadius.circular(5),
                           ),
                           child: Icon(
-                            FontAwesomeIcons.add,
+                            FontAwesomeIcons.plus,
                             color: AppColors.tertiary500,
                             size: 30,
                           ),

@@ -83,9 +83,9 @@ class _ReviewSheetState extends State<ReviewSheet>
                         ),
                         labelColor: AppColors.tertiary500,
                         indicator: BoxDecoration(
-                          color: AppColors.tertiary500.withOpacity(0.8),
-                          // border: Border.all(
-                          //     color: AppColors.tertiary500.withOpacity(0.4), width: 2),
+                          // color: AppColors.tertiary400.withOpacity(0.8),
+                          border: Border.all(
+                              color: AppColors.tertiary500, width: 2),
                           borderRadius: BorderRadius.circular(50),
                         ),
                         unselectedLabelColor: AppColors.black400,
