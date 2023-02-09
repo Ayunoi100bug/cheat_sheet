@@ -78,15 +78,20 @@ class CreateCollection {
     }
   }
 
-  Future<void> createSheetCollection(String argSheetName, String argDetailSheet,
-      bool argSheetType, int? argPrice, String argAuthorId) async {
-    await _firestoreDb.collection("sheet").doc(mySheet.sid).set({
+  Future<void> createSheetCollection(
+      String sheetId,
+      String argSheetName,
+      String argDetailSheet,
+      bool argSheetType,
+      int? argPrice,
+      String argAuthorId) async {
+    await _firestoreDb.collection("sheet").doc(sheetId).set({
       'timestamp': mySheet.timestamp,
       'sheetName': argSheetName.toString().trim(),
       'detailSheet': argDetailSheet.toString().trim(),
       'sheetTypeFree': argSheetType,
       'price': argPrice,
-      'sid': mySheet.sid,
+      'sid': sheetId,
       'authorId': argAuthorId,
     });
   }

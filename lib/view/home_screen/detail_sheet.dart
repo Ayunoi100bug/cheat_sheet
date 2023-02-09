@@ -60,6 +60,7 @@ class _DetailSheetState extends State<DetailSheet> {
             Map<String, dynamic> data =
                 snapshot.data!.data() as Map<String, dynamic>;
             var sheet = snapshot.data?["sid"];
+            var author = snapshot.data?["authorId"];
             return Scaffold(
               body: SafeArea(
                 child: SingleChildScrollView(
@@ -332,10 +333,9 @@ class _DetailSheetState extends State<DetailSheet> {
                                       text: "อ่านชีท",
                                       size: 16,
                                       onPressed: () async {
-                                        final url =
-                                            'https://www.africau.edu/images/default/sample.pdf';
                                         final file =
-                                            await PDFApi.loadNetwork(url);
+                                            await PDFApi.loadPDFFromFirebase(
+                                                author, sheet);
                                         AutoRouter.of(context).push(
                                             ReadSheetRoute(
                                                 sheetId: widget.sheetId,
