@@ -38,15 +38,17 @@ class _NotificationSettingState extends State<NotificationSetting> {
       ),
       body: Padding(
         padding: EdgeInsets.only(
+            left: isPortrait ? 0 : screenWidth * 0.044,
+            right: isPortrait ? 0 : screenWidth * 0.044,
             top: isPortrait ? screenWidth * 0.04 : screenWidth * 0.024,
-            bottom: isPortrait ? 0 : screenWidth * 0.02),
+            bottom: isPortrait ? 0 : screenWidth * 0.032),
         child: ListView(
           children: [
             ...allNotification.map(SingleCheckBox).toList(),
             Padding(
               padding: EdgeInsets.only(
                 top: isPortrait ? screenWidth * 0.8 : screenWidth * 0.024,
-                left: isPortrait ? screenWidth * 0.64 : screenWidth * 0.84,
+                left: isPortrait ? screenWidth * 0.64 : screenWidth * 0.74,
                 right: isPortrait ? screenWidth * 0.08 : screenWidth * 0.032,
               ),
               child: PrimaryButton(
