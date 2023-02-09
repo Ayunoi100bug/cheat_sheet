@@ -2,6 +2,7 @@ import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/view/home_screen/ask_question.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../button.dart';
 
@@ -102,7 +103,14 @@ class _AskState extends State<Ask> {
                                       },
                                     ),
                                   ),
-                                  Regular14px(text: "99")
+                                  Regular14px(text: "99"),
+                                  SizedBox(
+                                    width: screenWidth * 0.02,
+                                  ),
+                                  Icon(
+                                    FontAwesomeIcons.ellipsisV,
+                                    size: 16,
+                                  ), //isMine
                                 ],
                               ),
                             ),

@@ -1,45 +1,39 @@
+import 'dart:math';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:blinking_text/blinking_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cheat_sheet/model/user.dart';
 import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/colors.dart';
+import 'package:cheat_sheet/res/components/flushbar.dart';
+import 'package:cheat_sheet/res/components/flushbar_icon.dart';
+import 'package:cheat_sheet/res/components/popup_login.dart';
 import 'package:cheat_sheet/res/components/review.dart';
 import 'package:cheat_sheet/res/components/tag.dart';
+import 'package:cheat_sheet/res/gap_dimension.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
-import 'package:cheat_sheet/view/home_screen/create_review.dart';
+import 'package:cheat_sheet/view_model/create_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:path/path.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:unicons/unicons.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../data/network/pdf_api.dart';
+import '../../model/sheet.dart';
+import '../../model/sheet_list.dart';
+import '../../res/components/form_field.dart';
 
 class DetailSheet extends StatefulWidget {
   final String sheetId;
-  // final String sheetName;
-  // final Array tag;
-  // final int star;
-  // final Image userAvatar;
-  // final String userName;
-  // final Image sheetImage;
-  // final Array demoSheetImage;
-  // final String detail;
-  // final double sheetReview;
 
-  const DetailSheet({super.key, @PathParam() required this.sheetId
-      // required this.sheetName,
-      // required this.tag,
-      // required this.star,
-      // required this.userAvatar,
-      // required this.userName,
-      // required this.sheetImage,
-      // required this.detail,
-      // required this.sheetReview,
-      // required this.demoSheetImage
-      });
+  const DetailSheet({super.key, @PathParam() required this.sheetId});
 
   @override
   State<DetailSheet> createState() => _DetailSheetState();
@@ -270,7 +264,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                     StreamBuilder<DocumentSnapshot>(
                                       stream: _firestore
                                           .collection("users")
-                                          .doc(data["uid"])
+                                          .doc(data["authorId"])
                                           .snapshots(),
                                       builder: (context, userSnapshot) {
                                         if (!userSnapshot.hasData ||
@@ -307,19 +301,30 @@ class _DetailSheetState extends State<DetailSheet> {
                                           color: AppColors.black600,
                                           size: isPortrait ? 32 : 36,
                                         ),
+                                        InkWell(
+                                          child: Icon(
+                                            Icons.playlist_add_rounded,
+                                            color: AppColors.black600,
+                                            size: isPortrait ? 32 : 36,
+                                          ),
+                                          onTap: () {
+                                            _BottomSheetList(
+                                                context, widget.sheetId);
+                                          },
+                                        ),
                                         Icon(
-                                          UniconsLine.plus_square,
+                                          UniconsLine.arrow_circle_down,
                                           color: AppColors.black600,
                                           size: isPortrait ? 32 : 36,
                                         ),
-                                        Icon(
-                                          UniconsLine.cloud_download,
-                                          color: AppColors.black600,
-                                          size: isPortrait ? 32 : 36,
-                                        ),
-                                        Icon(
-                                          UniconsLine.share,
-                                          size: isPortrait ? 32 : 36,
+                                        InkWell(
+                                          child: Icon(
+                                            UniconsLine.share,
+                                            size: isPortrait ? 32 : 36,
+                                          ),
+                                          onTap: () {
+                                            _shareSheet(context);
+                                          },
                                         ),
                                       ],
                                     ),
@@ -419,4 +424,398 @@ class _DetailSheetState extends State<DetailSheet> {
           }
         });
   }
+}
+
+void _BottomSheet(context) {
+  double screenHeight = MediaQuery.of(context).size.height;
+  Users myUser =
+      Users(email: '', password: '', username: '', uid: '', profileImage: '');
+  final FirebaseFirestore _firestoreDb = FirebaseFirestore.instance;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final SheetLists _sheetLists =
+      SheetLists(sheetListName: '', sid: [], authorId: '', sheetListId: '');
+  final Future<FirebaseApp> firebase = Firebase.initializeApp();
+  CreateCollection myCollection = CreateCollection();
+  final _auth = FirebaseAuth.instance;
+
+  showModalBottomSheet(
+    isScrollControlled: true,
+    context: context,
+    useRootNavigator: true,
+    shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+      top: Radius.circular(10),
+    )),
+    builder: (BuildContext context) {
+      return Container(
+        height: MediaQuery.of(context).viewInsets.bottom == 0
+            ? screenHeight * 0.3
+            : MediaQuery.of(context).size.height -
+                MediaQuery.of(context).viewInsets.bottom,
+        child: Column(
+          children: [
+            SizedBox(
+              height: screenHeight * 0.03,
+            ),
+            const Regular16px(
+              text: 'ชีทลิสต์ใหม่',
+            ),
+            SizedBox(
+              height: screenHeight * 0.03,
+            ),
+            Form(
+              key: _formKey,
+              child: Container(
+                width: 150,
+                decoration: BoxDecoration(
+                  border: Border.all(color: AppColors.black400),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: MyTextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  hintText: 'ชื่อชีทลิสต์',
+                  onSaved: (value) {
+                    _sheetLists.sheetListName = value!;
+                  },
+                  validator: RequiredValidator(
+                      errorText: 'Please enter sheet list name.'),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: screenHeight * 0.03,
+            ),
+            PrimaryButton(
+              text: 'บันทึก',
+              onPressed: () async {
+                _formKey.currentState!.save();
+                try {
+                  myCollection
+                      .createSheetListCollection(
+                    _sheetLists.sheetListName,
+                    _sheetLists.sid = [],
+                    _sheetLists.authorId = _auth.currentUser!.uid,
+                    _sheetLists.sheetListId = uuid.v4(),
+                  )
+                      .then(
+                    (value) {
+                      _formKey.currentState!.reset();
+                      AutoRouter.of(context).popUntilRoot();
+                    },
+                  );
+                  await _firestoreDb
+                      .collection('users')
+                      .doc(_auth.currentUser!.uid)
+                      .update({
+                    'sheetLists':
+                        FieldValue.arrayUnion([_sheetLists.sheetListId])
+                  });
+                } on FirebaseAuthException catch (e) {
+                  FlushbarPopup.errorFlushbar(
+                      context, FlushbarIcon.errorIcon, e.toString());
+                }
+              },
+            ),
+            SizedBox(
+              height: screenHeight * 0.03,
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
+void _BottomSheetList(context, sheetId) {
+  final _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestoreDb = FirebaseFirestore.instance;
+  double screenWidth = MediaQuery.of(context).size.width;
+
+  showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+        top: Radius.circular(10),
+      )),
+      builder: (BuildContext context) {
+        return StreamBuilder(
+            stream: _auth.authStateChanges(),
+            builder: (context, AsyncSnapshot<User?> snapshot) {
+              if (snapshot.hasData) {
+                return StreamBuilder<QuerySnapshot>(
+                    stream: _firestoreDb.collection("sheetList").snapshots(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (!snapshot.hasData || snapshot.data == null) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else {
+                        final mySheetLists = snapshot.data?.docs.where(
+                            (document) =>
+                                document["authorId"] == _auth.currentUser?.uid);
+                        return SingleChildScrollView(
+                          child: Container(
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 20, right: 24, top: 28, bottom: 28),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Regular16px(
+                                        text: 'บันทึกชีทนี้ลง...',
+                                      ),
+                                      InkWell(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: AppColors.tertiary500),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
+                                          child: Icon(
+                                            FontAwesomeIcons.plus,
+                                            color: AppColors.tertiary500,
+                                            size: 24,
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          _BottomSheet(context);
+                                        },
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(
+                                      screenWidth * GapDimension.w0_032),
+                                  child: GridView.builder(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3,
+                                      crossAxisSpacing: 8,
+                                      mainAxisSpacing: 8,
+                                      childAspectRatio: screenWidth < 480
+                                          ? MediaQuery.of(context).size.width /
+                                              (MediaQuery.of(context)
+                                                      .size
+                                                      .height /
+                                                  1.1)
+                                          : MediaQuery.of(context).size.width /
+                                              (MediaQuery.of(context)
+                                                      .size
+                                                      .height /
+                                                  0.4),
+                                    ),
+                                    itemCount: mySheetLists?.length,
+                                    itemBuilder: (context, index) {
+                                      var sheetLists =
+                                          mySheetLists?.elementAt(index);
+                                      return Container(
+                                        child: LayoutBuilder(
+                                          builder: (context, constraints) {
+                                            return InkWell(
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    height:
+                                                        constraints.maxHeight *
+                                                            0.8,
+                                                    color: AppColors.black300,
+                                                  ),
+                                                  Container(
+                                                    height:
+                                                        constraints.maxHeight *
+                                                            0.2,
+                                                    child: LayoutBuilder(
+                                                      builder: (context,
+                                                          constraints) {
+                                                        return Container(
+                                                          padding: EdgeInsets.only(
+                                                              top: screenWidth *
+                                                                  0.02),
+                                                          alignment: Alignment
+                                                              .topCenter,
+                                                          height: constraints
+                                                                  .maxHeight *
+                                                              0.5,
+                                                          child: Regular16px(
+                                                              text: sheetLists![
+                                                                  'sheetListName']),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              onTap: () async {
+                                                try {
+                                                  await _firestoreDb
+                                                      .collection('sheetList')
+                                                      .doc(sheetLists![
+                                                          'sheetListId'])
+                                                      .update({
+                                                    'sid':
+                                                        FieldValue.arrayUnion(
+                                                            [sheetId])
+                                                  });
+                                                  Future.delayed(
+                                                      const Duration(
+                                                          milliseconds: 500),
+                                                      () {
+                                                    Navigator.of(context).pop();
+                                                    final String message =
+                                                        'เพิ่มชีทเข้าชีทลิสต์เรียบร้อย!';
+                                                    FlushbarPopup
+                                                        .successFlushbar(
+                                                            context,
+                                                            Icon(
+                                                                FontAwesomeIcons
+                                                                    .book),
+                                                            message);
+                                                  });
+                                                } on FirebaseAuthException catch (e) {
+                                                  FlushbarPopup.errorFlushbar(
+                                                      context,
+                                                      FlushbarIcon.errorIcon,
+                                                      e.toString());
+                                                }
+                                              },
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }
+                    });
+              } else {
+                return Popup_Login(context);
+              }
+            });
+      });
+}
+
+void _shareSheet(context) {
+  double screenWidth = MediaQuery.of(context).size.width;
+  var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+
+  showModalBottomSheet(
+    context: context,
+    shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+      top: Radius.circular(10),
+    )),
+    builder: (BuildContext context) {
+      return SingleChildScrollView(
+        child: Container(
+          height: isPortrait ? screenWidth * 0.52 : screenWidth * 0.29,
+          child: Padding(
+            padding: EdgeInsets.only(
+                top: screenWidth * 0.040,
+                bottom: isPortrait ? screenWidth * 0.040 : screenWidth * 0.012),
+            child: Column(
+              children: [
+                Regular16px(
+                  text: 'แชร์ชีทไป...',
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      top:
+                          isPortrait ? screenWidth * 0.04 : screenWidth * 0.020,
+                      left:
+                          isPortrait ? screenWidth * 0.32 : screenWidth * 0.4),
+                  child: InkWell(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.facebook,
+                          color: Colors.blue,
+                          size: 36,
+                        ),
+                        SizedBox(
+                          width: screenWidth * 0.08,
+                        ),
+                        Regular16px(text: 'Facebook'),
+                      ],
+                    ),
+                    onTap: () {
+                      print("Facebook");
+                    },
+                  ),
+                ),
+                InkWell(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        top: isPortrait
+                            ? screenWidth * 0.04
+                            : screenWidth * 0.020,
+                        left: isPortrait
+                            ? screenWidth * 0.32
+                            : screenWidth * 0.4),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.instagram,
+                          color: Colors.pink,
+                          size: 36,
+                        ),
+                        SizedBox(
+                          width: screenWidth * 0.08,
+                        ),
+                        Regular16px(text: 'Instagram'),
+                      ],
+                    ),
+                  ),
+                  onTap: () {
+                    print("Instagram");
+                  },
+                ),
+                InkWell(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        top: isPortrait
+                            ? screenWidth * 0.04
+                            : screenWidth * 0.020,
+                        left: isPortrait
+                            ? screenWidth * 0.32
+                            : screenWidth * 0.4),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.twitter,
+                          color: Colors.blue,
+                          size: 36,
+                        ),
+                        SizedBox(
+                          width: screenWidth * 0.08,
+                        ),
+                        Regular16px(text: 'Twitter'),
+                      ],
+                    ),
+                  ),
+                  onTap: () {
+                    print("Twitter");
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
 }

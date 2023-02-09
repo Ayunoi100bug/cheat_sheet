@@ -56,13 +56,18 @@ class _SidebarMenuState extends State<SidebarMenu> {
                           CustomListTile(
                             icon: Icons.notifications_active_outlined,
                             title: 'ตั้งค่าการแจ้งเตือน',
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.pop(context);
+                              AutoRouter.of(context)
+                                  .push(NotificationSettingRoute());
+                            },
                           ),
                           CustomListTile(
                             icon: FluentSystemIcons.ic_fluent_shield_regular,
                             title: 'บัญชีของฉัน',
                             onTap: () {
-                              print("account");
+                              Navigator.pop(context);
+                              AutoRouter.of(context).push(MyAccountRoute());
                             },
                           ),
                           CustomListTile(
@@ -140,13 +145,18 @@ class _SidebarMenuState extends State<SidebarMenu> {
                           CustomListTile(
                             icon: Icons.notifications_active_outlined,
                             title: 'ตั้งค่าการแจ้งเตือน',
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.pop(context);
+                              AutoRouter.of(context)
+                                  .push(NotificationSettingRoute());
+                            },
                           ),
                           CustomListTile(
                             icon: FluentSystemIcons.ic_fluent_shield_regular,
                             title: 'บัญชีของฉัน',
                             onTap: () {
-                              print("account");
+                              Navigator.pop(context);
+                              AutoRouter.of(context).push(MyAccountRoute());
                             },
                           ),
                           CustomListTile(

@@ -233,10 +233,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                         gravity: ToastGravity.BOTTOM);
                                   }
                                 },
-                                icon: const Icon(
-                                  FontAwesomeIcons.google,
-                                  color: Colors.red,
-                                  size: 36,
+                                icon: Image.asset(
+                                  "assets/images/google.png",
                                 ),
                               ),
                               IconButton(
