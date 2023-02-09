@@ -34,6 +34,7 @@ class CreateCollection {
       'profileImage': url,
       'follower': myUser.follower,
       'following': myUser.following,
+      'coin': myUser.coin,
       'sheetLists': myUser.sheetLists,
     });
   }
@@ -53,6 +54,8 @@ class CreateCollection {
         'profileImage': currentuser?.photoURL,
         'follower': myUser.follower,
         'following': myUser.following,
+        'coin': myUser.coin,
+        'sheetLists': myUser.sheetLists,
       });
     }
   }
@@ -74,6 +77,8 @@ class CreateCollection {
         'profileImage': profileImage,
         'follower': myUser.follower,
         'following': myUser.following,
+        'coin': myUser.coin,
+        'sheetLists': myUser.sheetLists,
       });
     }
   }

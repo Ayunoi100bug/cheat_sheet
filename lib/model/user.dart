@@ -9,6 +9,7 @@ class Users {
   String profileImage;
   int follower = 0;
   int following = 0;
+  int coin = 0;
   List? sheetLists = [];
 
   Users({
@@ -28,6 +29,7 @@ class Users {
         profileImage = json['profileImage'],
         follower = json['follower'],
         following = json['following'],
+        coin = json['coin'],
         sheetLists = json['sheetList'];
 
   Map<String, dynamic> toJson() => {
@@ -39,6 +41,7 @@ class Users {
         'profileImage': profileImage,
         'follower': follower,
         'following': following,
+        'coin': coin,
         'sheetLists': sheetLists,
       };
 }
