@@ -94,12 +94,6 @@ class AppRouter extends _i30.RootStackRouter {
         child: const _i5.EmptyRouterPage(),
       );
     },
-    BankAccountRoute.name: (routeData) {
-      return _i25.MaterialPageX<dynamic>(
-        routeData: routeData,
-        child: const _i5.EmptyRouterPage(),
-      );
-    },
     HomeRoute.name: (routeData) {
       return _i30.MaterialPageX<dynamic>(
         routeData: routeData,
@@ -1059,6 +1053,7 @@ class EditProfileRouteArgs {
     this.key,
     required this.userId,
   });
+
   final _i31.Key? key;
 
   final String userId;
