@@ -34,9 +34,7 @@ class _SheetListDetailState extends State<SheetListDetail> {
             List sheetInList = data['sid'];
             return SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: screenWidth * 0.038,
-                    vertical: screenWidth * 0.038),
+                padding: EdgeInsets.all(screenWidth * 0.038),
                 child: GridView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
@@ -53,7 +51,8 @@ class _SheetListDetailState extends State<SheetListDetail> {
                           .collection("sheet")
                           .doc(sheetInList[index])
                           .snapshots(),
-                      builder: (context, sheetSnapshot) {
+                      builder: (BuildContext context,
+                          AsyncSnapshot<DocumentSnapshot> sheetSnapshot) {
                         if (!sheetSnapshot.hasData ||
                             sheetSnapshot.data!.data() == null) {
                           return const Center(
@@ -65,7 +64,9 @@ class _SheetListDetailState extends State<SheetListDetail> {
                                   .collection("users")
                                   .doc(_auth.currentUser?.uid)
                                   .snapshots(),
-                              builder: (context, userSnapshot) {
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<DocumentSnapshot>
+                                      userSnapshot) {
                                 if (!userSnapshot.hasData ||
                                     userSnapshot.data!.data() == null) {
                                   return const Center(
