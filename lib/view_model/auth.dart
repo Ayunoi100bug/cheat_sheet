@@ -6,9 +6,16 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  Users myUser =
-      Users(email: '', password: '', username: '', uid: '', profileImage: '');
+  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
   CreateCollection myCollection = CreateCollection();
+
+  bool isLogged() {
+    if (_auth.currentUser == null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   Future<void> createUserWithEmail(
       String argEmail, String argPassword, String argUsername) async {

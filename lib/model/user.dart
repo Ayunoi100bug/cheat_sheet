@@ -11,6 +11,7 @@ class Users {
   int following = 0;
   int coin = 0;
   List? sheetLists = [];
+  List? buyedSheet = [];
 
   Users({
     required this.username,
@@ -30,7 +31,8 @@ class Users {
         follower = json['follower'],
         following = json['following'],
         coin = json['coin'],
-        sheetLists = json['sheetList'];
+        sheetLists = json['sheetList'],
+        buyedSheet = json['buyedSheet'];
 
   Map<String, dynamic> toJson() => {
         'timestamp': timestamp,

@@ -36,6 +36,7 @@ class CreateCollection {
       'following': myUser.following,
       'coin': myUser.coin,
       'sheetLists': myUser.sheetLists,
+      'buyedSheet': myUser.buyedSheet,
     });
   }
 
@@ -56,6 +57,7 @@ class CreateCollection {
         'following': myUser.following,
         'coin': myUser.coin,
         'sheetLists': myUser.sheetLists,
+        'buyedSheet': myUser.buyedSheet,
       });
     }
   }
@@ -79,6 +81,7 @@ class CreateCollection {
         'following': myUser.following,
         'coin': myUser.coin,
         'sheetLists': myUser.sheetLists,
+        'buyedSheet': myUser.buyedSheet,
       });
     }
   }

@@ -10,6 +10,7 @@ class Sheets {
   String sid = uuid.v1();
   bool sheetTypeFree;
   int? price;
+  int buyer = 0;
   String authorId;
 
   Sheets({
@@ -27,6 +28,7 @@ class Sheets {
         sid = json['sid'],
         sheetTypeFree = json['sheetType'],
         price = json['price'],
+        buyer = json['buyer'],
         authorId = json['authorId'];
 
   Map<String, dynamic> toJson() => {
@@ -36,6 +38,7 @@ class Sheets {
         'sid': sid,
         'sheetTypeFree': sheetTypeFree,
         'price': price,
+        'buyer': buyer,
         'authorId': authorId,
       };
 }
