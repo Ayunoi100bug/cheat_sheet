@@ -14,7 +14,7 @@ class FlushbarPopup {
         text: message,
         color: AppColors.white,
       ),
-      boxShadows: [
+      boxShadows: const [
         BoxShadow(
             offset: Offset(0.0, 2.0),
             blurRadius: 4.0,
@@ -44,7 +44,69 @@ class FlushbarPopup {
         text: message,
         color: AppColors.white,
       ),
-      boxShadows: [
+      boxShadows: const [
+        BoxShadow(
+            offset: Offset(0.0, 2.0),
+            blurRadius: 4.0,
+            spreadRadius: -1.0,
+            color: AppColors.black400),
+        BoxShadow(
+            offset: Offset(0.0, 4.0),
+            blurRadius: 5.0,
+            color: AppColors.black400),
+        BoxShadow(
+            offset: Offset(0.0, 1.0),
+            blurRadius: 10.0,
+            color: AppColors.black400),
+      ],
+      duration: Duration(seconds: 3),
+      flushbarPosition: FlushbarPosition.TOP,
+    )..show(context);
+  }
+
+  static successFlushbarNoAppbar(
+      BuildContext context, Icon icon, String message) {
+    return Flushbar(
+      backgroundColor: AppColors.secondary500,
+      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 65),
+      icon: icon,
+      shouldIconPulse: false,
+      messageText: Regular14px(
+        text: message,
+        color: AppColors.white,
+      ),
+      boxShadows: const [
+        BoxShadow(
+            offset: Offset(0.0, 2.0),
+            blurRadius: 4.0,
+            spreadRadius: -1.0,
+            color: AppColors.black400),
+        BoxShadow(
+            offset: Offset(0.0, 4.0),
+            blurRadius: 5.0,
+            color: AppColors.black400),
+        BoxShadow(
+            offset: Offset(0.0, 1.0),
+            blurRadius: 10.0,
+            color: AppColors.black400),
+      ],
+      duration: Duration(seconds: 3),
+      flushbarPosition: FlushbarPosition.TOP,
+    )..show(context);
+  }
+
+  static errorFlushbarNoAppbar(
+      BuildContext context, Icon icon, String message) {
+    return Flushbar(
+      backgroundColor: AppColors.error600,
+      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 65),
+      icon: icon,
+      shouldIconPulse: false,
+      messageText: Regular14px(
+        text: message,
+        color: AppColors.white,
+      ),
+      boxShadows: const [
         BoxShadow(
             offset: Offset(0.0, 2.0),
             blurRadius: 4.0,

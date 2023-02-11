@@ -1,6 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/colors.dart';
+import 'package:cheat_sheet/res/components/flushbar.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 
@@ -10,12 +11,12 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../gap_dimension.dart';
 import 'drawer_list.dart';
 
-import '../gap_dimension.dart';
+import 'flushbar_icon.dart';
 
 class SidebarMenu extends StatefulWidget {
   const SidebarMenu({super.key});
@@ -121,6 +122,10 @@ class _SidebarMenuState extends State<SidebarMenu> {
                         myAuth.logOut();
                         AutoRouter.of(context).navigateNamed("/home/");
                         Navigator.pop(context);
+                        SchedulerBinding.instance.addPostFrameCallback((_) {
+                          FlushbarPopup.errorFlushbarNoAppbar(context,
+                              FlushbarIcon.successIcon, "ออกจากระบบสำเร็จ");
+                        });
                       },
                     ),
                   ],

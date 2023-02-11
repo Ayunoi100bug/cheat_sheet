@@ -7,13 +7,14 @@ import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_signin_button/button_list.dart';
-import 'package:flutter_signin_button/button_view.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
 import '../res/colors.dart';
+import '../res/components/flushbar.dart';
+import '../res/components/flushbar_icon.dart';
 import '../res/gap_dimension.dart';
 import '../res/typo.dart';
 
@@ -176,6 +177,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                             _formKey.currentState!.reset();
                                             AutoRouter.of(context)
                                                 .navigateNamed("/home/");
+                                            SchedulerBinding.instance
+                                                .addPostFrameCallback((_) {
+                                              FlushbarPopup
+                                                  .successFlushbarNoAppbar(
+                                                      context,
+                                                      FlushbarIcon.successIcon,
+                                                      "เข้าสู่ระบบสำเร็จ");
+                                            });
                                           },
                                         );
                                       } on FirebaseAuthException catch (e) {
@@ -225,6 +234,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   myAuth.loginWithGoogle().then((value) {
                                     AutoRouter.of(context)
                                         .navigateNamed("/home/");
+                                    SchedulerBinding.instance
+                                        .addPostFrameCallback((_) {
+                                      FlushbarPopup.successFlushbarNoAppbar(
+                                          context,
+                                          FlushbarIcon.successIcon,
+                                          "เข้าสู่ระบบสำเร็จ");
+                                    });
                                   });
                                 } on FirebaseAuthException catch (e) {
                                   Fluttertoast.showToast(
@@ -242,6 +258,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   myAuth.loginWithFacebook().then((value) {
                                     AutoRouter.of(context)
                                         .navigateNamed("/home/");
+                                    SchedulerBinding.instance
+                                        .addPostFrameCallback((_) {
+                                      FlushbarPopup.successFlushbarNoAppbar(
+                                          context,
+                                          FlushbarIcon.successIcon,
+                                          "เข้าสู่ระบบสำเร็จ");
+                                    });
                                   });
                                 } on FirebaseAuthException catch (e) {
                                   Fluttertoast.showToast(
