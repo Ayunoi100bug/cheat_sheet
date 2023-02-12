@@ -27,29 +27,25 @@ class MyTextFormField extends StatelessWidget {
     return TextFormField(
       decoration: InputDecoration(
         enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-              width: 1, color: AppColors.black800, style: BorderStyle.solid),
+          borderSide: BorderSide(width: 1, color: AppColors.black800, style: BorderStyle.solid),
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
         ),
         focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-              width: 1, color: AppColors.black800, style: BorderStyle.solid),
+          borderSide: BorderSide(width: 1, color: AppColors.black800, style: BorderStyle.solid),
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-              width: 1, color: AppColors.error500, style: BorderStyle.solid),
+          borderSide: BorderSide(width: 1, color: AppColors.error500, style: BorderStyle.solid),
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
         ),
         errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-              width: 1, color: AppColors.error500, style: BorderStyle.solid),
+          borderSide: BorderSide(width: 1, color: AppColors.error500, style: BorderStyle.solid),
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
@@ -94,42 +90,36 @@ class MyTextFormFieldLarge extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    var isLandScape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+    var isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     return TextFormField(
       decoration: InputDecoration(
         enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-              width: 1, color: AppColors.black800, style: BorderStyle.solid),
+          borderSide: BorderSide(width: 1, color: AppColors.black800, style: BorderStyle.solid),
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
         ),
         focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-              width: 1, color: AppColors.black800, style: BorderStyle.solid),
+          borderSide: BorderSide(width: 1, color: AppColors.black800, style: BorderStyle.solid),
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-              width: 1, color: AppColors.error500, style: BorderStyle.solid),
+          borderSide: BorderSide(width: 1, color: AppColors.error500, style: BorderStyle.solid),
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
         ),
         errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-              width: 1, color: AppColors.error500, style: BorderStyle.solid),
+          borderSide: BorderSide(width: 1, color: AppColors.error500, style: BorderStyle.solid),
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
         ),
-        contentPadding: EdgeInsets.symmetric(
-            vertical: isPortrait ? screenWidth * 0.12 : screenWidth * 0.05,
-            horizontal: isPortrait ? screenWidth * 0.03 : screenWidth * 0.01),
+        // contentPadding: EdgeInsets.only(
+        //     bottom: isPortrait ? screenWidth * 0.36 : screenWidth * 0.05),
         hintText: hintText,
         helperText: helperText,
         isDense: true,

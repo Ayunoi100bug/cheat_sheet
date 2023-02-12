@@ -11,6 +11,7 @@ class Sheets {
   bool sheetTypeFree;
   int? price;
   String authorId;
+  List? review = [];
 
   Sheets({
     required this.sheetName,
@@ -27,7 +28,8 @@ class Sheets {
         sid = json['sid'],
         sheetTypeFree = json['sheetType'],
         price = json['price'],
-        authorId = json['authorId'];
+        authorId = json['authorId'],
+        review = json['review'];
 
   Map<String, dynamic> toJson() => {
         'timestamp': timestamp,
@@ -37,5 +39,6 @@ class Sheets {
         'sheetTypeFree': sheetTypeFree,
         'price': price,
         'authorId': authorId,
+        'review': review,
       };
 }
