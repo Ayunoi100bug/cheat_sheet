@@ -58,8 +58,7 @@ class _SheetListScreenState extends State<SheetListScreen>
                     );
                   } else {
                     final mySheetLists = snapshot.data?.docs.where((document) =>
-                        document["authorId"] ==
-                        FirebaseAuth.instance.currentUser?.uid);
+                        document["authorId"] == _auth.currentUser?.uid);
                     return Scaffold(
                       resizeToAvoidBottomInset: true,
                       body: SafeArea(
@@ -75,15 +74,6 @@ class _SheetListScreenState extends State<SheetListScreen>
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
-                                        ElevatedButton(
-                                            onPressed: () {
-                                              AutoRouter.of(context).push(
-                                                SheetListDetailRoute(
-                                                    sheetId: '5'),
-                                              );
-                                            },
-                                            child: Text(
-                                                'นี่คือปุ่มดูหน้าชีทไม่ใช่หน้าใครหน้าไหน')),
                                         Container(
                                           decoration: BoxDecoration(
                                             border: Border.all(
@@ -132,47 +122,57 @@ class _SheetListScreenState extends State<SheetListScreen>
                                       var sheetLists =
                                           mySheetLists?.elementAt(index);
                                       var mySheet = sheetLists!['sid'];
-                                      return Container(
-                                        child: LayoutBuilder(
-                                          builder: (context, constraints) {
-                                            return Column(
-                                              children: [
-                                                Container(
-                                                  height:
-                                                      constraints.maxHeight *
-                                                          0.8,
-                                                  color: AppColors.black300,
-                                                ),
-                                                InkWell(
-                                                  child: Container(
+                                      return InkWell(
+                                        child: Container(
+                                          child: LayoutBuilder(
+                                            builder: (context, constraints) {
+                                              return Column(
+                                                children: [
+                                                  Container(
                                                     height:
                                                         constraints.maxHeight *
-                                                            0.2,
-                                                    child: LayoutBuilder(
-                                                      builder: (context,
-                                                          constraints) {
-                                                        return Container(
-                                                          padding: EdgeInsets.only(
-                                                              top: screenWidth *
-                                                                  0.02),
-                                                          alignment: Alignment
-                                                              .topCenter,
-                                                          height: constraints
-                                                                  .maxHeight *
-                                                              0.5,
-                                                          child: Regular16px(
-                                                              text: sheetLists[
-                                                                  'sheetListName']),
-                                                        );
-                                                      },
-                                                    ),
+                                                            0.8,
+                                                    color: AppColors.black300,
                                                   ),
-                                                  onTap: () {},
-                                                ),
-                                              ],
-                                            );
-                                          },
+                                                  InkWell(
+                                                    child: Container(
+                                                      height: constraints
+                                                              .maxHeight *
+                                                          0.2,
+                                                      child: LayoutBuilder(
+                                                        builder: (context,
+                                                            constraints) {
+                                                          return Container(
+                                                            padding: EdgeInsets.only(
+                                                                top:
+                                                                    screenWidth *
+                                                                        0.02),
+                                                            alignment: Alignment
+                                                                .topCenter,
+                                                            height: constraints
+                                                                    .maxHeight *
+                                                                0.5,
+                                                            child: Regular16px(
+                                                                text: sheetLists[
+                                                                    'sheetListName']),
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
+                                                    onTap: () {},
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          ),
                                         ),
+                                        onTap: () {
+                                          AutoRouter.of(context).push(
+                                            SheetListDetailRoute(
+                                                sheetId:
+                                                    sheetLists['sheetListId']),
+                                          );
+                                        },
                                       );
                                     },
                                   ),

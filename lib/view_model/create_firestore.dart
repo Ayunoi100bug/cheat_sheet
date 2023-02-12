@@ -1,6 +1,9 @@
+import 'dart:ffi';
 import 'dart:io';
 
+import 'package:cheat_sheet/model/review.dart';
 import 'package:cheat_sheet/model/sheet.dart';
+import 'package:cheat_sheet/model/sheet_list.dart';
 import 'package:cheat_sheet/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,18 +14,16 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class CreateCollection {
   final storageRef = FirebaseStorage.instance.ref();
-  final firebase_storage.FirebaseStorage storage =
-      firebase_storage.FirebaseStorage.instance;
+  final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
   final User? firebaseUser = FirebaseAuth.instance.currentUser;
   final FirebaseFirestore _firestoreDb = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
-  Users myUser =
-      Users(email: '', password: '', username: '', uid: '', profileImage: '');
-  Sheets mySheet =
-      Sheets(sheetName: '', detailSheet: '', sheetTypeFree: true, authorId: '');
+  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
+  Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetTypeFree: true, authorId: '');
+  SheetLists mySheetLists = SheetLists(sheetListName: '', sid: [], authorId: '', sheetListId: '');
+  Reviews myReview = Reviews(text: '', rid: '', authorId: '', sheetId: '', rating: 0);
 
-  Future<void> createUserCollection(
-      String argUsername, String argEmail, String argUid) async {
+  Future<void> createUserCollection(String argUsername, String argEmail, String argUid) async {
     const String defaultPath = "images/default_profile.png";
     final Reference storageRef = _storage.ref().child(defaultPath);
     final String url = await storageRef.getDownloadURL();
@@ -86,34 +87,42 @@ class CreateCollection {
     }
   }
 
-  Future<void> createSheetCollection(String argSheetName, String argDetailSheet,
-      bool argSheetType, int? argPrice, String argAuthorId) async {
-    await _firestoreDb.collection("sheet").doc(mySheet.sid).set({
+  Future<void> createSheetCollection(
+      String sheetId, String argSheetName, String argDetailSheet, bool argSheetType, int? argPrice, String argAuthorId) async {
+    await _firestoreDb.collection("sheet").doc(sheetId).set({
       'timestamp': mySheet.timestamp,
       'sheetName': argSheetName.toString().trim(),
       'detailSheet': argDetailSheet.toString().trim(),
       'sheetTypeFree': argSheetType,
       'price': argPrice,
-      'sid': mySheet.sid,
+      'sid': sheetId,
       'authorId': argAuthorId,
     });
   }
 
-  Future<void> createSheetListCollection(String argSheetListName, List? argSid,
-      String argAuthorId, String argSheetListId) async {
+  Future<void> createSheetListCollection(String argSheetListName, List? argSid, String argAuthorId, String argSheetListId) async {
     await _firestoreDb.collection("sheetList").doc(argSheetListId).set({
-      'timestamp': mySheet.timestamp,
+      'timestamp': mySheetLists.timestamp,
       'sheetListName': argSheetListName.toString().trim(),
       'sid': argSid,
       'authorId': argAuthorId,
       'sheetListId': argSheetListId,
     });
   }
+
+  Future<void> createReviewCollection(String argText, String argRid, String argAuthorId, String argSheetId, double argRating) async {
+    await _firestoreDb.collection("review").doc(argRid).set({
+      'timestamp': myReview.timestamp,
+      'text': argText.toString().trim(),
+      'authorId': argAuthorId,
+      'sheetId': argSheetId,
+      'rating': argRating,
+    });
+  }
 }
 
 class Storage {
-  final firebase_storage.FirebaseStorage storage =
-      firebase_storage.FirebaseStorage.instance;
+  final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
   final User? firebaseUser = FirebaseAuth.instance.currentUser;
   final ref = FirebaseStorage.instance.ref().child('userImages');
   late String imageURL;
