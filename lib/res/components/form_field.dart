@@ -13,6 +13,8 @@ class MyTextFormField extends StatelessWidget {
   final int maxLine;
   final int minLine;
   final double fontSize;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
 
   MyTextFormField({
     super.key,
@@ -26,12 +28,16 @@ class MyTextFormField extends StatelessWidget {
     this.maxLine = 1,
     this.minLine = 1,
     this.fontSize = 14,
+    this.prefixIcon,
+    this.suffixIcon,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       decoration: InputDecoration(
+        prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
         enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(
               width: 1, color: AppColors.black800, style: BorderStyle.solid),
@@ -46,14 +52,14 @@ class MyTextFormField extends StatelessWidget {
             Radius.circular(10),
           ),
         ),
-        focusedErrorBorder: OutlineInputBorder(
+        focusedErrorBorder: const OutlineInputBorder(
           borderSide: BorderSide(
               width: 1, color: AppColors.error500, style: BorderStyle.solid),
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
         ),
-        errorBorder: OutlineInputBorder(
+        errorBorder: const OutlineInputBorder(
           borderSide: BorderSide(
               width: 1, color: AppColors.error500, style: BorderStyle.solid),
           borderRadius: BorderRadius.all(
