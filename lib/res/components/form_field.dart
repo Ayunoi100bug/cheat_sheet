@@ -39,29 +39,31 @@ class MyTextFormField extends StatelessWidget {
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
         enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-              width: 1, color: AppColors.black800, style: BorderStyle.solid),
+          borderSide: BorderSide(width: 1, color: AppColors.black800, style: BorderStyle.solid),
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
         ),
         focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-              width: 1, color: AppColors.black800, style: BorderStyle.solid),
+          borderSide: BorderSide(width: 1, color: AppColors.black800, style: BorderStyle.solid),
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
         ),
+
         focusedErrorBorder: const OutlineInputBorder(
           borderSide: BorderSide(
               width: 1, color: AppColors.error500, style: BorderStyle.solid),
+
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
         ),
+
         errorBorder: const OutlineInputBorder(
           borderSide: BorderSide(
               width: 1, color: AppColors.error500, style: BorderStyle.solid),
+
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
@@ -79,6 +81,7 @@ class MyTextFormField extends StatelessWidget {
       onSaved: onSaved,
       maxLines: maxLine,
       minLines: minLine,
+
     );
   }
 }
