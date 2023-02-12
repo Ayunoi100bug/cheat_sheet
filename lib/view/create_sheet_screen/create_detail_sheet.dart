@@ -7,6 +7,7 @@ import 'package:cheat_sheet/res/components/form_field.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/view_model/create_firestore.dart';
 import 'package:cheat_sheet/view_model/file_passer.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -54,6 +55,8 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
         MediaQuery.of(context).orientation == Orientation.landscape;
 
     File? pdfFile = Provider.of<FilePasser>(context).getFile();
+
+    String sheetId = mySheet.sid;
 
     return FutureBuilder(
         future: firebase,
@@ -289,6 +292,7 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                                 try {
                                   myCollection
                                       .createSheetCollection(
+                                    sheetId,
                                     mySheet.sheetName,
                                     mySheet.detailSheet,
                                     mySheet.sheetTypeFree,
@@ -306,7 +310,7 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                                               pdfFile,
                                               FirebaseAuth
                                                   .instance.currentUser!.uid,
-                                              mySheet.sid);
+                                              sheetId);
                                       Future.delayed(
                                           const Duration(milliseconds: 500),
                                           () {

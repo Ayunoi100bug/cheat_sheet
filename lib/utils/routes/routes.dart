@@ -10,6 +10,7 @@ import 'package:cheat_sheet/view/home_screen/detail_question.dart';
 import 'package:cheat_sheet/view/home_screen/detail_sheet.dart';
 import 'package:cheat_sheet/view/home_screen/read_sheet.dart';
 import 'package:cheat_sheet/view/home_screen/review_sheet.dart';
+import 'package:cheat_sheet/view/home_screen/searching_sheet.dart';
 import 'package:cheat_sheet/view/login.dart';
 import 'package:cheat_sheet/view/main_screen.dart';
 import 'package:cheat_sheet/view/home_screen/home_screen.dart';
@@ -41,6 +42,10 @@ import 'package:cheat_sheet/view/test_ui_book.dart';
           children: [
             AutoRoute(path: '', page: HomeScreen),
             AutoRoute(path: 'test_ui', name: 'TestUIRoute', page: TestUIPage),
+            AutoRoute(
+                path: 'searching',
+                name: 'SearchingSheetRoute',
+                page: SearchingSheet),
             AutoRoute(
                 path: ':sheetId', name: 'DetailSheetRoute', page: DetailSheet),
             AutoRoute(
