@@ -260,7 +260,13 @@ class _DetailSheetState extends State<DetailSheet> {
                                             StreamBuilder<DocumentSnapshot>(
                                                 stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
                                                 builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> currentUserSnapshot) {
-                                                  if (_auth.currentUser == null) {
+                                                  if (currentUserSnapshot.connectionState == ConnectionState.waiting) {
+                                                    return PrimaryButton(
+                                                      text: "...",
+                                                      size: 16,
+                                                      onPressed: () {},
+                                                    );
+                                                  } else if (_auth.currentUser == null) {
                                                     return PrimaryButton(
                                                       text: sheetData['price'] == 0 ? "อ่านชีท" : sheetData['price'].toString(),
                                                       size: 16,
