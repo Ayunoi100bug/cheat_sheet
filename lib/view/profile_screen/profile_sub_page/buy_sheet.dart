@@ -37,7 +37,7 @@ class BuySheet extends StatelessWidget {
                 itemCount: mySheets.length,
                 itemBuilder: (context, index) {
                   var sheet = mySheets.elementAt(index);
-                  if (sheet["authorId"] != FirebaseAuth.instance.currentUser?.uid) {
+                  if (sheet["authorId"] != _auth.currentUser?.uid) {
                     return Container();
                   }
                   return StreamBuilder<DocumentSnapshot>(
