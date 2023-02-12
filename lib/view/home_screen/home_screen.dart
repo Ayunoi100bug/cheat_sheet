@@ -6,6 +6,7 @@ import 'package:cheat_sheet/res/components/popup_dialog.dart';
 import 'package:cheat_sheet/res/components/popup_login.dart';
 import 'package:cheat_sheet/res/components/sheet.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
+import 'package:cheat_sheet/view/home_screen/searching_sheet.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -44,6 +45,11 @@ class _HomeScreenState extends State<HomeScreen>
               child: SingleChildScrollView(
                 child: Column(
                   children: [
+                    ElevatedButton(
+                        onPressed: () {
+                          AutoRouter.of(context).push(SearchingSheetRoute());
+                        },
+                        child: Text('ปุ่มไปหน้าค้นหาชั่วคราว')),
                     InkWell(
                       onTap: () {
                         showDialog(
