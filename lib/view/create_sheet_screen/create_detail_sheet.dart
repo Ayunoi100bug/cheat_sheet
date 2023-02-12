@@ -139,10 +139,12 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                         margin: EdgeInsets.only(
                             left: screenHeight * 0.024,
                             right: screenHeight * 0.024),
-                        child: MyTextFormFieldLarge(
+                        child: MyTextFormField(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: RequiredValidator(
                               errorText: 'Please enter detail.'),
+                          minLine: 6,
+                          maxLine: 6,
                           onSaved: (value) {
                             mySheet.detailSheet = value!;
                           },
