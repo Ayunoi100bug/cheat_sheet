@@ -35,7 +35,9 @@ class CreateCollection {
       'profileImage': url,
       'follower': myUser.follower,
       'following': myUser.following,
+      'coin': myUser.coin,
       'sheetLists': myUser.sheetLists,
+      'buyedSheet': myUser.buyedSheet,
     });
   }
 
@@ -54,6 +56,9 @@ class CreateCollection {
         'profileImage': currentuser?.photoURL,
         'follower': myUser.follower,
         'following': myUser.following,
+        'coin': myUser.coin,
+        'sheetLists': myUser.sheetLists,
+        'buyedSheet': myUser.buyedSheet,
       });
     }
   }
@@ -75,6 +80,9 @@ class CreateCollection {
         'profileImage': profileImage,
         'follower': myUser.follower,
         'following': myUser.following,
+        'coin': myUser.coin,
+        'sheetLists': myUser.sheetLists,
+        'buyedSheet': myUser.buyedSheet,
       });
     }
   }

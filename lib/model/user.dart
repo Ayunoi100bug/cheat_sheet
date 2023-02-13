@@ -9,7 +9,9 @@ class Users {
   String profileImage;
   int follower = 0;
   int following = 0;
+  int coin = 0;
   List? sheetLists = [];
+  List? buyedSheet = [];
 
   Users({
     required this.username,
@@ -28,7 +30,9 @@ class Users {
         profileImage = json['profileImage'],
         follower = json['follower'],
         following = json['following'],
-        sheetLists = json['sheetList'];
+        coin = json['coin'],
+        sheetLists = json['sheetList'],
+        buyedSheet = json['buyedSheet'];
 
   Map<String, dynamic> toJson() => {
         'timestamp': timestamp,
@@ -39,6 +43,7 @@ class Users {
         'profileImage': profileImage,
         'follower': follower,
         'following': following,
+        'coin': coin,
         'sheetLists': sheetLists,
       };
 }
