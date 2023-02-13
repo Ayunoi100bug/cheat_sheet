@@ -30,7 +30,7 @@ class Sheets {
         sheetTypeFree = json['sheetType'],
         price = json['price'],
         buyer = json['buyer'],
-        authorId = json['authorId'];
+        authorId = json['authorId'],
         review = json['review'];
 
   Map<String, dynamic> toJson() => {
