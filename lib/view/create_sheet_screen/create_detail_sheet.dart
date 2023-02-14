@@ -35,12 +35,7 @@ enum SheetType { free, sell }
 
 class _CreateDetailSheetState extends State<CreateDetailSheet> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  Sheets mySheet = Sheets(
-      sheetName: '',
-      detailSheet: '',
-      sheetTypeFree: true,
-      price: 0,
-      authorId: '');
+  Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetTypeFree: true, price: 0, authorId: '');
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   CreateCollection myCollection = CreateCollection();
   SheetType? _sheetType = SheetType.free;
@@ -51,8 +46,7 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    var isLandScape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+    var isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     File? pdfFile = Provider.of<FilePasser>(context).getFile();
 
@@ -78,45 +72,28 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                   child: Column(
                     children: [
                       Container(
-                        padding: EdgeInsets.all(isPortrait
-                            ? screenHeight * 0.024
-                            : screenHeight * 0.048),
-                        height: isPortrait
-                            ? screenHeight * 0.35
-                            : screenHeight * 0.6,
+                        padding: EdgeInsets.all(isPortrait ? screenHeight * 0.024 : screenHeight * 0.048),
+                        height: isPortrait ? screenHeight * 0.35 : screenHeight * 0.6,
                         child: PDFView(
                           filePath: pdfFile?.path,
                         ),
                       ),
                       Container(
-                          margin: EdgeInsets.only(
-                              left: isPortrait ? 0 : screenWidth * 0.2),
-                          padding: EdgeInsets.only(
-                              left: screenHeight * 0.024,
-                              top: isPortrait
-                                  ? screenHeight * 0.04
-                                  : screenHeight * 0.08),
+                          margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
+                          padding: EdgeInsets.only(left: screenHeight * 0.024, top: isPortrait ? screenHeight * 0.04 : screenHeight * 0.08),
                           alignment: Alignment.centerLeft,
                           child: const Medium16px(text: 'ชื่อ')),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Container(
                           width: isPortrait ? screenWidth : screenWidth * 0.3,
-                          padding: EdgeInsets.all(isPortrait
-                              ? screenHeight * 0.002
-                              : screenHeight * 0.004),
+                          padding: EdgeInsets.all(isPortrait ? screenHeight * 0.002 : screenHeight * 0.004),
                           margin: EdgeInsets.only(
-                              left: isPortrait
-                                  ? screenHeight * 0.024
-                                  : screenWidth * 0.2,
-                              right: isPortrait
-                                  ? screenHeight * 0.024
-                                  : screenHeight * 0.048),
+                              left: isPortrait ? screenHeight * 0.024 : screenWidth * 0.2,
+                              right: isPortrait ? screenHeight * 0.024 : screenHeight * 0.048),
                           child: MyTextFormField(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: RequiredValidator(
-                                errorText: 'Please enter sheet name.'),
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                            validator: RequiredValidator(errorText: 'Please enter sheet name.'),
                             onSaved: (value) {
                               mySheet.sheetName = value!;
                             },
@@ -125,24 +102,17 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                       ),
                       Container(
                           width: isPortrait ? screenWidth : screenWidth * 0.6,
-                          padding: EdgeInsets.only(
-                              left: screenHeight * 0.024,
-                              top: screenHeight * 0.02),
+                          padding: EdgeInsets.only(left: screenHeight * 0.024, top: screenHeight * 0.02),
                           alignment: Alignment.centerLeft,
                           child: const Medium16px(text: 'รายละเอียด')),
                       Container(
                         width: isPortrait ? screenWidth : screenWidth * 0.6,
-                        height: isPortrait
-                            ? screenHeight * 0.15
-                            : screenHeight * 0.25,
+                        height: isPortrait ? screenHeight * 0.15 : screenHeight * 0.25,
                         padding: EdgeInsets.all(screenHeight * 0.002),
-                        margin: EdgeInsets.only(
-                            left: screenHeight * 0.024,
-                            right: screenHeight * 0.024),
+                        margin: EdgeInsets.only(left: screenHeight * 0.024, right: screenHeight * 0.024),
                         child: MyTextFormField(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: RequiredValidator(
-                              errorText: 'Please enter detail.'),
+                          validator: RequiredValidator(errorText: 'Please enter detail.'),
                           minLine: 6,
                           maxLine: 6,
                           onSaved: (value) {
@@ -151,13 +121,8 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                         ),
                       ),
                       Container(
-                          margin: EdgeInsets.only(
-                              left: isPortrait ? 0 : screenWidth * 0.2),
-                          padding: EdgeInsets.only(
-                              left: screenHeight * 0.024,
-                              top: isPortrait
-                                  ? screenHeight * 0.02
-                                  : screenHeight * 0.04),
+                          margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
+                          padding: EdgeInsets.only(left: screenHeight * 0.024, top: isPortrait ? screenHeight * 0.02 : screenHeight * 0.04),
                           alignment: Alignment.centerLeft,
                           child: const Medium16px(text: 'แท็ก')),
                       Row(
@@ -165,23 +130,13 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Container(
-                              margin: EdgeInsets.only(
-                                  left: isPortrait
-                                      ? screenHeight * 0.024
-                                      : screenWidth * 0.2,
-                                  top: screenHeight * 0.01),
-                              width: isPortrait
-                                  ? screenWidth * 0.2
-                                  : screenWidth * 0.1,
-                              height: isPortrait
-                                  ? screenHeight * 0.05
-                                  : screenHeight * 0.1,
+                              margin: EdgeInsets.only(left: isPortrait ? screenHeight * 0.024 : screenWidth * 0.2, top: screenHeight * 0.01),
+                              width: isPortrait ? screenWidth * 0.2 : screenWidth * 0.1,
+                              height: isPortrait ? screenHeight * 0.05 : screenHeight * 0.1,
                               child: DottedBorder(
                                 borderType: BorderType.RRect,
                                 radius: const Radius.circular(30),
-                                child: const Align(
-                                    alignment: Alignment.center,
-                                    child: Icon(FontAwesomeIcons.plus)),
+                                child: const Align(alignment: Alignment.center, child: Icon(FontAwesomeIcons.plus)),
                                 dashPattern: [10, 10],
                               ),
                             ),
@@ -189,16 +144,12 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                         ],
                       ),
                       Container(
-                          margin: EdgeInsets.only(
-                              left: isPortrait ? 0 : screenWidth * 0.2),
-                          padding: EdgeInsets.only(
-                              left: screenHeight * 0.024,
-                              top: screenHeight * 0.02),
+                          margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
+                          padding: EdgeInsets.only(left: screenHeight * 0.024, top: screenHeight * 0.02),
                           alignment: Alignment.centerLeft,
                           child: const Medium16px(text: 'ประเภทของชีท')),
                       Container(
-                        margin: EdgeInsets.only(
-                            left: isPortrait ? 0 : screenWidth * 0.2),
+                        margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
                         child: Column(
                           children: [
                             ListTile(
@@ -232,11 +183,8 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                       ),
                       if (_sheetType == SheetType.sell)
                         Container(
-                            margin: EdgeInsets.only(
-                                left: isPortrait ? 0 : screenWidth * 0.2),
-                            padding: EdgeInsets.only(
-                                left: screenHeight * 0.024,
-                                bottom: screenHeight * 0.01),
+                            margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
+                            padding: EdgeInsets.only(left: screenHeight * 0.024, bottom: screenHeight * 0.01),
                             alignment: Alignment.centerLeft,
                             child: const Medium16px(text: 'ราคา')),
                       if (_sheetType == SheetType.sell)
@@ -244,24 +192,14 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                           alignment: Alignment.centerLeft,
                           child: Container(
                             padding: EdgeInsets.all(screenHeight * 0.002),
-                            margin: EdgeInsets.only(
-                                left: isPortrait
-                                    ? screenHeight * 0.024
-                                    : screenWidth * 0.2,
-                                right: screenHeight * 0.024),
-                            width: isPortrait
-                                ? screenWidth * 0.25
-                                : screenWidth * 0.125,
-                            height: isPortrait
-                                ? screenHeight * 0.04
-                                : screenHeight * 0.08,
+                            margin: EdgeInsets.only(left: isPortrait ? screenHeight * 0.024 : screenWidth * 0.2, right: screenHeight * 0.024),
+                            width: isPortrait ? screenWidth * 0.25 : screenWidth * 0.125,
+                            height: isPortrait ? screenHeight * 0.04 : screenHeight * 0.08,
                             child: MyTextFormField(
                                 hintText: 'หน่วย coin',
                                 keyboardType: TextInputType.number,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                validator: RequiredValidator(
-                                    errorText: 'Please enter price.'),
+                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                                validator: RequiredValidator(errorText: 'Please enter price.'),
                                 onSaved: (value) {
                                   mySheet.price = int.parse(value!);
                                 }),
@@ -271,9 +209,7 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            margin: EdgeInsets.only(
-                                left: isPortrait ? 0 : screenWidth * 0.2,
-                                top: isPortrait ? 0 : screenHeight * 0.04),
+                            margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2, top: isPortrait ? 0 : screenHeight * 0.04),
                             padding: EdgeInsets.all(screenHeight * 0.024),
                             child: OutlineButton(
                               text: 'ยกเลิก',
@@ -283,9 +219,7 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(
-                                right: isPortrait ? 0 : screenWidth * 0.2,
-                                top: isPortrait ? 0 : screenHeight * 0.04),
+                            margin: EdgeInsets.only(right: isPortrait ? 0 : screenWidth * 0.2, top: isPortrait ? 0 : screenHeight * 0.04),
                             padding: EdgeInsets.all(screenHeight * 0.024),
                             child: PrimaryButton(
                               text: 'เสร็จสิ้น',
@@ -299,29 +233,19 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                                     mySheet.detailSheet,
                                     mySheet.sheetTypeFree,
                                     mySheet.price,
-                                    mySheet.authorId =
-                                        FirebaseAuth.instance.currentUser!.uid,
+                                    mySheet.authorId = FirebaseAuth.instance.currentUser!.uid,
                                   )
                                       .then(
                                     (value) async {
                                       _formKey.currentState!.reset();
                                       // debugPrint("Register Success");
                                       firebaseStorage.UploadTask? task =
-                                          await PDFApi.uploadToFirebase(
-                                              context,
-                                              pdfFile,
-                                              FirebaseAuth
-                                                  .instance.currentUser!.uid,
-                                              sheetId);
-                                      Future.delayed(
-                                          const Duration(milliseconds: 500),
-                                          () {
+                                          await PDFApi.uploadToFirebase(context, pdfFile, FirebaseAuth.instance.currentUser!.uid, sheetId);
+                                      Future.delayed(const Duration(milliseconds: 500), () {
                                         AutoRouter.of(context).popUntilRoot();
 
-                                        final String message =
-                                            'อัพโหลดชีทสำเร็จ!';
-                                        FlushbarPopup.successFlushbar(context,
-                                            FlushbarIcon.errorIcon, message);
+                                        final String message = 'อัพโหลดชีทสำเร็จ!';
+                                        FlushbarPopup.successFlushbar(context, FlushbarIcon.errorIcon, message);
                                       });
                                     },
                                   );

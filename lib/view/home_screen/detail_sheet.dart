@@ -284,12 +284,16 @@ class _DetailSheetState extends State<DetailSheet> {
                                                   } else {
                                                     Map<String, dynamic> currentUserData = currentUserSnapshot.data!.data() as Map<String, dynamic>;
                                                     return PrimaryButton(
-                                                      text: sheetData['price'] == 0 || currentUserData['buyedSheet'].contains(sheetData['sid'])
+                                                      text: sheetData['price'] == 0 ||
+                                                              currentUserData['buyedSheet'].contains(sheetData['sid']) ||
+                                                              currentUserData['uid'] == sheetData['authorId']
                                                           ? "อ่านชีท"
                                                           : sheetData['price'].toString(),
                                                       size: 16,
                                                       onPressed: () async {
-                                                        if (sheetData['price'] == 0 || currentUserData['buyedSheet'].contains(sheetData['sid'])) {
+                                                        if (sheetData['price'] == 0 ||
+                                                            currentUserData['buyedSheet'].contains(sheetData['sid']) ||
+                                                            currentUserData['uid'] == sheetData['authorId']) {
                                                           const url = 'https://www.africau.edu/images/default/sample.pdf';
                                                           final file = await PDFApi.loadNetwork(url);
                                                           AutoRouter.of(context).push(ReadSheetRoute(sheetId: widget.sheetId, file: file));

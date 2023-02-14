@@ -200,7 +200,7 @@ class _SidebarMenuState extends State<SidebarMenu> {
                       ),
                       onTap: () {
                         AutoRouter.of(context).push(const LoginRoute());
-                        // Navigator.pop(context);
+                        Navigator.pop(context);
                       },
                     ),
                   ],
