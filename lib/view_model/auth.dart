@@ -4,6 +4,7 @@ import 'package:cheat_sheet/res/components/flushbar.dart';
 import 'package:cheat_sheet/res/components/flushbar_icon.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/view_model/create_firestore.dart';
+import 'package:cheat_sheet/view_model/update_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -14,7 +15,7 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final User? _user = FirebaseAuth.instance.currentUser;
   Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
-  CreateCollection myCollection = CreateCollection();
+  CreateCollection createFS = CreateCollection();
 
   bool isLogged() {
     if (_user == null) {
@@ -29,7 +30,7 @@ class AuthService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: argEmail.toString().trim(), password: argPassword.toString().trim());
       User? user = result.user;
       user!.updateDisplayName(argUsername);
-      await myCollection.createUserCollection(argUsername, argEmail, _user!.uid);
+      await createFS.createUserCollection(argUsername, argEmail, user.uid);
       AutoRouter.of(context).navigateNamed("/home/");
       SchedulerBinding.instance.addPostFrameCallback((_) {
         FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, "เข้าสู่ระบบสำเร็จ");
@@ -42,6 +43,7 @@ class AuthService {
   Future<void> loginWithEmail(BuildContext context, String argEmail, String argPassword) async {
     try {
       await _auth.signInWithEmailAndPassword(email: argEmail.toString().trim(), password: argPassword.toString().trim());
+      await UpdateCollection().updateUserData();
       AutoRouter.of(context).navigateNamed("/home/");
       SchedulerBinding.instance.addPostFrameCallback((_) {
         FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, "เข้าสู่ระบบสำเร็จ");
@@ -61,7 +63,8 @@ class AuthService {
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       final credential = GoogleAuthProvider.credential(accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
       final User? user = (await _auth.signInWithCredential(credential)).user;
-      await myCollection.createGoogleUserCollection(user);
+      await createFS.createGoogleUserCollection(user);
+      await UpdateCollection().updateUserData();
       AutoRouter.of(context).navigateNamed("/home/");
       SchedulerBinding.instance.addPostFrameCallback((_) {
         FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, "เข้าสู่ระบบสำเร็จ");
@@ -80,7 +83,8 @@ class AuthService {
       }
       OAuthCredential? facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
       final User? user = (await _auth.signInWithCredential(facebookAuthCredential)).user;
-      await myCollection.createFacebookUserCollection(user);
+      await createFS.createFacebookUserCollection(user);
+      await UpdateCollection().updateUserData();
       AutoRouter.of(context).navigateNamed("/home/");
       SchedulerBinding.instance.addPostFrameCallback((_) {
         FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, "เข้าสู่ระบบสำเร็จ");
