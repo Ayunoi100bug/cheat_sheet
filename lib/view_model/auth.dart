@@ -92,26 +92,26 @@ class AuthService {
 
   Future<void> logOut(BuildContext context) async {
     if (isLogged() == true) {
-      int flag = 0;
+      bool success = false;
       if (_user!.providerData[0].providerId == 'google.com') {
         await GoogleSignIn().signOut();
         await _auth.signOut();
-        flag = 1;
+        success = true;
       } else if (_user!.providerData[0].providerId == 'facebook.com') {
         await FacebookAuth.i.logOut();
         await _auth.signOut();
-        flag = 1;
+        success = true;
       } else {
         await _auth.signOut();
-        flag = 1;
+        success = true;
       }
-      if (flag == 1) {
+      if (success == true) {
         AutoRouter.of(context).navigateNamed("/home/");
         Navigator.pop(context);
         SchedulerBinding.instance.addPostFrameCallback((_) {
           FlushbarPopup.errorFlushbarNoAppbar(context, FlushbarIcon.successIcon, "ออกจากระบบสำเร็จ");
         });
-        flag = 0;
+        success = false;
       }
     } else {
       print("That's illegal."); // Logout while not login, how can this be.
