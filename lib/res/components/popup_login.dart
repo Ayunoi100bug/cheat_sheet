@@ -1,9 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
+import '../../utils/routes/routes.gr.dart';
 import '../button.dart';
 
 Widget Popup_Login(BuildContext context) {
@@ -31,7 +33,10 @@ Widget Popup_Login(BuildContext context) {
         children: [
           PrimaryButton(
             text: 'เข้าสู่ระบบ',
-            onPressed: () {},
+            onPressed: () {
+              AutoRouter.of(context).push(LoginRoute());
+              Navigator.pop(context);
+            },
           ),
         ],
       ),

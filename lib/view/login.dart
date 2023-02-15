@@ -152,16 +152,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                                   myUser.email, myUser.password)
                                               .then((value) {
                                             _formKey.currentState!.reset();
-                                            AutoRouter.of(context)
-                                                .navigateNamed("/home/");
-                                            SchedulerBinding.instance
-                                                .addPostFrameCallback((_) {
-                                              FlushbarPopup
-                                                  .successFlushbarNoAppbar(
-                                                      context,
-                                                      FlushbarIcon.successIcon,
-                                                      "เข้าสู่ระบบสำเร็จ");
-                                            });
+                                            if (FirebaseAuth
+                                                    .instance.currentUser !=
+                                                null) {
+                                              AutoRouter.of(context)
+                                                  .navigateNamed("/home/");
+                                              SchedulerBinding.instance
+                                                  .addPostFrameCallback(
+                                                      (_) async {
+                                                await FlushbarPopup
+                                                    .successFlushbarNoAppbar(
+                                                        context,
+                                                        FlushbarIcon
+                                                            .successIcon,
+                                                        "เข้าสู่ระบบสำเร็จ");
+                                              });
+                                            }
                                           });
                                         } on FirebaseAuthException catch (e) {
                                           Fluttertoast.showToast(
@@ -235,15 +241,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                 onPressed: () async {
                                   try {
                                     myAuth.loginWithGoogle().then((value) {
-                                      AutoRouter.of(context)
-                                          .navigateNamed("/home/");
-                                      SchedulerBinding.instance
-                                          .addPostFrameCallback((_) {
-                                        FlushbarPopup.successFlushbarNoAppbar(
-                                            context,
-                                            FlushbarIcon.successIcon,
-                                            "เข้าสู่ระบบสำเร็จ");
-                                      });
+                                      if (FirebaseAuth.instance.currentUser !=
+                                          null) {
+                                        AutoRouter.of(context)
+                                            .navigateNamed("/home/");
+                                        SchedulerBinding.instance
+                                            .addPostFrameCallback((_) async {
+                                          await FlushbarPopup
+                                              .successFlushbarNoAppbar(
+                                                  context,
+                                                  FlushbarIcon.successIcon,
+                                                  "เข้าสู่ระบบสำเร็จ");
+                                        });
+                                      }
                                     });
                                   } on FirebaseAuthException catch (e) {
                                     Fluttertoast.showToast(
@@ -259,15 +269,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                 onPressed: () async {
                                   try {
                                     myAuth.loginWithFacebook().then((value) {
-                                      AutoRouter.of(context)
-                                          .navigateNamed("/home/");
-                                      SchedulerBinding.instance
-                                          .addPostFrameCallback((_) {
-                                        FlushbarPopup.successFlushbarNoAppbar(
-                                            context,
-                                            FlushbarIcon.successIcon,
-                                            "เข้าสู่ระบบสำเร็จ");
-                                      });
+                                      if (FirebaseAuth.instance.currentUser !=
+                                          null) {
+                                        AutoRouter.of(context)
+                                            .navigateNamed("/home/");
+                                        SchedulerBinding.instance
+                                            .addPostFrameCallback((_) async {
+                                          await FlushbarPopup
+                                              .successFlushbarNoAppbar(
+                                                  context,
+                                                  FlushbarIcon.successIcon,
+                                                  "เข้าสู่ระบบสำเร็จ");
+                                        });
+                                      }
                                     });
                                   } on FirebaseAuthException catch (e) {
                                     Fluttertoast.showToast(

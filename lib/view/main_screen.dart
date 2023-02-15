@@ -4,6 +4,7 @@ import 'package:cheat_sheet/res/components/bottom_bar.dart';
 import 'package:cheat_sheet/res/components/custom_appbar.dart';
 import 'package:cheat_sheet/res/components/sidebar_menu.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -44,8 +45,14 @@ class _MainScreenState extends State<MainScreen> {
             backgroundColor: CustomAppBar.appBarColor,
             title: CustomAppBar.textLogo,
             actions: [
-              CustomAppBar.coin,
-              CustomAppBar.notifications,
+              if (FirebaseAuth.instance.currentUser != null) ...[
+                SizedBox(
+                  child: CustomAppBar.coin,
+                  height: 22,
+                  width: 22,
+                ),
+                CustomAppBar.notifications,
+              ],
               IconButton(
                 icon: Icon(Icons.menu),
                 onPressed: () {

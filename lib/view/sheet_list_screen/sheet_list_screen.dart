@@ -186,7 +186,8 @@ class _SheetListScreenState extends State<SheetListScreen>
                   }
                 });
           } else {
-            return Popup_Login(context);
+            return Container();
+            // Popup_Login(context);
           }
         });
   }
