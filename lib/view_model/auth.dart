@@ -95,30 +95,26 @@ class AuthService {
   }
 
   Future<void> logOut(BuildContext context) async {
-    if (isLogged() == true) {
-      bool success = false;
-      if (_user!.providerData[0].providerId == 'google.com') {
-        await GoogleSignIn().signOut();
-        await _auth.signOut();
-        success = true;
-      } else if (_user!.providerData[0].providerId == 'facebook.com') {
-        await FacebookAuth.i.logOut();
-        await _auth.signOut();
-        success = true;
-      } else {
-        await _auth.signOut();
-        success = true;
-      }
-      if (success == true) {
-        AutoRouter.of(context).navigateNamed("/home/");
-        Navigator.pop(context);
-        SchedulerBinding.instance.addPostFrameCallback((_) {
-          FlushbarPopup.errorFlushbarNoAppbar(context, FlushbarIcon.successIcon, "ออกจากระบบสำเร็จ");
-        });
-        success = false;
-      }
+    bool success = false;
+    if (_user!.providerData[0].providerId == 'google.com') {
+      await GoogleSignIn().signOut();
+      await _auth.signOut();
+      success = true;
+    } else if (_user!.providerData[0].providerId == 'facebook.com') {
+      await FacebookAuth.i.logOut();
+      await _auth.signOut();
+      success = true;
     } else {
-      print("That's illegal."); // Logout while not login, how can this be.
+      await _auth.signOut();
+      success = true;
+    }
+    if (success == true) {
+      AutoRouter.of(context).navigateNamed("/home/");
+      Navigator.pop(context);
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        FlushbarPopup.errorFlushbarNoAppbar(context, FlushbarIcon.successIcon, "ออกจากระบบสำเร็จ");
+      });
+      success = false;
     }
   }
 }
