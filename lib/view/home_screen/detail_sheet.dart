@@ -47,157 +47,100 @@ class _DetailSheetState extends State<DetailSheet> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    var isLandScape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+    var isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     return StreamBuilder<DocumentSnapshot>(
         stream: _firestore.collection("sheet").doc(widget.sheetId).snapshots(),
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (!snapshot.hasData || snapshot.data!.data() == null) {
             return const Center(child: CircularProgressIndicator());
           } else {
-            Map<String, dynamic> sheetData =
-                snapshot.data!.data() as Map<String, dynamic>;
+            Map<String, dynamic> sheetData = snapshot.data!.data() as Map<String, dynamic>;
             return StreamBuilder<DocumentSnapshot>(
-                stream: _firestore
-                    .collection("users")
-                    .doc(sheetData['authorId'])
-                    .snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<DocumentSnapshot> authorSnapshot) {
-                  if (!authorSnapshot.hasData ||
-                      authorSnapshot.data!.data() == null) {
+                stream: _firestore.collection("users").doc(sheetData['authorId']).snapshots(),
+                builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> authorSnapshot) {
+                  if (!authorSnapshot.hasData || authorSnapshot.data!.data() == null) {
                     return const Center(child: CircularProgressIndicator());
                   } else {
-                    Map<String, dynamic> authorData =
-                        authorSnapshot.data!.data() as Map<String, dynamic>;
+                    Map<String, dynamic> authorData = authorSnapshot.data!.data() as Map<String, dynamic>;
                     return Scaffold(
                       body: SafeArea(
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
                               Container(
-                                height: isPortrait
-                                    ? screenHeight * 0.4
-                                    : screenHeight * 0.8,
-                                padding: EdgeInsets.only(
-                                    top: screenHeight * 0.016,
-                                    left: screenHeight * 0.016,
-                                    right: screenHeight * 0.016),
-                                child: LayoutBuilder(
-                                    builder: (context, constraints) {
+                                height: isPortrait ? screenHeight * 0.4 : screenHeight * 0.8,
+                                padding: EdgeInsets.only(top: screenHeight * 0.016, left: screenHeight * 0.016, right: screenHeight * 0.016),
+                                child: LayoutBuilder(builder: (context, constraints) {
                                   return Row(
                                     children: [
                                       SizedBox(
-                                        width: isPortrait
-                                            ? constraints.maxWidth * 0.5
-                                            : constraints.maxWidth * 0.4,
+                                        width: isPortrait ? constraints.maxWidth * 0.5 : constraints.maxWidth * 0.4,
                                         height: constraints.maxHeight * 0.9,
-                                        child: LayoutBuilder(
-                                            builder: (context, constraints) {
+                                        child: LayoutBuilder(builder: (context, constraints) {
                                           return InkWell(
                                               onTap: (() {
                                                 showDialog(
                                                     context: context,
-                                                    builder:
-                                                        (BuildContext context) {
+                                                    builder: (BuildContext context) {
                                                       return AlertDialog(
                                                           content: Stack(
                                                         children: [
                                                           Container(
-                                                            alignment: Alignment
-                                                                .center,
-                                                            height:
-                                                                screenHeight *
-                                                                    0.7,
+                                                            alignment: Alignment.center,
+                                                            height: screenHeight * 0.7,
                                                             child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
                                                               children: [
                                                                 SingleChildScrollView(
-                                                                  scrollDirection:
-                                                                      Axis.horizontal,
-                                                                  child:
-                                                                      Container(
-                                                                    height:
-                                                                        screenHeight *
-                                                                            0.6,
+                                                                  scrollDirection: Axis.horizontal,
+                                                                  child: Container(
+                                                                    height: screenHeight * 0.6,
                                                                     child: Row(
                                                                       children: [
                                                                         Container(
-                                                                          margin:
-                                                                              EdgeInsets.only(right: screenHeight * 0.025),
-                                                                          decoration:
-                                                                              BoxDecoration(border: Border.all(color: AppColors.primary500)),
-                                                                          child:
-                                                                              Image.network(
+                                                                          margin: EdgeInsets.only(right: screenHeight * 0.025),
+                                                                          decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
+                                                                          child: Image.network(
                                                                             "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
-                                                                            fit:
-                                                                                BoxFit.fill,
+                                                                            fit: BoxFit.fill,
                                                                           ),
                                                                         ),
                                                                         Container(
-                                                                          margin:
-                                                                              EdgeInsets.only(right: screenHeight * 0.025),
-                                                                          decoration:
-                                                                              BoxDecoration(border: Border.all(color: AppColors.primary500)),
-                                                                          child:
-                                                                              Image.network(
+                                                                          margin: EdgeInsets.only(right: screenHeight * 0.025),
+                                                                          decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
+                                                                          child: Image.network(
                                                                             "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
-                                                                            fit:
-                                                                                BoxFit.fill,
+                                                                            fit: BoxFit.fill,
                                                                           ),
                                                                         ),
                                                                         Container(
-                                                                          margin:
-                                                                              EdgeInsets.only(right: screenHeight * 0.025),
-                                                                          decoration:
-                                                                              BoxDecoration(border: Border.all(color: AppColors.primary500)),
-                                                                          child:
-                                                                              Image.network(
+                                                                          margin: EdgeInsets.only(right: screenHeight * 0.025),
+                                                                          decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
+                                                                          child: Image.network(
                                                                             "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
-                                                                            fit:
-                                                                                BoxFit.fill,
+                                                                            fit: BoxFit.fill,
                                                                           ),
                                                                         ),
                                                                         Container(
-                                                                          margin:
-                                                                              EdgeInsets.only(right: screenHeight * 0.025),
-                                                                          decoration:
-                                                                              BoxDecoration(border: Border.all(color: AppColors.primary500)),
-                                                                          child:
-                                                                              Image.network(
+                                                                          margin: EdgeInsets.only(right: screenHeight * 0.025),
+                                                                          decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
+                                                                          child: Image.network(
                                                                             "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
-                                                                            fit:
-                                                                                BoxFit.fill,
+                                                                            fit: BoxFit.fill,
                                                                           ),
                                                                         ),
                                                                       ],
                                                                     ),
                                                                   ),
                                                                 ),
-                                                                Expanded(
-                                                                    child:
-                                                                        Container()),
-                                                                BlinkText(
-                                                                    'สามารถเลื่อนไปทางขวาได้',
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            20,
-                                                                        color: AppColors
-                                                                            .black800),
-                                                                    beginColor:
-                                                                        AppColors
-                                                                            .black800,
-                                                                    endColor:
-                                                                        AppColors
-                                                                            .white,
+                                                                Expanded(child: Container()),
+                                                                const BlinkText('สามารถเลื่อนไปทางขวาได้',
+                                                                    style: TextStyle(fontSize: 20, color: AppColors.black800),
+                                                                    beginColor: AppColors.black800,
+                                                                    endColor: AppColors.white,
                                                                     times: 20,
-                                                                    duration: Duration(
-                                                                        seconds:
-                                                                            1)),
+                                                                    duration: Duration(seconds: 1)),
                                                               ],
                                                             ),
                                                           ),
@@ -211,11 +154,9 @@ class _DetailSheetState extends State<DetailSheet> {
                                                   Image.network(
                                                     "https://static.trueplookpanya.com/tppy/member/m_665000_667500/665461/cms/images/%E0%B9%84%E0%B8%AD%E0%B9%80%E0%B8%94%E0%B8%B5%E0%B8%A2%E0%B8%88%E0%B8%94%E0%B8%8A%E0%B8%B5%E0%B8%97%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B_04.jpg",
                                                     color: AppColors.black400,
-                                                    colorBlendMode:
-                                                        BlendMode.modulate,
+                                                    colorBlendMode: BlendMode.modulate,
                                                     fit: BoxFit.cover,
-                                                    height:
-                                                        constraints.maxHeight,
+                                                    height: constraints.maxHeight,
                                                   ),
                                                   const Medium16px(
                                                     text: 'ดูตัวอย่างชีทที่นี่',
@@ -227,22 +168,15 @@ class _DetailSheetState extends State<DetailSheet> {
                                       ),
                                       Container(
                                         padding: EdgeInsets.symmetric(
-                                          horizontal:
-                                              constraints.maxWidth * 0.03,
-                                          vertical:
-                                              constraints.maxHeight * 0.05,
+                                          horizontal: constraints.maxWidth * 0.03,
+                                          vertical: constraints.maxHeight * 0.05,
                                         ),
-                                        width: isPortrait
-                                            ? constraints.maxWidth * 0.5
-                                            : constraints.maxWidth * 0.6,
+                                        width: isPortrait ? constraints.maxWidth * 0.5 : constraints.maxWidth * 0.6,
                                         child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Medium20px(
-                                                text: sheetData["sheetName"]),
+                                            Medium20px(text: sheetData["sheetName"]),
                                             SingleChildScrollView(
                                               padding: EdgeInsets.zero,
                                               scrollDirection: Axis.horizontal,
@@ -264,8 +198,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                               children: [
                                                 RatingBarIndicator(
                                                   rating: 4,
-                                                  itemBuilder:
-                                                      (context, index) => Icon(
+                                                  itemBuilder: (context, index) => Icon(
                                                     Icons.star,
                                                     color: AppColors.warning400,
                                                   ),
@@ -281,18 +214,13 @@ class _DetailSheetState extends State<DetailSheet> {
                                             Row(
                                               children: [
                                                 CircleAvatar(
-                                                  backgroundImage:
-                                                      CachedNetworkImageProvider(
-                                                          authorData[
-                                                              'profileImage']),
+                                                  backgroundImage: CachedNetworkImageProvider(authorData['profileImage']),
                                                   radius: 12,
                                                 ),
                                                 SizedBox(
                                                   width: screenWidth * 0.02,
                                                 ),
-                                                Regular14px(
-                                                    text:
-                                                        authorData['username']),
+                                                Regular14px(text: authorData['username']),
                                               ],
                                             ),
                                             Wrap(
@@ -312,9 +240,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                   onTap: () {
                                                     showDialog(
                                                       context: context,
-                                                      builder: (BuildContext
-                                                              context) =>
-                                                          Popup_Login(context),
+                                                      builder: (BuildContext context) => Popup_Login(context),
                                                     );
                                                   },
                                                 ),
@@ -335,115 +261,45 @@ class _DetailSheetState extends State<DetailSheet> {
                                               ],
                                             ),
                                             StreamBuilder<DocumentSnapshot>(
-                                                stream: _firestore
-                                                    .collection("users")
-                                                    .doc(_auth.currentUser?.uid)
-                                                    .snapshots(),
-                                                builder: (BuildContext context,
-                                                    AsyncSnapshot<
-                                                            DocumentSnapshot>
-                                                        currentUserSnapshot) {
-                                                  if (currentUserSnapshot
-                                                          .connectionState ==
-                                                      ConnectionState.waiting) {
+                                                stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
+                                                builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> currentUserSnapshot) {
+                                                  if (currentUserSnapshot.connectionState == ConnectionState.waiting) {
                                                     return PrimaryButton(
                                                       text: "...",
                                                       size: 16,
                                                       onPressed: () {},
                                                     );
-                                                  } else if (_auth
-                                                          .currentUser ==
-                                                      null) {
+                                                  } else if (_auth.currentUser == null) {
                                                     return PrimaryButton(
-                                                      coinIcon:
-                                                          sheetData['price'] > 0
-                                                              ? true
-                                                              : false,
-                                                      text: sheetData[
-                                                                  'price'] ==
-                                                              0
-                                                          ? "อ่านชีท"
-                                                          : sheetData['price']
-                                                              .toString(),
+                                                      coinIcon: sheetData['price'] > 0 ? true : false,
+                                                      text: sheetData['price'] == 0 ? "อ่านชีท" : sheetData['price'].toString(),
                                                       size: 16,
                                                       onPressed: () async {
-                                                        if (sheetData[
-                                                                'price'] ==
-                                                            0) {
-                                                          const url =
-                                                              'https://www.africau.edu/images/default/sample.pdf';
-                                                          final file =
-                                                              await PDFApi
-                                                                  .loadNetwork(
-                                                                      url);
-                                                          AutoRouter.of(context)
-                                                              .push(ReadSheetRoute(
-                                                                  sheetId: widget
-                                                                      .sheetId,
-                                                                  file: file));
+                                                        if (sheetData['price'] == 0) {
+                                                          const url = 'https://www.africau.edu/images/default/sample.pdf';
+                                                          final file = await PDFApi.loadNetwork(url);
+                                                          AutoRouter.of(context).push(ReadSheetRoute(sheetId: widget.sheetId, file: file));
                                                         } else {
-                                                          await updateFS
-                                                              .userBuySheet(
-                                                                  context,
-                                                                  sheetData[
-                                                                      'sid'],
-                                                                  authorData[
-                                                                      'uid'],
-                                                                  sheetData[
-                                                                      'price']);
+                                                          await updateFS.userBuySheet(
+                                                              context, sheetData['sid'], authorData['uid'], sheetData['price']);
                                                         }
                                                       },
                                                     );
                                                   } else {
-                                                    Map<String, dynamic>
-                                                        currentUserData =
-                                                        currentUserSnapshot
-                                                                .data!
-                                                                .data()
-                                                            as Map<String,
-                                                                dynamic>;
+                                                    Map<String, dynamic> currentUserData = currentUserSnapshot.data!.data() as Map<String, dynamic>;
                                                     return PrimaryButton(
-                                                      text: sheetData['price'] ==
-                                                                  0 ||
-                                                              currentUserData[
-                                                                      'buyedSheet']
-                                                                  .contains(
-                                                                      sheetData[
-                                                                          'sid'])
+                                                      text: sheetData['price'] == 0 || currentUserData['buyedSheet'].contains(sheetData['sid'])
                                                           ? "อ่านชีท"
-                                                          : sheetData['price']
-                                                              .toString(),
+                                                          : sheetData['price'].toString(),
                                                       size: 16,
                                                       onPressed: () async {
-                                                        if (sheetData[
-                                                                    'price'] ==
-                                                                0 ||
-                                                            currentUserData[
-                                                                    'buyedSheet']
-                                                                .contains(
-                                                                    sheetData[
-                                                                        'sid'])) {
-                                                          const url =
-                                                              'https://www.africau.edu/images/default/sample.pdf';
-                                                          final file =
-                                                              await PDFApi
-                                                                  .loadNetwork(
-                                                                      url);
-                                                          AutoRouter.of(context)
-                                                              .push(ReadSheetRoute(
-                                                                  sheetId: widget
-                                                                      .sheetId,
-                                                                  file: file));
+                                                        if (sheetData['price'] == 0 || currentUserData['buyedSheet'].contains(sheetData['sid'])) {
+                                                          const url = 'https://www.africau.edu/images/default/sample.pdf';
+                                                          final file = await PDFApi.loadNetwork(url);
+                                                          AutoRouter.of(context).push(ReadSheetRoute(sheetId: widget.sheetId, file: file));
                                                         } else {
-                                                          await updateFS
-                                                              .userBuySheet(
-                                                                  context,
-                                                                  sheetData[
-                                                                      'sid'],
-                                                                  authorData[
-                                                                      'uid'],
-                                                                  sheetData[
-                                                                      'price']);
+                                                          await updateFS.userBuySheet(
+                                                              context, sheetData['sid'], authorData['uid'], sheetData['price']);
                                                         }
                                                       },
                                                     );
@@ -457,22 +313,16 @@ class _DetailSheetState extends State<DetailSheet> {
                                 }),
                               ),
                               Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: screenWidth * 0.04,
-                                    vertical: screenWidth * 0.04),
+                                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.04),
                                 width: screenWidth,
-                                child: LayoutBuilder(
-                                    builder: (context, constraints) {
+                                child: LayoutBuilder(builder: (context, constraints) {
                                   return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Medium16px(text: "รายละเอียด"),
                                       Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: screenWidth * 0.01),
-                                        child: Regular12px(
-                                            text: sheetData["detailSheet"]),
+                                        padding: EdgeInsets.symmetric(vertical: screenWidth * 0.01),
+                                        child: Regular12px(text: sheetData["detailSheet"]),
                                       )
                                     ],
                                   );
@@ -485,12 +335,10 @@ class _DetailSheetState extends State<DetailSheet> {
                                 child: Column(
                                   children: [
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         const Medium16px(text: "รีวิว"),
-                                        if (FirebaseAuth.instance.currentUser !=
-                                            null) ...[
+                                        if (FirebaseAuth.instance.currentUser != null) ...[
                                           InkWell(
                                             child: const Regular14px(
                                               text: "เขียนรีวิว",
@@ -498,9 +346,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                               color: AppColors.primary600,
                                             ),
                                             onTap: () {
-                                              AutoRouter.of(context).push(
-                                                  CreateReviewRoute(
-                                                      sheetId: widget.sheetId));
+                                              AutoRouter.of(context).push(CreateReviewRoute(sheetId: widget.sheetId));
                                             },
                                           ),
                                         ],
@@ -513,8 +359,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                       ],
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: screenWidth * 0.04),
+                                      padding: EdgeInsets.symmetric(vertical: screenWidth * 0.04),
                                       child: InkWell(
                                         child: const Regular14px(
                                           text: "ดูทั้งหมด",
@@ -522,9 +367,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                           color: AppColors.primary600,
                                         ),
                                         onTap: () {
-                                          AutoRouter.of(context).push(
-                                              ReviewSheetRoute(
-                                                  sheetId: widget.sheetId));
+                                          AutoRouter.of(context).push(ReviewSheetRoute(sheetId: widget.sheetId));
                                         },
                                       ),
                                     ),
@@ -544,12 +387,10 @@ class _DetailSheetState extends State<DetailSheet> {
 
   void _BottomSheet(context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    Users myUser =
-        Users(email: '', password: '', username: '', uid: '', profileImage: '');
+    Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
     final FirebaseFirestore _firestoreDb = FirebaseFirestore.instance;
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-    final SheetLists _sheetLists =
-        SheetLists(sheetListName: '', sid: [], authorId: '', sheetListId: '');
+    final SheetLists _sheetLists = SheetLists(sheetListName: '', sid: [], authorId: '', sheetListId: '');
     final Future<FirebaseApp> firebase = Firebase.initializeApp();
     CreateCollection myCollection = CreateCollection();
     final _auth = FirebaseAuth.instance;
@@ -566,8 +407,7 @@ class _DetailSheetState extends State<DetailSheet> {
         return Container(
           height: MediaQuery.of(context).viewInsets.bottom == 0
               ? screenHeight * 0.3
-              : MediaQuery.of(context).size.height -
-                  MediaQuery.of(context).viewInsets.bottom,
+              : MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.bottom,
           child: Column(
             children: [
               SizedBox(
@@ -593,8 +433,7 @@ class _DetailSheetState extends State<DetailSheet> {
                     onSaved: (value) {
                       _sheetLists.sheetListName = value!;
                     },
-                    validator: RequiredValidator(
-                        errorText: 'Please enter sheet list name.'),
+                    validator: RequiredValidator(errorText: 'Please enter sheet list name.'),
                   ),
                 ),
               ),
@@ -619,16 +458,11 @@ class _DetailSheetState extends State<DetailSheet> {
                         AutoRouter.of(context).popUntilRoot();
                       },
                     );
-                    await _firestoreDb
-                        .collection('users')
-                        .doc(_auth.currentUser!.uid)
-                        .update({
-                      'sheetLists':
-                          FieldValue.arrayUnion([_sheetLists.sheetListId])
+                    await _firestoreDb.collection('users').doc(_auth.currentUser!.uid).update({
+                      'sheetLists': FieldValue.arrayUnion([_sheetLists.sheetListId])
                     });
                   } on FirebaseAuthException catch (e) {
-                    FlushbarPopup.errorFlushbar(
-                        context, FlushbarIcon.errorIcon, e.toString());
+                    FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
                   }
                 },
               ),
@@ -660,30 +494,21 @@ class _DetailSheetState extends State<DetailSheet> {
                 if (snapshot.hasData) {
                   return StreamBuilder<QuerySnapshot>(
                       stream: _firestoreDb.collection("sheetList").snapshots(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (!snapshot.hasData || snapshot.data == null) {
                           return const Center(
                             child: CircularProgressIndicator(),
                           );
                         } else {
-                          final mySheetLists = snapshot.data?.docs.where(
-                              (document) =>
-                                  document["authorId"] ==
-                                  _auth.currentUser?.uid);
+                          final mySheetLists = snapshot.data?.docs.where((document) => document["authorId"] == _auth.currentUser?.uid);
                           return SingleChildScrollView(
                             child: Container(
                               child: Column(
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 20,
-                                        right: 24,
-                                        top: 28,
-                                        bottom: 28),
+                                    padding: const EdgeInsets.only(left: 20, right: 24, top: 28, bottom: 28),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Regular16px(
                                           text: 'บันทึกชีทนี้ลง...',
@@ -691,10 +516,8 @@ class _DetailSheetState extends State<DetailSheet> {
                                         InkWell(
                                           child: Container(
                                             decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: AppColors.tertiary500),
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
+                                              border: Border.all(color: AppColors.tertiary500),
+                                              borderRadius: BorderRadius.circular(5),
                                             ),
                                             child: Icon(
                                               FontAwesomeIcons.plus,
@@ -710,36 +533,21 @@ class _DetailSheetState extends State<DetailSheet> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.all(
-                                        screenWidth * GapDimension.w0_032),
+                                    padding: EdgeInsets.all(screenWidth * GapDimension.w0_032),
                                     child: GridView.builder(
                                       physics: NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
-                                      gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 3,
                                         crossAxisSpacing: 8,
                                         mainAxisSpacing: 8,
                                         childAspectRatio: screenWidth < 480
-                                            ? MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                (MediaQuery.of(context)
-                                                        .size
-                                                        .height /
-                                                    1.1)
-                                            : MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                (MediaQuery.of(context)
-                                                        .size
-                                                        .height /
-                                                    0.4),
+                                            ? MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.1)
+                                            : MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 0.4),
                                       ),
                                       itemCount: mySheetLists?.length,
                                       itemBuilder: (context, index) {
-                                        var sheetLists =
-                                            mySheetLists?.elementAt(index);
+                                        var sheetLists = mySheetLists?.elementAt(index);
                                         return Container(
                                           child: LayoutBuilder(
                                             builder: (context, constraints) {
@@ -747,31 +555,18 @@ class _DetailSheetState extends State<DetailSheet> {
                                                 child: Column(
                                                   children: [
                                                     Container(
-                                                      height: constraints
-                                                              .maxHeight *
-                                                          0.8,
+                                                      height: constraints.maxHeight * 0.8,
                                                       color: AppColors.black300,
                                                     ),
                                                     Container(
-                                                      height: constraints
-                                                              .maxHeight *
-                                                          0.2,
+                                                      height: constraints.maxHeight * 0.2,
                                                       child: LayoutBuilder(
-                                                        builder: (context,
-                                                            constraints) {
+                                                        builder: (context, constraints) {
                                                           return Container(
-                                                            padding: EdgeInsets.only(
-                                                                top:
-                                                                    screenWidth *
-                                                                        0.02),
-                                                            alignment: Alignment
-                                                                .topCenter,
-                                                            height: constraints
-                                                                    .maxHeight *
-                                                                0.5,
-                                                            child: Regular16px(
-                                                                text: sheetLists![
-                                                                    'sheetListName']),
+                                                            padding: EdgeInsets.only(top: screenWidth * 0.02),
+                                                            alignment: Alignment.topCenter,
+                                                            height: constraints.maxHeight * 0.5,
+                                                            child: Regular16px(text: sheetLists!['sheetListName']),
                                                           );
                                                         },
                                                       ),
@@ -780,36 +575,16 @@ class _DetailSheetState extends State<DetailSheet> {
                                                 ),
                                                 onTap: () async {
                                                   try {
-                                                    await _firestoreDb
-                                                        .collection('sheetList')
-                                                        .doc(sheetLists![
-                                                            'sheetListId'])
-                                                        .update({
-                                                      'sid':
-                                                          FieldValue.arrayUnion(
-                                                              [sheetId])
+                                                    await _firestoreDb.collection('sheetList').doc(sheetLists!['sheetListId']).update({
+                                                      'sid': FieldValue.arrayUnion([sheetId])
                                                     });
-                                                    Future.delayed(
-                                                        const Duration(
-                                                            milliseconds: 500),
-                                                        () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                      final String message =
-                                                          'เพิ่มชีทเข้าชีทลิสต์เรียบร้อย!';
-                                                      FlushbarPopup
-                                                          .successFlushbar(
-                                                              context,
-                                                              Icon(
-                                                                  FontAwesomeIcons
-                                                                      .book),
-                                                              message);
+                                                    Future.delayed(const Duration(milliseconds: 500), () {
+                                                      Navigator.of(context).pop();
+                                                      final String message = 'เพิ่มชีทเข้าชีทลิสต์เรียบร้อย!';
+                                                      FlushbarPopup.successFlushbar(context, Icon(FontAwesomeIcons.book), message);
                                                     });
                                                   } on FirebaseAuthException catch (e) {
-                                                    FlushbarPopup.errorFlushbar(
-                                                        context,
-                                                        FlushbarIcon.errorIcon,
-                                                        e.toString());
+                                                    FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
                                                   }
                                                 },
                                               );
@@ -847,10 +622,7 @@ class _DetailSheetState extends State<DetailSheet> {
           child: Container(
             height: isPortrait ? screenWidth * 0.52 : screenWidth * 0.29,
             child: Padding(
-              padding: EdgeInsets.only(
-                  top: screenWidth * 0.040,
-                  bottom:
-                      isPortrait ? screenWidth * 0.040 : screenWidth * 0.012),
+              padding: EdgeInsets.only(top: screenWidth * 0.040, bottom: isPortrait ? screenWidth * 0.040 : screenWidth * 0.012),
               child: Column(
                 children: [
                   Regular16px(
@@ -858,12 +630,7 @@ class _DetailSheetState extends State<DetailSheet> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(
-                        top: isPortrait
-                            ? screenWidth * 0.04
-                            : screenWidth * 0.020,
-                        left: isPortrait
-                            ? screenWidth * 0.32
-                            : screenWidth * 0.4),
+                        top: isPortrait ? screenWidth * 0.04 : screenWidth * 0.020, left: isPortrait ? screenWidth * 0.32 : screenWidth * 0.4),
                     child: InkWell(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -887,12 +654,7 @@ class _DetailSheetState extends State<DetailSheet> {
                   InkWell(
                     child: Padding(
                       padding: EdgeInsets.only(
-                          top: isPortrait
-                              ? screenWidth * 0.04
-                              : screenWidth * 0.020,
-                          left: isPortrait
-                              ? screenWidth * 0.32
-                              : screenWidth * 0.4),
+                          top: isPortrait ? screenWidth * 0.04 : screenWidth * 0.020, left: isPortrait ? screenWidth * 0.32 : screenWidth * 0.4),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -915,12 +677,7 @@ class _DetailSheetState extends State<DetailSheet> {
                   InkWell(
                     child: Padding(
                       padding: EdgeInsets.only(
-                          top: isPortrait
-                              ? screenWidth * 0.04
-                              : screenWidth * 0.020,
-                          left: isPortrait
-                              ? screenWidth * 0.32
-                              : screenWidth * 0.4),
+                          top: isPortrait ? screenWidth * 0.04 : screenWidth * 0.020, left: isPortrait ? screenWidth * 0.32 : screenWidth * 0.4),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
