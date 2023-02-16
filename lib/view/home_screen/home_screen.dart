@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
 
     return StreamBuilder<QuerySnapshot>(
-      stream: _firestore.collection("sheet").snapshots(),
+      stream: _firestore.collection("sheet").orderBy('timestamp', descending: true).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) {
           return Container();
