@@ -16,8 +16,7 @@ class CreateSheetScreen extends StatefulWidget {
   State<CreateSheetScreen> createState() => _CreateSheetScreenState();
 }
 
-class _CreateSheetScreenState extends State<CreateSheetScreen>
-    with AutomaticKeepAliveClientMixin {
+class _CreateSheetScreenState extends State<CreateSheetScreen> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -29,17 +28,13 @@ class _CreateSheetScreenState extends State<CreateSheetScreen>
           children: <Widget>[
             SizedBox(
               width: screenWidth,
-              height: screenWidth < 420
-                  ? constraints.maxHeight * 0.5
-                  : constraints.maxHeight * 0.6,
+              height: screenWidth < 420 ? constraints.maxHeight * 0.5 : constraints.maxHeight * 0.6,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Icon(
                     FontAwesomeIcons.download,
-                    size: screenWidth < 480
-                        ? screenHeight * 0.1
-                        : screenHeight * 0.2,
+                    size: screenWidth < 480 ? screenHeight * 0.1 : screenHeight * 0.2,
                     color: AppColors.black400,
                   ),
                   SizedBox(
@@ -50,9 +45,10 @@ class _CreateSheetScreenState extends State<CreateSheetScreen>
                       onPressed: () async {
                         final file = await PDFApi.pickFile(context);
                         if (file == null) return;
-                        Provider.of<FilePasser>(context, listen: false)
-                            .setFile(file);
-                        AutoRouter.of(context).push(ViewImportSheetRoute());
+                        if (context.mounted) {
+                          Provider.of<FilePasser>(context, listen: false).setFile(file);
+                          AutoRouter.of(context).push(const ViewImportSheetRoute());
+                        }
                       }),
                 ],
               ),

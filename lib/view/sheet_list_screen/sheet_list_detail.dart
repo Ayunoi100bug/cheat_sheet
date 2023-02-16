@@ -28,59 +28,58 @@ class _SheetListDetailState extends State<SheetListDetail> {
             return Container();
           } else if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
-          } else {
-            Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-            List sheetInList = data['sid'];
-            return SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.all(screenWidth * 0.038),
-                child: GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: isPortrait ? 3 : 5,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 16,
-                    mainAxisExtent: isPortrait ? 200 : 250,
-                  ),
-                  itemCount: sheetInList.length,
-                  itemBuilder: (context, index) {
-                    return StreamBuilder<DocumentSnapshot>(
-                      stream: _firestore.collection("sheet").doc(sheetInList[index]).snapshots(),
-                      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> sheetSnapshot) {
-                        if (!sheetSnapshot.hasData || sheetSnapshot.data!.data() == null) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else {
-                          return StreamBuilder<DocumentSnapshot>(
-                              stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
-                              builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userSnapshot) {
-                                if (!userSnapshot.hasData) {
-                                  return Container();
-                                } else if (userSnapshot.connectionState == ConnectionState.waiting) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                } else {
-                                  return Sheet(
-                                    authorImage: userSnapshot.data?['profileImage'],
-                                    title: sheetSnapshot.data?["sheetName"],
-                                    priceSheet: sheetSnapshot.data?["price"],
-                                    username: userSnapshot.data?["username"],
-                                    sheetId: sheetSnapshot.data?["sid"],
-                                  );
-                                }
-                              });
-                        }
-                      },
-                    );
-                  },
-                  padding: const EdgeInsets.only(bottom: 8),
-                ),
-              ),
-            );
           }
+          Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+          List sheetInList = data['sid'];
+          return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(screenWidth * 0.038),
+              child: GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: isPortrait ? 3 : 5,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 16,
+                  mainAxisExtent: isPortrait ? 200 : 250,
+                ),
+                itemCount: sheetInList.length,
+                itemBuilder: (context, index) {
+                  return StreamBuilder<DocumentSnapshot>(
+                    stream: _firestore.collection("sheet").doc(sheetInList[index]).snapshots(),
+                    builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> sheetSnapshot) {
+                      if (!sheetSnapshot.hasData) {
+                        return Container();
+                      } else if (sheetSnapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      return StreamBuilder<DocumentSnapshot>(
+                          stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
+                          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userSnapshot) {
+                            if (!userSnapshot.hasData) {
+                              return Container();
+                            } else if (userSnapshot.connectionState == ConnectionState.waiting) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            return Sheet(
+                              authorImage: userSnapshot.data?['profileImage'],
+                              title: sheetSnapshot.data?["sheetName"],
+                              priceSheet: sheetSnapshot.data?["price"],
+                              username: userSnapshot.data?["username"],
+                              sheetId: sheetSnapshot.data?["sid"],
+                            );
+                          });
+                    },
+                  );
+                },
+                padding: const EdgeInsets.only(bottom: 8),
+              ),
+            ),
+          );
         });
   }
 }

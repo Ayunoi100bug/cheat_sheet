@@ -94,6 +94,7 @@ class CreateCollection {
       'sheetTypeFree': argSheetType,
       'price': argPrice,
       'sid': sheetId,
+      'buyer': mySheet.buyer,
       'authorId': argAuthorId,
     });
   }

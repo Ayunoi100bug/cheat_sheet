@@ -58,11 +58,11 @@ class AuthService {
   Future<void> loginWithGoogle(BuildContext context) async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      if (googleUser == null) {
+      if (googleUser == null && context.mounted) {
         AutoRouter.of(context).popAndPush(const LoginRoute());
         return;
       }
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
       final credential = GoogleAuthProvider.credential(accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
       final User? user = (await _auth.signInWithCredential(credential)).user;
       await createFS.createGoogleUserCollection(user);
@@ -80,7 +80,7 @@ class AuthService {
   Future<void> loginWithFacebook(BuildContext context) async {
     try {
       final LoginResult loginResult = await FacebookAuth.i.login(permissions: ['email, public_profile, user_photos']);
-      if (loginResult.accessToken == null) {
+      if (loginResult.accessToken == null && context.mounted) {
         AutoRouter.of(context).popAndPush(const LoginRoute());
         return;
       }
@@ -112,7 +112,7 @@ class AuthService {
       await _auth.signOut();
       success = true;
     }
-    if (success == true) {
+    if (success == true && context.mounted) {
       AutoRouter.of(context).navigateNamed("/home/");
       Navigator.pop(context);
       SchedulerBinding.instance.addPostFrameCallback((_) {

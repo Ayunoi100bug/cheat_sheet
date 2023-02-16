@@ -75,112 +75,110 @@ class _EditProfileState extends State<EditProfile> {
             return const Center(
               child: Text("This is page when not login"),
             );
-          } else {
-            return StreamBuilder<DocumentSnapshot>(
-                stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
-                builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  if (!snapshot.hasData) {
-                    return Container();
-                  } else if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else {
-                    Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-                    return Scaffold(
-                      body: SafeArea(
-                        child: Container(
-                          padding: EdgeInsets.only(top: isPortrait ? screenHeight * 0.016 : screenWidth * 0.016),
-                          width: double.infinity,
-                          height: isPortrait ? screenHeight * 0.5 : double.infinity,
-                          alignment: Alignment.center,
-                          child: SingleChildScrollView(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  height: isPortrait ? screenHeight * 0.2 : screenWidth * 0.2,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.black300,
-                                  ),
-                                  child: _pickedImage == null
-                                      ? CircleAvatar(
-                                          backgroundImage: NetworkImage(data['profileImage']),
-                                          radius: 100.0,
-                                        )
-                                      : CircleAvatar(
-                                          backgroundImage: FileImage(_pickedImage!),
-                                          radius: 100.0,
-                                        ),
-                                ),
-                                SizedBox(
-                                  height: isPortrait ? screenHeight * 0.012 : screenWidth * 0.012,
-                                ),
-                                SizedBox(
-                                  height: isPortrait ? screenHeight * 0.05 : screenWidth * 0.05,
-                                  child: InkWell(
-                                    child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                                      const Icon(FontAwesomeIcons.camera),
-                                      SizedBox(
-                                        width: screenWidth * 0.012,
-                                      ),
-                                      const Regular12px(text: 'เลือกรูปภาพ'),
-                                    ]),
-                                    onTap: () {
-                                      _pickImage();
-                                    },
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: isPortrait ? screenHeight * 0.012 : screenWidth * 0.012,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(right: isPortrait ? screenWidth * 0.45 : screenHeight * 0.45),
-                                  child: const Align(
-                                    alignment: Alignment.center,
-                                    child: Medium16px(text: 'ชื่อ'),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: isPortrait ? screenWidth * 0.5 : screenHeight * 0.5,
-                                  child: Form(
-                                    key: _formKey,
-                                    child: MyTextFormField(
-                                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                                        hintText: data['username'],
-                                        validator: RequiredValidator(errorText: 'Please enter new username.'),
-                                        onSaved: (value) {
-                                          if (value == '') {
-                                            users.username = data['username'];
-                                          } else {
-                                            users.username = value!;
-                                          }
-                                        }),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: isPortrait ? screenHeight * 0.016 : screenWidth * 0.016,
-                                ),
-                                PrimaryButton(
-                                    text: 'เสร็จสิ้น',
-                                    onPressed: () async {
-                                      EditProfileData().uploadImage(_pickedImage);
-                                      _formKey.currentState!.save();
-                                      await EditProfileData().editUserName(context, data['uid'], users.username).then((value) {
-                                        _formKey.currentState!.reset();
-                                      });
-                                    }),
-                                SizedBox(
-                                  height: isPortrait ? screenHeight * 0.016 : screenWidth * 0.016,
-                                ),
-                              ],
+          }
+          return StreamBuilder<DocumentSnapshot>(
+              stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
+              builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                if (!snapshot.hasData) {
+                  return Container();
+                } else if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+                return Scaffold(
+                  body: SafeArea(
+                    child: Container(
+                      padding: EdgeInsets.only(top: isPortrait ? screenHeight * 0.016 : screenWidth * 0.016),
+                      width: double.infinity,
+                      height: isPortrait ? screenHeight * 0.5 : double.infinity,
+                      alignment: Alignment.center,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: isPortrait ? screenHeight * 0.2 : screenWidth * 0.2,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColors.black300,
+                              ),
+                              child: _pickedImage == null
+                                  ? CircleAvatar(
+                                      backgroundImage: NetworkImage(data['profileImage']),
+                                      radius: 100.0,
+                                    )
+                                  : CircleAvatar(
+                                      backgroundImage: FileImage(_pickedImage!),
+                                      radius: 100.0,
+                                    ),
                             ),
-                          ),
+                            SizedBox(
+                              height: isPortrait ? screenHeight * 0.012 : screenWidth * 0.012,
+                            ),
+                            SizedBox(
+                              height: isPortrait ? screenHeight * 0.05 : screenWidth * 0.05,
+                              child: InkWell(
+                                child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                                  const Icon(FontAwesomeIcons.camera),
+                                  SizedBox(
+                                    width: screenWidth * 0.012,
+                                  ),
+                                  const Regular12px(text: 'เลือกรูปภาพ'),
+                                ]),
+                                onTap: () {
+                                  _pickImage();
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: isPortrait ? screenHeight * 0.012 : screenWidth * 0.012,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(right: isPortrait ? screenWidth * 0.45 : screenHeight * 0.45),
+                              child: const Align(
+                                alignment: Alignment.center,
+                                child: Medium16px(text: 'ชื่อ'),
+                              ),
+                            ),
+                            SizedBox(
+                              width: isPortrait ? screenWidth * 0.5 : screenHeight * 0.5,
+                              child: Form(
+                                key: _formKey,
+                                child: MyTextFormField(
+                                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                                    hintText: data['username'],
+                                    validator: RequiredValidator(errorText: 'Please enter new username.'),
+                                    onSaved: (value) {
+                                      if (value == '') {
+                                        users.username = data['username'];
+                                      } else {
+                                        users.username = value!;
+                                      }
+                                    }),
+                              ),
+                            ),
+                            SizedBox(
+                              height: isPortrait ? screenHeight * 0.016 : screenWidth * 0.016,
+                            ),
+                            PrimaryButton(
+                                text: 'เสร็จสิ้น',
+                                onPressed: () async {
+                                  EditProfileData().uploadImage(_pickedImage);
+                                  _formKey.currentState!.save();
+                                  await EditProfileData().editUserName(context, data['uid'], users.username).then((value) {
+                                    _formKey.currentState!.reset();
+                                  });
+                                }),
+                            SizedBox(
+                              height: isPortrait ? screenHeight * 0.016 : screenWidth * 0.016,
+                            ),
+                          ],
                         ),
                       ),
-                    );
-                  }
-                });
-          }
+                    ),
+                  ),
+                );
+              });
         });
   }
 }
