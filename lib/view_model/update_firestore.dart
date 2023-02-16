@@ -1,10 +1,15 @@
+import 'dart:io';
+
+import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/model/sheet.dart';
 import 'package:cheat_sheet/model/user.dart';
 import 'package:cheat_sheet/res/components/flushbar.dart';
 import 'package:cheat_sheet/res/components/flushbar_icon.dart';
+import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/view_model/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class UpdateCollection {
@@ -71,10 +76,42 @@ class UpdateCollection {
           'timestamp': mySheet.timestamp,
           // TODO: ต้องเปลี่ยน buyer จากบวกที่ละ 1 เป็นนับจาก sid ที่เจอใน buyedSheet ของ user แต่เบื้องต้นใช้แบบนี้ก่อน
           'buyer': (sheetData['buyer'] + 1),
+        }).then((value) {
+          const String message = 'ซื้อชีทสำเร็จ';
+          FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
         });
-        const String message = 'ซื้อชีทสำเร็จ';
-        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
       }
     }
+  }
+}
+
+class EditProfileData {
+  final _firestore = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
+  final _storage = FirebaseStorage.instance;
+  String? urlImage;
+
+  Future<void> uploadImage(File? pickedImage) async {
+    if (pickedImage != null) {
+      Reference ref = _storage.ref().child('/users/${_auth.currentUser?.uid}/images').child('profileImage');
+      await ref.putFile(pickedImage);
+
+      urlImage = await ref.getDownloadURL();
+      await _firestore.collection("users").doc(_auth.currentUser?.uid).update({'profileImage': urlImage});
+    } else {
+      return;
+    }
+  }
+
+  Future<void> editUserName(BuildContext context, String currentUid, String newUsername) async {
+    await _firestore.collection('users').doc(currentUid).update({
+      'username': newUsername,
+    }).then((value) {
+      Future.delayed(const Duration(milliseconds: 200), () {
+        AutoRouter.of(context).popUntilRoot();
+        const String message = 'เปลี่ยนข้อมูลสำเร็จ';
+        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+      });
+    });
   }
 }

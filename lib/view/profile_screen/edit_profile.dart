@@ -7,8 +7,8 @@ import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/components/form_field.dart';
 import 'package:cheat_sheet/res/typo.dart';
+import 'package:cheat_sheet/view_model/update_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -33,27 +33,18 @@ class _EditProfileState extends State<EditProfile> {
   File? _pickedImage;
   String? urlImage;
 
-  Future<void> uploadImage() async {
-    Reference ref = storage.ref().child('${_auth.currentUser?.uid}/images').child('profileImage');
-    await ref.putFile(_pickedImage!);
-
-    urlImage = await ref.getDownloadURL();
-
-    await _firestore.collection("users").doc(_auth.currentUser?.uid).update({'profileImage': urlImage});
-  }
-
   void _pickImage() async {
     final imageSource = await showDialog<ImageSource>(
         context: context,
         builder: (context) => AlertDialog(
-              title: Text("Select the image source"),
+              title: const Text("Select the image source"),
               actions: <Widget>[
                 MaterialButton(
-                  child: Text("Camera"),
+                  child: const Text("Camera"),
                   onPressed: () => Navigator.pop(context, ImageSource.camera),
                 ),
                 MaterialButton(
-                  child: Text("Gallery"),
+                  child: const Text("Gallery"),
                   onPressed: () => Navigator.pop(context, ImageSource.gallery),
                 )
               ],
@@ -171,19 +162,12 @@ class _EditProfileState extends State<EditProfile> {
                                 ),
                                 PrimaryButton(
                                     text: 'เสร็จสิ้น',
-                                    onPressed: () {
-                                      uploadImage();
+                                    onPressed: () async {
+                                      EditProfileData().uploadImage(_pickedImage);
                                       _formKey.currentState!.save();
-                                      _firestore
-                                          .collection('users')
-                                          .doc(data['uid'])
-                                          .update({
-                                            'username': users.username,
-                                          })
-                                          .then((value) => print("User Updated"))
-                                          .catchError((error) => print("Failed to update user: $error"));
-                                      _formKey.currentState!.reset();
-                                      AutoRouter.of(context).pop();
+                                      await EditProfileData().editUserName(context, data['uid'], users.username).then((value) {
+                                        _formKey.currentState!.reset();
+                                      });
                                     }),
                                 SizedBox(
                                   height: isPortrait ? screenHeight * 0.016 : screenWidth * 0.016,

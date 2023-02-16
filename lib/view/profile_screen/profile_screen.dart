@@ -112,7 +112,7 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                                                       color: AppColors.black300,
                                                     ),
                                                     child: CircleAvatar(
-                                                      backgroundImage: NetworkImage(data['profileImage']),
+                                                      backgroundImage: CachedNetworkImageProvider(data['profileImage']),
                                                       radius: 100,
                                                     ),
                                                   ),
