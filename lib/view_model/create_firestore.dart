@@ -116,6 +116,7 @@ class CreateCollection {
       'authorId': argAuthorId,
       'sheetId': argSheetId,
       'rating': argRating,
+      'rid': argRid,
     });
   }
 }

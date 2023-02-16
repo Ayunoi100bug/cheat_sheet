@@ -9,6 +9,7 @@ class Reviews {
   String authorId;
   String sheetId;
   double rating;
+  int? like = 0;
 
   Reviews({
     required this.rid,
@@ -16,6 +17,7 @@ class Reviews {
     required this.authorId,
     required this.sheetId,
     required this.rating,
+    this.like,
   });
 
   Reviews.fromJson(Map<String, dynamic> json)
@@ -24,7 +26,8 @@ class Reviews {
         text = json['text'],
         authorId = json['authorId'],
         sheetId = json['sheetId'],
-        rating = json['rating'];
+        rating = json['rating'],
+        like = json['like'];
 
   Map<String, dynamic> toJson() => {
         'timestamp': timestamp,
@@ -33,5 +36,6 @@ class Reviews {
         'authorId': authorId,
         'sheetId': sheetId,
         'rating': rating,
+        'like': like,
       };
 }

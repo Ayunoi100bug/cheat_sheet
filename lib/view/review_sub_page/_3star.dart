@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../../res/components/review.dart';
 
 class ThreeStar extends StatelessWidget {
-  const ThreeStar({super.key});
+  final String sheetId;
+  const ThreeStar({super.key, required this.sheetId});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +12,7 @@ class ThreeStar extends StatelessWidget {
       itemCount: 1,
       shrinkWrap: true,
       itemBuilder: (context, index) {
-        return Review(userRating: 5);
+        return Container();
       },
     );
   }

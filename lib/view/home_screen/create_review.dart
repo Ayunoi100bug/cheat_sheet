@@ -66,6 +66,8 @@ class _CreateReviewState extends State<CreateReview> {
                   padding: EdgeInsets.all(screenHeight * 0.02),
                   height: screenHeight * 0.2,
                   child: MyTextFormField(
+                    maxLine: 6,
+                    minLine: 6,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     hintText: 'แสดงความคิดเห็นที่นี่...',
                     onSaved: (value) {

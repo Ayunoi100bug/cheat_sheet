@@ -67,6 +67,7 @@ class _DetailSheetState extends State<DetailSheet> {
                   return const Center(child: CircularProgressIndicator());
                 }
                 Map<String, dynamic> authorData = authorSnapshot.data!.data() as Map<String, dynamic>;
+            	List? reviewInSheet = authorData['review'];
                 return Scaffold(
                   body: SafeArea(
                     child: SingleChildScrollView(
@@ -364,12 +365,39 @@ class _DetailSheetState extends State<DetailSheet> {
                                     ),
                                   ],
                                 ),
-                                Column(
-                                  children: [
-                                    Review(userRating: 4),
-                                    Review(userRating: 2.5),
-                                  ],
-                                ),
+                                ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: reviewInSheet!.length > 2 ? reviewInSheet.length : 2,
+                              itemBuilder: (BuildContext context, index) {
+                                return StreamBuilder<DocumentSnapshot>(
+                                    stream: _firestoreDb.collection("review").doc(reviewInSheet[index]).snapshots(),
+                                    builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> reviewSnapshot) {
+                                      if (!reviewSnapshot.hasData || reviewSnapshot.data == null) {
+                                        return const Center(child: CircularProgressIndicator());
+                                      } else {
+                                        return StreamBuilder<DocumentSnapshot>(
+                                          stream: _firestoreDb.collection("users").doc(reviewSnapshot.data!['authorId']).snapshots(),
+                                          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userReviewSnapshot) {
+                                            if (!userReviewSnapshot.hasData || userReviewSnapshot.data!.data() == null) {
+                                              return const Center(
+                                                child: CircularProgressIndicator(),
+                                              );
+                                            } else {
+                                              return Review(
+                                                  userImage: userReviewSnapshot.data!['profileImage'],
+                                                  userName: userReviewSnapshot.data!['username'],
+                                                  userRating: reviewSnapshot.data!['rating'],
+                                                  textReview: reviewSnapshot.data!['text'],
+                                                  dateTime: reviewSnapshot.data!['timestamp'],
+                                                  like: reviewSnapshot.data!['like']);
+                                            }
+                                          },
+                                        );
+                                      }
+                                    });
+                              },
+                            ),
                                 Padding(
                                   padding: EdgeInsets.symmetric(vertical: screenWidth * 0.04),
                                   child: InkWell(
