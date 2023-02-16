@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen>
                   children: [
                     ElevatedButton(
                         onPressed: () {
-                          AutoRouter.of(context).push(SearchingSheetRoute());
+                          AutoRouter.of(context).push(TestUIRoute());
                         },
                         child: Text('ปุ่มไปหน้าค้นหาชั่วคราว')),
                     InkWell(
