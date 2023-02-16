@@ -62,8 +62,9 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                 child: Text("${snapshot.error}"),
               ),
             );
-          }
-          if (snapshot.connectionState == ConnectionState.done) {
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
             return Scaffold(
               body: SingleChildScrollView(
                 child: Center(
@@ -266,9 +267,6 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
               ),
             );
           }
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
         });
   }
 }

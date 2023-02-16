@@ -33,12 +33,10 @@ class SheetListScreen extends StatefulWidget {
   State<SheetListScreen> createState() => _SheetListScreenState();
 }
 
-class _SheetListScreenState extends State<SheetListScreen>
-    with AutomaticKeepAliveClientMixin {
+class _SheetListScreenState extends State<SheetListScreen> with AutomaticKeepAliveClientMixin {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
-  Users users =
-      Users(username: '', password: '', email: '', uid: '', profileImage: '');
+  Users users = Users(username: '', password: '', email: '', uid: '', profileImage: '');
 
   @override
   Widget build(BuildContext context) {
@@ -47,18 +45,20 @@ class _SheetListScreenState extends State<SheetListScreen>
     return StreamBuilder(
         stream: _auth.authStateChanges(),
         builder: (context, AsyncSnapshot<User?> snapshot) {
-          if (snapshot.hasData) {
+          if (!snapshot.hasData) {
+            return Popup_Login(context);
+          } else {
             return StreamBuilder<QuerySnapshot>(
                 stream: _firestore.collection("sheetList").snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (!snapshot.hasData || snapshot.data == null) {
+                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData) {
+                    return Container();
+                  } else if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
                   } else {
-                    final mySheetLists = snapshot.data?.docs.where((document) =>
-                        document["authorId"] == _auth.currentUser?.uid);
+                    final mySheetLists = snapshot.data?.docs.where((document) => document["authorId"] == _auth.currentUser?.uid);
                     return Scaffold(
                       resizeToAvoidBottomInset: true,
                       body: SafeArea(
@@ -67,21 +67,17 @@ class _SheetListScreenState extends State<SheetListScreen>
                             child: Column(
                               children: [
                                 Container(
-                                  padding: EdgeInsets.only(
-                                      top: screenWidth * 0.032,
-                                      right: screenWidth * 0.032),
+                                  padding: EdgeInsets.only(top: screenWidth * 0.032, right: screenWidth * 0.032),
                                   child: InkWell(
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         Container(
                                           decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: AppColors.tertiary500),
-                                            borderRadius:
-                                                BorderRadius.circular(5),
+                                            border: Border.all(color: AppColors.tertiary500),
+                                            borderRadius: BorderRadius.circular(5),
                                           ),
-                                          child: Icon(
+                                          child: const Icon(
                                             FontAwesomeIcons.plus,
                                             color: AppColors.tertiary500,
                                             size: 30,
@@ -95,82 +91,54 @@ class _SheetListScreenState extends State<SheetListScreen>
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.all(
-                                      screenWidth * GapDimension.w0_032),
+                                  padding: EdgeInsets.all(screenWidth * GapDimension.w0_032),
                                   child: GridView.builder(
-                                    physics: NeverScrollableScrollPhysics(),
+                                    physics: const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 3,
                                       crossAxisSpacing: 8,
                                       mainAxisSpacing: 8,
                                       childAspectRatio: screenWidth < 480
-                                          ? MediaQuery.of(context).size.width /
-                                              (MediaQuery.of(context)
-                                                      .size
-                                                      .height /
-                                                  1.1)
-                                          : MediaQuery.of(context).size.width /
-                                              (MediaQuery.of(context)
-                                                      .size
-                                                      .height /
-                                                  0.4),
+                                          ? MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.1)
+                                          : MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 0.4),
                                     ),
                                     itemCount: mySheetLists?.length,
                                     itemBuilder: (context, index) {
-                                      var sheetLists =
-                                          mySheetLists?.elementAt(index);
+                                      var sheetLists = mySheetLists?.elementAt(index);
                                       var mySheet = sheetLists!['sid'];
                                       return InkWell(
-                                        child: Container(
-                                          child: LayoutBuilder(
-                                            builder: (context, constraints) {
-                                              return Column(
-                                                children: [
-                                                  Container(
-                                                    height:
-                                                        constraints.maxHeight *
-                                                            0.8,
-                                                    color: AppColors.black300,
-                                                  ),
-                                                  InkWell(
-                                                    child: Container(
-                                                      height: constraints
-                                                              .maxHeight *
-                                                          0.2,
-                                                      child: LayoutBuilder(
-                                                        builder: (context,
-                                                            constraints) {
-                                                          return Container(
-                                                            padding: EdgeInsets.only(
-                                                                top:
-                                                                    screenWidth *
-                                                                        0.02),
-                                                            alignment: Alignment
-                                                                .topCenter,
-                                                            height: constraints
-                                                                    .maxHeight *
-                                                                0.5,
-                                                            child: Regular16px(
-                                                                text: sheetLists[
-                                                                    'sheetListName']),
-                                                          );
-                                                        },
-                                                      ),
+                                        child: LayoutBuilder(
+                                          builder: (context, constraints) {
+                                            return Column(
+                                              children: [
+                                                Container(
+                                                  height: constraints.maxHeight * 0.8,
+                                                  color: AppColors.black300,
+                                                ),
+                                                InkWell(
+                                                  child: Container(
+                                                    height: constraints.maxHeight * 0.2,
+                                                    child: LayoutBuilder(
+                                                      builder: (context, constraints) {
+                                                        return Container(
+                                                          padding: EdgeInsets.only(top: screenWidth * 0.02),
+                                                          alignment: Alignment.topCenter,
+                                                          height: constraints.maxHeight * 0.5,
+                                                          child: Regular16px(text: sheetLists['sheetListName']),
+                                                        );
+                                                      },
                                                     ),
-                                                    onTap: () {},
                                                   ),
-                                                ],
-                                              );
-                                            },
-                                          ),
+                                                  onTap: () {},
+                                                ),
+                                              ],
+                                            );
+                                          },
                                         ),
                                         onTap: () {
                                           AutoRouter.of(context).push(
-                                            SheetListDetailRoute(
-                                                sheetId:
-                                                    sheetLists['sheetListId']),
+                                            SheetListDetailRoute(sheetId: sheetLists['sheetListId']),
                                           );
                                         },
                                       );
@@ -185,8 +153,6 @@ class _SheetListScreenState extends State<SheetListScreen>
                     );
                   }
                 });
-          } else {
-            return Popup_Login(context);
           }
         });
   }
@@ -198,12 +164,10 @@ class _SheetListScreenState extends State<SheetListScreen>
 
 void _BottomSheet(context) {
   double screenHeight = MediaQuery.of(context).size.height;
-  Users myUser =
-      Users(email: '', password: '', username: '', uid: '', profileImage: '');
+  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
   final FirebaseFirestore _firestoreDb = FirebaseFirestore.instance;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final SheetLists _sheetLists =
-      SheetLists(sheetListName: '', sid: [], authorId: '', sheetListId: '');
+  final SheetLists _sheetLists = SheetLists(sheetListName: '', sid: [], authorId: '', sheetListId: '');
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   CreateCollection myCollection = CreateCollection();
   final _auth = FirebaseAuth.instance;
@@ -220,8 +184,7 @@ void _BottomSheet(context) {
       return Container(
         height: MediaQuery.of(context).viewInsets.bottom == 0
             ? screenHeight * 0.3
-            : MediaQuery.of(context).size.height -
-                MediaQuery.of(context).viewInsets.bottom,
+            : MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.bottom,
         child: Column(
           children: [
             SizedBox(
@@ -247,8 +210,7 @@ void _BottomSheet(context) {
                   onSaved: (value) {
                     _sheetLists.sheetListName = value!;
                   },
-                  validator: RequiredValidator(
-                      errorText: 'Please enter sheet list name.'),
+                  validator: RequiredValidator(errorText: 'Please enter sheet list name.'),
                 ),
               ),
             ),
@@ -273,16 +235,11 @@ void _BottomSheet(context) {
                       AutoRouter.of(context).popUntilRoot();
                     },
                   );
-                  await _firestoreDb
-                      .collection('users')
-                      .doc(_auth.currentUser!.uid)
-                      .update({
-                    'sheetLists':
-                        FieldValue.arrayUnion([_sheetLists.sheetListId])
+                  await _firestoreDb.collection('users').doc(_auth.currentUser!.uid).update({
+                    'sheetLists': FieldValue.arrayUnion([_sheetLists.sheetListId])
                   });
                 } on FirebaseAuthException catch (e) {
-                  FlushbarPopup.errorFlushbar(
-                      context, FlushbarIcon.errorIcon, e.toString());
+                  FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
                 }
               },
             ),

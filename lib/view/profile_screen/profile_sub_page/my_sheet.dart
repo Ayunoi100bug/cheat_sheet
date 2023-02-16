@@ -18,7 +18,9 @@ class MySheet extends StatelessWidget {
     return StreamBuilder<QuerySnapshot>(
         stream: _firestore.collection("sheet").snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData || snapshot.data == null) {
+          if (!snapshot.hasData) {
+            return Container();
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else {
             final mySheets = snapshot.data!.docs.where((document) => document["authorId"] == _auth.currentUser?.uid);
@@ -43,7 +45,9 @@ class MySheet extends StatelessWidget {
                   return StreamBuilder<DocumentSnapshot>(
                       stream: _firestore.collection("users").doc(sheet["authorId"]).snapshots(),
                       builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userSnapshot) {
-                        if (!userSnapshot.hasData || userSnapshot.data!.data() == null) {
+                        if (!userSnapshot.hasData) {
+                          return Container();
+                        } else if (userSnapshot.connectionState == ConnectionState.waiting) {
                           return const Center(
                             child: CircularProgressIndicator(),
                           );

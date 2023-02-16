@@ -6,15 +6,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
 import '../res/colors.dart';
-import '../res/components/flushbar.dart';
-import '../res/components/flushbar_icon.dart';
 import '../res/gap_dimension.dart';
 import '../res/typo.dart';
 
@@ -47,8 +42,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: Text("${snapshot.error}"),
             ),
           );
-        }
-        if (snapshot.connectionState == ConnectionState.done) {
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else {
           return Scaffold(
             body: SafeArea(
               child: Container(
@@ -239,9 +235,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           );
         }
-        return const Scaffold(
-          body: Center(child: CircularProgressIndicator()),
-        );
       },
     );
   }

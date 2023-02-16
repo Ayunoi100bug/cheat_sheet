@@ -52,14 +52,18 @@ class _DetailSheetState extends State<DetailSheet> {
     return StreamBuilder<DocumentSnapshot>(
         stream: _firestore.collection("sheet").doc(widget.sheetId).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (!snapshot.hasData || snapshot.data!.data() == null) {
+          if (!snapshot.hasData) {
+            return Container();
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else {
             Map<String, dynamic> sheetData = snapshot.data!.data() as Map<String, dynamic>;
             return StreamBuilder<DocumentSnapshot>(
                 stream: _firestore.collection("users").doc(sheetData['authorId']).snapshots(),
                 builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> authorSnapshot) {
-                  if (!authorSnapshot.hasData || authorSnapshot.data!.data() == null) {
+                  if (!authorSnapshot.hasData) {
+                    return Container();
+                  } else if (authorSnapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else {
                     Map<String, dynamic> authorData = authorSnapshot.data!.data() as Map<String, dynamic>;
@@ -101,32 +105,36 @@ class _DetailSheetState extends State<DetailSheet> {
                                                                         Container(
                                                                           margin: EdgeInsets.only(right: screenHeight * 0.025),
                                                                           decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
-                                                                          child: Image.network(
-                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
+                                                                          child: CachedNetworkImage(
+                                                                            imageUrl:
+                                                                                "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
                                                                             fit: BoxFit.fill,
                                                                           ),
                                                                         ),
                                                                         Container(
                                                                           margin: EdgeInsets.only(right: screenHeight * 0.025),
                                                                           decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
-                                                                          child: Image.network(
-                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
+                                                                          child: CachedNetworkImage(
+                                                                            imageUrl:
+                                                                                "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
                                                                             fit: BoxFit.fill,
                                                                           ),
                                                                         ),
                                                                         Container(
                                                                           margin: EdgeInsets.only(right: screenHeight * 0.025),
                                                                           decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
-                                                                          child: Image.network(
-                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
+                                                                          child: CachedNetworkImage(
+                                                                            imageUrl:
+                                                                                "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
                                                                             fit: BoxFit.fill,
                                                                           ),
                                                                         ),
                                                                         Container(
                                                                           margin: EdgeInsets.only(right: screenHeight * 0.025),
                                                                           decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
-                                                                          child: Image.network(
-                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
+                                                                          child: CachedNetworkImage(
+                                                                            imageUrl:
+                                                                                "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
                                                                             fit: BoxFit.fill,
                                                                           ),
                                                                         ),
@@ -135,7 +143,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                                   ),
                                                                 ),
                                                                 Expanded(child: Container()),
-                                                                BlinkText('สามารถเลื่อนไปทางขวาได้',
+                                                                const BlinkText('สามารถเลื่อนไปทางขวาได้',
                                                                     style: TextStyle(fontSize: 20, color: AppColors.black800),
                                                                     beginColor: AppColors.black800,
                                                                     endColor: AppColors.white,
@@ -151,8 +159,9 @@ class _DetailSheetState extends State<DetailSheet> {
                                               child: Stack(
                                                 alignment: Alignment.center,
                                                 children: [
-                                                  Image.network(
-                                                    "https://static.trueplookpanya.com/tppy/member/m_665000_667500/665461/cms/images/%E0%B9%84%E0%B8%AD%E0%B9%80%E0%B8%94%E0%B8%B5%E0%B8%A2%E0%B8%88%E0%B8%94%E0%B8%8A%E0%B8%B5%E0%B8%97%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B_04.jpg",
+                                                  CachedNetworkImage(
+                                                    imageUrl:
+                                                        "https://static.trueplookpanya.com/tppy/member/m_665000_667500/665461/cms/images/%E0%B9%84%E0%B8%AD%E0%B9%80%E0%B8%94%E0%B8%B5%E0%B8%A2%E0%B8%88%E0%B8%94%E0%B8%8A%E0%B8%B5%E0%B8%97%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B_04.jpg",
                                                     color: AppColors.black400,
                                                     colorBlendMode: BlendMode.modulate,
                                                     fit: BoxFit.cover,
@@ -198,7 +207,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                               children: [
                                                 RatingBarIndicator(
                                                   rating: 4,
-                                                  itemBuilder: (context, index) => Icon(
+                                                  itemBuilder: (context, index) => const Icon(
                                                     Icons.star,
                                                     color: AppColors.warning400,
                                                   ),
@@ -260,12 +269,8 @@ class _DetailSheetState extends State<DetailSheet> {
                                             StreamBuilder<DocumentSnapshot>(
                                                 stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
                                                 builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> currentUserSnapshot) {
-                                                  if (currentUserSnapshot.connectionState == ConnectionState.waiting) {
-                                                    return PrimaryButton(
-                                                      text: "...",
-                                                      size: 16,
-                                                      onPressed: () {},
-                                                    );
+                                                  if (!currentUserSnapshot.hasData) {
+                                                    return Container();
                                                   } else if (_auth.currentUser == null) {
                                                     return PrimaryButton(
                                                       text: sheetData['price'] == 0 ? "อ่านชีท" : sheetData['price'].toString(),
@@ -280,6 +285,12 @@ class _DetailSheetState extends State<DetailSheet> {
                                                               context, sheetData['sid'], authorData['uid'], sheetData['price']);
                                                         }
                                                       },
+                                                    );
+                                                  } else if (currentUserSnapshot.connectionState == ConnectionState.waiting) {
+                                                    return PrimaryButton(
+                                                      text: "...",
+                                                      size: 16,
+                                                      onPressed: () {},
                                                     );
                                                   } else {
                                                     Map<String, dynamic> currentUserData = currentUserSnapshot.data!.data() as Map<String, dynamic>;
@@ -319,7 +330,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                   return Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Medium16px(text: "รายละเอียด"),
+                                      const Medium16px(text: "รายละเอียด"),
                                       Padding(
                                         padding: EdgeInsets.symmetric(vertical: screenWidth * 0.01),
                                         child: Regular12px(text: sheetData["detailSheet"]),
@@ -493,7 +504,9 @@ class _DetailSheetState extends State<DetailSheet> {
                   return StreamBuilder<QuerySnapshot>(
                       stream: _firestoreDb.collection("sheetList").snapshots(),
                       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (!snapshot.hasData || snapshot.data == null) {
+                        if (!snapshot.hasData) {
+                          return Container();
+                        } else if (snapshot.connectionState == ConnectionState.waiting) {
                           return const Center(
                             child: CircularProgressIndicator(),
                           );

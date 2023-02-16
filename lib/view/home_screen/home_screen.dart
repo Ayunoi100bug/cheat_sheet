@@ -22,8 +22,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with AutomaticKeepAliveClientMixin {
+class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _firestore = FirebaseFirestore.instance;
 
@@ -35,7 +34,9 @@ class _HomeScreenState extends State<HomeScreen>
     return StreamBuilder<QuerySnapshot>(
       stream: _firestore.collection("sheet").snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData || snapshot.data == null) {
+        if (!snapshot.hasData) {
+          return Container();
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else {
           final int documentCount = snapshot.data!.docs.length;
@@ -47,46 +48,47 @@ class _HomeScreenState extends State<HomeScreen>
                   children: [
                     ElevatedButton(
                         onPressed: () {
-                          AutoRouter.of(context).push(SearchingSheetRoute());
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) => Popup_DeleteSheet(context),
+                          );
                         },
-                        child: Text('ปุ่มไปหน้าค้นหาชั่วคราว')),
+                        child: const Text("ปุ่มลบชีททั้งหมด")),
+                    ElevatedButton(
+                        onPressed: () {
+                          AutoRouter.of(context).push(const SearchingSheetRoute());
+                        },
+                        child: const Text('ปุ่มไปหน้าค้นหาชั่วคราว')),
                     InkWell(
                       onTap: () {
                         showDialog(
                           context: context,
-                          builder: (BuildContext context) =>
-                              Popup_DeleteSheet(context),
+                          builder: (BuildContext context) => Popup_DeleteSheet(context),
                         );
                       },
-                      child: Text('Popup Dialog'),
+                      child: const Text('Popup Dialog'),
                     ),
                     InkWell(
                       onTap: () {
                         showDialog(
                           context: context,
-                          builder: (BuildContext context) =>
-                              Popup_Login(context),
+                          builder: (BuildContext context) => Popup_Login(context),
                         );
                       },
-                      child: Text('Popup Login'),
+                      child: const Text('Popup Login'),
                     ),
                     InkWell(
                       onTap: () {
                         showDialog(
                           context: context,
-                          builder: (BuildContext context) =>
-                              Popup_CreateTag(context),
+                          builder: (BuildContext context) => Popup_CreateTag(context),
                         );
                       },
-                      child: Text('Popup Create Tag'),
+                      child: const Text('Popup Create Tag'),
                     ),
+                    Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
                     Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: screenWidth * 0.04,
-                          vertical: screenWidth * 0.02),
+                      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.02),
                       child: TextField(
                         cursorColor: AppColors.black900,
                         decoration: InputDecoration(
@@ -94,16 +96,11 @@ class _HomeScreenState extends State<HomeScreen>
                             fillColor: AppColors.black200,
                             filled: true,
                             enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(50),
-                                borderSide: BorderSide(
-                                    width: 1, color: AppColors.primary800)),
+                                borderRadius: BorderRadius.circular(50), borderSide: BorderSide(width: 1, color: AppColors.primary800)),
                             hintText: 'Search',
                             focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(50),
-                                borderSide: BorderSide(
-                                    width: 1, color: AppColors.primary800)),
-                            hintStyle:
-                                TextStyle(color: Colors.grey, fontSize: 18),
+                                borderRadius: BorderRadius.circular(50), borderSide: BorderSide(width: 1, color: AppColors.primary800)),
+                            hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
                             prefixIcon: Container(
                               padding: EdgeInsets.all(15),
                               child: Icon(
@@ -114,9 +111,7 @@ class _HomeScreenState extends State<HomeScreen>
                             )),
                       ),
                     ),
-                    Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
+                    Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
                     Container(
                       padding: const EdgeInsets.symmetric(
                         vertical: 4,
@@ -128,12 +123,9 @@ class _HomeScreenState extends State<HomeScreen>
                         ],
                       ),
                     ),
+                    Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
                     Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: screenWidth * 0.038),
+                      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.038),
                       child: GridView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
@@ -147,20 +139,17 @@ class _HomeScreenState extends State<HomeScreen>
                         itemBuilder: (context, index) {
                           var sheet = snapshot.data?.docs[index];
                           return StreamBuilder<DocumentSnapshot>(
-                            stream: _firestore
-                                .collection("users")
-                                .doc(sheet?["authorId"])
-                                .snapshots(),
+                            stream: _firestore.collection("users").doc(sheet?["authorId"]).snapshots(),
                             builder: (context, userSnapshot) {
-                              if (!userSnapshot.hasData ||
-                                  userSnapshot.data!.data() == null) {
+                              if (!userSnapshot.hasData) {
+                                return Container();
+                              } else if (userSnapshot.connectionState == ConnectionState.waiting) {
                                 return const Center(
                                   child: CircularProgressIndicator(),
                                 );
                               } else {
                                 return Sheet(
-                                  authorImage:
-                                      userSnapshot.data?["profileImage"],
+                                  authorImage: userSnapshot.data?["profileImage"],
                                   title: sheet?["sheetName"],
                                   priceSheet: sheet?["price"],
                                   username: userSnapshot.data?["username"],

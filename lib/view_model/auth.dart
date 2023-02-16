@@ -30,10 +30,11 @@ class AuthService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: argEmail.toString().trim(), password: argPassword.toString().trim());
       User? user = result.user;
       user!.updateDisplayName(argUsername);
-      await createFS.createUserCollection(argUsername, argEmail, user.uid);
-      AutoRouter.of(context).navigateNamed("/home/");
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, "เข้าสู่ระบบสำเร็จ");
+      await createFS.createUserCollection(argUsername, argEmail, user.uid).then((value) {
+        AutoRouter.of(context).navigateNamed("/home/");
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, "เข้าสู่ระบบสำเร็จ");
+        });
       });
     } on FirebaseAuthException catch (e) {
       FlushbarPopup.errorFlushbarNoAppbar(context, FlushbarIcon.errorIcon, e.message.toString());
@@ -43,10 +44,11 @@ class AuthService {
   Future<void> loginWithEmail(BuildContext context, String argEmail, String argPassword) async {
     try {
       await _auth.signInWithEmailAndPassword(email: argEmail.toString().trim(), password: argPassword.toString().trim());
-      await UpdateCollection().updateUserData();
-      AutoRouter.of(context).navigateNamed("/home/");
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, "เข้าสู่ระบบสำเร็จ");
+      await UpdateCollection().updateUserData().then((value) {
+        AutoRouter.of(context).navigateNamed("/home/");
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, "เข้าสู่ระบบสำเร็จ");
+        });
       });
     } on FirebaseAuthException catch (e) {
       FlushbarPopup.errorFlushbarNoAppbar(context, FlushbarIcon.errorIcon, e.message.toString());
@@ -64,10 +66,11 @@ class AuthService {
       final credential = GoogleAuthProvider.credential(accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
       final User? user = (await _auth.signInWithCredential(credential)).user;
       await createFS.createGoogleUserCollection(user);
-      await UpdateCollection().updateUserData();
-      AutoRouter.of(context).navigateNamed("/home/");
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, "เข้าสู่ระบบสำเร็จ");
+      await UpdateCollection().updateUserData().then((value) {
+        AutoRouter.of(context).navigateNamed("/home/");
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, "เข้าสู่ระบบสำเร็จ");
+        });
       });
     } on FirebaseAuthException catch (e) {
       FlushbarPopup.errorFlushbarNoAppbar(context, FlushbarIcon.errorIcon, e.message.toString());
@@ -84,10 +87,11 @@ class AuthService {
       OAuthCredential? facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
       final User? user = (await _auth.signInWithCredential(facebookAuthCredential)).user;
       await createFS.createFacebookUserCollection(user);
-      await UpdateCollection().updateUserData();
-      AutoRouter.of(context).navigateNamed("/home/");
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, "เข้าสู่ระบบสำเร็จ");
+      await UpdateCollection().updateUserData().then((value) {
+        AutoRouter.of(context).navigateNamed("/home/");
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, "เข้าสู่ระบบสำเร็จ");
+        });
       });
     } on FirebaseAuthException catch (e) {
       FlushbarPopup.errorFlushbarNoAppbar(context, FlushbarIcon.errorIcon, e.message.toString());

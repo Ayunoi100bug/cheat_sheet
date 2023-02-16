@@ -1,5 +1,6 @@
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/typo.dart';
+import 'package:cheat_sheet/view_model/delete_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -8,6 +9,7 @@ import '../button.dart';
 
 Widget Popup_DeletePage(BuildContext context) {
   double screenHeight = MediaQuery.of(context).size.height;
+
   return AlertDialog(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(12),
@@ -49,6 +51,7 @@ Widget Popup_DeletePage(BuildContext context) {
 
 Widget Popup_DeleteSheet(BuildContext context) {
   double screenHeight = MediaQuery.of(context).size.height;
+
   return AlertDialog(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(12),
@@ -76,10 +79,16 @@ Widget Popup_DeleteSheet(BuildContext context) {
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          OutlineButton(text: 'ยกเลิก', onPressed: () {}),
+          OutlineButton(
+              text: 'ยกเลิก',
+              onPressed: () {
+                Navigator.pop(context);
+              }),
           PrimaryButton(
             text: 'ลบชีท',
-            onPressed: () {},
+            onPressed: () {
+              DeleteCollection().deleteAllSheet(context);
+            },
             color: AppColors.error600,
           ),
         ],

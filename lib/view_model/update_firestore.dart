@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 class UpdateCollection {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
-  final _user = FirebaseAuth.instance.currentUser;
   AuthService myAuth = AuthService();
   Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
   Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetTypeFree: true, authorId: '');

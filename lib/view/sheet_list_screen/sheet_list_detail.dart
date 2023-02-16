@@ -22,15 +22,14 @@ class _SheetListDetailState extends State<SheetListDetail> {
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
 
     return StreamBuilder<DocumentSnapshot>(
-        stream:
-            _firestore.collection("sheetList").doc(widget.sheetId).snapshots(),
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (!snapshot.hasData || snapshot.data == null) {
+        stream: _firestore.collection("sheetList").doc(widget.sheetId).snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return Container();
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else {
-            Map<String, dynamic> data =
-                snapshot.data!.data() as Map<String, dynamic>;
+            Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
             List sheetInList = data['sid'];
             return SingleChildScrollView(
               child: Padding(
@@ -47,35 +46,25 @@ class _SheetListDetailState extends State<SheetListDetail> {
                   itemCount: sheetInList.length,
                   itemBuilder: (context, index) {
                     return StreamBuilder<DocumentSnapshot>(
-                      stream: _firestore
-                          .collection("sheet")
-                          .doc(sheetInList[index])
-                          .snapshots(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<DocumentSnapshot> sheetSnapshot) {
-                        if (!sheetSnapshot.hasData ||
-                            sheetSnapshot.data!.data() == null) {
+                      stream: _firestore.collection("sheet").doc(sheetInList[index]).snapshots(),
+                      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> sheetSnapshot) {
+                        if (!sheetSnapshot.hasData || sheetSnapshot.data!.data() == null) {
                           return const Center(
                             child: CircularProgressIndicator(),
                           );
                         } else {
                           return StreamBuilder<DocumentSnapshot>(
-                              stream: _firestore
-                                  .collection("users")
-                                  .doc(_auth.currentUser?.uid)
-                                  .snapshots(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<DocumentSnapshot>
-                                      userSnapshot) {
-                                if (!userSnapshot.hasData ||
-                                    userSnapshot.data!.data() == null) {
+                              stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
+                              builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userSnapshot) {
+                                if (!userSnapshot.hasData) {
+                                  return Container();
+                                } else if (userSnapshot.connectionState == ConnectionState.waiting) {
                                   return const Center(
                                     child: CircularProgressIndicator(),
                                   );
                                 } else {
                                   return Sheet(
-                                    authorImage:
-                                        userSnapshot.data?['profileImage'],
+                                    authorImage: userSnapshot.data?['profileImage'],
                                     title: sheetSnapshot.data?["sheetName"],
                                     priceSheet: sheetSnapshot.data?["price"],
                                     username: userSnapshot.data?["username"],

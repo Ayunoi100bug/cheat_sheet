@@ -33,15 +33,12 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen>
-    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   late TabController tabController;
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
-  Users users =
-      Users(username: '', password: '', email: '', uid: '', profileImage: '');
-  final firebase_storage.FirebaseStorage storage =
-      firebase_storage.FirebaseStorage.instance;
+  Users users = Users(username: '', password: '', email: '', uid: '', profileImage: '');
+  final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
 
   @override
   void initState() {
@@ -63,64 +60,59 @@ class _ProfileScreenState extends State<ProfileScreen>
     return StreamBuilder(
         stream: _auth.authStateChanges(),
         builder: (context, AsyncSnapshot<User?> snapshot) {
-          if (snapshot.hasData) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: Text("This is page when not login"),
+            );
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
             return StreamBuilder<DocumentSnapshot>(
-                stream: _firestore
-                    .collection("users")
-                    .doc(_auth.currentUser?.uid)
-                    .snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  if (!snapshot.hasData || snapshot.data!.data() == null) {
+                stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
+                builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                  if (!snapshot.hasData) {
+                    return Container();
+                  } else if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
                   } else {
-                    Map<String, dynamic> data =
-                        snapshot.data!.data() as Map<String, dynamic>;
+                    Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
                     return Scaffold(
                       body: SafeArea(
                         child: DefaultTabController(
                           length: 2,
                           child: NestedScrollView(
                             scrollDirection: Axis.vertical,
-                            headerSliverBuilder:
-                                (context, innerBoxIsScrolled) => [
+                            headerSliverBuilder: (context, innerBoxIsScrolled) => [
                               SliverToBoxAdapter(
                                 child: Column(
                                   children: [
                                     SizedBox(
                                       width: double.infinity,
-                                      height: screenWidth < 480
-                                          ? screenHeight * GapDimension.h0_18
-                                          : screenHeight * GapDimension.h0_36,
+                                      height: screenWidth < 480 ? screenHeight * GapDimension.h0_18 : screenHeight * GapDimension.h0_36,
                                       child: LayoutBuilder(
                                         builder: (context, constraints) {
                                           return Row(
                                             children: <Widget>[
                                               SizedBox(
-                                                width: constraints.maxWidth *
-                                                    GapDimension.w0_4,
+                                                width: constraints.maxWidth * GapDimension.w0_4,
                                                 height: double.infinity,
                                                 child: Padding(
-                                                  padding: EdgeInsets.all(
-                                                      constraints.maxHeight *
-                                                          GapDimension.h0_12),
+                                                  padding: EdgeInsets.all(constraints.maxHeight * GapDimension.h0_12),
                                                   child: Container(
                                                     decoration: BoxDecoration(
                                                       image: DecorationImage(
-                                                        image: CachedNetworkImageProvider(
-                                                            data[
-                                                                'profileImage']),
+                                                        image: CachedNetworkImageProvider(data['profileImage']),
                                                         fit: BoxFit.cover,
                                                       ),
                                                       shape: BoxShape.circle,
                                                       color: AppColors.black300,
                                                     ),
                                                     child: CircleAvatar(
-                                                      backgroundImage:
-                                                          NetworkImage(data[
-                                                              'profileImage']),
+                                                      backgroundImage: NetworkImage(data['profileImage']),
                                                       radius: 100,
                                                     ),
                                                   ),
@@ -129,69 +121,40 @@ class _ProfileScreenState extends State<ProfileScreen>
                                               Column(
                                                 children: <Widget>[
                                                   SizedBox(
-                                                    height:
-                                                        constraints.maxHeight *
-                                                            GapDimension.h0_5,
-                                                    width:
-                                                        constraints.maxWidth *
-                                                            GapDimension.w0_6,
+                                                    height: constraints.maxHeight * GapDimension.h0_5,
+                                                    width: constraints.maxWidth * GapDimension.w0_6,
                                                     child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
+                                                      mainAxisAlignment: MainAxisAlignment.center,
                                                       children: <Widget>[
-                                                        Medium24px(
-                                                            text: data[
-                                                                'username']),
+                                                        Medium24px(text: data['username']),
                                                         IconButton(
                                                           icon: const Icon(
                                                             Icons.edit,
-                                                            color: AppColors
-                                                                .tertiary600,
+                                                            color: AppColors.tertiary600,
                                                           ),
                                                           onPressed: () {
-                                                            AutoRouter.of(
-                                                                    context)
-                                                                .push(EditProfileRoute(
-                                                                    userId: data[
-                                                                        'uid']));
+                                                            AutoRouter.of(context).push(EditProfileRoute(userId: data['uid']));
                                                           },
                                                         ),
                                                       ],
                                                     ),
                                                   ),
                                                   SizedBox(
-                                                    height:
-                                                        constraints.maxHeight *
-                                                            GapDimension.h0_5,
-                                                    width:
-                                                        constraints.maxWidth *
-                                                            GapDimension.w0_6,
+                                                    height: constraints.maxHeight * GapDimension.h0_5,
+                                                    width: constraints.maxWidth * GapDimension.w0_6,
                                                     child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                       children: [
                                                         Column(
                                                           children: [
-                                                            Medium20px(
-                                                                text: data[
-                                                                        'follower']
-                                                                    .toString()),
-                                                            const Regular14px(
-                                                                text:
-                                                                    "ผู้ติดตาม"),
+                                                            Medium20px(text: data['follower'].toString()),
+                                                            const Regular14px(text: "ผู้ติดตาม"),
                                                           ],
                                                         ),
                                                         Column(
                                                           children: [
-                                                            Medium20px(
-                                                                text: data[
-                                                                        'following']
-                                                                    .toString()),
-                                                            const Regular14px(
-                                                                text:
-                                                                    "กำลังติตดาม"),
+                                                            Medium20px(text: data['following'].toString()),
+                                                            const Regular14px(text: "กำลังติตดาม"),
                                                           ],
                                                         )
                                                       ],
@@ -241,10 +204,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                     );
                   }
                 });
-          } else {
-            return const Center(
-              child: Text("This is page when not login"),
-            );
           }
         });
   }
