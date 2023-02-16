@@ -57,6 +57,10 @@ class _DetailSheetState extends State<DetailSheet> {
           } else if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
+          List? reviewInSheet = data['review'];
+            if (reviewInSheet == null) {
+              reviewInSheet = [];
+            }
           Map<String, dynamic> sheetData = snapshot.data!.data() as Map<String, dynamic>;
           return StreamBuilder<DocumentSnapshot>(
               stream: _firestore.collection("users").doc(sheetData['authorId']).snapshots(),
@@ -368,10 +372,10 @@ class _DetailSheetState extends State<DetailSheet> {
                                 ListView.builder(
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
-                              itemCount: reviewInSheet!.length > 2 ? reviewInSheet.length : 2,
+                              itemCount: reviewInSheet.length > 2 ? 2 : reviewInSheet.length,
                               itemBuilder: (BuildContext context, index) {
                                 return StreamBuilder<DocumentSnapshot>(
-                                    stream: _firestoreDb.collection("review").doc(reviewInSheet[index]).snapshots(),
+                                    stream: _firestoreDb.collection("review").doc(reviewInSheet![index]).snapshots(),
                                     builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> reviewSnapshot) {
                                       if (!reviewSnapshot.hasData || reviewSnapshot.data == null) {
                                         return const Center(child: CircularProgressIndicator());

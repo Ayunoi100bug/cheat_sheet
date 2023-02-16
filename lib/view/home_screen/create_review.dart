@@ -26,7 +26,7 @@ class CreateReview extends StatefulWidget {
 
 class _CreateReviewState extends State<CreateReview> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  Reviews _review = Reviews(text: '', rid: '', authorId: '', sheetId: '', rating: 0);
+  Reviews _review = Reviews(text: '', rid: '', authorId: '', sheetId: '', rating: 0, like: 0);
   CreateCollection myCollection = CreateCollection();
   final _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestoreDb = FirebaseFirestore.instance;
@@ -93,6 +93,7 @@ class _CreateReviewState extends State<CreateReview> {
                         _review.authorId = _auth.currentUser!.uid,
                         _review.sheetId = widget.sheetId,
                         _review.rating,
+                        _review.like,
                       )
                           .then(
                         (value) {

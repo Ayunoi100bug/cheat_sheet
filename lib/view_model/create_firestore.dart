@@ -19,7 +19,7 @@ class CreateCollection {
   Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
   Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetTypeFree: true, authorId: '');
   SheetLists mySheetLists = SheetLists(sheetListName: '', sid: [], authorId: '', sheetListId: '');
-  Reviews myReview = Reviews(text: '', rid: '', authorId: '', sheetId: '', rating: 0);
+  Reviews myReview = Reviews(text: '', rid: '', authorId: '', sheetId: '', rating: 0, like: 0);
 
   Future<void> createUserCollection(String argUsername, String argEmail, String argUid) async {
     const String defaultPath = "images/default_profile.png";
@@ -109,14 +109,15 @@ class CreateCollection {
     });
   }
 
-  Future<void> createReviewCollection(String argText, String argRid, String argAuthorId, String argSheetId, double argRating) async {
-    await _firestore.collection("review").doc(argRid).set({
+  Future<void> createReviewCollection(String argText, String argRid, String argAuthorId, String argSheetId, double argRating, int argLike) async {
+    await _firestoreDb.collection("review").doc(argRid).set({
       'timestamp': myReview.timestamp,
       'text': argText.toString().trim(),
       'authorId': argAuthorId,
       'sheetId': argSheetId,
       'rating': argRating,
       'rid': argRid,
+      'like': argLike,
     });
   }
 }
