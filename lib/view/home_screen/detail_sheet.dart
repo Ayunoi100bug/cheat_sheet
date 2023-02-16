@@ -377,16 +377,18 @@ class _DetailSheetState extends State<DetailSheet> {
                                 return StreamBuilder<DocumentSnapshot>(
                                     stream: _firestoreDb.collection("review").doc(reviewInSheet![index]).snapshots(),
                                     builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> reviewSnapshot) {
-                                      if (!reviewSnapshot.hasData || reviewSnapshot.data == null) {
+                                      if (!reviewSnapshot.hasData) {
+                                        return Container();
+                                      } else if (reviewSnapshot.connectionState == ConnectionState.waiting) {
                                         return const Center(child: CircularProgressIndicator());
                                       } else {
                                         return StreamBuilder<DocumentSnapshot>(
                                           stream: _firestoreDb.collection("users").doc(reviewSnapshot.data!['authorId']).snapshots(),
                                           builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userReviewSnapshot) {
-                                            if (!userReviewSnapshot.hasData || userReviewSnapshot.data!.data() == null) {
-                                              return const Center(
-                                                child: CircularProgressIndicator(),
-                                              );
+                                            if (!userReviewSnapshot.hasData) {
+                                              return Container();
+                                            } else if (userReviewSnapshot.connectionState == ConnectionState.waiting) {
+                                              return const Center(child: CircularProgressIndicator());
                                             } else {
                                               return Review(
                                                   userImage: userReviewSnapshot.data!['profileImage'],
