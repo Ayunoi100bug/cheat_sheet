@@ -52,330 +52,346 @@ class _DetailSheetState extends State<DetailSheet> {
     return StreamBuilder<DocumentSnapshot>(
         stream: _firestore.collection("sheet").doc(widget.sheetId).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (!snapshot.hasData || snapshot.data!.data() == null) {
+          if (!snapshot.hasData) {
+            return Container();
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
-          } else {
-            Map<String, dynamic> sheetData = snapshot.data!.data() as Map<String, dynamic>;
-            return StreamBuilder<DocumentSnapshot>(
-                stream: _firestore.collection("users").doc(sheetData['authorId']).snapshots(),
-                builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> authorSnapshot) {
-                  if (!authorSnapshot.hasData || authorSnapshot.data!.data() == null) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else {
-                    Map<String, dynamic> authorData = authorSnapshot.data!.data() as Map<String, dynamic>;
-                    return Scaffold(
-                      body: SafeArea(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Container(
-                                height: isPortrait ? screenHeight * 0.4 : screenHeight * 0.8,
-                                padding: EdgeInsets.only(top: screenHeight * 0.016, left: screenHeight * 0.016, right: screenHeight * 0.016),
-                                child: LayoutBuilder(builder: (context, constraints) {
-                                  return Row(
-                                    children: [
-                                      SizedBox(
-                                        width: isPortrait ? constraints.maxWidth * 0.5 : constraints.maxWidth * 0.4,
-                                        height: constraints.maxHeight * 0.9,
-                                        child: LayoutBuilder(builder: (context, constraints) {
-                                          return InkWell(
-                                              onTap: (() {
-                                                showDialog(
-                                                    context: context,
-                                                    builder: (BuildContext context) {
-                                                      return AlertDialog(
-                                                          content: Stack(
-                                                        children: [
-                                                          Container(
-                                                            alignment: Alignment.center,
-                                                            height: screenHeight * 0.7,
-                                                            child: Column(
-                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                              children: [
-                                                                SingleChildScrollView(
-                                                                  scrollDirection: Axis.horizontal,
-                                                                  child: Container(
-                                                                    height: screenHeight * 0.6,
-                                                                    child: Row(
-                                                                      children: [
-                                                                        Container(
-                                                                          margin: EdgeInsets.only(right: screenHeight * 0.025),
-                                                                          decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
-                                                                          child: Image.network(
+          }
+          Map<String, dynamic> sheetData = snapshot.data!.data() as Map<String, dynamic>;
+          return StreamBuilder<DocumentSnapshot>(
+              stream: _firestore.collection("users").doc(sheetData['authorId']).snapshots(),
+              builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> authorSnapshot) {
+                if (!authorSnapshot.hasData) {
+                  return Container();
+                } else if (authorSnapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                Map<String, dynamic> authorData = authorSnapshot.data!.data() as Map<String, dynamic>;
+                return Scaffold(
+                  body: SafeArea(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Container(
+                            height: isPortrait ? screenHeight * 0.4 : screenHeight * 0.8,
+                            padding: EdgeInsets.only(top: screenHeight * 0.016, left: screenHeight * 0.016, right: screenHeight * 0.016),
+                            child: LayoutBuilder(builder: (context, constraints) {
+                              return Row(
+                                children: [
+                                  SizedBox(
+                                    width: isPortrait ? constraints.maxWidth * 0.5 : constraints.maxWidth * 0.4,
+                                    height: constraints.maxHeight * 0.9,
+                                    child: LayoutBuilder(builder: (context, constraints) {
+                                      return InkWell(
+                                          onTap: (() {
+                                            showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                      content: Stack(
+                                                    children: [
+                                                      Container(
+                                                        alignment: Alignment.center,
+                                                        height: screenHeight * 0.7,
+                                                        child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            SingleChildScrollView(
+                                                              scrollDirection: Axis.horizontal,
+                                                              child: Container(
+                                                                height: screenHeight * 0.6,
+                                                                child: Row(
+                                                                  children: [
+                                                                    Container(
+                                                                      margin: EdgeInsets.only(right: screenHeight * 0.025),
+                                                                      decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
+                                                                      child: CachedNetworkImage(
+                                                                        imageUrl:
                                                                             "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
-                                                                            fit: BoxFit.fill,
-                                                                          ),
-                                                                        ),
-                                                                        Container(
-                                                                          margin: EdgeInsets.only(right: screenHeight * 0.025),
-                                                                          decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
-                                                                          child: Image.network(
-                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
-                                                                            fit: BoxFit.fill,
-                                                                          ),
-                                                                        ),
-                                                                        Container(
-                                                                          margin: EdgeInsets.only(right: screenHeight * 0.025),
-                                                                          decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
-                                                                          child: Image.network(
-                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
-                                                                            fit: BoxFit.fill,
-                                                                          ),
-                                                                        ),
-                                                                        Container(
-                                                                          margin: EdgeInsets.only(right: screenHeight * 0.025),
-                                                                          decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
-                                                                          child: Image.network(
-                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
-                                                                            fit: BoxFit.fill,
-                                                                          ),
-                                                                        ),
-                                                                      ],
+                                                                        fit: BoxFit.fill,
+                                                                      ),
                                                                     ),
-                                                                  ),
+                                                                    Container(
+                                                                      margin: EdgeInsets.only(right: screenHeight * 0.025),
+                                                                      decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
+                                                                      child: CachedNetworkImage(
+                                                                        imageUrl:
+                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
+                                                                        fit: BoxFit.fill,
+                                                                      ),
+                                                                    ),
+                                                                    Container(
+                                                                      margin: EdgeInsets.only(right: screenHeight * 0.025),
+                                                                      decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
+                                                                      child: CachedNetworkImage(
+                                                                        imageUrl:
+                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
+                                                                        fit: BoxFit.fill,
+                                                                      ),
+                                                                    ),
+                                                                    Container(
+                                                                      margin: EdgeInsets.only(right: screenHeight * 0.025),
+                                                                      decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
+                                                                      child: CachedNetworkImage(
+                                                                        imageUrl:
+                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
+                                                                        fit: BoxFit.fill,
+                                                                      ),
+                                                                    ),
+                                                                  ],
                                                                 ),
-                                                                Expanded(child: Container()),
-                                                                BlinkText('สามารถเลื่อนไปทางขวาได้',
-                                                                    style: TextStyle(fontSize: 20, color: AppColors.black800),
-                                                                    beginColor: AppColors.black800,
-                                                                    endColor: AppColors.white,
-                                                                    times: 20,
-                                                                    duration: Duration(seconds: 1)),
-                                                              ],
+                                                              ),
                                                             ),
-                                                          ),
-                                                        ],
-                                                      ));
-                                                    });
-                                              }),
-                                              child: Stack(
-                                                alignment: Alignment.center,
-                                                children: [
-                                                  Image.network(
+                                                            Expanded(child: Container()),
+                                                            const BlinkText('สามารถเลื่อนไปทางขวาได้',
+                                                                style: TextStyle(fontSize: 20, color: AppColors.black800),
+                                                                beginColor: AppColors.black800,
+                                                                endColor: AppColors.white,
+                                                                times: 20,
+                                                                duration: Duration(seconds: 1)),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ));
+                                                });
+                                          }),
+                                          child: Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              CachedNetworkImage(
+                                                imageUrl:
                                                     "https://static.trueplookpanya.com/tppy/member/m_665000_667500/665461/cms/images/%E0%B9%84%E0%B8%AD%E0%B9%80%E0%B8%94%E0%B8%B5%E0%B8%A2%E0%B8%88%E0%B8%94%E0%B8%8A%E0%B8%B5%E0%B8%97%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B_04.jpg",
-                                                    color: AppColors.black400,
-                                                    colorBlendMode: BlendMode.modulate,
-                                                    fit: BoxFit.cover,
-                                                    height: constraints.maxHeight,
-                                                  ),
-                                                  const Medium16px(
-                                                    text: 'ดูตัวอย่างชีทที่นี่',
-                                                    color: AppColors.white,
-                                                  ),
-                                                ],
-                                              ));
-                                        }),
-                                      ),
-                                      Container(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: constraints.maxWidth * 0.03,
-                                          vertical: constraints.maxHeight * 0.05,
-                                        ),
-                                        width: isPortrait ? constraints.maxWidth * 0.5 : constraints.maxWidth * 0.6,
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Medium20px(text: sheetData["sheetName"]),
-                                            SingleChildScrollView(
-                                              padding: EdgeInsets.zero,
-                                              scrollDirection: Axis.horizontal,
-                                              child: Row(
-                                                children: const [
-                                                  Tag(
-                                                    subject: "คณิตศาสาตร์",
-                                                  ),
-                                                  Tag(
-                                                    subject: "คณิตพื้นฐาน",
-                                                  ),
-                                                  Tag(
-                                                    subject: "สถิติ",
-                                                  ),
-                                                ],
+                                                color: AppColors.black400,
+                                                colorBlendMode: BlendMode.modulate,
+                                                fit: BoxFit.cover,
+                                                height: constraints.maxHeight,
                                               ),
+                                              const Medium16px(
+                                                text: 'ดูตัวอย่างชีทที่นี่',
+                                                color: AppColors.white,
+                                              ),
+                                            ],
+                                          ));
+                                    }),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: constraints.maxWidth * 0.03,
+                                      vertical: constraints.maxHeight * 0.05,
+                                    ),
+                                    width: isPortrait ? constraints.maxWidth * 0.5 : constraints.maxWidth * 0.6,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Medium20px(text: sheetData["sheetName"]),
+                                        SingleChildScrollView(
+                                          padding: EdgeInsets.zero,
+                                          scrollDirection: Axis.horizontal,
+                                          child: Row(
+                                            children: const [
+                                              Tag(
+                                                subject: "คณิตศาสาตร์",
+                                              ),
+                                              Tag(
+                                                subject: "คณิตพื้นฐาน",
+                                              ),
+                                              Tag(
+                                                subject: "สถิติ",
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Row(
+                                          children: [
+                                            RatingBarIndicator(
+                                              rating: 4,
+                                              itemBuilder: (context, index) => const Icon(
+                                                Icons.star,
+                                                color: AppColors.warning400,
+                                              ),
+                                              itemCount: 5,
+                                              itemSize: screenWidth * 0.04,
                                             ),
-                                            Row(
-                                              children: [
-                                                RatingBarIndicator(
-                                                  rating: 4,
-                                                  itemBuilder: (context, index) => Icon(
-                                                    Icons.star,
-                                                    color: AppColors.warning400,
-                                                  ),
-                                                  itemCount: 5,
-                                                  itemSize: screenWidth * 0.04,
-                                                ),
-                                                SizedBox(
-                                                  width: screenWidth * 0.01,
-                                                ),
-                                                const Regular12px(text: "5"),
-                                              ],
+                                            SizedBox(
+                                              width: screenWidth * 0.01,
                                             ),
-                                            Row(
-                                              children: [
-                                                CircleAvatar(
-                                                  backgroundImage: CachedNetworkImageProvider(authorData['profileImage']),
-                                                  radius: 12,
-                                                ),
-                                                SizedBox(
-                                                  width: screenWidth * 0.02,
-                                                ),
-                                                Regular14px(text: authorData['username']),
-                                              ],
-                                            ),
-                                            Wrap(
-                                              spacing: 10,
-                                              children: [
-                                                Icon(
-                                                  Icons.favorite_outline,
-                                                  color: AppColors.black600,
-                                                  size: isPortrait ? 32 : 36,
-                                                ),
-                                                InkWell(
-                                                  child: Icon(
-                                                    Icons.playlist_add_rounded,
-                                                    color: AppColors.black600,
-                                                    size: isPortrait ? 32 : 36,
-                                                  ),
-                                                  onTap: () {
-                                                    _BottomSheetList(context, widget.sheetId);
-                                                  },
-                                                ),
-                                                Icon(
-                                                  UniconsLine.arrow_circle_down,
-                                                  color: AppColors.black600,
-                                                  size: isPortrait ? 32 : 36,
-                                                ),
-                                                InkWell(
-                                                  child: Icon(
-                                                    UniconsLine.share,
-                                                    size: isPortrait ? 32 : 36,
-                                                  ),
-                                                  onTap: () {
-                                                    _shareSheet(context);
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                            StreamBuilder<DocumentSnapshot>(
-                                                stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
-                                                builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> currentUserSnapshot) {
-                                                  if (currentUserSnapshot.connectionState == ConnectionState.waiting) {
-                                                    return PrimaryButton(
-                                                      text: "...",
-                                                      size: 16,
-                                                      onPressed: () {},
-                                                    );
-                                                  } else if (_auth.currentUser == null) {
-                                                    return PrimaryButton(
-                                                      text: sheetData['price'] == 0 ? "อ่านชีท" : sheetData['price'].toString(),
-                                                      size: 16,
-                                                      onPressed: () async {
-                                                        if (sheetData['price'] == 0) {
-                                                          const url = 'https://www.africau.edu/images/default/sample.pdf';
-                                                          final file = await PDFApi.loadNetwork(url);
-                                                          AutoRouter.of(context).push(ReadSheetRoute(sheetId: widget.sheetId, file: file));
-                                                        } else {
-                                                          await updateFS.userBuySheet(
-                                                              context, sheetData['sid'], authorData['uid'], sheetData['price']);
-                                                        }
-                                                      },
-                                                    );
-                                                  } else {
-                                                    Map<String, dynamic> currentUserData = currentUserSnapshot.data!.data() as Map<String, dynamic>;
-                                                    return PrimaryButton(
-                                                      text: sheetData['price'] == 0 || currentUserData['buyedSheet'].contains(sheetData['sid'])
-                                                          ? "อ่านชีท"
-                                                          : sheetData['price'].toString(),
-                                                      size: 16,
-                                                      onPressed: () async {
-                                                        if (sheetData['price'] == 0 || currentUserData['buyedSheet'].contains(sheetData['sid'])) {
-                                                          const url = 'https://www.africau.edu/images/default/sample.pdf';
-                                                          final file = await PDFApi.loadNetwork(url);
-                                                          AutoRouter.of(context).push(ReadSheetRoute(sheetId: widget.sheetId, file: file));
-                                                        } else {
-                                                          await updateFS.userBuySheet(
-                                                              context, sheetData['sid'], authorData['uid'], sheetData['price']);
-                                                        }
-                                                      },
-                                                    );
-                                                  }
-                                                }),
+                                            const Regular12px(text: "5"),
                                           ],
                                         ),
-                                      ),
-                                    ],
-                                  );
-                                }),
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.04),
-                                width: screenWidth,
-                                child: LayoutBuilder(builder: (context, constraints) {
-                                  return Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Medium16px(text: "รายละเอียด"),
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(vertical: screenWidth * 0.01),
-                                        child: Regular12px(text: sheetData["detailSheet"]),
-                                      )
-                                    ],
-                                  );
-                                }),
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: screenWidth * 0.04,
-                                ),
-                                child: Column(
+                                        Row(
+                                          children: [
+                                            CircleAvatar(
+                                              backgroundImage: CachedNetworkImageProvider(authorData['profileImage']),
+                                              radius: 12,
+                                            ),
+                                            SizedBox(
+                                              width: screenWidth * 0.02,
+                                            ),
+                                            Regular14px(text: authorData['username']),
+                                          ],
+                                        ),
+                                        Wrap(
+                                          spacing: 10,
+                                          children: [
+                                            Icon(
+                                              Icons.favorite_outline,
+                                              color: AppColors.black600,
+                                              size: isPortrait ? 32 : 36,
+                                            ),
+                                            InkWell(
+                                              child: Icon(
+                                                Icons.playlist_add_rounded,
+                                                color: AppColors.black600,
+                                                size: isPortrait ? 32 : 36,
+                                              ),
+                                              onTap: () {
+                                                _BottomSheetList(context, widget.sheetId);
+                                              },
+                                            ),
+                                            Icon(
+                                              UniconsLine.arrow_circle_down,
+                                              color: AppColors.black600,
+                                              size: isPortrait ? 32 : 36,
+                                            ),
+                                            InkWell(
+                                              child: Icon(
+                                                UniconsLine.share,
+                                                size: isPortrait ? 32 : 36,
+                                              ),
+                                              onTap: () {
+                                                _shareSheet(context);
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                        StreamBuilder<DocumentSnapshot>(
+                                            stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
+                                            builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> currentUserSnapshot) {
+                                              if (!currentUserSnapshot.hasData) {
+                                                return Container();
+                                              } else if (_auth.currentUser == null) {
+                                                return PrimaryButton(
+                                                  text: sheetData['price'] == 0 ? "อ่านชีท" : sheetData['price'].toString(),
+                                                  size: 16,
+                                                  onPressed: () async {
+                                                    if (sheetData['price'] == 0) {
+                                                      const url = 'https://www.africau.edu/images/default/sample.pdf';
+                                                      final file = await PDFApi.loadNetwork(url);
+                                                      if (context.mounted) {
+                                                        AutoRouter.of(context).push(ReadSheetRoute(sheetId: widget.sheetId, file: file));
+                                                      }
+                                                    }
+                                                    if (context.mounted) {
+                                                      await updateFS.userBuySheet(context, sheetData['sid'], authorData['uid'], sheetData['price']);
+                                                    }
+                                                  },
+                                                );
+                                              } else if (currentUserSnapshot.connectionState == ConnectionState.waiting) {
+                                                return PrimaryButton(
+                                                  text: "...",
+                                                  size: 16,
+                                                  onPressed: () {},
+                                                );
+                                              }
+                                              Map<String, dynamic> currentUserData = currentUserSnapshot.data!.data() as Map<String, dynamic>;
+                                              return PrimaryButton(
+                                                text: sheetData['price'] == 0 ||
+                                                        currentUserData['buyedSheet'].contains(sheetData['sid']) ||
+                                                        currentUserData['uid'] == sheetData['authorId']
+                                                    ? "อ่านชีท"
+                                                    : sheetData['price'].toString(),
+                                                size: 16,
+                                                onPressed: () async {
+                                                  if (sheetData['price'] == 0 ||
+                                                      currentUserData['buyedSheet'].contains(sheetData['sid']) ||
+                                                      currentUserData['uid'] == sheetData['authorId']) {
+                                                    const url = 'https://www.africau.edu/images/default/sample.pdf';
+                                                    final file = await PDFApi.loadNetwork(url);
+                                                    if (context.mounted) {
+                                                      AutoRouter.of(context).push(ReadSheetRoute(sheetId: widget.sheetId, file: file));
+                                                    }
+                                                  }
+                                                  if (context.mounted) {
+                                                    await updateFS.userBuySheet(context, sheetData['sid'], authorData['uid'], sheetData['price']);
+                                                  }
+                                                },
+                                              );
+                                            }),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.04),
+                            width: screenWidth,
+                            child: LayoutBuilder(builder: (context, constraints) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Medium16px(text: "รายละเอียด"),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(vertical: screenWidth * 0.01),
+                                    child: Regular12px(text: sheetData["detailSheet"]),
+                                  )
+                                ],
+                              );
+                            }),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.04,
+                            ),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        const Medium16px(text: "รีวิว"),
-                                        InkWell(
-                                          child: const Regular14px(
-                                            text: "เขียนรีวิว",
-                                            underline: true,
-                                            color: AppColors.primary600,
-                                          ),
-                                          onTap: () {
-                                            AutoRouter.of(context).push(CreateReviewRoute(sheetId: widget.sheetId));
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Review(userRating: 4),
-                                        Review(userRating: 2.5),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(vertical: screenWidth * 0.04),
-                                      child: InkWell(
-                                        child: const Regular14px(
-                                          text: "ดูทั้งหมด",
-                                          underline: true,
-                                          color: AppColors.primary600,
-                                        ),
-                                        onTap: () {
-                                          AutoRouter.of(context).push(ReviewSheetRoute(sheetId: widget.sheetId));
-                                        },
+                                    const Medium16px(text: "รีวิว"),
+                                    InkWell(
+                                      child: const Regular14px(
+                                        text: "เขียนรีวิว",
+                                        underline: true,
+                                        color: AppColors.primary600,
                                       ),
+                                      onTap: () {
+                                        AutoRouter.of(context).push(CreateReviewRoute(sheetId: widget.sheetId));
+                                      },
                                     ),
                                   ],
                                 ),
-                              ),
-                            ],
+                                Column(
+                                  children: [
+                                    Review(userRating: 4),
+                                    Review(userRating: 2.5),
+                                  ],
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: screenWidth * 0.04),
+                                  child: InkWell(
+                                    child: const Regular14px(
+                                      text: "ดูทั้งหมด",
+                                      underline: true,
+                                      color: AppColors.primary600,
+                                    ),
+                                    onTap: () {
+                                      AutoRouter.of(context).push(ReviewSheetRoute(sheetId: widget.sheetId));
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
+                        ],
                       ),
-                    );
-                  }
-                });
-          }
+                    ),
+                  ),
+                );
+              });
         });
   }
 
@@ -489,7 +505,9 @@ class _DetailSheetState extends State<DetailSheet> {
                   return StreamBuilder<QuerySnapshot>(
                       stream: _firestoreDb.collection("sheetList").snapshots(),
                       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (!snapshot.hasData || snapshot.data == null) {
+                        if (!snapshot.hasData) {
+                          return Container();
+                        } else if (snapshot.connectionState == ConnectionState.waiting) {
                           return const Center(
                             child: CircularProgressIndicator(),
                           );

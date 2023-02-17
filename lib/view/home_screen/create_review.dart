@@ -1,6 +1,3 @@
-import 'dart:ffi';
-
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/model/review.dart';
 import 'package:cheat_sheet/res/button.dart';
@@ -14,7 +11,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:uuid/uuid.dart';
 
@@ -55,7 +51,7 @@ class _CreateReviewState extends State<CreateReview> {
                 child: RatingBar.builder(
                   minRating: 0,
                   allowHalfRating: true,
-                  itemBuilder: (context, _) => Icon(
+                  itemBuilder: (context, _) => const Icon(
                     Icons.star,
                     color: AppColors.warning400,
                   ),
@@ -100,8 +96,8 @@ class _CreateReviewState extends State<CreateReview> {
                         (value) {
                           _formKey.currentState!.reset();
                           AutoRouter.of(context).popUntilRoot();
-                          final String message = 'รีวิวสำเร็จแล้ว!';
-                          FlushbarPopup.successFlushbar(context, Icon(Icons.reviews), message);
+                          const String message = 'รีวิวสำเร็จแล้ว!';
+                          FlushbarPopup.successFlushbar(context, const Icon(Icons.reviews), message);
                         },
                       );
 
