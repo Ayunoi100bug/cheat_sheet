@@ -13,6 +13,7 @@ import 'package:cheat_sheet/res/gap_dimension.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/view_model/create_firestore.dart';
+import 'package:cheat_sheet/view_model/read_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -47,7 +48,6 @@ class _DetailSheetState extends State<DetailSheet> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    var isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     return StreamBuilder<DocumentSnapshot>(
         stream: _firestore.collection("sheet").doc(widget.sheetId).snapshots(),
@@ -58,9 +58,7 @@ class _DetailSheetState extends State<DetailSheet> {
             return const Center(child: CircularProgressIndicator());
           }
           List? reviewInSheet = data['review'];
-            if (reviewInSheet == null) {
-              reviewInSheet = [];
-            }
+          reviewInSheet ??= []; //ถ้า reviewInSheet เท่ากับ null จะให้เป็น []
           Map<String, dynamic> sheetData = snapshot.data!.data() as Map<String, dynamic>;
           return StreamBuilder<DocumentSnapshot>(
               stream: _firestore.collection("users").doc(sheetData['authorId']).snapshots(),
@@ -375,7 +373,7 @@ class _DetailSheetState extends State<DetailSheet> {
                               itemCount: reviewInSheet.length > 2 ? 2 : reviewInSheet.length,
                               itemBuilder: (BuildContext context, index) {
                                 return StreamBuilder<DocumentSnapshot>(
-                                    stream: _firestoreDb.collection("review").doc(reviewInSheet![index]).snapshots(),
+                                    stream: _firestore.collection("review").doc(reviewInSheet![index]).snapshots(),
                                     builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> reviewSnapshot) {
                                       if (!reviewSnapshot.hasData) {
                                         return Container();
@@ -383,7 +381,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                         return const Center(child: CircularProgressIndicator());
                                       } else {
                                         return StreamBuilder<DocumentSnapshot>(
-                                          stream: _firestoreDb.collection("users").doc(reviewSnapshot.data!['authorId']).snapshots(),
+                                          stream: _firestore.collection("users").doc(reviewSnapshot.data!['reviewerId']).snapshots(),
                                           builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userReviewSnapshot) {
                                             if (!userReviewSnapshot.hasData) {
                                               return Container();

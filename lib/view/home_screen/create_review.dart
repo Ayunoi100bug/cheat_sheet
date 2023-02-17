@@ -26,7 +26,7 @@ class CreateReview extends StatefulWidget {
 
 class _CreateReviewState extends State<CreateReview> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  Reviews _review = Reviews(text: '', rid: '', authorId: '', sheetId: '', rating: 0, like: 0);
+  Reviews _review = Reviews(text: '', rid: '', reviewerId: '', sheetId: '', rating: 0, like: 0);
   CreateCollection myCollection = CreateCollection();
   final _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestoreDb = FirebaseFirestore.instance;
@@ -36,7 +36,6 @@ class _CreateReviewState extends State<CreateReview> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    var isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -90,10 +89,10 @@ class _CreateReviewState extends State<CreateReview> {
                           .createReviewCollection(
                         _review.text,
                         _review.rid = uuid.v4(),
-                        _review.authorId = _auth.currentUser!.uid,
+                        _review.reviewerId = _auth.currentUser!.uid,
                         _review.sheetId = widget.sheetId,
                         _review.rating,
-                        _review.like,
+                        _review.like!,
                       )
                           .then(
                         (value) {

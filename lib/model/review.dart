@@ -6,25 +6,25 @@ class Reviews {
   FieldValue timestamp = FieldValue.serverTimestamp();
   String rid;
   String text;
-  String authorId;
+  String reviewerId;
   String sheetId;
   double rating;
-  int like = 0;
+  int? like = 0;
 
   Reviews({
     required this.rid,
     required this.text,
-    required this.authorId,
+    required this.reviewerId,
     required this.sheetId,
     required this.rating,
-    required this.like,
+    this.like,
   });
 
   Reviews.fromJson(Map<String, dynamic> json)
       : timestamp = json['timestamp'],
         rid = json['rid'],
         text = json['text'],
-        authorId = json['authorId'],
+        reviewerId = json['reviewerId'],
         sheetId = json['sheetId'],
         rating = json['rating'],
         like = json['like'];
@@ -33,7 +33,7 @@ class Reviews {
         'timestamp': timestamp,
         'rid': rid,
         'text': text,
-        'authorId': authorId,
+        'reviewerId': reviewerId,
         'sheetId': sheetId,
         'rating': rating,
         'like': like,
