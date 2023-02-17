@@ -47,13 +47,6 @@ class _MainScreenState extends State<MainScreen> {
               return StreamBuilder<DocumentSnapshot>(
                   stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
                   builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                    if (!snapshot.hasData) {
-                      return Container();
-                    } else if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
                     return Scaffold(
                       key: _scaffoldKey,
                       endDrawer: const SidebarMenu(),
@@ -100,6 +93,13 @@ class _MainScreenState extends State<MainScreen> {
             return StreamBuilder<DocumentSnapshot>(
                 stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
                 builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                  if (!snapshot.hasData) {
+                    return Container();
+                  } else if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
                   Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
                   return Scaffold(
                     key: _scaffoldKey,
