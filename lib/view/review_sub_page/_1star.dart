@@ -2,7 +2,8 @@ import 'package:cheat_sheet/res/components/review.dart';
 import 'package:flutter/material.dart';
 
 class OneStar extends StatelessWidget {
-  const OneStar({super.key});
+  final String sheetId;
+  const OneStar({super.key, required this.sheetId});
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +11,7 @@ class OneStar extends StatelessWidget {
       itemCount: 6,
       shrinkWrap: true,
       itemBuilder: (context, index) {
-        return Review(userRating: 5);
+        return Container();
       },
     );
   }

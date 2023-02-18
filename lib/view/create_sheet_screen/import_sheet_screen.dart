@@ -18,14 +18,17 @@ class CreateSheetScreen extends StatefulWidget {
   State<CreateSheetScreen> createState() => _CreateSheetScreenState();
 }
 
+
 class _CreateSheetScreenState extends State<CreateSheetScreen> with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   late TabController tabController;
   final _auth = FirebaseAuth.instance;
+
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
 
     return StreamBuilder(
       stream: _auth.authStateChanges(),
@@ -70,6 +73,7 @@ class _CreateSheetScreenState extends State<CreateSheetScreen> with AutomaticKee
               ],
             );
           }),
+
         );
       },
     );

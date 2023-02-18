@@ -24,7 +24,7 @@ class _MainScreenState extends State<MainScreen> {
     return WillPopScope(
       onWillPop: () async {
         final difference = DateTime.now().difference(timeBackPressed);
-        final isExitWarning = difference >= Duration(seconds: 2);
+        final isExitWarning = difference >= const Duration(seconds: 2);
         timeBackPressed = DateTime.now();
 
         if (isExitWarning) {
@@ -38,10 +38,10 @@ class _MainScreenState extends State<MainScreen> {
       },
       child: Scaffold(
         key: _scaffoldKey,
-        endDrawer: SidebarMenu(),
+        endDrawer: const SidebarMenu(),
         body: AutoTabsScaffold(
           appBarBuilder: (context, tabsRouter) => AppBar(
-            leading: AutoLeadingButton(),
+            leading: const AutoLeadingButton(),
             backgroundColor: CustomAppBar.appBarColor,
             title: CustomAppBar.textLogo,
             actions: [
@@ -54,7 +54,7 @@ class _MainScreenState extends State<MainScreen> {
                 CustomAppBar.notifications,
               ],
               IconButton(
-                icon: Icon(Icons.menu),
+                icon: const Icon(Icons.menu),
                 onPressed: () {
                   _scaffoldKey.currentState!.openEndDrawer();
                 },
