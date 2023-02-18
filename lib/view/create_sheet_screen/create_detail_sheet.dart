@@ -313,6 +313,14 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                                               FirebaseAuth
                                                   .instance.currentUser!.uid,
                                               sheetId);
+                                      task!.whenComplete(() async {
+                                        firebaseStorage.UploadTask? coverImage =
+                                            await PDFApi.createCoverSheetImage(
+                                                FirebaseAuth
+                                                    .instance.currentUser!.uid,
+                                                sheetId);
+                                      });
+
                                       Future.delayed(
                                           const Duration(milliseconds: 500),
                                           () {

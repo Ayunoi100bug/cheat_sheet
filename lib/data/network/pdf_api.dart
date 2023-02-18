@@ -1,5 +1,6 @@
 import 'dart:ffi';
 import 'dart:io';
+import 'dart:ui';
 import 'package:cheat_sheet/res/components/flushbar.dart';
 import 'package:cheat_sheet/res/components/flushbar_icon.dart';
 import 'package:cheat_sheet/res/components/sheet.dart';
@@ -11,6 +12,8 @@ import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebaseStorage;
+import 'package:image/image.dart' as imglib;
+import 'package:pdf_render/pdf_render.dart' as renderPdf;
 
 class PDFApi {
   static Future<File> loadNetwork(String url) async {
@@ -81,6 +84,17 @@ class PDFApi {
     return Future.value(uploadTask);
   }
 
+  static Future<firebaseStorage.UploadTask?> createCoverSheetImage(
+      String userId, String sheetId) async {
+    final File file = await loadPDFFromFirebase(userId, sheetId);
+
+    imglib.Image coverImage = await _getImageFromPdf(file, 1);
+
+    File imageFile = await _imageToFile(coverImage);
+
+    return _uploadCoverImageToFirebase(userId, sheetId, imageFile);
+  }
+
   static Future<File> _storeFile(String url, Uint8List bytes) async {
     final fileName = basename(url);
     final dir = await getApplicationDocumentsDirectory();
@@ -88,5 +102,55 @@ class PDFApi {
     final file = File('${dir.path}/$fileName');
     await file.writeAsBytes(bytes, flush: true);
     return file;
+  }
+
+  static Future<File> _imageToFile(imglib.Image inputImage) async {
+    final dir = await getExternalStorageDirectory();
+
+    File imageFile = new File('${dir!.path}/image.jpg');
+    new File(imageFile.path).writeAsBytes(imglib.encodeJpg(inputImage));
+
+    return imageFile;
+  }
+
+  static Future<imglib.Image> _getImageFromPdf(
+      File inputFile, int pageNumber) async {
+    final renderPdf.PdfDocument doc =
+        await renderPdf.PdfDocument.openFile(inputFile.path);
+    final int numberAllPages = doc.pageCount;
+
+    if (pageNumber > numberAllPages) {
+      throw Exception("Error! the page number exceed total page.");
+    }
+
+    var getPage = await doc.getPage(pageNumber);
+    var pageImage = await getPage.render();
+    var image = await pageImage.createImageDetached();
+    var imageBytes = await image.toByteData(format: ImageByteFormat.png);
+    var libImage = imglib.decodeImage(imageBytes!.buffer
+        .asUint8List(imageBytes.offsetInBytes, imageBytes.lengthInBytes));
+
+    return libImage!;
+  }
+
+  static Future<firebaseStorage.UploadTask> _uploadCoverImageToFirebase(
+      String userId, String sheetId, File coverImage) async {
+    firebaseStorage.UploadTask uploadTask;
+
+    firebaseStorage.Reference ref = firebaseStorage.FirebaseStorage.instance
+        .ref()
+        .child('users')
+        .child('/' + userId)
+        .child('/cover_sheet_image')
+        .child('/' + sheetId + '.jpg');
+
+    final metadata = firebaseStorage.SettableMetadata(
+      contentType: 'file/jpg',
+      customMetadata: {'picked-file-path': coverImage.path},
+    );
+
+    uploadTask = ref.putData(await coverImage.readAsBytes(), metadata);
+
+    return Future.value(uploadTask);
   }
 }
