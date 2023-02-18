@@ -110,7 +110,7 @@ class CreateCollection {
   }
 
   Future<void> createReviewCollection(String argText, String argRid, String argReviewerId, String argSheetId, double argRating, int argLike) async {
-    await _firestoreDb.collection("review").doc(argRid).set({
+    await _firestore.collection("review").doc(argRid).set({
       'timestamp': myReview.timestamp,
       'text': argText.toString().trim(),
       'reviewerId': argReviewerId,
