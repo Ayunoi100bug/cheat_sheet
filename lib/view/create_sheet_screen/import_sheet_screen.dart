@@ -4,15 +4,12 @@ import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/components/popup_login.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/view_model/file_passer.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../data/network/pdf_api.dart';
-import '../../model/user.dart';
 
 class CreateSheetScreen extends StatefulWidget {
   const CreateSheetScreen({super.key});
@@ -21,14 +18,9 @@ class CreateSheetScreen extends StatefulWidget {
   State<CreateSheetScreen> createState() => _CreateSheetScreenState();
 }
 
-class _CreateSheetScreenState extends State<CreateSheetScreen>
-    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+class _CreateSheetScreenState extends State<CreateSheetScreen> with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   late TabController tabController;
   final _auth = FirebaseAuth.instance;
-  final _firestore = FirebaseFirestore.instance;
-  Users users =
-      Users(username: '', password: '', email: '', uid: '', profileImage: '');
-  final storage = FirebaseStorage.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -44,17 +36,13 @@ class _CreateSheetScreenState extends State<CreateSheetScreen>
               children: <Widget>[
                 SizedBox(
                   width: screenWidth,
-                  height: screenWidth < 420
-                      ? constraints.maxHeight * 0.5
-                      : constraints.maxHeight * 0.6,
+                  height: screenWidth < 420 ? constraints.maxHeight * 0.5 : constraints.maxHeight * 0.6,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Icon(
                         FontAwesomeIcons.download,
-                        size: screenWidth < 480
-                            ? screenHeight * 0.1
-                            : screenHeight * 0.2,
+                        size: screenWidth < 480 ? screenHeight * 0.1 : screenHeight * 0.2,
                         color: AppColors.black400,
                       ),
                       SizedBox(
@@ -63,19 +51,17 @@ class _CreateSheetScreenState extends State<CreateSheetScreen>
                       PrimaryButton(
                           text: 'นำเข้าชีท',
                           onPressed: () async {
-                            if (snapshot.hasData) {
-                              final file = await PDFApi.pickFile(context);
-                              if (file == null) return;
-                              Provider.of<FilePasser>(context, listen: false)
-                                  .setFile(file);
-                              AutoRouter.of(context)
-                                  .push(ViewImportSheetRoute());
-                            } else {
+                            if (!snapshot.hasData) {
                               return showDialog(
                                 context: context,
-                                builder: (BuildContext context) =>
-                                    Popup_Login(context),
+                                builder: (BuildContext context) => Popup_Login(context),
                               );
+                            }
+                            final file = await PDFApi.pickFile(context);
+                            if (file == null) return;
+                            if (context.mounted) {
+                              Provider.of<FilePasser>(context, listen: false).setFile(file);
+                              AutoRouter.of(context).push(const ViewImportSheetRoute());
                             }
                           }),
                     ],
@@ -85,7 +71,6 @@ class _CreateSheetScreenState extends State<CreateSheetScreen>
             );
           }),
         );
-        ;
       },
     );
   }
