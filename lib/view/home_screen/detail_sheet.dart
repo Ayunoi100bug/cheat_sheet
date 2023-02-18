@@ -69,7 +69,6 @@ class _DetailSheetState extends State<DetailSheet> {
                   return const Center(child: CircularProgressIndicator());
                 }
                 Map<String, dynamic> authorData = authorSnapshot.data!.data() as Map<String, dynamic>;
-                List? reviewInSheet = authorData['review'];
                 return Scaffold(
                   body: SafeArea(
                     child: SingleChildScrollView(
@@ -139,6 +138,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                                     ),
                                                                   ],
                                                                 ),
+                                                              ),
                                                             ),
                                                             Expanded(child: Container()),
                                                             const BlinkText('สามารถเลื่อนไปทางขวาได้',
@@ -224,7 +224,6 @@ class _DetailSheetState extends State<DetailSheet> {
                                               backgroundImage: CachedNetworkImageProvider(authorData['profileImage']),
                                               radius: 12,
                                             ),
-
                                             SizedBox(
                                               width: screenWidth * 0.02,
                                             ),
@@ -318,7 +317,6 @@ class _DetailSheetState extends State<DetailSheet> {
                                                 },
                                               );
                                             }),
-
                                       ],
                                     ),
                                   ),
@@ -370,7 +368,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                   itemCount: reviewInSheet!.length > 2 ? 2 : reviewInSheet.length,
                                   itemBuilder: (BuildContext context, index) {
                                     return StreamBuilder<DocumentSnapshot>(
-                                        stream: _firestore.collection("review").doc(reviewInSheet[index]).snapshots(),
+                                        stream: _firestore.collection("review").doc(reviewInSheet![index]).snapshots(),
                                         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> reviewSnapshot) {
                                           if (!reviewSnapshot.hasData) {
                                             return Container();
