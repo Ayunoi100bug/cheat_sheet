@@ -11,29 +11,18 @@ class UpdateCollection {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   AuthService myAuth = AuthService();
-  Users myUser =
-      Users(email: '', password: '', username: '', uid: '', profileImage: '');
-  Sheets mySheet = Sheets(
-      sheetName: '',
-      detailSheet: '',
-      sheetCoverImage: '',
-      sheetTypeFree: true,
-      authorId: '');
+  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
+  Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetCoverImage: '', sheetTypeFree: true, authorId: '');
 
-  Future<void> userBuySheet(
-      BuildContext context, String sid, String authorId, int sheetPrice) async {
+  Future<void> userBuySheet(BuildContext context, String sid, String authorId, int sheetPrice) async {
     if (!myAuth.isLogged()) {
       const String message = 'คุณต้องเข้าสู่ระบบก่อน';
       FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, message);
       return;
     } else {
-      var currentUserSnapshot = await _firestore
-          .collection("users")
-          .doc(_auth.currentUser!.uid)
-          .get();
+      var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
       Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
-      var authorSnapshot =
-          await _firestore.collection("users").doc(authorId).get();
+      var authorSnapshot = await _firestore.collection("users").doc(authorId).get();
       Map<String, dynamic> authorData = authorSnapshot.data()!;
       var sheetSnapshot = await _firestore.collection("sheet").doc(sid).get();
       Map<String, dynamic> sheetData = sheetSnapshot.data()!;
@@ -50,10 +39,7 @@ class UpdateCollection {
         FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, message);
         return;
       } else {
-        await _firestore
-            .collection("users")
-            .doc(currentUserData['uid'])
-            .update({
+        await _firestore.collection("users").doc(currentUserData['uid']).update({
           'timestamp': myUser.timestamp,
           'coin': (currentUserData['coin'] - sheetPrice),
           'buyedSheet': FieldValue.arrayUnion([sid]),
@@ -68,8 +54,7 @@ class UpdateCollection {
           'buyer': (sheetData['buyer'] + 1),
         });
         const String message = 'ซื้อชีทสำเร็จ';
-        FlushbarPopup.successFlushbar(
-            context, FlushbarIcon.successIcon, message);
+        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
       }
     }
   }
