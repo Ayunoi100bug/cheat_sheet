@@ -3,7 +3,11 @@ import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/components/bottom_bar.dart';
 import 'package:cheat_sheet/res/components/custom_appbar.dart';
 import 'package:cheat_sheet/res/components/sidebar_menu.dart';
+import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -18,6 +22,8 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  final _auth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
     DateTime timeBackPressed = DateTime.now();
@@ -36,51 +42,126 @@ class _MainScreenState extends State<MainScreen> {
         Fluttertoast.cancel();
         return true;
       },
-      child: Scaffold(
-        key: _scaffoldKey,
-        endDrawer: const SidebarMenu(),
-        body: AutoTabsScaffold(
-          appBarBuilder: (context, tabsRouter) => AppBar(
-            leading: const AutoLeadingButton(),
-            backgroundColor: CustomAppBar.appBarColor,
-            title: CustomAppBar.textLogo,
-            actions: [
-              if (FirebaseAuth.instance.currentUser != null) ...[
-                SizedBox(
-                  child: CustomAppBar.coin,
-                  height: 22,
-                  width: 22,
-                ),
-                CustomAppBar.notifications,
-              ],
-              IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () {
-                  _scaffoldKey.currentState!.openEndDrawer();
-                },
-              ),
-            ],
-          ),
-          routes: const [
-            HomeRoute(),
-            ActivityRoute(),
-            CreateSheetRoute(),
-            SheetListRoute(),
-            ProfileRoute(),
-          ],
-          bottomNavigationBuilder: (context, tabsRouter) => BottomNavigationBar(
-            items: BottomBar.listItemBottomBar,
-            currentIndex: tabsRouter.activeIndex,
-            onTap: tabsRouter.setActiveIndex,
-            elevation: BottomBar.elevation,
-            showSelectedLabels: BottomBar.showSelectedLabels,
-            showUnselectedLabels: BottomBar.showUnselectedLabels,
-            type: BottomBar.bottomNavigationBarType,
-            selectedItemColor: BottomBar.selectedItemColor,
-            unselectedItemColor: BottomBar.unSelectedItemColor,
-          ),
-        ),
-      ),
+
+      child: StreamBuilder(
+          stream: _auth.authStateChanges(),
+          builder: (context, AsyncSnapshot<User?> snapshot) {
+            if (!snapshot.hasData) {
+              return StreamBuilder<DocumentSnapshot>(
+                  stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
+                  builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                    if (!snapshot.hasData) {
+                      return Container();
+                    } else if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    return Scaffold(
+                      key: _scaffoldKey,
+                      endDrawer: const SidebarMenu(),
+                      body: AutoTabsScaffold(
+                        appBarBuilder: (context, tabsRouter) => AppBar(
+                          leading: const AutoLeadingButton(),
+                          backgroundColor: CustomAppBar.appBarColor,
+                          title: CustomAppBar.textLogo,
+                          actions: [
+                            IconButton(
+                              icon: const Icon(Icons.menu),
+                              onPressed: () {
+                                _scaffoldKey.currentState!.openEndDrawer();
+                              },
+                            ),
+                          ],
+                        ),
+                        routes: const [
+                          HomeRoute(),
+                          ActivityRoute(),
+                          CreateSheetRoute(),
+                          SheetListRoute(),
+                          ProfileRoute(),
+                        ],
+                        bottomNavigationBuilder: (context, tabsRouter) => BottomNavigationBar(
+                          items: BottomBar.listItemBottomBar,
+                          currentIndex: tabsRouter.activeIndex,
+                          onTap: tabsRouter.setActiveIndex,
+                          elevation: BottomBar.elevation,
+                          showSelectedLabels: BottomBar.showSelectedLabels,
+                          showUnselectedLabels: BottomBar.showUnselectedLabels,
+                          type: BottomBar.bottomNavigationBarType,
+                          selectedItemColor: BottomBar.selectedItemColor,
+                          unselectedItemColor: BottomBar.unSelectedItemColor,
+                        ),
+                      ),
+                    );
+                  });
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return StreamBuilder<DocumentSnapshot>(
+                stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
+                builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                  if (!snapshot.hasData) {
+                    return Container();
+                  } else if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+                  return Scaffold(
+                    key: _scaffoldKey,
+                    endDrawer: const SidebarMenu(),
+                    body: AutoTabsScaffold(
+                      appBarBuilder: (context, tabsRouter) => AppBar(
+                        leading: const AutoLeadingButton(),
+                        backgroundColor: CustomAppBar.appBarColor,
+                        title: CustomAppBar.textLogo,
+                        actions: [
+                          Row(
+                            children: [
+                              CustomAppBar.coin,
+                              const SizedBox(width: 4),
+                              Regular16px(
+                                text: data['coin'].toString(),
+                                color: AppColors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ],
+                          ),
+                          CustomAppBar.notifications,
+                          IconButton(
+                            icon: const Icon(Icons.menu),
+                            onPressed: () {
+                              _scaffoldKey.currentState!.openEndDrawer();
+                            },
+                          ),
+                        ],
+                      ),
+                      routes: const [
+                        HomeRoute(),
+                        ActivityRoute(),
+                        CreateSheetRoute(),
+                        SheetListRoute(),
+                        ProfileRoute(),
+                      ],
+                      bottomNavigationBuilder: (context, tabsRouter) => BottomNavigationBar(
+                        items: BottomBar.listItemBottomBar,
+                        currentIndex: tabsRouter.activeIndex,
+                        onTap: tabsRouter.setActiveIndex,
+                        elevation: BottomBar.elevation,
+                        showSelectedLabels: BottomBar.showSelectedLabels,
+                        showUnselectedLabels: BottomBar.showUnselectedLabels,
+                        type: BottomBar.bottomNavigationBarType,
+                        selectedItemColor: BottomBar.selectedItemColor,
+                        unselectedItemColor: BottomBar.unSelectedItemColor,
+                      ),
+                    ),
+                  );
+                });
+          }),
     );
   }
 }
