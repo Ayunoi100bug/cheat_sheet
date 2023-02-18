@@ -84,31 +84,18 @@ class _CreateReviewState extends State<CreateReview> {
                   onPressed: () async {
                     _formKey.currentState!.save();
                     try {
-                      if (_review.rating == 0) {
-                        const String message = 'กรุณาระบุคะแนนที่ท่านต้องการให้ก่อน!';
-                        FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, message);
-                      } else {
-                        myCollection
-                            .createReviewCollection(
-                          _review.text,
-                          _review.rid = uuid.v4(),
-                          _review.reviewerId = _auth.currentUser!.uid,
-                          _review.sheetId = widget.sheetId,
-                          _review.rating,
-                          _review.like!,
-                        )
-                            .then(
-                          (value) {
-                            _formKey.currentState!.reset();
-                            AutoRouter.of(context).popUntilRoot();
-                            const String message = 'รีวิวสำเร็จแล้ว!';
-                            FlushbarPopup.successFlushbar(context, const Icon(Icons.reviews), message);
-                          },
-                        );
-                        await _firestoreDb.collection('sheet').doc(widget.sheetId).update({
-                          'review': FieldValue.arrayUnion([_review.rid])
-                        });
-                      }
+                      myCollection
+                          .createReviewCollection(
+                            _review.text,
+                            _review.rid = uuid.v4(),
+                            _review.reviewerId = _auth.currentUser!.uid,
+                            _review.sheetId = widget.sheetId,
+                            _review.rating,
+                            _review.like!,
+                            context,
+                            _review.rid,
+                          )
+                          .then((value) => _formKey.currentState!.reset());
                     } on FirebaseAuthException catch (e) {
                       FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
                     }
