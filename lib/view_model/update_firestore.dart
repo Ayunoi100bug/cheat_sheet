@@ -11,12 +11,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
+import '../res/components/popup_login.dart';
+
 class UpdateCollection {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   AuthService myAuth = AuthService();
-  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
-  Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetTypeFree: true, authorId: '');
+  Users myUser =
+      Users(email: '', password: '', username: '', uid: '', profileImage: '');
+  Sheets mySheet =
+      Sheets(sheetName: '', detailSheet: '', sheetTypeFree: true, authorId: '');
+
 
   Future<void> updateUserData() async {
     var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
@@ -38,10 +43,14 @@ class UpdateCollection {
   }
 
   Future<void> userBuySheet(BuildContext context, String sid, String authorId, int sheetPrice) async {
+
     if (!myAuth.isLogged()) {
-      const String message = 'คุณต้องเข้าสู่ระบบก่อน';
-      FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, message);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => Popup_Login(context),
+      );
       return;
+
     }
     var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
     Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;

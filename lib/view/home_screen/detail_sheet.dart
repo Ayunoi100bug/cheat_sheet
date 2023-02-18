@@ -139,7 +139,6 @@ class _DetailSheetState extends State<DetailSheet> {
                                                                     ),
                                                                   ],
                                                                 ),
-                                                              ),
                                                             ),
                                                             Expanded(child: Container()),
                                                             const BlinkText('สามารถเลื่อนไปทางขวาได้',
@@ -225,6 +224,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                               backgroundImage: CachedNetworkImageProvider(authorData['profileImage']),
                                               radius: 12,
                                             ),
+
                                             SizedBox(
                                               width: screenWidth * 0.02,
                                             ),
@@ -318,6 +318,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                 },
                                               );
                                             }),
+
                                       ],
                                     ),
                                   ),
