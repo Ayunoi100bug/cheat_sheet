@@ -38,6 +38,7 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
   Sheets mySheet = Sheets(
       sheetName: '',
       detailSheet: '',
+      sheetCoverImage: '',
       sheetTypeFree: true,
       price: 0,
       authorId: '');
@@ -291,54 +292,63 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                               text: 'เสร็จสิ้น',
                               onPressed: () async {
                                 _formKey.currentState!.save();
-                                try {
-                                  myCollection
-                                      .createSheetCollection(
-                                    sheetId,
-                                    mySheet.sheetName,
-                                    mySheet.detailSheet,
-                                    mySheet.sheetTypeFree,
-                                    mySheet.price,
-                                    mySheet.authorId =
+                                firebaseStorage.UploadTask? task =
+                                    await PDFApi.uploadToFirebase(
+                                        context,
+                                        pdfFile,
                                         FirebaseAuth.instance.currentUser!.uid,
-                                  )
-                                      .then(
-                                    (value) async {
-                                      _formKey.currentState!.reset();
-                                      // debugPrint("Register Success");
-                                      firebaseStorage.UploadTask? task =
-                                          await PDFApi.uploadToFirebase(
-                                              context,
-                                              pdfFile,
-                                              FirebaseAuth
-                                                  .instance.currentUser!.uid,
-                                              sheetId);
-                                      task!.whenComplete(() async {
-                                        firebaseStorage.UploadTask? coverImage =
-                                            await PDFApi.createCoverSheetImage(
-                                                FirebaseAuth
-                                                    .instance.currentUser!.uid,
-                                                sheetId);
-                                      });
+                                        sheetId);
+                                task!.whenComplete(() async {
+                                  firebaseStorage.UploadTask? coverImage =
+                                      await PDFApi.createCoverSheetImage(
+                                          FirebaseAuth
+                                              .instance.currentUser!.uid,
+                                          sheetId);
+                                  coverImage!.whenComplete(() async {
+                                    String coverImage =
+                                        await PDFApi.getCoverImage(
+                                            FirebaseAuth
+                                                .instance.currentUser!.uid,
+                                            sheetId);
+                                    try {
+                                      myCollection
+                                          .createSheetCollection(
+                                        sheetId,
+                                        mySheet.sheetName,
+                                        mySheet.detailSheet,
+                                        coverImage,
+                                        mySheet.sheetTypeFree,
+                                        mySheet.price,
+                                        mySheet.authorId = FirebaseAuth
+                                            .instance.currentUser!.uid,
+                                      )
+                                          .then(
+                                        (value) async {
+                                          _formKey.currentState!.reset();
 
-                                      Future.delayed(
-                                          const Duration(milliseconds: 500),
-                                          () {
-                                        AutoRouter.of(context).popUntilRoot();
+                                          Future.delayed(
+                                              const Duration(milliseconds: 500),
+                                              () {
+                                            AutoRouter.of(context)
+                                                .popUntilRoot();
 
-                                        final String message =
-                                            'อัพโหลดชีทสำเร็จ!';
-                                        FlushbarPopup.successFlushbar(context,
-                                            FlushbarIcon.errorIcon, message);
-                                      });
-                                    },
-                                  );
-                                } on FirebaseAuthException catch (e) {
-                                  Fluttertoast.showToast(
-                                    msg: e.message.toString(),
-                                    gravity: ToastGravity.BOTTOM,
-                                  );
-                                }
+                                            final String message =
+                                                'อัพโหลดชีทสำเร็จ!';
+                                            FlushbarPopup.successFlushbar(
+                                                context,
+                                                FlushbarIcon.errorIcon,
+                                                message);
+                                          });
+                                        },
+                                      );
+                                    } on FirebaseAuthException catch (e) {
+                                      Fluttertoast.showToast(
+                                        msg: e.message.toString(),
+                                        gravity: ToastGravity.BOTTOM,
+                                      );
+                                    }
+                                  });
+                                });
                               },
                             ),
                           ),

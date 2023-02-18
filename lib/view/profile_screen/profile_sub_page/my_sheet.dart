@@ -21,7 +21,8 @@ class MySheet extends StatelessWidget {
           if (!snapshot.hasData || snapshot.data == null) {
             return const Center(child: CircularProgressIndicator());
           } else {
-            final mySheets = snapshot.data!.docs.where((document) => document["authorId"] == _auth.currentUser?.uid);
+            final mySheets = snapshot.data!.docs.where(
+                (document) => document["authorId"] == _auth.currentUser?.uid);
             return Padding(
               padding: EdgeInsets.all(screenWidth * GapDimension.w0_032),
               child: GridView.builder(
@@ -41,9 +42,14 @@ class MySheet extends StatelessWidget {
                     return Container();
                   }
                   return StreamBuilder<DocumentSnapshot>(
-                      stream: _firestore.collection("users").doc(sheet["authorId"]).snapshots(),
-                      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userSnapshot) {
-                        if (!userSnapshot.hasData || userSnapshot.data!.data() == null) {
+                      stream: _firestore
+                          .collection("users")
+                          .doc(sheet["authorId"])
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<DocumentSnapshot> userSnapshot) {
+                        if (!userSnapshot.hasData ||
+                            userSnapshot.data!.data() == null) {
                           return const Center(
                             child: CircularProgressIndicator(),
                           );
@@ -54,6 +60,7 @@ class MySheet extends StatelessWidget {
                             priceSheet: sheet["price"],
                             username: userSnapshot.data?["username"],
                             sheetId: sheet["sid"],
+                            sheetCoverImage: '',
                           );
                         }
                       });

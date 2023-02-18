@@ -80,6 +80,8 @@ class _SheetListDetailState extends State<SheetListDetail> {
                                     priceSheet: sheetSnapshot.data?["price"],
                                     username: userSnapshot.data?["username"],
                                     sheetId: sheetSnapshot.data?["sid"],
+                                    sheetCoverImage:
+                                        sheetSnapshot.data?["sheetCoverImage"],
                                   );
                                 }
                               });

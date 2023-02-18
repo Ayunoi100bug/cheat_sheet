@@ -95,6 +95,19 @@ class PDFApi {
     return _uploadCoverImageToFirebase(userId, sheetId, imageFile);
   }
 
+  static Future<String> getCoverImage(String userId, String sheetId) async {
+    final coverImage = await firebaseStorage.FirebaseStorage.instance
+        .ref()
+        .child('users')
+        .child('/' + userId)
+        .child('/cover_sheet_image')
+        .child('/' + sheetId + '.jpg');
+
+    final String imageUrl = await coverImage.getDownloadURL();
+
+    return imageUrl;
+  }
+
   static Future<File> _storeFile(String url, Uint8List bytes) async {
     final fileName = basename(url);
     final dir = await getApplicationDocumentsDirectory();

@@ -149,6 +149,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                   priceSheet: 0,
                   username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
                   sheetId: (index + 1).toString(),
+                  sheetCoverImage: '',
                 );
               },
               padding: EdgeInsets.only(
@@ -193,6 +194,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                   priceSheet: 0,
                   username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
                   sheetId: (index + 1).toString(),
+                  sheetCoverImage: '',
                 );
               },
               padding: EdgeInsets.only(
