@@ -11,6 +11,8 @@ import 'package:flutter/scheduler.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
+import '../res/components/popup_auth.dart';
+
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final User? _user = FirebaseAuth.instance.currentUser;
@@ -52,6 +54,46 @@ class AuthService {
       });
     } on FirebaseAuthException catch (e) {
       FlushbarPopup.errorFlushbarNoAppbar(context, FlushbarIcon.errorIcon, e.message.toString());
+    }
+  }
+
+  Future changeUserPassword(BuildContext context, String currentPassword, String newPassword) async {
+    try {
+      AuthCredential credential = EmailAuthProvider.credential(
+        email: _auth.currentUser!.email!,
+        password: currentPassword,
+      );
+      await _auth.currentUser?.reauthenticateWithCredential(credential);
+      await _auth.currentUser?.updatePassword(newPassword);
+      await UpdateCollection().updateUserData().then((value) async {
+        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, "เปลี่ยนรหัสผ่านสำเร็จ");
+      });
+    } on FirebaseAuthException catch (e) {
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) => Popup_error(context, "รหัสผ่านปัจจุบันไม่ถูกต้อง", "โปรดลองใหม่อีกครั้ง"),
+      );
+    }
+  }
+
+  Future changeUserEmail(BuildContext context, String currentEmail, String currentPassword, String newEmail) async {
+    try {
+      AuthCredential credential = EmailAuthProvider.credential(
+        email: _auth.currentUser!.email!,
+        password: currentPassword,
+      );
+      await _auth.currentUser?.reauthenticateWithCredential(credential);
+      await _auth.currentUser?.updateEmail(newEmail);
+      await UpdateCollection().updateUserData().then((value) {
+        FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, "เปลี่ยนอีเมลล์สำเร็จ");
+      });
+    } on FirebaseAuthException catch (e) {
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) => Popup_error(context, "อีเมลล์ปัจจุบันไม่ถูกต้อง", "โปรดลองใหม่อีกครั้ง"),
+      );
     }
   }
 

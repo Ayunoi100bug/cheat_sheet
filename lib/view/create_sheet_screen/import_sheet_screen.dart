@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/colors.dart';
-import 'package:cheat_sheet/res/components/popup_login.dart';
+import 'package:cheat_sheet/res/components/popup_auth.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/view_model/file_passer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
