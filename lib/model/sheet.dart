@@ -8,7 +8,7 @@ class Sheets {
   String sheetName;
   String detailSheet;
   String sheetCoverImage;
-  String sid = uuid.v1();
+  String sid = uuid.v4();
   bool sheetTypeFree;
   int? price;
   int buyer = 0;

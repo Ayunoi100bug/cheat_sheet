@@ -16,7 +16,7 @@ class CreateCollection {
   final storageRef = FirebaseStorage.instance.ref();
   final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
   final User? firebaseUser = FirebaseAuth.instance.currentUser;
-  final FirebaseFirestore _firestoreDb = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
   Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
   Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetCoverImage: '', sheetTypeFree: true, authorId: '');
@@ -27,7 +27,7 @@ class CreateCollection {
     const String defaultPath = "images/default_profile.png";
     final Reference storageRef = _storage.ref().child(defaultPath);
     final String url = await storageRef.getDownloadURL();
-    await _firestoreDb.collection("users").doc(argUid).set({
+    await _firestore.collection("users").doc(argUid).set({
       'timestamp': myUser.timestamp,
       'username': argUsername.toString().trim(),
       'email': argEmail.toString().trim(),
@@ -42,13 +42,13 @@ class CreateCollection {
   }
 
   Future<void> createGoogleUserCollection(User? currentuser) async {
-    final userRef = _firestoreDb.collection("users").doc(currentuser?.uid);
+    final userRef = _firestore.collection("users").doc(currentuser?.uid);
     DocumentSnapshot userDoc = await userRef.get();
     if (!userDoc.exists) {
       String? fullName = currentuser?.displayName;
       List<String>? cutName = fullName?.split(" ");
       String? firstName = cutName?[0];
-      await _firestoreDb.collection("users").doc(currentuser?.uid).set({
+      await _firestore.collection("users").doc(currentuser?.uid).set({
         'timestamp': myUser.timestamp,
         'username': firstName,
         'email': currentuser?.email,
@@ -64,7 +64,7 @@ class CreateCollection {
   }
 
   Future<void> createFacebookUserCollection(User? currentuser) async {
-    final userRef = _firestoreDb.collection("users").doc(currentuser?.uid);
+    final userRef = _firestore.collection("users").doc(currentuser?.uid);
     final userData = await FacebookAuth.i.getUserData();
     DocumentSnapshot userDoc = await userRef.get();
     if (!userDoc.exists) {
@@ -72,7 +72,7 @@ class CreateCollection {
       List<String>? cutName = fullName?.split(" ");
       String? firstName = cutName?[0];
       String profileImage = userData['picture']['data']['url'];
-      await _firestoreDb.collection("users").doc(currentuser?.uid).set({
+      await _firestore.collection("users").doc(currentuser?.uid).set({
         'timestamp': myUser.timestamp,
         'username': firstName,
         'email': currentuser?.email,
@@ -89,7 +89,7 @@ class CreateCollection {
 
   Future<void> createSheetCollection(String sheetId, String argSheetName, String argDetailSheet, String urlSheetCoverImage, bool argSheetType,
       int? argPrice, String argAuthorId) async {
-    await _firestoreDb.collection("sheet").doc(sheetId).set({
+    await _firestore.collection("sheet").doc(sheetId).set({
       'timestamp': mySheet.timestamp,
       'sheetName': argSheetName.toString().trim(),
       'detailSheet': argDetailSheet.toString().trim(),
@@ -102,7 +102,7 @@ class CreateCollection {
   }
 
   Future<void> createSheetListCollection(String argSheetListName, List? argSid, String argAuthorId, String argSheetListId) async {
-    await _firestoreDb.collection("sheetList").doc(argSheetListId).set({
+    await _firestore.collection("sheetList").doc(argSheetListId).set({
       'timestamp': mySheetLists.timestamp,
       'sheetListName': argSheetListName.toString().trim(),
       'sid': argSid,
@@ -112,7 +112,7 @@ class CreateCollection {
   }
 
   Future<void> createReviewCollection(String argText, String argRid, String argAuthorId, String argSheetId, double argRating) async {
-    await _firestoreDb.collection("review").doc(argRid).set({
+    await _firestore.collection("review").doc(argRid).set({
       'timestamp': myReview.timestamp,
       'text': argText.toString().trim(),
       'authorId': argAuthorId,
