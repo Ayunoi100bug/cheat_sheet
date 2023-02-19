@@ -20,6 +20,7 @@ class _SearchingSheetState extends State<SearchingSheet> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     var sortStream = _firestore.collection("sheet").snapshots();
 
@@ -79,7 +80,9 @@ class _SearchingSheetState extends State<SearchingSheet> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
+                  SizedBox(
+                    height: screenHeight * 0.02,
+                  ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.02),
                     child: TextField(
@@ -105,7 +108,9 @@ class _SearchingSheetState extends State<SearchingSheet> {
                       ),
                     ),
                   ),
-                  Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
+                  SizedBox(
+                    height: screenHeight * 0.02,
+                  ),
                   Container(
                     padding: EdgeInsets.only(left: screenWidth * 0.04, right: screenWidth * 0.04),
                     child: Row(
@@ -125,7 +130,9 @@ class _SearchingSheetState extends State<SearchingSheet> {
                       ],
                     ),
                   ),
-                  Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
+                  SizedBox(
+                    height: screenHeight * 0.02,
+                  ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.038),
                     child: GridView.builder(
@@ -143,19 +150,20 @@ class _SearchingSheetState extends State<SearchingSheet> {
                         return StreamBuilder<DocumentSnapshot>(
                           stream: _firestore.collection("users").doc(sheet?["authorId"]).snapshots(),
                           builder: (context, userSnapshot) {
-                            if (!userSnapshot.hasData || userSnapshot.data!.data() == null) {
+                            if (!userSnapshot.hasData) {
+                              return Container();
+                            } else if (userSnapshot.connectionState == ConnectionState.waiting) {
                               return const Center(
                                 child: CircularProgressIndicator(),
                               );
-                            } else {
-                              return Sheet(
-                                authorImage: userSnapshot.data?["profileImage"],
-                                title: sheet?["sheetName"],
-                                priceSheet: sheet?["price"],
-                                username: userSnapshot.data?["username"],
-                                sheetId: sheet?["sid"],
-                              );
                             }
+                            return Sheet(
+                              authorImage: userSnapshot.data?["profileImage"],
+                              title: sheet?["sheetName"],
+                              priceSheet: sheet?["price"],
+                              username: userSnapshot.data?["username"],
+                              sheetId: sheet?["sid"],
+                            );
                           },
                         );
                       },
@@ -188,17 +196,19 @@ void _sortSheet(context) {
     )),
     builder: (BuildContext context) {
       return SizedBox(
-        height: screenHeight * 0.48,
+        height: isPortrait ? screenHeight * 0.48 : screenHeight * 0.6,
         child: Padding(
           padding: EdgeInsets.only(
               top: screenWidth * 0.040,
               bottom: isPortrait ? screenWidth * 0.040 : screenWidth * 0.012,
               left: screenWidth * 0.044,
               right: screenWidth * 0.044),
-          child: Column(
-            children: const [
-              AllSort(),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: const [
+                AllSort(),
+              ],
+            ),
           ),
         ),
       );
@@ -215,13 +225,27 @@ class AllSort extends StatefulWidget {
 
 class _AllSortState extends State<AllSort> {
   @override
+  final List<String> title = <String>[
+    'คะแนนรีวิวที่ดีที่สุด',
+    'ราคา มากไปน้อย',
+    'ราคา น้อยไปมาก',
+    'ประเภท ชีทฟรี',
+    'ประเภท ชีทเสียเงิน',
+    'ชีทใหม่ไปเก่า',
+    'ชีทเก่าไปใหม่'
+  ];
+
+  final List<String> value = <String>['rating', 'priceMore', 'priceLess', 'typeFree', 'typeBuy', 'sheetNew', 'sheetOld'];
+
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        ListTile(
-          title: const Text('คะแนนรีวิวที่ดีที่สุด'),
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: 7,
+      itemBuilder: (BuildContext context, int index) {
+        return ListTile(
+          title: Text('${title[index]}'),
           leading: Radio(
-            value: "rating",
+            value: '${value[index]}',
             groupValue: sort,
             onChanged: (value) {
               setState(
@@ -233,104 +257,8 @@ class _AllSortState extends State<AllSort> {
               );
             },
           ),
-        ),
-        ListTile(
-          title: const Text('ราคา มากไปน้อย'),
-          leading: Radio(
-            value: "priceMore",
-            groupValue: sort,
-            onChanged: (value) {
-              setState(
-                () {
-                  sort = value.toString();
-                  AutoRouter.of(context).popAndPush(SearchingSheetRoute());
-                  Navigator.of(context).pop();
-                },
-              );
-            },
-          ),
-        ),
-        ListTile(
-          title: const Text('ราคา น้อยไปมาก'),
-          leading: Radio(
-            value: "priceLess",
-            groupValue: sort,
-            onChanged: (value) {
-              setState(
-                () {
-                  sort = value.toString();
-                  AutoRouter.of(context).popAndPush(SearchingSheetRoute());
-                  Navigator.of(context).pop();
-                },
-              );
-            },
-          ),
-        ),
-        ListTile(
-          title: const Text('ประเภท ชีทฟรี'),
-          leading: Radio(
-            value: "typeFree",
-            groupValue: sort,
-            onChanged: (value) {
-              setState(
-                () {
-                  sort = value.toString();
-                  AutoRouter.of(context).popAndPush(SearchingSheetRoute());
-                  Navigator.of(context).pop();
-                },
-              );
-            },
-          ),
-        ),
-        ListTile(
-          title: const Text('ประเภท ชีทเสียเงิน'),
-          leading: Radio(
-            value: "typeBuy",
-            groupValue: sort,
-            onChanged: (value) {
-              setState(
-                () {
-                  sort = value.toString();
-                  AutoRouter.of(context).popAndPush(SearchingSheetRoute());
-                  Navigator.of(context).pop();
-                },
-              );
-            },
-          ),
-        ),
-        ListTile(
-          title: const Text('ชีทใหม่ไปเก่า'),
-          leading: Radio(
-            value: "sheetNew",
-            groupValue: sort,
-            onChanged: (value) {
-              setState(
-                () {
-                  sort = value.toString();
-                  AutoRouter.of(context).popAndPush(SearchingSheetRoute());
-                  Navigator.of(context).pop();
-                },
-              );
-            },
-          ),
-        ),
-        ListTile(
-          title: const Text('ชีทเก่าไปใหม่'),
-          leading: Radio(
-            value: "sheetOld",
-            groupValue: sort,
-            onChanged: (value) {
-              setState(
-                () {
-                  sort = value.toString();
-                  AutoRouter.of(context).popAndPush(SearchingSheetRoute());
-                  Navigator.of(context).pop();
-                },
-              );
-            },
-          ),
-        ),
-      ],
+        );
+      },
     );
   }
 }
