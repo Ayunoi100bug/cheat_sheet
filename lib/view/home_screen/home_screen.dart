@@ -32,131 +32,141 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
 
     return StreamBuilder<QuerySnapshot>(
-      stream: _firestore.collection("sheet").snapshots(),
+      stream: _firestore.collection("sheet").orderBy('timestamp', descending: true).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData || snapshot.data == null) {
+        if (!snapshot.hasData) {
+          return Container();
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
-        } else {
-          final int documentCount = snapshot.data!.docs.length;
-          return Scaffold(
-            resizeToAvoidBottomInset: false,
-            body: SafeArea(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    ElevatedButton(
-                        onPressed: () {
-                          AutoRouter.of(context).push(SearchingSheetRoute());
-                        },
-                        child: Text('ปุ่มไปหน้าค้นหาชั่วคราว')),
-                    InkWell(
-                      onTap: () {
+        }
+        final int documentCount = snapshot.data!.docs.length;
+        return Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) => Popup_DeleteSheet(context),
                         );
                       },
-                      child: Text('Popup Dialog'),
+                      child: const Text("ปุ่มลบชีททั้งหมด")),
+                  ElevatedButton(
+                      onPressed: () {
+                        AutoRouter.of(context).push(const SearchingSheetRoute());
+                      },
+                      child: const Text('ปุ่มไปหน้าค้นหาชั่วคราว')),
+                  InkWell(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => Popup_DeleteSheet(context),
+                      );
+                    },
+                    child: const Text('Popup Dialog'),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => Popup_Login(context),
+                      );
+                    },
+                    child: const Text('Popup Login'),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => Popup_CreateTag(context),
+                      );
+                    },
+                    child: const Text('Popup Create Tag'),
+                  ),
+                  Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.02),
+                    child: TextField(
+                      cursorColor: AppColors.black900,
+                      decoration: InputDecoration(
+                          isDense: true,
+                          fillColor: AppColors.black200,
+                          filled: true,
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50), borderSide: BorderSide(width: 1, color: AppColors.primary800)),
+                          hintText: 'Search',
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50), borderSide: BorderSide(width: 1, color: AppColors.primary800)),
+                          hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
+                          prefixIcon: Container(
+                            padding: EdgeInsets.all(15),
+                            child: Icon(
+                              Icons.search,
+                              color: AppColors.primary800,
+                            ),
+                            width: 18,
+                          )),
                     ),
-                    InkWell(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => Popup_Login(context),
+                  ),
+                  Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 4,
+                      horizontal: 16,
+                    ).copyWith(right: 0),
+                    child: Row(
+                      children: const [
+                        Medium20px(text: 'ชีทแนะนำสำหรับคุณ'),
+                      ],
+                    ),
+                  ),
+                  Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.038),
+                    child: GridView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: isPortrait ? 3 : 5,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 16,
+                        mainAxisExtent: isPortrait ? 200 : 250,
+
+                      ),
+                      itemCount: documentCount,
+                      itemBuilder: (context, index) {
+                        var sheet = snapshot.data?.docs[index];
+                        return StreamBuilder<DocumentSnapshot>(
+                          stream: _firestore.collection("users").doc(sheet?["authorId"]).snapshots(),
+                          builder: (context, userSnapshot) {
+                            if (!userSnapshot.hasData) {
+                              return Container();
+                            } else if (userSnapshot.connectionState == ConnectionState.waiting) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            return Sheet(
+                              authorImage: userSnapshot.data?["profileImage"],
+                              title: sheet?["sheetName"],
+                              priceSheet: sheet?["price"],
+                              username: userSnapshot.data?["username"],
+                              sheetId: sheet?["sid"],
+                            );
+                          },
                         );
                       },
-                      child: Text('Popup Login'),
+                      padding: const EdgeInsets.only(bottom: 8),
                     ),
-                    InkWell(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => Popup_CreateTag(context),
-                        );
-                      },
-                      child: Text('Popup Create Tag'),
-                    ),
-                    Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.02),
-                      child: TextField(
-                        cursorColor: AppColors.black900,
-                        decoration: InputDecoration(
-                            isDense: true,
-                            fillColor: AppColors.black200,
-                            filled: true,
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(50), borderSide: BorderSide(width: 1, color: AppColors.primary800)),
-                            hintText: 'Search',
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(50), borderSide: BorderSide(width: 1, color: AppColors.primary800)),
-                            hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
-                            prefixIcon: Container(
-                              padding: EdgeInsets.all(15),
-                              child: Icon(
-                                Icons.search,
-                                color: AppColors.primary800,
-                              ),
-                              width: 18,
-                            )),
-                      ),
-                    ),
-                    Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 4,
-                        horizontal: 16,
-                      ).copyWith(right: 0),
-                      child: Row(
-                        children: const [
-                          Medium20px(text: 'ชีทแนะนำสำหรับคุณ'),
-                        ],
-                      ),
-                    ),
-                    Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.038),
-                      child: GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: isPortrait ? 3 : 5,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 16,
-                          mainAxisExtent: isPortrait ? 200 : 250,
-                        ),
-                        itemCount: documentCount,
-                        itemBuilder: (context, index) {
-                          var sheet = snapshot.data?.docs[index];
-                          return StreamBuilder<DocumentSnapshot>(
-                            stream: _firestore.collection("users").doc(sheet?["authorId"]).snapshots(),
-                            builder: (context, userSnapshot) {
-                              if (!userSnapshot.hasData || userSnapshot.data!.data() == null) {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              } else {
-                                return Sheet(
-                                  authorImage: userSnapshot.data?["profileImage"],
-                                  title: sheet?["sheetName"],
-                                  priceSheet: sheet?["price"],
-                                  username: userSnapshot.data?["username"],
-                                  sheetId: sheet?["sid"],
-                                  sheetCoverImage: sheet?["sheetCoverImage"],
-                                );
-                              }
-                            },
-                          );
-                        },
-                        padding: const EdgeInsets.only(bottom: 8),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          );
-        }
+          ),
+        );
       },
     );
   }

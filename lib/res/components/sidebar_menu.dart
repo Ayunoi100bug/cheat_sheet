@@ -34,22 +34,19 @@ class _SidebarMenuState extends State<SidebarMenu> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    var isLandScape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+    var isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     return StreamBuilder(
       stream: _auth.authStateChanges(),
       builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
         if (snapshot.hasData) {
+          // Logged sidebar
           return SafeArea(
             child: LayoutBuilder(builder: (context, constraints) {
               return Drawer(
                 child: ListView(
                   children: [
-                    Image.asset('assets/images/logo.png',
-                        height: isPortrait
-                            ? constraints.maxHeight * 0.2
-                            : constraints.maxHeight * 0.4),
+                    Image.asset('assets/images/logo.png', height: isPortrait ? constraints.maxHeight * 0.2 : constraints.maxHeight * 0.4),
                     SizedBox(
                       height: isPortrait ? constraints.maxHeight * 0.7 : null,
                       child: Column(
@@ -59,8 +56,7 @@ class _SidebarMenuState extends State<SidebarMenu> {
                             title: 'ตั้งค่าการแจ้งเตือน',
                             onTap: () {
                               Navigator.pop(context);
-                              AutoRouter.of(context)
-                                  .push(NotificationSettingRoute());
+                              AutoRouter.of(context).push(NotificationSettingRoute());
                             },
                           ),
                           CustomListTile(
@@ -119,13 +115,7 @@ class _SidebarMenuState extends State<SidebarMenu> {
                         ],
                       ),
                       onTap: () {
-                        myAuth.logOut();
-                        AutoRouter.of(context).navigateNamed("/home/");
-                        Navigator.pop(context);
-                        SchedulerBinding.instance.addPostFrameCallback((_) {
-                          FlushbarPopup.errorFlushbarNoAppbar(context,
-                              FlushbarIcon.successIcon, "ออกจากระบบสำเร็จ");
-                        });
+                        myAuth.logOut(context);
                       },
                     ),
                   ],
@@ -134,15 +124,13 @@ class _SidebarMenuState extends State<SidebarMenu> {
             }),
           );
         } else {
+          // Not logged sidebar
           return SafeArea(
             child: LayoutBuilder(builder: (context, constraints) {
               return Drawer(
                 child: ListView(
                   children: [
-                    Image.asset('assets/images/logo.png',
-                        height: isPortrait
-                            ? constraints.maxHeight * 0.2
-                            : constraints.maxHeight * 0.4),
+                    Image.asset('assets/images/logo.png', height: isPortrait ? constraints.maxHeight * 0.2 : constraints.maxHeight * 0.4),
                     SizedBox(
                       height: isPortrait ? constraints.maxHeight * 0.7 : null,
                       child: Column(
@@ -152,8 +140,7 @@ class _SidebarMenuState extends State<SidebarMenu> {
                             title: 'ตั้งค่าการแจ้งเตือน',
                             onTap: () {
                               Navigator.pop(context);
-                              AutoRouter.of(context)
-                                  .push(NotificationSettingRoute());
+                              AutoRouter.of(context).push(NotificationSettingRoute());
                             },
                           ),
                           CustomListTile(
@@ -212,7 +199,7 @@ class _SidebarMenuState extends State<SidebarMenu> {
                         ],
                       ),
                       onTap: () {
-                        AutoRouter.of(context).push(LoginRoute());
+                        AutoRouter.of(context).push(const LoginRoute());
                         Navigator.pop(context);
                       },
                     ),

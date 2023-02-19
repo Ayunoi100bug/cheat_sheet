@@ -21,8 +21,7 @@ class ReviewSheet extends StatefulWidget {
 
 int currentTab = 0;
 
-class _ReviewSheetState extends State<ReviewSheet>
-    with SingleTickerProviderStateMixin {
+class _ReviewSheetState extends State<ReviewSheet> with SingleTickerProviderStateMixin {
   late TabController tabController;
 
   @override
@@ -83,8 +82,7 @@ class _ReviewSheetState extends State<ReviewSheet>
                         ),
                         labelColor: AppColors.tertiary500,
                         indicator: BoxDecoration(
-                          border: Border.all(
-                              color: AppColors.tertiary500, width: 2),
+                          border: Border.all(color: AppColors.tertiary500, width: 2),
                           borderRadius: BorderRadius.circular(50),
                         ),
                         unselectedLabelColor: AppColors.black400,
@@ -96,13 +94,13 @@ class _ReviewSheetState extends State<ReviewSheet>
               ],
               body: TabBarView(
                 controller: tabController,
-                children: const [
-                  All(),
-                  FiveStar(),
-                  FourStar(),
-                  ThreeStar(),
-                  TwoStar(),
-                  OneStar(),
+                children: [
+                  All(sheetId: widget.sheetId),
+                  FiveStar(sheetId: widget.sheetId),
+                  FourStar(sheetId: widget.sheetId),
+                  ThreeStar(sheetId: widget.sheetId),
+                  TwoStar(sheetId: widget.sheetId),
+                  OneStar(sheetId: widget.sheetId),
                 ],
               ),
             ),

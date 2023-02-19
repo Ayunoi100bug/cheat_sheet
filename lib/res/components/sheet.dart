@@ -132,12 +132,19 @@ class Sheet extends StatelessWidget {
                                       text: 'FREE',
                                       color: AppColors.primary600,
                                     ),
-                                  if (priceSheet > 0) CustomAppBar.coin,
                                   if (priceSheet > 0)
-                                    Regular12px(
-                                      text: priceSheet.toString(),
-                                      color: AppColors.orange700,
-                                    ),
+                                    Row(
+                                      children: [
+                                        CustomAppBar.coin,
+                                        SizedBox(
+                                          width: 2,
+                                        ),
+                                        Regular12px(
+                                          text: priceSheet.toString(),
+                                          color: AppColors.orange700,
+                                        ),
+                                      ],
+                                    )
                                 ],
                               ),
                               Row(

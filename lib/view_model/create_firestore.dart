@@ -1,6 +1,6 @@
-import 'dart:ffi';
 import 'dart:io';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/model/review.dart';
 import 'package:cheat_sheet/model/sheet.dart';
 import 'package:cheat_sheet/model/sheet_list.dart';
@@ -10,18 +10,22 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+
+import '../res/components/flushbar.dart';
+import '../res/components/flushbar_icon.dart';
 
 class CreateCollection {
   final storageRef = FirebaseStorage.instance.ref();
   final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
-  final User? firebaseUser = FirebaseAuth.instance.currentUser;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
   Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
   Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetCoverImage: '', sheetTypeFree: true, authorId: '');
   SheetLists mySheetLists = SheetLists(sheetListName: '', sid: [], authorId: '', sheetListId: '');
-  Reviews myReview = Reviews(text: '', rid: '', authorId: '', sheetId: '', rating: 0);
+  Reviews myReview = Reviews(text: '', rid: '', reviewerId: '', sheetId: '', rating: 0, like: 0);
 
   Future<void> createUserCollection(String argUsername, String argEmail, String argUid) async {
     const String defaultPath = "images/default_profile.png";
@@ -97,6 +101,7 @@ class CreateCollection {
       'sheetTypeFree': argSheetType,
       'price': argPrice,
       'sid': sheetId,
+      'buyer': mySheet.buyer,
       'authorId': argAuthorId,
     });
   }
@@ -111,20 +116,37 @@ class CreateCollection {
     });
   }
 
-  Future<void> createReviewCollection(String argText, String argRid, String argAuthorId, String argSheetId, double argRating) async {
+  Future<void> createReviewCollection(String argText, String argRid, String argReviewerId, String argSheetId, double argRating, int argLike,
+      BuildContext context, String _review) async {
+    if (argRating == 0) {
+      const String message = 'กรุณาระบุคะแนนที่ท่านต้องการให้ก่อน!';
+      FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, message);
+      return;
+    }
     await _firestore.collection("review").doc(argRid).set({
       'timestamp': myReview.timestamp,
       'text': argText.toString().trim(),
-      'authorId': argAuthorId,
+      'reviewerId': argReviewerId,
       'sheetId': argSheetId,
       'rating': argRating,
+      'rid': argRid,
+      'like': argLike,
     });
+    await _firestore.collection('sheet').doc(argSheetId).update({
+      'review': FieldValue.arrayUnion([_review])
+    }).then(
+      (value) {
+        AutoRouter.of(context).popUntilRoot();
+        const String message = 'รีวิวสำเร็จแล้ว!';
+        FlushbarPopup.successFlushbar(context, const Icon(Icons.reviews), message);
+      },
+    );
   }
 }
 
 class Storage {
   final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
-  final User? firebaseUser = FirebaseAuth.instance.currentUser;
+  final User? _user = FirebaseAuth.instance.currentUser;
   final ref = FirebaseStorage.instance.ref().child('userImages');
   late String imageURL;
 

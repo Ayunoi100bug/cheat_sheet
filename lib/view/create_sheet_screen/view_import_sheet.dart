@@ -34,9 +34,8 @@ class _ViewImportSheetState extends State<ViewImportSheet> {
       children: [
         Container(
           alignment: Alignment.centerRight,
-          padding: EdgeInsets.symmetric(
-              horizontal: 20, vertical: screenHeight * 0.005),
-          child: Icon(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: screenHeight * 0.005),
+          child: const Icon(
             Icons.file_download_outlined,
             size: 36,
           ),
@@ -49,10 +48,8 @@ class _ViewImportSheetState extends State<ViewImportSheet> {
             pageSnap: false,
             pageFling: false,
             onRender: (pages) => setState(() => this.numberPages = pages!),
-            onViewCreated: (controller) =>
-                setState(() => this.controller = controller),
-            onPageChanged: (indexPage, _) =>
-                setState(() => this.currentPage = indexPage!),
+            onViewCreated: (controller) => setState(() => this.controller = controller),
+            onPageChanged: (indexPage, _) => setState(() => this.currentPage = indexPage!),
           ),
         ),
         Padding(
@@ -63,13 +60,12 @@ class _ViewImportSheetState extends State<ViewImportSheet> {
             decoration: BoxDecoration(
               color: AppColors.black400,
               border: Border.all(color: AppColors.black400),
-              borderRadius: BorderRadius.all(
+              borderRadius: const BorderRadius.all(
                 Radius.circular(20),
               ),
             ),
             child: Regular16px(
-              text:
-                  (currentPage + 1).toString() + "/" + (numberPages).toString(),
+              text: (currentPage + 1).toString() + "/" + (numberPages).toString(),
               color: AppColors.white,
             ),
           ),
@@ -87,7 +83,7 @@ class _ViewImportSheetState extends State<ViewImportSheet> {
               ),
               PrimaryButton(
                 onPressed: () {
-                  AutoRouter.of(context).push(CreateDetailSheetRoute());
+                  AutoRouter.of(context).push(const CreateDetailSheetRoute());
                 },
                 text: 'ต่อไป',
               ),

@@ -12,16 +12,14 @@ class ActivityScreen extends StatefulWidget {
   State<ActivityScreen> createState() => _ActivityScreenState();
 }
 
-class _ActivityScreenState extends State<ActivityScreen>
-    with AutomaticKeepAliveClientMixin {
+class _ActivityScreenState extends State<ActivityScreen> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    var isLandScape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+    var isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -51,10 +49,8 @@ class _ActivityScreenState extends State<ActivityScreen>
                 crossAxisCount: 1,
                 crossAxisSpacing: 8,
                 childAspectRatio: screenWidth < 480
-                    ? MediaQuery.of(context).size.width /
-                        (MediaQuery.of(context).size.height / 12)
-                    : MediaQuery.of(context).size.width /
-                        (MediaQuery.of(context).size.height / 4),
+                    ? MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 12)
+                    : MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 4),
               ),
               itemCount: 3,
               itemBuilder: (context, index) {
@@ -65,12 +61,10 @@ class _ActivityScreenState extends State<ActivityScreen>
                   recievePoint: 10,
                 );
               },
-              padding: EdgeInsets.only(
-                  right: screenWidth * 0.04, left: screenWidth * 0.04),
+              padding: EdgeInsets.only(right: screenWidth * 0.04, left: screenWidth * 0.04),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: screenWidth * 0.04, vertical: screenWidth * 0.01),
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.01),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -95,10 +89,8 @@ class _ActivityScreenState extends State<ActivityScreen>
                 crossAxisCount: 1,
                 crossAxisSpacing: 8,
                 childAspectRatio: screenWidth < 480
-                    ? MediaQuery.of(context).size.width /
-                        (MediaQuery.of(context).size.height / 12)
-                    : MediaQuery.of(context).size.width /
-                        (MediaQuery.of(context).size.height / 4),
+                    ? MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 12)
+                    : MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 4),
               ),
               itemCount: 3,
               itemBuilder: (context, index) {
@@ -133,7 +125,7 @@ class _ActivityScreenState extends State<ActivityScreen>
               ),
             ),
             GridView.builder(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: isPortrait ? 3 : 5,
@@ -144,7 +136,8 @@ class _ActivityScreenState extends State<ActivityScreen>
               itemCount: 3,
               itemBuilder: (context, index) {
                 return Sheet(
-                  authorImage: 'assets/images/logo.png',
+                  authorImage:
+                      'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10224779237682961&width=200&ext=1678426745&hash=AeSupq2Xh_IJA7iaWys',
                   title: 'สถิติพื้นฐานooooooooooo',
                   priceSheet: 0,
                   username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
@@ -152,14 +145,10 @@ class _ActivityScreenState extends State<ActivityScreen>
                   sheetCoverImage: '',
                 );
               },
-              padding: EdgeInsets.only(
-                  bottom: screenHeight * 0.02,
-                  left: screenWidth * 0.04,
-                  right: screenWidth * 0.04),
+              padding: EdgeInsets.only(bottom: screenHeight * 0.02, left: screenWidth * 0.04, right: screenWidth * 0.04),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: screenWidth * 0.04, vertical: screenWidth * 0.01),
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.01),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -178,7 +167,7 @@ class _ActivityScreenState extends State<ActivityScreen>
               ),
             ),
             GridView.builder(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: isPortrait ? 3 : 5,
@@ -189,7 +178,8 @@ class _ActivityScreenState extends State<ActivityScreen>
               itemCount: 3,
               itemBuilder: (context, index) {
                 return Sheet(
-                  authorImage: 'assets/images/logo.png',
+                  authorImage:
+                      'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10224779237682961&width=200&ext=1678426745&hash=AeSupq2Xh_IJA7iaWys',
                   title: 'สถิติพื้นฐานooooooooooo',
                   priceSheet: 0,
                   username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
@@ -197,10 +187,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                   sheetCoverImage: '',
                 );
               },
-              padding: EdgeInsets.only(
-                  bottom: screenHeight * 0.02,
-                  left: screenWidth * 0.04,
-                  right: screenWidth * 0.04),
+              padding: EdgeInsets.only(bottom: screenHeight * 0.02, left: screenWidth * 0.04, right: screenWidth * 0.04),
             ),
           ]),
         ),

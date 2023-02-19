@@ -2,6 +2,8 @@ import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:flutter/material.dart';
 
+import 'components/custom_appbar.dart';
+
 class PrimaryButton extends StatelessWidget {
   final String text;
   final Color color;
@@ -9,6 +11,7 @@ class PrimaryButton extends StatelessWidget {
   final double height;
   final double width;
   final double size;
+  final bool coinIcon;
   final void Function() onPressed;
   const PrimaryButton(
       {super.key,
@@ -18,6 +21,7 @@ class PrimaryButton extends StatelessWidget {
       this.height = 44,
       this.width = 116,
       this.size = 16,
+      this.coinIcon = false,
       required this.onPressed});
 
   @override
@@ -31,10 +35,21 @@ class PrimaryButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       onPressed: onPressed,
-      child: Regular16px(
-        text: text,
-        color: textcolor,
-        size: size,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (coinIcon) ...[
+            CustomAppBar.coin,
+            SizedBox(
+              width: 6,
+            ),
+          ],
+          Regular16px(
+            text: text,
+            color: textcolor,
+            size: size,
+          ),
+        ],
       ),
     );
   }

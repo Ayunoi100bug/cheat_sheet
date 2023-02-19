@@ -1,6 +1,3 @@
-import 'dart:ffi';
-
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/model/review.dart';
 import 'package:cheat_sheet/res/button.dart';
@@ -14,7 +11,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:uuid/uuid.dart';
 
@@ -30,7 +26,7 @@ class CreateReview extends StatefulWidget {
 
 class _CreateReviewState extends State<CreateReview> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  Reviews _review = Reviews(text: '', rid: '', authorId: '', sheetId: '', rating: 0);
+  Reviews _review = Reviews(text: '', rid: '', reviewerId: '', sheetId: '', rating: 0, like: 0);
   CreateCollection myCollection = CreateCollection();
   final _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestoreDb = FirebaseFirestore.instance;
@@ -40,7 +36,6 @@ class _CreateReviewState extends State<CreateReview> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    var isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -54,8 +49,7 @@ class _CreateReviewState extends State<CreateReview> {
                 alignment: Alignment.center,
                 child: RatingBar.builder(
                   minRating: 0,
-                  allowHalfRating: true,
-                  itemBuilder: (context, _) => Icon(
+                  itemBuilder: (context, _) => const Icon(
                     Icons.star,
                     color: AppColors.warning400,
                   ),
@@ -70,6 +64,8 @@ class _CreateReviewState extends State<CreateReview> {
                   padding: EdgeInsets.all(screenHeight * 0.02),
                   height: screenHeight * 0.2,
                   child: MyTextFormField(
+                    maxLine: 6,
+                    minLine: 6,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     hintText: 'แสดงความคิดเห็นที่นี่...',
                     onSaved: (value) {
@@ -90,24 +86,16 @@ class _CreateReviewState extends State<CreateReview> {
                     try {
                       myCollection
                           .createReviewCollection(
-                        _review.text,
-                        _review.rid = uuid.v4(),
-                        _review.authorId = _auth.currentUser!.uid,
-                        _review.sheetId = widget.sheetId,
-                        _review.rating,
-                      )
-                          .then(
-                        (value) {
-                          _formKey.currentState!.reset();
-                          AutoRouter.of(context).popUntilRoot();
-                          final String message = 'รีวิวสำเร็จแล้ว!';
-                          FlushbarPopup.successFlushbar(context, Icon(Icons.reviews), message);
-                        },
-                      );
-
-                      await _firestoreDb.collection('sheet').doc(widget.sheetId).update({
-                        'review': FieldValue.arrayUnion([_review.rid])
-                      });
+                            _review.text,
+                            _review.rid = uuid.v4(),
+                            _review.reviewerId = _auth.currentUser!.uid,
+                            _review.sheetId = widget.sheetId,
+                            _review.rating,
+                            _review.like!,
+                            context,
+                            _review.rid,
+                          )
+                          .then((value) => _formKey.currentState!.reset());
                     } on FirebaseAuthException catch (e) {
                       FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
                     }
