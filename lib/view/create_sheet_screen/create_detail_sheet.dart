@@ -49,6 +49,7 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
     File? pdfFile = Provider.of<FilePasser>(context).getFile();
 
     String sheetId = mySheet.sid;
+    String userId = FirebaseAuth.instance.currentUser!.uid;
 
     return FutureBuilder(
         future: firebase,
@@ -224,13 +225,11 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                             text: 'เสร็จสิ้น',
                             onPressed: () async {
                               _formKey.currentState!.save();
-                              firebaseStorage.UploadTask? task =
-                                  await PDFApi.uploadToFirebase(context, pdfFile, FirebaseAuth.instance.currentUser!.uid, sheetId);
+                              firebaseStorage.UploadTask? task = await PDFApi.uploadToFirebase(context, pdfFile, userId, sheetId);
                               task!.whenComplete(() async {
-                                firebaseStorage.UploadTask? coverImage =
-                                    await PDFApi.createCoverSheetImage(FirebaseAuth.instance.currentUser!.uid, sheetId);
+                                firebaseStorage.UploadTask? coverImage = await PDFApi.createCoverSheetImage(userId, sheetId);
                                 coverImage!.whenComplete(() async {
-                                  String coverImage = await PDFApi.getCoverImage(FirebaseAuth.instance.currentUser!.uid, sheetId);
+                                  String coverImage = await PDFApi.getCoverImage(userId, sheetId);
                                   try {
                                     myCollection
                                         .createSheetCollection(
@@ -240,7 +239,7 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                                       coverImage,
                                       mySheet.sheetTypeFree,
                                       mySheet.price,
-                                      mySheet.authorId = FirebaseAuth.instance.currentUser!.uid,
+                                      mySheet.authorId = userId,
                                     )
                                         .then(
                                       (value) async {
