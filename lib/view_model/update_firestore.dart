@@ -17,11 +17,8 @@ class UpdateCollection {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   AuthService myAuth = AuthService();
-  Users myUser =
-      Users(email: '', password: '', username: '', uid: '', profileImage: '');
-  Sheets mySheet =
-      Sheets(sheetName: '', detailSheet: '', sheetTypeFree: true, authorId: '');
-
+  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
+  Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetTypeFree: true, authorId: '');
 
   Future<void> updateUserData() async {
     var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
@@ -43,14 +40,12 @@ class UpdateCollection {
   }
 
   Future<void> userBuySheet(BuildContext context, String sid, String authorId, int sheetPrice) async {
-
     if (!myAuth.isLogged()) {
       showDialog(
         context: context,
         builder: (BuildContext context) => Popup_Login(context),
       );
       return;
-
     }
     var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
     Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
@@ -84,6 +79,25 @@ class UpdateCollection {
       'buyer': (sheetData['buyer'] + 1),
     }).then((value) {
       const String message = 'ซื้อชีทสำเร็จ';
+      FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+    });
+  }
+
+  Future<void> userTopup(BuildContext context, recieve) async {
+    if (!myAuth.isLogged()) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => Popup_Login(context),
+      );
+      return;
+    }
+    var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
+    Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
+    await _firestore.collection("users").doc(currentUserData['uid']).update({
+      'timestamp': myUser.timestamp,
+      'coin': (currentUserData['coin'] + recieve),
+    }).then((value) {
+      String message = 'ได้รับ $recieve เหรียญ';
       FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
     });
   }
