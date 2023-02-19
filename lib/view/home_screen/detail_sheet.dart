@@ -394,10 +394,13 @@ class _DetailSheetState extends State<DetailSheet> {
                                                   return const Center(child: CircularProgressIndicator());
                                                 } else {
                                                   return Review(
+                                                      sheetId: sheetData['sid'],
+                                                      userId: userReviewSnapshot.data!['uid'],
                                                       userImage: userReviewSnapshot.data!['profileImage'],
                                                       userName: userReviewSnapshot.data!['username'],
                                                       userRating: reviewSnapshot.data!['rating'],
                                                       textReview: reviewSnapshot.data!['text'],
+                                                      reviewId: reviewSnapshot.data!['rid'],
                                                       dateTime: reviewSnapshot.data!['timestamp'],
                                                       like: reviewSnapshot.data!['like']);
                                                 }

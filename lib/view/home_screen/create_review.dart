@@ -6,7 +6,6 @@ import 'package:cheat_sheet/res/components/flushbar.dart';
 import 'package:cheat_sheet/res/components/flushbar_icon.dart';
 import 'package:cheat_sheet/res/components/form_field.dart';
 import 'package:cheat_sheet/view_model/create_firestore.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
@@ -26,10 +25,9 @@ class CreateReview extends StatefulWidget {
 
 class _CreateReviewState extends State<CreateReview> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  Reviews _review = Reviews(text: '', rid: '', reviewerId: '', sheetId: '', rating: 0, like: 0);
+  final Reviews _review = Reviews(text: '', rid: '', reviewerId: '', sheetId: '', rating: 0, like: 0);
   CreateCollection myCollection = CreateCollection();
   final _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestoreDb = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {

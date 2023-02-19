@@ -10,6 +10,9 @@ class MyTextFormField extends StatelessWidget {
   final FormFieldSetter<String> onSaved;
   final TextInputType? keyboardType;
   final bool obscureText;
+  final TextEditingController? controller;
+  final String? initialValue;
+  final bool enabled;
   final int maxLine;
   final int minLine;
   final double fontSize;
@@ -23,8 +26,11 @@ class MyTextFormField extends StatelessWidget {
     required this.autovalidateMode,
     required this.validator,
     required this.onSaved,
+    this.controller,
+    this.initialValue,
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
+    this.enabled = true,
     this.maxLine = 1,
     this.minLine = 1,
     this.fontSize = 14,
@@ -50,20 +56,14 @@ class MyTextFormField extends StatelessWidget {
             Radius.circular(10),
           ),
         ),
-
         focusedErrorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-              width: 1, color: AppColors.error500, style: BorderStyle.solid),
-
+          borderSide: BorderSide(width: 1, color: AppColors.error500, style: BorderStyle.solid),
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
         ),
-
         errorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-              width: 1, color: AppColors.error500, style: BorderStyle.solid),
-
+          borderSide: BorderSide(width: 1, color: AppColors.error500, style: BorderStyle.solid),
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
@@ -77,11 +77,13 @@ class MyTextFormField extends StatelessWidget {
       validator: validator,
       autovalidateMode: autovalidateMode,
       keyboardType: keyboardType,
+      initialValue: initialValue,
       obscureText: obscureText,
+      enabled: enabled,
+      controller: controller,
       onSaved: onSaved,
       maxLines: maxLine,
       minLines: minLine,
-
     );
   }
 }
