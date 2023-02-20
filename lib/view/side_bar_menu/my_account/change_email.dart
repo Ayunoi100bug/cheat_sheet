@@ -113,7 +113,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
                       controller: currentPasswordController,
                       validator: (value) {
                         if (value!.isEmpty || value.isEmpty) {
-                          return 'Please Enter Current Password';
+                          return 'โปรดกรอกรหัสผ่านปัจจุบัน';
                         }
                         return null;
                       },
@@ -159,8 +159,11 @@ class _ChangeEmailState extends State<ChangeEmail> {
                           currentEmail = currentEmailController.text;
                           newEmail = newEmailController.text;
                         });
-                        
-                        myAuth.changeUserEmail(context, currentEmail, currentPassword, newEmail);
+                        myAuth.changeUserEmail(context, currentEmail, currentPassword, newEmail).then(
+                          (value) {
+                            _formKey.currentState!.reset();
+                          },
+                        );
                       }
                     },
                   ),

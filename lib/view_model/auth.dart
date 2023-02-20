@@ -66,6 +66,7 @@ class AuthService {
       await _auth.currentUser?.reauthenticateWithCredential(credential);
       await _auth.currentUser?.updatePassword(newPassword);
       await UpdateCollection().updateUserData().then((value) async {
+        AutoRouter.of(context).navigateNamed("/home/");
         FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, "เปลี่ยนรหัสผ่านสำเร็จ");
       });
     } on FirebaseAuthException catch (e) {
@@ -86,6 +87,7 @@ class AuthService {
       await _auth.currentUser?.reauthenticateWithCredential(credential);
       await _auth.currentUser?.updateEmail(newEmail);
       await UpdateCollection().updateUserData().then((value) {
+        AutoRouter.of(context).navigateNamed("/home/");
         FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, "เปลี่ยนอีเมลล์สำเร็จ");
       });
     } on FirebaseAuthException catch (e) {
