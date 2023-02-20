@@ -20,7 +20,6 @@ class UpdateCollection {
   Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
   Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetCoverImage: '', sheetTypeFree: true, authorId: '');
 
-
   Future<void> updateUserData() async {
     var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
     Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
@@ -41,29 +40,21 @@ class UpdateCollection {
   }
 
   Future<void> userBuySheet(BuildContext context, String sid, String authorId, int sheetPrice) async {
-
     if (!myAuth.isLogged()) {
       showDialog(
         context: context,
         builder: (BuildContext context) => Popup_Login(context),
       );
       return;
-
     }
     var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
     Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
     var authorSnapshot = await _firestore.collection("users").doc(authorId).get();
     Map<String, dynamic> authorData = authorSnapshot.data()!;
-    var sheetSnapshot = await _firestore.collection("sheet").doc(sid).get();
-    Map<String, dynamic> sheetData = sheetSnapshot.data()!;
-    if (currentUserData['uid'] == authorId && context.mounted) {
+    if ((currentUserData['uid'] == authorId || currentUserData['buyedSheet'].contains(sid))) {
       return;
-    } else if (currentUserData['coin'] < sheetPrice) {
+    } else if (currentUserData['coin'] < sheetPrice && context.mounted) {
       const String message = 'ยอดเงินคงเหลือไม่เพียงพอ';
-      FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, message);
-      return;
-    } else if (currentUserData['buyedSheet'].contains(sid)) {
-      const String message = 'คุณซื้อชีทนี้ไปแล้ว';
       FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, message);
       return;
     }
@@ -72,16 +63,37 @@ class UpdateCollection {
       'coin': (currentUserData['coin'] - sheetPrice),
       'buyedSheet': FieldValue.arrayUnion([sid]),
     });
+    var buyerSnapshot = await _firestore.collection("users").where("buyedSheet", arrayContains: sid).get();
+    int buyerAmount = buyerSnapshot.docs.length;
     await _firestore.collection("users").doc(authorId).update({
       'timestamp': myUser.timestamp,
       'coin': (authorData['coin'] + sheetPrice),
     });
     await _firestore.collection("sheet").doc(sid).update({
       'timestamp': mySheet.timestamp,
-      // TODO: ต้องเปลี่ยน buyer จากบวกที่ละ 1 เป็นนับจาก sid ที่เจอใน buyedSheet ของ user แต่เบื้องต้นใช้แบบนี้ก่อน
-      'buyer': (sheetData['buyer'] + 1),
-    }).then((value) {
+      'buyer': buyerAmount,
+    });
+    if (context.mounted) {
       const String message = 'ซื้อชีทสำเร็จ';
+      FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+    }
+  }
+
+  Future<void> userTopup(BuildContext context, int recieve) async {
+    if (!myAuth.isLogged()) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => Popup_Login(context),
+      );
+      return;
+    }
+    var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
+    Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
+    await _firestore.collection("users").doc(currentUserData['uid']).update({
+      'timestamp': myUser.timestamp,
+      'coin': (currentUserData['coin'] + recieve),
+    }).then((value) {
+      String message = 'ได้รับ $recieve เหรียญ';
       FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
     });
   }
