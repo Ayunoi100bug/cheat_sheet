@@ -90,72 +90,50 @@ class _DetailSheetState extends State<DetailSheet> {
                                                 context: context,
                                                 builder: (BuildContext context) {
                                                   return AlertDialog(
-                                                      content: Stack(
-                                                    children: [
-                                                      Container(
-                                                        alignment: Alignment.center,
-                                                        height: screenHeight * 0.7,
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          children: [
-                                                            SingleChildScrollView(
-                                                              scrollDirection: Axis.horizontal,
-                                                              child: Container(
-                                                                height: screenHeight * 0.6,
-                                                                child: Row(
-                                                                  children: [
-                                                                    Container(
-                                                                      margin: EdgeInsets.only(right: screenHeight * 0.025),
-                                                                      decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
-                                                                      child: CachedNetworkImage(
-                                                                        imageUrl:
-                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
-                                                                        fit: BoxFit.fill,
-                                                                      ),
-                                                                    ),
-                                                                    Container(
-                                                                      margin: EdgeInsets.only(right: screenHeight * 0.025),
-                                                                      decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
-                                                                      child: CachedNetworkImage(
-                                                                        imageUrl:
-                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
-                                                                        fit: BoxFit.fill,
-                                                                      ),
-                                                                    ),
-                                                                    Container(
-                                                                      margin: EdgeInsets.only(right: screenHeight * 0.025),
-                                                                      decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
-                                                                      child: CachedNetworkImage(
-                                                                        imageUrl:
-                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
-                                                                        fit: BoxFit.fill,
-                                                                      ),
-                                                                    ),
-                                                                    Container(
-                                                                      margin: EdgeInsets.only(right: screenHeight * 0.025),
-                                                                      decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
-                                                                      child: CachedNetworkImage(
-                                                                        imageUrl:
-                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
-                                                                        fit: BoxFit.fill,
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
+                                                    content: Column(
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: [
+                                                        Container(
+                                                          alignment: Alignment.center,
+                                                          height: screenHeight * 0.55,
+                                                          width: screenWidth,
+                                                          child: PageView(
+                                                            children: [
+                                                              CachedNetworkImage(
+                                                                imageUrl: "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
+                                                                fit: BoxFit.fill,
                                                               ),
-                                                            ),
-                                                            Expanded(child: Container()),
-                                                            const BlinkText('สามารถเลื่อนไปทางขวาได้',
-                                                                style: TextStyle(fontSize: 20, color: AppColors.black800),
-                                                                beginColor: AppColors.black800,
-                                                                endColor: AppColors.white,
-                                                                times: 20,
-                                                                duration: Duration(seconds: 1)),
-                                                          ],
+                                                              CachedNetworkImage(
+                                                                imageUrl: "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
+                                                                fit: BoxFit.fill,
+                                                              ),
+                                                              CachedNetworkImage(
+                                                                imageUrl: "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
+                                                                fit: BoxFit.fill,
+                                                              ),
+                                                              CachedNetworkImage(
+                                                                imageUrl: "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
+                                                                fit: BoxFit.fill,
+                                                              ),
+                                                              CachedNetworkImage(
+                                                                imageUrl: "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
+                                                                fit: BoxFit.fill,
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ));
+                                                        SizedBox(
+                                                          height: screenWidth * 0.04,
+                                                        ),
+                                                        const BlinkText('สามารถเลื่อนไปทางขวาได้',
+                                                            style: TextStyle(fontSize: 20, color: AppColors.black800),
+                                                            beginColor: AppColors.black800,
+                                                            endColor: AppColors.white,
+                                                            times: 20,
+                                                            duration: Duration(seconds: 1)),
+                                                      ],
+                                                    ),
+                                                  );
                                                 });
                                           }),
                                           child: Stack(
