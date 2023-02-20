@@ -57,7 +57,7 @@ class AuthService {
     }
   }
 
-  Future changeUserPassword(BuildContext context, String currentPassword, String newPassword) async {
+  Future<void> changeUserPassword(BuildContext context, String currentPassword, String newPassword) async {
     try {
       AuthCredential credential = EmailAuthProvider.credential(
         email: _auth.currentUser!.email!,
@@ -78,7 +78,7 @@ class AuthService {
     }
   }
 
-  Future changeUserEmail(BuildContext context, String currentEmail, String currentPassword, String newEmail) async {
+  Future<void> changeUserEmail(BuildContext context, String currentEmail, String currentPassword, String newEmail) async {
     try {
       AuthCredential credential = EmailAuthProvider.credential(
         email: _auth.currentUser!.email!,
