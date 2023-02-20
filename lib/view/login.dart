@@ -72,6 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: EdgeInsets.symmetric(
                           horizontal: screenWidth * GapDimension.w0_096,
                         ),
+
                         child: Form(
                           key: _formKey,
                           child: Column(
@@ -79,6 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               const Align(
                                 alignment: Alignment.centerLeft,
                                 child: Regular16px(text: "E-mail"),
+
                               ),
                               SizedBox(height: screenHeight * GapDimension.h0_01),
                               // I delete username because currently it can't use username to login.
@@ -99,12 +101,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                 alignment: Alignment.centerLeft,
                                 child: Regular16px(text: "รหัสผ่าน"),
                               ),
+
                               SizedBox(height: screenHeight * GapDimension.h0_01),
                               MyTextFormField(
                                 autovalidateMode: AutovalidateMode.onUserInteraction,
                                 validator: RequiredValidator(errorText: 'Please enter password.'),
                                 onSaved: (value) {
                                   myUser.password = value!;
+
                                 },
                                 obscureText: true,
                                 hintText: "รหัสผ่าน",
@@ -134,6 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     text: "เข้าสู่ระบบ",
                                     color: AppColors.white,
                                   ),
+
                                 ),
                               ),
                             ],

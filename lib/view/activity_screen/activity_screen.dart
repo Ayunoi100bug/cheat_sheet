@@ -142,6 +142,7 @@ class _ActivityScreenState extends State<ActivityScreen> with AutomaticKeepAlive
                   priceSheet: 0,
                   username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
                   sheetId: (index + 1).toString(),
+                  sheetCoverImage: '',
                 );
               },
               padding: EdgeInsets.only(bottom: screenHeight * 0.02, left: screenWidth * 0.04, right: screenWidth * 0.04),
@@ -183,6 +184,7 @@ class _ActivityScreenState extends State<ActivityScreen> with AutomaticKeepAlive
                   priceSheet: 0,
                   username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
                   sheetId: (index + 1).toString(),
+                  sheetCoverImage: '',
                 );
               },
               padding: EdgeInsets.only(bottom: screenHeight * 0.02, left: screenWidth * 0.04, right: screenWidth * 0.04),

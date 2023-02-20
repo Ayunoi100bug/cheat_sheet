@@ -65,8 +65,8 @@ class CustomAppBar extends AppBar {
 
   static Image coinImage = Image.asset(
     'assets/images/coin.png',
-    width: 22,
-    height: 22,
+    width: 18,
+    height: 18,
   );
 
   static InkWell coin = InkWell(

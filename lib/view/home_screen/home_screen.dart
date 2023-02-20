@@ -116,6 +116,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                         crossAxisSpacing: 12,
                         mainAxisSpacing: 16,
                         mainAxisExtent: isPortrait ? 200 : 250,
+
                       ),
                       itemCount: documentCount,
                       itemBuilder: (context, index) {
@@ -131,6 +132,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                               );
                             }
                             return Sheet(
+                              sheetCoverImage: sheet?["sheetCoverImage"],
                               authorImage: userSnapshot.data?["profileImage"],
                               title: sheet?["sheetName"],
                               priceSheet: sheet?["price"],

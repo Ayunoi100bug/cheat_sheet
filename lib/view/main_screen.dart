@@ -5,7 +5,9 @@ import 'package:cheat_sheet/res/components/custom_appbar.dart';
 import 'package:cheat_sheet/res/components/sidebar_menu.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -40,6 +42,7 @@ class _MainScreenState extends State<MainScreen> {
         Fluttertoast.cancel();
         return true;
       },
+
       child: StreamBuilder(
           stream: _auth.authStateChanges(),
           builder: (context, AsyncSnapshot<User?> snapshot) {

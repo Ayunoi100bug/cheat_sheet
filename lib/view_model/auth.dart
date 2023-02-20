@@ -115,9 +115,7 @@ class AuthService {
     if (success == true && context.mounted) {
       AutoRouter.of(context).navigateNamed("/home/");
       Navigator.pop(context);
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        FlushbarPopup.errorFlushbarNoAppbar(context, FlushbarIcon.successIcon, "ออกจากระบบสำเร็จ");
-      });
+      FlushbarPopup.errorFlushbarNoAppbar(context, FlushbarIcon.successIcon, "ออกจากระบบสำเร็จ");
       success = false;
     }
   }

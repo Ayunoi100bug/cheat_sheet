@@ -69,7 +69,6 @@ class _DetailSheetState extends State<DetailSheet> {
                   return const Center(child: CircularProgressIndicator());
                 }
                 Map<String, dynamic> authorData = authorSnapshot.data!.data() as Map<String, dynamic>;
-                List? reviewInSheet = authorData['review'];
                 return Scaffold(
                   body: SafeArea(
                     child: SingleChildScrollView(
@@ -109,7 +108,8 @@ class _DetailSheetState extends State<DetailSheet> {
                                                                       margin: EdgeInsets.only(right: screenHeight * 0.025),
                                                                       decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
                                                                       child: CachedNetworkImage(
-                                                                        imageUrl: "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
+                                                                        imageUrl:
+                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
                                                                         fit: BoxFit.fill,
                                                                       ),
                                                                     ),
@@ -117,7 +117,8 @@ class _DetailSheetState extends State<DetailSheet> {
                                                                       margin: EdgeInsets.only(right: screenHeight * 0.025),
                                                                       decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
                                                                       child: CachedNetworkImage(
-                                                                        imageUrl: "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
+                                                                        imageUrl:
+                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
                                                                         fit: BoxFit.fill,
                                                                       ),
                                                                     ),
@@ -125,7 +126,8 @@ class _DetailSheetState extends State<DetailSheet> {
                                                                       margin: EdgeInsets.only(right: screenHeight * 0.025),
                                                                       decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
                                                                       child: CachedNetworkImage(
-                                                                        imageUrl: "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
+                                                                        imageUrl:
+                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
                                                                         fit: BoxFit.fill,
                                                                       ),
                                                                     ),
@@ -133,7 +135,8 @@ class _DetailSheetState extends State<DetailSheet> {
                                                                       margin: EdgeInsets.only(right: screenHeight * 0.025),
                                                                       decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
                                                                       child: CachedNetworkImage(
-                                                                        imageUrl: "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
+                                                                        imageUrl:
+                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
                                                                         fit: BoxFit.fill,
                                                                       ),
                                                                     ),
@@ -272,6 +275,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                 return Container();
                                               } else if (_auth.currentUser == null) {
                                                 return PrimaryButton(
+                                                  coinIcon: sheetData['price'] == 0 ? false : true,
                                                   text: sheetData['price'] == 0 ? "อ่านชีท" : sheetData['price'].toString(),
                                                   size: 16,
                                                   onPressed: () async {
@@ -296,6 +300,11 @@ class _DetailSheetState extends State<DetailSheet> {
                                               }
                                               Map<String, dynamic> currentUserData = currentUserSnapshot.data!.data() as Map<String, dynamic>;
                                               return PrimaryButton(
+                                                coinIcon: sheetData['price'] == 0 ||
+                                                        currentUserData['buyedSheet'].contains(sheetData['sid']) ||
+                                                        currentUserData['uid'] == sheetData['authorId']
+                                                    ? false
+                                                    : true,
                                                 text: sheetData['price'] == 0 ||
                                                         currentUserData['buyedSheet'].contains(sheetData['sid']) ||
                                                         currentUserData['uid'] == sheetData['authorId']
@@ -369,7 +378,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                   itemCount: reviewInSheet!.length > 2 ? 2 : reviewInSheet.length,
                                   itemBuilder: (BuildContext context, index) {
                                     return StreamBuilder<DocumentSnapshot>(
-                                        stream: _firestore.collection("review").doc(reviewInSheet[index]).snapshots(),
+                                        stream: _firestore.collection("review").doc(reviewInSheet![index]).snapshots(),
                                         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> reviewSnapshot) {
                                           if (!reviewSnapshot.hasData) {
                                             return Container();
@@ -443,7 +452,9 @@ class _DetailSheetState extends State<DetailSheet> {
       )),
       builder: (BuildContext context) {
         return Container(
-          height: MediaQuery.of(context).viewInsets.bottom == 0 ? screenHeight * 0.3 : MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.bottom,
+          height: MediaQuery.of(context).viewInsets.bottom == 0
+              ? screenHeight * 0.3
+              : MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.bottom,
           child: Column(
             children: [
               SizedBox(
@@ -667,7 +678,8 @@ class _DetailSheetState extends State<DetailSheet> {
                     text: 'แชร์ชีทไป...',
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: isPortrait ? screenWidth * 0.04 : screenWidth * 0.020, left: isPortrait ? screenWidth * 0.32 : screenWidth * 0.4),
+                    padding: EdgeInsets.only(
+                        top: isPortrait ? screenWidth * 0.04 : screenWidth * 0.020, left: isPortrait ? screenWidth * 0.32 : screenWidth * 0.4),
                     child: InkWell(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -690,7 +702,8 @@ class _DetailSheetState extends State<DetailSheet> {
                   ),
                   InkWell(
                     child: Padding(
-                      padding: EdgeInsets.only(top: isPortrait ? screenWidth * 0.04 : screenWidth * 0.020, left: isPortrait ? screenWidth * 0.32 : screenWidth * 0.4),
+                      padding: EdgeInsets.only(
+                          top: isPortrait ? screenWidth * 0.04 : screenWidth * 0.020, left: isPortrait ? screenWidth * 0.32 : screenWidth * 0.4),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -712,7 +725,8 @@ class _DetailSheetState extends State<DetailSheet> {
                   ),
                   InkWell(
                     child: Padding(
-                      padding: EdgeInsets.only(top: isPortrait ? screenWidth * 0.04 : screenWidth * 0.020, left: isPortrait ? screenWidth * 0.32 : screenWidth * 0.4),
+                      padding: EdgeInsets.only(
+                          top: isPortrait ? screenWidth * 0.04 : screenWidth * 0.020, left: isPortrait ? screenWidth * 0.32 : screenWidth * 0.4),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [

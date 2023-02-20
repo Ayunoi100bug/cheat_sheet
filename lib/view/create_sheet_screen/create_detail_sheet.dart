@@ -33,7 +33,7 @@ enum SheetType { free, sell }
 
 class _CreateDetailSheetState extends State<CreateDetailSheet> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetTypeFree: true, price: 0, authorId: '');
+  Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetCoverImage: '', sheetTypeFree: true, price: 0, authorId: '');
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   CreateCollection myCollection = CreateCollection();
   SheetType? _sheetType = SheetType.free;
@@ -49,6 +49,7 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
     File? pdfFile = Provider.of<FilePasser>(context).getFile();
 
     String sheetId = mySheet.sid;
+    String userId = FirebaseAuth.instance.currentUser!.uid;
 
     return FutureBuilder(
         future: firebase,
@@ -224,36 +225,42 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                             text: 'เสร็จสิ้น',
                             onPressed: () async {
                               _formKey.currentState!.save();
-                              try {
-                                myCollection
-                                    .createSheetCollection(
-                                  sheetId,
-                                  mySheet.sheetName,
-                                  mySheet.detailSheet,
-                                  mySheet.sheetTypeFree,
-                                  mySheet.price,
-                                  mySheet.authorId = FirebaseAuth.instance.currentUser!.uid,
-                                )
-                                    .then(
-                                  (value) async {
-                                    _formKey.currentState!.reset();
-                                    // debugPrint("Register Success");
-                                    firebaseStorage.UploadTask? task =
-                                        await PDFApi.uploadToFirebase(context, pdfFile, FirebaseAuth.instance.currentUser!.uid, sheetId);
-                                    Future.delayed(const Duration(milliseconds: 500), () {
-                                      AutoRouter.of(context).popUntilRoot();
+                              firebaseStorage.UploadTask? task = await PDFApi.uploadToFirebase(context, pdfFile, userId, sheetId);
+                              task!.whenComplete(() async {
+                                firebaseStorage.UploadTask? coverImage = await PDFApi.createCoverSheetImage(userId, sheetId);
+                                coverImage!.whenComplete(() async {
+                                  String coverImage = await PDFApi.getCoverImage(userId, sheetId);
+                                  try {
+                                    myCollection
+                                        .createSheetCollection(
+                                      sheetId,
+                                      mySheet.sheetName,
+                                      mySheet.detailSheet,
+                                      coverImage,
+                                      mySheet.sheetTypeFree,
+                                      mySheet.price,
+                                      mySheet.authorId = userId,
+                                    )
+                                        .then(
+                                      (value) async {
+                                        _formKey.currentState!.reset();
 
-                                      const String message = 'อัพโหลดชีทสำเร็จ!';
-                                      FlushbarPopup.successFlushbar(context, FlushbarIcon.errorIcon, message);
-                                    });
-                                  },
-                                );
-                              } on FirebaseAuthException catch (e) {
-                                Fluttertoast.showToast(
-                                  msg: e.message.toString(),
-                                  gravity: ToastGravity.BOTTOM,
-                                );
-                              }
+                                        Future.delayed(const Duration(milliseconds: 500), () {
+                                          AutoRouter.of(context).popUntilRoot();
+
+                                          final String message = 'อัพโหลดชีทสำเร็จ!';
+                                          FlushbarPopup.successFlushbar(context, FlushbarIcon.errorIcon, message);
+                                        });
+                                      },
+                                    );
+                                  } on FirebaseAuthException catch (e) {
+                                    Fluttertoast.showToast(
+                                      msg: e.message.toString(),
+                                      gravity: ToastGravity.BOTTOM,
+                                    );
+                                  }
+                                });
+                              });
                             },
                           ),
                         ),
