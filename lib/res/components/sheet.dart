@@ -14,13 +14,15 @@ class Sheet extends StatelessWidget {
   final String username;
   final int priceSheet;
   final String sheetId;
+  final String sheetCoverImage;
   const Sheet(
       {super.key,
       required this.authorImage,
       required this.title,
       required this.username,
       required this.priceSheet,
-      required this.sheetId});
+      required this.sheetId,
+      required this.sheetCoverImage});
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +47,7 @@ class Sheet extends StatelessWidget {
                       AutoRouter.of(context).navigateNamed('/home/' + sheetId);
                     },
                     child: CachedNetworkImage(
-                      imageUrl:
-                          'https://i.pinimg.com/originals/3d/83/e4/3d83e4284ba67ebcc3ca74c179ad5c1d.jpg',
+                      imageUrl: sheetCoverImage,
                       fit: BoxFit.fill,
                       width: constraints.maxWidth,
                     ),

@@ -70,7 +70,6 @@ class CustomAppBar extends AppBar {
   );
 
   static InkWell coin = InkWell(
-    onTap: () {},
     child: coinImage,
   );
 

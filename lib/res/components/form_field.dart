@@ -7,8 +7,11 @@ class MyTextFormField extends StatelessWidget {
   final String? helperText;
   final AutovalidateMode autovalidateMode;
   final FormFieldValidator<String> validator;
-  final FormFieldSetter<String> onSaved;
+  final FormFieldSetter<String>? onSaved;
+  final FormFieldSetter<String>? onChanged;
   final TextInputType? keyboardType;
+  final TextEditingController? controller;
+  final String? initialValue;
   final bool obscureText;
   final TextEditingController? controller;
   final String? initialValue;
@@ -25,10 +28,11 @@ class MyTextFormField extends StatelessWidget {
     this.helperText,
     required this.autovalidateMode,
     required this.validator,
-    required this.onSaved,
+    this.onSaved,
+    this.onChanged,
+    this.keyboardType = TextInputType.text,
     this.controller,
     this.initialValue,
-    this.keyboardType = TextInputType.text,
     this.obscureText = false,
     this.enabled = true,
     this.maxLine = 1,
@@ -56,6 +60,12 @@ class MyTextFormField extends StatelessWidget {
             Radius.circular(10),
           ),
         ),
+        disabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(width: 1, color: AppColors.black800, style: BorderStyle.solid),
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
+          ),
+        ),
         focusedErrorBorder: const OutlineInputBorder(
           borderSide: BorderSide(width: 1, color: AppColors.error500, style: BorderStyle.solid),
           borderRadius: BorderRadius.all(
@@ -68,7 +78,6 @@ class MyTextFormField extends StatelessWidget {
             Radius.circular(10),
           ),
         ),
-        contentPadding: EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 12.0),
         hintText: hintText,
         helperText: helperText,
         isDense: true,
@@ -82,6 +91,7 @@ class MyTextFormField extends StatelessWidget {
       enabled: enabled,
       controller: controller,
       onSaved: onSaved,
+      onChanged: onChanged,
       maxLines: maxLine,
       minLines: minLine,
     );

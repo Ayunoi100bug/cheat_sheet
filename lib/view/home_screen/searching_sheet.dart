@@ -158,6 +158,7 @@ class _SearchingSheetState extends State<SearchingSheet> {
                               );
                             }
                             return Sheet(
+                              sheetCoverImage: sheet?["sheetCoverImage"],
                               authorImage: userSnapshot.data?["profileImage"],
                               title: sheet?["sheetName"],
                               priceSheet: sheet?["price"],

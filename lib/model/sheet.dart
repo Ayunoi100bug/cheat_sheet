@@ -7,7 +7,8 @@ class Sheets {
   FieldValue timestamp = FieldValue.serverTimestamp();
   String sheetName;
   String detailSheet;
-  String sid = uuid.v1();
+  String sheetCoverImage;
+  String sid = uuid.v4();
   bool sheetTypeFree;
   int? price;
   int buyer = 0;
@@ -17,6 +18,7 @@ class Sheets {
   Sheets({
     required this.sheetName,
     required this.detailSheet,
+    required this.sheetCoverImage,
     required this.sheetTypeFree,
     this.price,
     required this.authorId,
@@ -26,6 +28,7 @@ class Sheets {
       : timestamp = json['timestamp'],
         sheetName = json['sheetName'],
         detailSheet = json['detailSheet'],
+        sheetCoverImage = json['sheetCoverImage'],
         sid = json['sid'],
         sheetTypeFree = json['sheetType'],
         price = json['price'],
@@ -37,6 +40,7 @@ class Sheets {
         'timestamp': timestamp,
         'sheetName': sheetName,
         'detailSheet': detailSheet,
+        'sheetCoverImage': sheetCoverImage,
         'sid': sid,
         'sheetTypeFree': sheetTypeFree,
         'price': price,

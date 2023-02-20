@@ -53,6 +53,7 @@ class MySheet extends StatelessWidget {
                         );
                       }
                       return Sheet(
+                        sheetCoverImage: sheet["sheetCoverImage"],
                         authorImage: userSnapshot.data?["profileImage"],
                         title: sheet["sheetName"],
                         priceSheet: sheet["price"],

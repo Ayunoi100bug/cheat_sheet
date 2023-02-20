@@ -43,3 +43,27 @@ Widget Popup_Login(BuildContext context) {
     ],
   );
 }
+
+Widget Popup_error(BuildContext context, String title, String content) {
+  return AlertDialog(
+    title: Bold20px(text: title),
+    content: SingleChildScrollView(
+      child: ListBody(
+        children: [
+          Regular16px(text: content),
+        ],
+      ),
+    ),
+    actions: [
+      TextButton(
+        child: Regular16px(
+          text: 'ตกลง',
+          fontWeight: FontWeight.w500,
+        ),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
+    ],
+  );
+}

@@ -11,14 +11,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
-import '../res/components/popup_login.dart';
+import '../res/components/popup_auth.dart';
 
 class UpdateCollection {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   AuthService myAuth = AuthService();
   Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
-  Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetTypeFree: true, authorId: '');
+  Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetCoverImage: '', sheetTypeFree: true, authorId: '');
 
   Future<void> updateUserData() async {
     var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();

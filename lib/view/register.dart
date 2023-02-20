@@ -86,7 +86,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             // Username
                             MyTextFormField(
                               autovalidateMode: AutovalidateMode.onUserInteraction,
-                              validator: RequiredValidator(errorText: 'Please enter username.'),
+                              validator: RequiredValidator(errorText: 'โปรดกรอกชื่อของคุณ.'),
                               onSaved: (value) {
                                 myUser.username = value!;
                               },
@@ -102,8 +102,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             MyTextFormField(
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               validator: MultiValidator([
-                                RequiredValidator(errorText: 'Please enter e-mail.'),
-                                EmailValidator(errorText: 'Format of email is not correct.'),
+                                RequiredValidator(errorText: 'โปรดกรอกอีเมลล์'),
+                                EmailValidator(errorText: 'รูปแบบอีเมลล์ไม่ถูกต้อง'),
                               ]),
                               onSaved: (value) {
                                 myUser.email = value!;
@@ -120,7 +120,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             // Password
                             MyTextFormField(
                               autovalidateMode: AutovalidateMode.onUserInteraction,
-                              validator: RequiredValidator(errorText: 'Please enter password.'),
+                              validator: RequiredValidator(errorText: 'โปรดกรอกรหัสผ่าน'),
                               onSaved: (value) {
                                 myUser.password = value!;
                               },

@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../res/button.dart';
@@ -18,6 +19,7 @@ class _MyAccountState extends State<MyAccount> {
   bool firstValue = false;
   bool secondValue = false;
   bool thirdValue = false;
+  final _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +57,7 @@ class _MyAccountState extends State<MyAccount> {
                       child: Row(
                         children: [
                           Regular16px(
-                            text: 'aaa@gmail.com',
+                            text: _auth.currentUser!.email.toString(),
                             color: AppColors.black400,
                           ),
                           Icon(
@@ -157,8 +159,7 @@ class _MyAccountState extends State<MyAccount> {
                   padding: EdgeInsets.only(
                     top: isPortrait ? screenWidth * 0.9 : screenWidth * 0.024,
                     left: isPortrait ? screenWidth * 0.6 : screenWidth * 0.74,
-                    right:
-                        isPortrait ? screenWidth * 0.08 : screenWidth * 0.032,
+                    right: isPortrait ? screenWidth * 0.08 : screenWidth * 0.032,
                   ),
                   child: PrimaryButton(
                     text: 'บันทึก',
