@@ -120,16 +120,21 @@ class _MainScreenState extends State<MainScreen> {
                         backgroundColor: CustomAppBar.appBarColor,
                         title: CustomAppBar.textLogo,
                         actions: [
-                          Row(
-                            children: [
-                              CustomAppBar.coin,
-                              const SizedBox(width: 4),
-                              Regular16px(
-                                text: data['coin'].toString(),
-                                color: AppColors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ],
+                          InkWell(
+                            child: Row(
+                              children: [
+                                CustomAppBar.coin,
+                                const SizedBox(width: 4),
+                                Regular16px(
+                                  text: data['coin'].toString(),
+                                  color: AppColors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ],
+                            ),
+                            onTap: () {
+                              AutoRouter.of(context as BuildContext).push(TopUpRoute());
+                            },
                           ),
                           CustomAppBar.notifications,
                           IconButton(
