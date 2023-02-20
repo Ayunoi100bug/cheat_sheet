@@ -97,29 +97,14 @@ class _DetailSheetState extends State<DetailSheet> {
                                                           alignment: Alignment.center,
                                                           height: screenHeight * 0.55,
                                                           width: screenWidth,
-                                                          child: PageView(
-                                                            children: [
-                                                              CachedNetworkImage(
+                                                          child: PageView.builder(
+                                                            itemCount: 8,
+                                                            itemBuilder: (context, index) {
+                                                              return CachedNetworkImage(
                                                                 imageUrl: "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
                                                                 fit: BoxFit.fill,
-                                                              ),
-                                                              CachedNetworkImage(
-                                                                imageUrl: "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
-                                                                fit: BoxFit.fill,
-                                                              ),
-                                                              CachedNetworkImage(
-                                                                imageUrl: "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
-                                                                fit: BoxFit.fill,
-                                                              ),
-                                                              CachedNetworkImage(
-                                                                imageUrl: "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
-                                                                fit: BoxFit.fill,
-                                                              ),
-                                                              CachedNetworkImage(
-                                                                imageUrl: "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
-                                                                fit: BoxFit.fill,
-                                                              ),
-                                                            ],
+                                                              );
+                                                            },
                                                           ),
                                                         ),
                                                         SizedBox(
