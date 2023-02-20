@@ -13,6 +13,8 @@ class MyTextFormField extends StatelessWidget {
   final TextEditingController? controller;
   final String? initialValue;
   final bool obscureText;
+  final TextEditingController? controller;
+  final String? initialValue;
   final bool enabled;
   final int maxLine;
   final int minLine;

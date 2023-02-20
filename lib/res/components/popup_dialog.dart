@@ -97,6 +97,54 @@ Widget Popup_DeleteSheet(BuildContext context) {
   );
 }
 
+Widget Popup_DeleteReview(BuildContext context, String reviewId, String sheetId) {
+  double screenHeight = MediaQuery.of(context).size.height;
+
+  return AlertDialog(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
+    title: Column(
+      children: [
+        Image.asset(
+          'assets/images/error.png',
+          width: 70,
+        ),
+        SizedBox(
+          height: screenHeight * 0.008,
+        ),
+        Regular14px(text: 'ต้องการที่จะลบความคิดเห็นนี้หรือไม่?'),
+        SizedBox(
+          height: screenHeight * 0.008,
+        ),
+        Regular12px(
+          text: 'ความคิดเห็นนี้จะถูกลบถาวร',
+          color: AppColors.black600,
+        ),
+      ],
+    ),
+    actions: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          OutlineButton(
+              text: 'ยกเลิก',
+              onPressed: () {
+                Navigator.pop(context);
+              }),
+          PrimaryButton(
+            text: 'ลบความคิดเห็น',
+            onPressed: () {
+              DeleteDocument().deleteReview(context, reviewId, sheetId);
+            },
+            color: AppColors.error600,
+          ),
+        ],
+      ),
+    ],
+  );
+}
+
 Widget Popup_DeleteSheetList(BuildContext context) {
   double screenHeight = MediaQuery.of(context).size.height;
   return AlertDialog(

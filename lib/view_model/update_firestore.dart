@@ -128,3 +128,20 @@ class EditProfileData {
     });
   }
 }
+
+class EditReviewData {
+  final _firestore = FirebaseFirestore.instance;
+
+  Future<void> editReview(BuildContext context, String currentRid, String newTextReview, double newRating) async {
+    await _firestore.collection('review').doc(currentRid).update({
+      'text': newTextReview,
+      'rating': newRating,
+    }).then((value) {
+      Future.delayed(const Duration(milliseconds: 200), () {
+        AutoRouter.of(context).popUntilRoot();
+        const String message = 'เปลี่ยนข้อมูลสำเร็จ';
+        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+      });
+    });
+  }
+}
