@@ -150,6 +150,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                               );
                             }
                             return Sheet(
+                              sheetCoverImage: sheet?["sheetCoverImage"],
                               authorImage: userSnapshot.data?["profileImage"],
                               title: sheet?["sheetName"],
                               priceSheet: sheet?["price"],
