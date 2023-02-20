@@ -29,7 +29,7 @@ class DeleteDocument {
     });
     _firestore.collection("review").doc(reviewId).delete().then((value) {
       AutoRouter.of(context).popUntilRoot();
-      const String message = 'ลบรีวิวสำเร็จแล้ว';
+      const String message = 'ลบความคิดเห็นสำเร็จ';
       FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
     });
   }

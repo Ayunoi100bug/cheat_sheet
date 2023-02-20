@@ -131,6 +131,7 @@ class _ReviewState extends State<Review> {
                                         },
                                         child: const Icon(
                                           FontAwesomeIcons.ellipsisV,
+                                          color: AppColors.black700,
                                           size: 16,
                                         ),
                                       );
