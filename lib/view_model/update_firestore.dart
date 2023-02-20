@@ -18,7 +18,7 @@ class UpdateCollection {
   final _auth = FirebaseAuth.instance;
   AuthService myAuth = AuthService();
   Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
-  Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetTypeFree: true, authorId: '');
+  Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetCoverImage: '', sheetTypeFree: true, authorId: '');
 
   Future<void> updateUserData() async {
     var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
