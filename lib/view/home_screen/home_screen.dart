@@ -63,24 +63,6 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                     onTap: () {
                       showDialog(
                         context: context,
-                        builder: (BuildContext context) => Popup_DeleteSheet(context),
-                      );
-                    },
-                    child: const Text('Popup Dialog'),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) => Popup_Login(context),
-                      );
-                    },
-                    child: const Text('Popup Login'),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      showDialog(
-                        context: context,
                         builder: (BuildContext context) => Popup_CreateTag(context),
                       );
                     },
