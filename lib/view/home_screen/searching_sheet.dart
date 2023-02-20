@@ -1,7 +1,19 @@
+
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/components/sheet.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:pdf/pdf.dart';
+import 'package:provider/provider.dart';
+
+import '../../data/network/pdf_api.dart';
+import '../../res/button.dart';
+import '../../res/components/flushbar.dart';
+import '../../res/components/sheet.dart';
+import '../../utils/routes/routes.gr.dart';
+import '../../view_model/file_passer.dart';
 
 import '../../res/colors.dart';
 import '../../res/typo.dart';
@@ -239,6 +251,7 @@ class _AllSortState extends State<AllSort> {
   final List<String> value = <String>['rating', 'priceMore', 'priceLess', 'typeFree', 'typeBuy', 'sheetNew', 'sheetOld'];
 
   Widget build(BuildContext context) {
+
     return ListView.builder(
       shrinkWrap: true,
       itemCount: 7,
@@ -261,5 +274,6 @@ class _AllSortState extends State<AllSort> {
         );
       },
     );
+
   }
 }

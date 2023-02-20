@@ -116,6 +116,7 @@ class CreateCollection {
     });
   }
 
+
   Future<void> createReviewCollection(String argText, String argRid, String argReviewerId, String argSheetId, double argRating, int argLike,
       BuildContext context, String _review) async {
     if (argRating == 0) {
@@ -123,6 +124,7 @@ class CreateCollection {
       FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, message);
       return;
     }
+
     await _firestore.collection("review").doc(argRid).set({
       'timestamp': myReview.timestamp,
       'text': argText.toString().trim(),
