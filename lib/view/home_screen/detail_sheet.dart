@@ -280,8 +280,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                   size: 16,
                                                   onPressed: () async {
                                                     if (sheetData['price'] == 0) {
-                                                      const url = 'https://www.africau.edu/images/default/sample.pdf';
-                                                      final file = await PDFApi.loadNetwork(url);
+                                                      final file = await PDFApi.loadPDFFromFirebase(sheetData["authorId"], widget.sheetId);
                                                       if (context.mounted) {
                                                         AutoRouter.of(context).push(ReadSheetRoute(sheetId: widget.sheetId, file: file));
                                                       }
@@ -315,8 +314,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                   if (sheetData['price'] == 0 ||
                                                       currentUserData['buyedSheet'].contains(sheetData['sid']) ||
                                                       currentUserData['uid'] == sheetData['authorId']) {
-                                                    const url = 'https://www.africau.edu/images/default/sample.pdf';
-                                                    final file = await PDFApi.loadNetwork(url);
+                                                    final file = await PDFApi.loadPDFFromFirebase(sheetData['authorId'], widget.sheetId);
                                                     if (context.mounted) {
                                                       AutoRouter.of(context).push(ReadSheetRoute(sheetId: widget.sheetId, file: file));
                                                     }
