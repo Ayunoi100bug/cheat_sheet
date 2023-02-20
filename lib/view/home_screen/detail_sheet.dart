@@ -6,7 +6,7 @@ import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/components/flushbar.dart';
 import 'package:cheat_sheet/res/components/flushbar_icon.dart';
-import 'package:cheat_sheet/res/components/popup_login.dart';
+import 'package:cheat_sheet/res/components/popup_auth.dart';
 import 'package:cheat_sheet/res/components/review.dart';
 import 'package:cheat_sheet/res/components/tag.dart';
 import 'package:cheat_sheet/res/gap_dimension.dart';

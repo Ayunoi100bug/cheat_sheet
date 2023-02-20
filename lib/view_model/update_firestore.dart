@@ -11,7 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
-import '../res/components/popup_login.dart';
+import '../res/components/popup_auth.dart';
 
 class UpdateCollection {
   final _firestore = FirebaseFirestore.instance;
