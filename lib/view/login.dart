@@ -83,12 +83,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   child: Regular16px(text: "E-mail"),
                                 ),
                                 SizedBox(height: screenHeight * GapDimension.h0_01),
-                                // I delete username because currently it can't use username to login.
                                 MyTextFormField(
                                   autovalidateMode: AutovalidateMode.onUserInteraction,
                                   validator: MultiValidator([
-                                    RequiredValidator(errorText: 'Please enter e-mail.'),
-                                    EmailValidator(errorText: 'Format of email is not correct.'),
+                                    RequiredValidator(errorText: 'โปรดกรอกอีเมลล์'),
+                                    EmailValidator(errorText: 'รูปแบบอีเมลล์ไม่ถูกต้อง'),
                                   ]),
                                   onSaved: (value) {
                                     myUser.email = value!;
@@ -101,11 +100,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   alignment: Alignment.centerLeft,
                                   child: Regular16px(text: "รหัสผ่าน"),
                                 ),
-
                                 SizedBox(height: screenHeight * GapDimension.h0_01),
                                 MyTextFormField(
                                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                                  validator: RequiredValidator(errorText: 'Please enter password.'),
+                                  validator: RequiredValidator(errorText: 'โปรดกรอกรหัสผ่าน'),
                                   onSaved: (value) {
                                     myUser.password = value!;
                                   },

@@ -77,7 +77,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     controller: currentPasswordController,
                     validator: (value) {
                       if (value!.isEmpty || value.isEmpty) {
-                        return 'Please Enter Current Password';
+                        return 'โปรดกรอกรหัสผ่านปัจจุบัน';
                       }
                       return null;
                     },
@@ -104,7 +104,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     controller: newPasswordController,
                     validator: (value) {
                       if (value!.isEmpty || value.isEmpty) {
-                        return 'Please Enter New Password';
+                        return 'โปรดกรอกรหัสผ่านใหม่';
                       }
                       return null;
                     },

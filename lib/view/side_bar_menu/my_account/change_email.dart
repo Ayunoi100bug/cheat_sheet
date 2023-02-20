@@ -159,6 +159,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
                           currentEmail = currentEmailController.text;
                           newEmail = newEmailController.text;
                         });
+                        
                         myAuth.changeUserEmail(context, currentEmail, currentPassword, newEmail);
                       }
                     },
