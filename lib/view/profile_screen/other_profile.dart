@@ -39,9 +39,8 @@ class _OtherProfileState extends State<OtherProfile> {
                             padding: EdgeInsets.all(constraints.maxHeight * 0.12),
                             child: Container(
                               decoration: BoxDecoration(
-                                image: DecorationImage(
+                                image: const DecorationImage(
                                   image: AssetImage('assets/images/logo.png'),
-                                  // fit: BoxFit.fill,
                                 ),
                                 border: Border.all(color: AppColors.black800, width: 2.0),
                                 shape: BoxShape.circle,
