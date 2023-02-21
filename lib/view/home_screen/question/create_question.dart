@@ -89,10 +89,6 @@ class _CreateQuestionState extends State<CreateQuestion> {
                     pageNumber: widget.askingPage,
                     pageBuilder: (context, textureBuilder, pageSize) => textureBuilder(),
                   ),
-                  // Image.network(
-                  //   "https://static.trueplookpanya.com/tppy/member/m_665000_667500/665461/cms/images/%E0%B9%84%E0%B8%AD%E0%B9%80%E0%B8%94%E0%B8%B5%E0%B8%A2%E0%B8%88%E0%B8%94%E0%B8%8A%E0%B8%B5%E0%B8%97%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B_04.jpg",
-                  //   height: isPortrait ? constraints.maxHeight * 0.7 : constraints.maxWidth * 0.7,
-                  // ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: screenHeight * 0.012, left: screenHeight * 0.012, right: screenHeight * 0.012),
