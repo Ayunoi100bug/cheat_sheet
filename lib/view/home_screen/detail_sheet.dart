@@ -89,72 +89,37 @@ class _DetailSheetState extends State<DetailSheet> {
                                                 context: context,
                                                 builder: (BuildContext context) {
                                                   return AlertDialog(
-                                                      content: Stack(
-                                                    children: [
-                                                      Container(
-                                                        alignment: Alignment.center,
-                                                        height: screenHeight * 0.7,
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          children: [
-                                                            SingleChildScrollView(
-                                                              scrollDirection: Axis.horizontal,
-                                                              child: SizedBox(
-                                                                height: screenHeight * 0.6,
-                                                                child: Row(
-                                                                  children: [
-                                                                    Container(
-                                                                      margin: EdgeInsets.only(right: screenHeight * 0.025),
-                                                                      decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
-                                                                      child: CachedNetworkImage(
-                                                                        imageUrl:
-                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
-                                                                        fit: BoxFit.fill,
-                                                                      ),
-                                                                    ),
-                                                                    Container(
-                                                                      margin: EdgeInsets.only(right: screenHeight * 0.025),
-                                                                      decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
-                                                                      child: CachedNetworkImage(
-                                                                        imageUrl:
-                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
-                                                                        fit: BoxFit.fill,
-                                                                      ),
-                                                                    ),
-                                                                    Container(
-                                                                      margin: EdgeInsets.only(right: screenHeight * 0.025),
-                                                                      decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
-                                                                      child: CachedNetworkImage(
-                                                                        imageUrl:
-                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
-                                                                        fit: BoxFit.fill,
-                                                                      ),
-                                                                    ),
-                                                                    Container(
-                                                                      margin: EdgeInsets.only(right: screenHeight * 0.025),
-                                                                      decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
-                                                                      child: CachedNetworkImage(
-                                                                        imageUrl:
-                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
-                                                                        fit: BoxFit.fill,
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Expanded(child: Container()),
-                                                            const BlinkText('สามารถเลื่อนไปทางขวาได้',
-                                                                style: TextStyle(fontSize: 20, color: AppColors.black800),
-                                                                beginColor: AppColors.black800,
-                                                                endColor: AppColors.white,
-                                                                times: 20,
-                                                                duration: Duration(seconds: 1)),
-                                                          ],
+
+                                                    content: Column(
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: [
+                                                        Container(
+                                                          alignment: Alignment.center,
+                                                          height: screenHeight * 0.55,
+                                                          width: screenWidth,
+                                                          child: PageView.builder(
+                                                            itemCount: 8,
+                                                            itemBuilder: (context, index) {
+                                                              return CachedNetworkImage(
+                                                                imageUrl: "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
+                                                                fit: BoxFit.fill,
+                                                              );
+                                                            },
+                                                          ),
+
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ));
+                                                        SizedBox(
+                                                          height: screenWidth * 0.04,
+                                                        ),
+                                                        const BlinkText('สามารถเลื่อนไปทางขวาได้',
+                                                            style: TextStyle(fontSize: 20, color: AppColors.black800),
+                                                            beginColor: AppColors.black800,
+                                                            endColor: AppColors.white,
+                                                            times: 20,
+                                                            duration: Duration(seconds: 1)),
+                                                      ],
+                                                    ),
+                                                  );
                                                 });
                                           }),
                                           child: Stack(
@@ -440,7 +405,6 @@ class _DetailSheetState extends State<DetailSheet> {
     final SheetLists _sheetLists = SheetLists(sheetListName: '', sid: [], authorId: '', sheetListId: '');
     final Future<FirebaseApp> firebase = Firebase.initializeApp();
     CreateCollection myCollection = CreateCollection();
-    final _auth = FirebaseAuth.instance;
 
     showModalBottomSheet(
       isScrollControlled: true,
@@ -452,6 +416,7 @@ class _DetailSheetState extends State<DetailSheet> {
       )),
       builder: (BuildContext context) {
         return SizedBox(
+
           height: MediaQuery.of(context).viewInsets.bottom == 0
               ? screenHeight * 0.3
               : MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.bottom,
@@ -504,20 +469,46 @@ class _DetailSheetState extends State<DetailSheet> {
                         _formKey.currentState!.reset();
                         AutoRouter.of(context).popUntilRoot();
                         FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, 'สร้างชีทลิสต์สำเร็จ');
+
                       },
-                    );
-                    await _firestoreDb.collection('users').doc(_auth.currentUser!.uid).update({
-                      'sheetLists': FieldValue.arrayUnion([_sheetLists.sheetListId])
-                    });
-                  } on FirebaseAuthException catch (e) {
-                    FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
-                  }
-                },
-              ),
-              SizedBox(
-                height: screenHeight * 0.03,
-              ),
-            ],
+                      validator: RequiredValidator(errorText: 'Please enter sheet list name.'),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: screenHeight * 0.03,
+                ),
+                PrimaryButton(
+                  text: 'บันทึก',
+                  onPressed: () async {
+                    _formKey.currentState!.save();
+                    try {
+                      myCollection
+                          .createSheetListCollection(
+                        _sheetLists.sheetListName,
+                        _sheetLists.sid = [],
+                        _sheetLists.authorId = _auth.currentUser!.uid,
+                        _sheetLists.sheetListId = uuid.v4(),
+                      )
+                          .then(
+                        (value) {
+                          _formKey.currentState!.reset();
+                          AutoRouter.of(context).popUntilRoot();
+                        },
+                      );
+                      await _firestoreDb.collection('users').doc(_auth.currentUser!.uid).update({
+                        'sheetLists': FieldValue.arrayUnion([_sheetLists.sheetListId])
+                      });
+                    } on FirebaseAuthException catch (e) {
+                      FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
+                    }
+                  },
+                ),
+                SizedBox(
+                  height: screenHeight * 0.03,
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -628,6 +619,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                 });
                                                 Future.delayed(const Duration(milliseconds: 500), () {
                                                   Navigator.of(context).pop();
+
                                                   const String message = 'เพิ่มชีทเข้าชีทลิสต์สำเร็จ!';
                                                   FlushbarPopup.successFlushbar(
                                                       context,
@@ -636,6 +628,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                         color: AppColors.white,
                                                       ),
                                                       message);
+
                                                 });
                                               } on FirebaseAuthException catch (e) {
                                                 FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
