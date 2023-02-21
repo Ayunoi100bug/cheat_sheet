@@ -1,6 +1,4 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:cheat_sheet/data/network/pdf_api.dart';
 import 'package:cheat_sheet/model/sheet_list.dart';
 import 'package:cheat_sheet/model/user.dart';
 import 'package:cheat_sheet/res/button.dart';
@@ -16,9 +14,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:uuid/uuid.dart';
@@ -117,7 +112,7 @@ class _SheetListScreenState extends State<SheetListScreen> with AutomaticKeepAli
                                               color: AppColors.black300,
                                             ),
                                             InkWell(
-                                              child: Container(
+                                              child: SizedBox(
                                                 height: constraints.maxHeight * 0.2,
                                                 child: LayoutBuilder(
                                                   builder: (context, constraints) {
@@ -145,7 +140,6 @@ class _SheetListScreenState extends State<SheetListScreen> with AutomaticKeepAli
                                 },
                               ),
                             ),
-
                           ],
                         ),
                       );
@@ -153,7 +147,6 @@ class _SheetListScreenState extends State<SheetListScreen> with AutomaticKeepAli
                   ),
                 );
               });
-
         });
   }
 
@@ -181,7 +174,7 @@ void _BottomSheet(context) {
       top: Radius.circular(10),
     )),
     builder: (BuildContext context) {
-      return Container(
+      return SizedBox(
         height: MediaQuery.of(context).viewInsets.bottom == 0
             ? screenHeight * 0.3
             : MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.bottom,
@@ -233,6 +226,7 @@ void _BottomSheet(context) {
                     (value) {
                       _formKey.currentState!.reset();
                       AutoRouter.of(context).popUntilRoot();
+                      FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, 'สร้างชีทลิสต์สำเร็จ');
                     },
                   );
                   await _firestoreDb.collection('users').doc(_auth.currentUser!.uid).update({

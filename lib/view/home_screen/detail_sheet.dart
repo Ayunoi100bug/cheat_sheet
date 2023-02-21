@@ -13,7 +13,6 @@ import 'package:cheat_sheet/res/gap_dimension.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/view_model/create_firestore.dart';
-import 'package:cheat_sheet/view_model/read_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -100,7 +99,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                           children: [
                                                             SingleChildScrollView(
                                                               scrollDirection: Axis.horizontal,
-                                                              child: Container(
+                                                              child: SizedBox(
                                                                 height: screenHeight * 0.6,
                                                                 child: Row(
                                                                   children: [
@@ -452,7 +451,7 @@ class _DetailSheetState extends State<DetailSheet> {
         top: Radius.circular(10),
       )),
       builder: (BuildContext context) {
-        return Container(
+        return SizedBox(
           height: MediaQuery.of(context).viewInsets.bottom == 0
               ? screenHeight * 0.3
               : MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.bottom,
@@ -504,6 +503,7 @@ class _DetailSheetState extends State<DetailSheet> {
                       (value) {
                         _formKey.currentState!.reset();
                         AutoRouter.of(context).popUntilRoot();
+                        FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, 'สร้างชีทลิสต์สำเร็จ');
                       },
                     );
                     await _firestoreDb.collection('users').doc(_auth.currentUser!.uid).update({
@@ -552,100 +552,102 @@ class _DetailSheetState extends State<DetailSheet> {
                         } else {
                           final mySheetLists = snapshot.data?.docs.where((document) => document["authorId"] == _auth.currentUser?.uid);
                           return SingleChildScrollView(
-                            child: Container(
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 20, right: 24, top: 28, bottom: 28),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Regular16px(
-                                          text: 'บันทึกชีทนี้ลง...',
-                                        ),
-                                        InkWell(
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              border: Border.all(color: AppColors.tertiary500),
-                                              borderRadius: BorderRadius.circular(5),
-                                            ),
-                                            child: Icon(
-                                              FontAwesomeIcons.plus,
-                                              color: AppColors.tertiary500,
-                                              size: 24,
-                                            ),
-                                          ),
-                                          onTap: () {
-                                            _BottomSheet(context);
-                                          },
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.all(screenWidth * GapDimension.w0_032),
-                                    child: GridView.builder(
-                                      physics: NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 3,
-                                        crossAxisSpacing: 8,
-                                        mainAxisSpacing: 8,
-                                        childAspectRatio: screenWidth < 480
-                                            ? MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.1)
-                                            : MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 0.4),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 20, right: 24, top: 28, bottom: 28),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Regular16px(
+                                        text: 'บันทึกชีทนี้ลง...',
                                       ),
-                                      itemCount: mySheetLists?.length,
-                                      itemBuilder: (context, index) {
-                                        var sheetLists = mySheetLists?.elementAt(index);
-                                        return Container(
-                                          child: LayoutBuilder(
-                                            builder: (context, constraints) {
-                                              return InkWell(
-                                                child: Column(
-                                                  children: [
-                                                    Container(
-                                                      height: constraints.maxHeight * 0.8,
-                                                      color: AppColors.black300,
-                                                    ),
-                                                    Container(
-                                                      height: constraints.maxHeight * 0.2,
-                                                      child: LayoutBuilder(
-                                                        builder: (context, constraints) {
-                                                          return Container(
-                                                            padding: EdgeInsets.only(top: screenWidth * 0.02),
-                                                            alignment: Alignment.topCenter,
-                                                            height: constraints.maxHeight * 0.5,
-                                                            child: Regular16px(text: sheetLists!['sheetListName']),
-                                                          );
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                onTap: () async {
-                                                  try {
-                                                    await _firestoreDb.collection('sheetList').doc(sheetLists!['sheetListId']).update({
-                                                      'sid': FieldValue.arrayUnion([sheetId])
-                                                    });
-                                                    Future.delayed(const Duration(milliseconds: 500), () {
-                                                      Navigator.of(context).pop();
-                                                      final String message = 'เพิ่มชีทเข้าชีทลิสต์เรียบร้อย!';
-                                                      FlushbarPopup.successFlushbar(context, Icon(FontAwesomeIcons.book), message);
-                                                    });
-                                                  } on FirebaseAuthException catch (e) {
-                                                    FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
-                                                  }
-                                                },
-                                              );
-                                            },
+                                      InkWell(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(color: AppColors.tertiary500),
+                                            borderRadius: BorderRadius.circular(5),
                                           ),
-                                        );
-                                      },
-                                    ),
+                                          child: const Icon(
+                                            FontAwesomeIcons.plus,
+                                            color: AppColors.tertiary500,
+                                            size: 24,
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          _BottomSheet(context);
+                                        },
+                                      )
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(screenWidth * GapDimension.w0_032),
+                                  child: GridView.builder(
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3,
+                                      crossAxisSpacing: 8,
+                                      mainAxisSpacing: 8,
+                                      childAspectRatio: screenWidth < 480
+                                          ? MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.1)
+                                          : MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 0.4),
+                                    ),
+                                    itemCount: mySheetLists?.length,
+                                    itemBuilder: (context, index) {
+                                      var sheetLists = mySheetLists?.elementAt(index);
+                                      return LayoutBuilder(
+                                        builder: (context, constraints) {
+                                          return InkWell(
+                                            child: Column(
+                                              children: [
+                                                Container(
+                                                  height: constraints.maxHeight * 0.8,
+                                                  color: AppColors.black300,
+                                                ),
+                                                SizedBox(
+                                                  height: constraints.maxHeight * 0.2,
+                                                  child: LayoutBuilder(
+                                                    builder: (context, constraints) {
+                                                      return Container(
+                                                        padding: EdgeInsets.only(top: screenWidth * 0.02),
+                                                        alignment: Alignment.topCenter,
+                                                        height: constraints.maxHeight * 0.5,
+                                                        child: Regular16px(text: sheetLists!['sheetListName']),
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            onTap: () async {
+                                              try {
+                                                await _firestoreDb.collection('sheetList').doc(sheetLists!['sheetListId']).update({
+                                                  'sid': FieldValue.arrayUnion([sheetId])
+                                                });
+                                                Future.delayed(const Duration(milliseconds: 500), () {
+                                                  Navigator.of(context).pop();
+                                                  const String message = 'เพิ่มชีทเข้าชีทลิสต์เรียบร้อย!';
+                                                  FlushbarPopup.successFlushbar(
+                                                      context,
+                                                      const Icon(
+                                                        FontAwesomeIcons.book,
+                                                        color: AppColors.white,
+                                                      ),
+                                                      message);
+                                                });
+                                              } on FirebaseAuthException catch (e) {
+                                                FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
+                                              }
+                                            },
+                                          );
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
                             ),
                           );
                         }
@@ -669,13 +671,13 @@ class _DetailSheetState extends State<DetailSheet> {
       )),
       builder: (BuildContext context) {
         return SingleChildScrollView(
-          child: Container(
+          child: SizedBox(
             height: isPortrait ? screenWidth * 0.52 : screenWidth * 0.29,
             child: Padding(
               padding: EdgeInsets.only(top: screenWidth * 0.040, bottom: isPortrait ? screenWidth * 0.040 : screenWidth * 0.012),
               child: Column(
                 children: [
-                  Regular16px(
+                  const Regular16px(
                     text: 'แชร์ชีทไป...',
                   ),
                   Padding(
@@ -685,7 +687,7 @@ class _DetailSheetState extends State<DetailSheet> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Icon(
+                          const Icon(
                             FontAwesomeIcons.facebook,
                             color: Colors.blue,
                             size: 36,
@@ -693,12 +695,10 @@ class _DetailSheetState extends State<DetailSheet> {
                           SizedBox(
                             width: screenWidth * 0.08,
                           ),
-                          Regular16px(text: 'Facebook'),
+                          const Regular16px(text: 'Facebook'),
                         ],
                       ),
-                      onTap: () {
-                        print("Facebook");
-                      },
+                      onTap: () {},
                     ),
                   ),
                   InkWell(
@@ -708,7 +708,7 @@ class _DetailSheetState extends State<DetailSheet> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Icon(
+                          const Icon(
                             FontAwesomeIcons.instagram,
                             color: Colors.pink,
                             size: 36,
@@ -716,13 +716,11 @@ class _DetailSheetState extends State<DetailSheet> {
                           SizedBox(
                             width: screenWidth * 0.08,
                           ),
-                          Regular16px(text: 'Instagram'),
+                          const Regular16px(text: 'Instagram'),
                         ],
                       ),
                     ),
-                    onTap: () {
-                      print("Instagram");
-                    },
+                    onTap: () {},
                   ),
                   InkWell(
                     child: Padding(
@@ -731,7 +729,7 @@ class _DetailSheetState extends State<DetailSheet> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Icon(
+                          const Icon(
                             FontAwesomeIcons.twitter,
                             color: Colors.blue,
                             size: 36,
@@ -739,13 +737,11 @@ class _DetailSheetState extends State<DetailSheet> {
                           SizedBox(
                             width: screenWidth * 0.08,
                           ),
-                          Regular16px(text: 'Twitter'),
+                          const Regular16px(text: 'Twitter'),
                         ],
                       ),
                     ),
-                    onTap: () {
-                      print("Twitter");
-                    },
+                    onTap: () {},
                   ),
                 ],
               ),
