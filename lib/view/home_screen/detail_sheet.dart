@@ -13,6 +13,10 @@ import 'package:cheat_sheet/res/gap_dimension.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/view_model/create_firestore.dart';
+
+import 'package:cheat_sheet/view_model/file_passer_for_read.dart';
+import 'package:cheat_sheet/view_model/read_firestore.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -21,6 +25,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:cheat_sheet/view_model/update_firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
 import '../../data/network/pdf_api.dart';
@@ -246,7 +251,8 @@ class _DetailSheetState extends State<DetailSheet> {
                                                     if (sheetData['price'] == 0) {
                                                       final file = await PDFApi.loadPDFFromFirebase(sheetData["authorId"], widget.sheetId);
                                                       if (context.mounted) {
-                                                        AutoRouter.of(context).push(ReadSheetRoute(sheetId: widget.sheetId, file: file));
+                                                        Provider.of<FilePasserForRead>(context, listen: false).setFile(file);
+                                                        AutoRouter.of(context).push(ReadSheetRoute(sheetId: widget.sheetId));
                                                       }
                                                     }
                                                     if (context.mounted) {
@@ -280,7 +286,8 @@ class _DetailSheetState extends State<DetailSheet> {
                                                       currentUserData['uid'] == sheetData['authorId']) {
                                                     final file = await PDFApi.loadPDFFromFirebase(sheetData['authorId'], widget.sheetId);
                                                     if (context.mounted) {
-                                                      AutoRouter.of(context).push(ReadSheetRoute(sheetId: widget.sheetId, file: file));
+                                                      Provider.of<FilePasserForRead>(context, listen: false).setFile(file);
+                                                      AutoRouter.of(context).push(ReadSheetRoute(sheetId: widget.sheetId));
                                                     }
                                                   }
                                                   if (context.mounted) {

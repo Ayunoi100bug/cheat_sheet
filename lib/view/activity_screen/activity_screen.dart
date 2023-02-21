@@ -19,42 +19,39 @@ class _ActivityScreenState extends State<ActivityScreen> with AutomaticKeepAlive
     double screenHeight = MediaQuery.of(context).size.height;
 
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    var isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(children: [
             SizedBox(
-              height: screenHeight * 0.04,
+              height: screenHeight * 0.03,
             ),
-            Row(
-              children: [
-                SizedBox(
-                  width: screenWidth * 0.04,
-                ),
-                Medium20px(text: 'เควสประจำวัน'),
-                SizedBox(
-                  width: screenWidth * 0.02,
-                ),
-                Regular14px(text: 'เหลือ 20 ชม.'),
-              ],
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: isPortrait ? screenWidth * 0.04 : screenWidth * 0.06, vertical: isPortrait ? screenWidth * 0.01 : screenWidth * 0.02),
+              child: Row(
+                children: [
+                  const Medium20px(text: 'เควสประจำวัน'),
+                  SizedBox(
+                    width: screenWidth * 0.02,
+                  ),
+                  const Regular14px(text: 'เหลือ 20 ชม.'),
+                ],
+              ),
             ),
             SizedBox(height: screenHeight * 0.01),
             GridView.builder(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 1,
                 crossAxisSpacing: 8,
-                childAspectRatio: screenWidth < 480
-                    ? MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 12)
-                    : MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 4),
+                mainAxisExtent: isPortrait ? 70 : 90,
               ),
               itemCount: 3,
               itemBuilder: (context, index) {
-                return DiaryQuest(
+                return const DiaryQuest(
                   questName: 'อ่านชีทครบ 3 ครั้ง',
                   completeTime: 3,
                   doingTime: 1,
@@ -64,13 +61,13 @@ class _ActivityScreenState extends State<ActivityScreen> with AutomaticKeepAlive
               padding: EdgeInsets.only(right: screenWidth * 0.04, left: screenWidth * 0.04),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.01),
+              padding: EdgeInsets.symmetric(horizontal: isPortrait ? screenWidth * 0.04 : screenWidth * 0.06, vertical: screenWidth * 0.01),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Medium20px(text: 'ความสำเร็จ'),
+                  const Medium20px(text: 'ความสำเร็จ'),
                   InkWell(
-                    child: Medium14px(
+                    child: const Medium14px(
                       text: 'ดูทั้งหมด',
                       underline: true,
                       color: AppColors.blue700,
@@ -83,24 +80,23 @@ class _ActivityScreenState extends State<ActivityScreen> with AutomaticKeepAlive
               ),
             ),
             GridView.builder(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 1,
                 crossAxisSpacing: 8,
-                childAspectRatio: screenWidth < 480
-                    ? MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 12)
-                    : MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 4),
+                mainAxisExtent: isPortrait ? 70 : 90,
               ),
               itemCount: 3,
               itemBuilder: (context, index) {
-                return Achievement(
+                return const Achievement(
                   achievementName: 'เข้าสู่ระบบครบ 15 วัน',
                   completeTime: 15,
                   doingTime: 3,
                   recievePoint: 100,
                 );
               },
+              padding: EdgeInsets.only(right: screenWidth * 0.04, left: screenWidth * 0.04),
             ),
             Padding(
               padding: EdgeInsets.symmetric(
@@ -110,9 +106,9 @@ class _ActivityScreenState extends State<ActivityScreen> with AutomaticKeepAlive
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Medium20px(text: 'ล่าสุด'),
+                  const Medium20px(text: 'ล่าสุด'),
                   InkWell(
-                    child: Regular14px(
+                    child: const Regular14px(
                       text: 'ดูทั้งหมด',
                       underline: true,
                       color: AppColors.blue700,
@@ -152,9 +148,9 @@ class _ActivityScreenState extends State<ActivityScreen> with AutomaticKeepAlive
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Medium20px(text: 'ดาวน์โหลด'),
+                  const Medium20px(text: 'ดาวน์โหลด'),
                   InkWell(
-                    child: Regular14px(
+                    child: const Regular14px(
                       text: 'ดูทั้งหมด',
                       underline: true,
                       color: AppColors.blue700,

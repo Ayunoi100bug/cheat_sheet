@@ -1,17 +1,23 @@
+import 'dart:io';
+
 import 'package:auto_route/annotations.dart';
 import 'package:cheat_sheet/res/colors.dart';
+import 'package:cheat_sheet/view_model/file_passer_for_read.dart';
 
 import 'package:clickable_list_wheel_view/clickable_list_wheel_widget.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
-import 'package:cheat_sheet/view/home_screen/detail_question.dart';
+import 'package:cheat_sheet/view/home_screen/question/detail_question.dart';
 import 'package:flutter/material.dart';
+import 'package:pdf_render/pdf_render_widgets.dart';
+import 'package:provider/provider.dart';
 
-import '../../res/components/ask.dart';
+import '../../../res/components/ask.dart';
 
 class AskQuestion extends StatefulWidget {
   final String sheetId;
-  const AskQuestion({super.key, @PathParam() required this.sheetId});
+  final int askingPage;
+  const AskQuestion({super.key, @PathParam() required this.sheetId, required this.askingPage});
 
   @override
   State<AskQuestion> createState() => _AskQuestionState();
@@ -29,11 +35,8 @@ class _AskQuestionState extends State<AskQuestion> {
     int itemCount = _itemCount;
     double scrollOffset = _scrollController.position.pixels;
     double viewportHeight = _scrollController.position.viewportDimension;
-    double scrollRange = _scrollController.position.maxScrollExtent -
-        1 -
-        _scrollController.position.minScrollExtent;
-    int firstVisibleItemIndex =
-        (scrollOffset / (scrollRange + viewportHeight) * itemCount).floor();
+    double scrollRange = _scrollController.position.maxScrollExtent - 1 - _scrollController.position.minScrollExtent;
+    int firstVisibleItemIndex = (scrollOffset / (scrollRange + viewportHeight) * itemCount).floor();
 
     if (_scrollController.position.atEdge) {
       bool isTop = _scrollController.position.pixels == 0;
@@ -65,7 +68,10 @@ class _AskQuestionState extends State<AskQuestion> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+
+    File? file = Provider.of<FilePasserForRead>(context).getFile();
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -75,7 +81,7 @@ class _AskQuestionState extends State<AskQuestion> {
           size: 40,
         ),
         onPressed: () {
-          AutoRouter.of(context).push(CreateQuestionRoute());
+          AutoRouter.of(context).push(CreateQuestionRoute(sheetId: widget.sheetId, askingPage: widget.askingPage));
         },
         backgroundColor: AppColors.tertiary600,
       ),
@@ -93,18 +99,12 @@ class _AskQuestionState extends State<AskQuestion> {
                     right: screenHeight * 0.036,
                     bottom: screenHeight * 0.020,
                   ),
-                  height: isPortrait
-                      ? constraints.maxHeight * 0.6
-                      : constraints.maxHeight * 0.4,
-                  child: SizedBox(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: AppColors.error300,
-                        image: DecorationImage(
-                          image: NetworkImage(
-                              "https://static.trueplookpanya.com/tppy/member/m_665000_667500/665461/cms/images/%E0%B9%84%E0%B8%AD%E0%B9%80%E0%B8%94%E0%B8%B5%E0%B8%A2%E0%B8%88%E0%B8%94%E0%B8%8A%E0%B8%B5%E0%B8%97%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B_04.jpg"),
-                        ),
-                      ),
+                  height: isPortrait ? constraints.maxHeight * 0.6 : constraints.maxHeight * 0.4,
+                  child: Container(
+                    child: PdfDocumentLoader.openFile(
+                      file!.path,
+                      pageNumber: widget.askingPage,
+                      pageBuilder: (context, textureBuilder, pageSize) => textureBuilder(),
                     ),
                   ),
                 ),
@@ -113,8 +113,7 @@ class _AskQuestionState extends State<AskQuestion> {
                     print('${_cardPosition}');
                   },
                   child: SizedBox(
-                    height:
-                        isPortrait ? screenHeight * 0.23 : screenHeight * 0.6,
+                    height: isPortrait ? screenHeight * 0.23 : screenHeight * 0.6,
                     child: ListView.builder(
                         controller: _scrollController,
                         itemCount: _itemCount,
