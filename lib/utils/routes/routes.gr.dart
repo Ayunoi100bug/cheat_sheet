@@ -11,8 +11,6 @@
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:io' as _i34;
-
 import 'package:auto_route/auto_route.dart' as _i32;
 import 'package:auto_route/empty_router_widgets.dart' as _i5;
 import 'package:flutter/material.dart' as _i33;
@@ -22,12 +20,12 @@ import '../../view/create_sheet_screen/create_detail_sheet.dart' as _i19;
 import '../../view/create_sheet_screen/import_sheet_screen.dart' as _i18;
 import '../../view/create_sheet_screen/pick_demo_pages.dart' as _i21;
 import '../../view/create_sheet_screen/view_import_sheet.dart' as _i20;
-import '../../view/home_screen/ask_question.dart' as _i12;
-import '../../view/home_screen/create_question.dart' as _i13;
 import '../../view/home_screen/create_review.dart' as _i16;
-import '../../view/home_screen/detail_question.dart' as _i14;
 import '../../view/home_screen/detail_sheet.dart' as _i10;
 import '../../view/home_screen/home_screen.dart' as _i7;
+import '../../view/home_screen/question/ask_question.dart' as _i12;
+import '../../view/home_screen/question/create_question.dart' as _i13;
+import '../../view/home_screen/question/detail_question.dart' as _i14;
 import '../../view/home_screen/read_sheet.dart' as _i11;
 import '../../view/home_screen/review_sheet.dart' as _i15;
 import '../../view/home_screen/searching_sheet.dart' as _i9;
@@ -158,33 +156,38 @@ class AppRouter extends _i32.RootStackRouter {
       );
     },
     ReadSheetRoute.name: (routeData) {
-      final args = routeData.argsAs<ReadSheetRouteArgs>();
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<ReadSheetRouteArgs>(
+          orElse: () =>
+              ReadSheetRouteArgs(sheetId: pathParams.getString('sheetId')));
       return _i32.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i11.ReadSheet(
           key: args.key,
           sheetId: args.sheetId,
-          file: args.file,
         ),
       );
     },
     AskQuestionRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<AskQuestionRouteArgs>(
-          orElse: () =>
-              AskQuestionRouteArgs(sheetId: pathParams.getString('sheetId')));
+      final args = routeData.argsAs<AskQuestionRouteArgs>();
       return _i32.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i12.AskQuestion(
           key: args.key,
           sheetId: args.sheetId,
+          askingPage: args.askingPage,
         ),
       );
     },
     CreateQuestionRoute.name: (routeData) {
+      final args = routeData.argsAs<CreateQuestionRouteArgs>();
       return _i32.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i13.CreateQuestion(),
+        child: _i13.CreateQuestion(
+          key: args.key,
+          sheetId: args.sheetId,
+          askingPage: args.askingPage,
+        ),
       );
     },
     DetailQuestionRoute.name: (routeData) {
@@ -763,14 +766,12 @@ class ReadSheetRoute extends _i32.PageRouteInfo<ReadSheetRouteArgs> {
   ReadSheetRoute({
     _i33.Key? key,
     required String sheetId,
-    required _i34.File file,
   }) : super(
           ReadSheetRoute.name,
           path: ':sheetId/read_sheet',
           args: ReadSheetRouteArgs(
             key: key,
             sheetId: sheetId,
-            file: file,
           ),
           rawPathParams: {'sheetId': sheetId},
         );
@@ -782,18 +783,15 @@ class ReadSheetRouteArgs {
   const ReadSheetRouteArgs({
     this.key,
     required this.sheetId,
-    required this.file,
   });
 
   final _i33.Key? key;
 
   final String sheetId;
 
-  final _i34.File file;
-
   @override
   String toString() {
-    return 'ReadSheetRouteArgs{key: $key, sheetId: $sheetId, file: $file}';
+    return 'ReadSheetRouteArgs{key: $key, sheetId: $sheetId}';
   }
 }
 
@@ -803,12 +801,14 @@ class AskQuestionRoute extends _i32.PageRouteInfo<AskQuestionRouteArgs> {
   AskQuestionRoute({
     _i33.Key? key,
     required String sheetId,
+    required int askingPage,
   }) : super(
           AskQuestionRoute.name,
           path: ':sheetId/read_sheet/ask_question',
           args: AskQuestionRouteArgs(
             key: key,
             sheetId: sheetId,
+            askingPage: askingPage,
           ),
           rawPathParams: {'sheetId': sheetId},
         );
@@ -820,28 +820,58 @@ class AskQuestionRouteArgs {
   const AskQuestionRouteArgs({
     this.key,
     required this.sheetId,
+    required this.askingPage,
   });
 
   final _i33.Key? key;
 
   final String sheetId;
 
+  final int askingPage;
+
   @override
   String toString() {
-    return 'AskQuestionRouteArgs{key: $key, sheetId: $sheetId}';
+    return 'AskQuestionRouteArgs{key: $key, sheetId: $sheetId, askingPage: $askingPage}';
   }
 }
 
 /// generated route for
 /// [_i13.CreateQuestion]
-class CreateQuestionRoute extends _i32.PageRouteInfo<void> {
-  const CreateQuestionRoute()
-      : super(
+class CreateQuestionRoute extends _i32.PageRouteInfo<CreateQuestionRouteArgs> {
+  CreateQuestionRoute({
+    _i33.Key? key,
+    required String sheetId,
+    required int askingPage,
+  }) : super(
           CreateQuestionRoute.name,
           path: ':sheetId/read_sheet/ask_question/create_question',
+          args: CreateQuestionRouteArgs(
+            key: key,
+            sheetId: sheetId,
+            askingPage: askingPage,
+          ),
         );
 
   static const String name = 'CreateQuestionRoute';
+}
+
+class CreateQuestionRouteArgs {
+  const CreateQuestionRouteArgs({
+    this.key,
+    required this.sheetId,
+    required this.askingPage,
+  });
+
+  final _i33.Key? key;
+
+  final String sheetId;
+
+  final int askingPage;
+
+  @override
+  String toString() {
+    return 'CreateQuestionRouteArgs{key: $key, sheetId: $sheetId, askingPage: $askingPage}';
+  }
 }
 
 /// generated route for
