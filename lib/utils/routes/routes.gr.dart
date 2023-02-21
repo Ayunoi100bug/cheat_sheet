@@ -11,8 +11,6 @@
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:io' as _i34;
-
 import 'package:auto_route/auto_route.dart' as _i32;
 import 'package:auto_route/empty_router_widgets.dart' as _i5;
 import 'package:flutter/material.dart' as _i33;
@@ -158,7 +156,10 @@ class AppRouter extends _i32.RootStackRouter {
       );
     },
     ReadSheetRoute.name: (routeData) {
-      final args = routeData.argsAs<ReadSheetRouteArgs>();
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<ReadSheetRouteArgs>(
+          orElse: () =>
+              ReadSheetRouteArgs(sheetId: pathParams.getString('sheetId')));
       return _i32.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i11.ReadSheet(
@@ -168,10 +169,7 @@ class AppRouter extends _i32.RootStackRouter {
       );
     },
     AskQuestionRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<AskQuestionRouteArgs>(
-          orElse: () =>
-              AskQuestionRouteArgs(sheetId: pathParams.getString('sheetId')));
+      final args = routeData.argsAs<AskQuestionRouteArgs>();
       return _i32.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i12.AskQuestion(
@@ -182,6 +180,7 @@ class AppRouter extends _i32.RootStackRouter {
       );
     },
     CreateQuestionRoute.name: (routeData) {
+      final args = routeData.argsAs<CreateQuestionRouteArgs>();
       return _i32.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i13.CreateQuestion(
@@ -767,7 +766,6 @@ class ReadSheetRoute extends _i32.PageRouteInfo<ReadSheetRouteArgs> {
   ReadSheetRoute({
     _i33.Key? key,
     required String sheetId,
-    required _i34.File file,
   }) : super(
           ReadSheetRoute.name,
           path: ':sheetId/read_sheet',
@@ -790,8 +788,6 @@ class ReadSheetRouteArgs {
   final _i33.Key? key;
 
   final String sheetId;
-
-  final _i34.File file;
 
   @override
   String toString() {
@@ -841,9 +837,12 @@ class AskQuestionRouteArgs {
 
 /// generated route for
 /// [_i13.CreateQuestion]
-class CreateQuestionRoute extends _i32.PageRouteInfo<void> {
-  const CreateQuestionRoute()
-      : super(
+class CreateQuestionRoute extends _i32.PageRouteInfo<CreateQuestionRouteArgs> {
+  CreateQuestionRoute({
+    _i33.Key? key,
+    required String sheetId,
+    required int askingPage,
+  }) : super(
           CreateQuestionRoute.name,
           path: ':sheetId/read_sheet/ask_question/create_question',
           args: CreateQuestionRouteArgs(
@@ -863,7 +862,7 @@ class CreateQuestionRouteArgs {
     required this.askingPage,
   });
 
-  final _i32.Key? key;
+  final _i33.Key? key;
 
   final String sheetId;
 
