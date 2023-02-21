@@ -90,72 +90,35 @@ class _DetailSheetState extends State<DetailSheet> {
                                                 context: context,
                                                 builder: (BuildContext context) {
                                                   return AlertDialog(
-                                                      content: Stack(
-                                                    children: [
-                                                      Container(
-                                                        alignment: Alignment.center,
-                                                        height: screenHeight * 0.7,
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          children: [
-                                                            SingleChildScrollView(
-                                                              scrollDirection: Axis.horizontal,
-                                                              child: Container(
-                                                                height: screenHeight * 0.6,
-                                                                child: Row(
-                                                                  children: [
-                                                                    Container(
-                                                                      margin: EdgeInsets.only(right: screenHeight * 0.025),
-                                                                      decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
-                                                                      child: CachedNetworkImage(
-                                                                        imageUrl:
-                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
-                                                                        fit: BoxFit.fill,
-                                                                      ),
-                                                                    ),
-                                                                    Container(
-                                                                      margin: EdgeInsets.only(right: screenHeight * 0.025),
-                                                                      decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
-                                                                      child: CachedNetworkImage(
-                                                                        imageUrl:
-                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
-                                                                        fit: BoxFit.fill,
-                                                                      ),
-                                                                    ),
-                                                                    Container(
-                                                                      margin: EdgeInsets.only(right: screenHeight * 0.025),
-                                                                      decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
-                                                                      child: CachedNetworkImage(
-                                                                        imageUrl:
-                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
-                                                                        fit: BoxFit.fill,
-                                                                      ),
-                                                                    ),
-                                                                    Container(
-                                                                      margin: EdgeInsets.only(right: screenHeight * 0.025),
-                                                                      decoration: BoxDecoration(border: Border.all(color: AppColors.primary500)),
-                                                                      child: CachedNetworkImage(
-                                                                        imageUrl:
-                                                                            "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
-                                                                        fit: BoxFit.fill,
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Expanded(child: Container()),
-                                                            const BlinkText('สามารถเลื่อนไปทางขวาได้',
-                                                                style: TextStyle(fontSize: 20, color: AppColors.black800),
-                                                                beginColor: AppColors.black800,
-                                                                endColor: AppColors.white,
-                                                                times: 20,
-                                                                duration: Duration(seconds: 1)),
-                                                          ],
+                                                    content: Column(
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: [
+                                                        Container(
+                                                          alignment: Alignment.center,
+                                                          height: screenHeight * 0.55,
+                                                          width: screenWidth,
+                                                          child: PageView.builder(
+                                                            itemCount: 8,
+                                                            itemBuilder: (context, index) {
+                                                              return CachedNetworkImage(
+                                                                imageUrl: "https://i.pinimg.com/736x/3b/73/34/3b733419b85fe57cba50ac1921288409.jpg",
+                                                                fit: BoxFit.fill,
+                                                              );
+                                                            },
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ));
+                                                        SizedBox(
+                                                          height: screenWidth * 0.04,
+                                                        ),
+                                                        const BlinkText('สามารถเลื่อนไปทางขวาได้',
+                                                            style: TextStyle(fontSize: 20, color: AppColors.black800),
+                                                            beginColor: AppColors.black800,
+                                                            endColor: AppColors.white,
+                                                            times: 20,
+                                                            duration: Duration(seconds: 1)),
+                                                      ],
+                                                    ),
+                                                  );
                                                 });
                                           }),
                                           child: Stack(
@@ -441,7 +404,6 @@ class _DetailSheetState extends State<DetailSheet> {
     final SheetLists _sheetLists = SheetLists(sheetListName: '', sid: [], authorId: '', sheetListId: '');
     final Future<FirebaseApp> firebase = Firebase.initializeApp();
     CreateCollection myCollection = CreateCollection();
-    final _auth = FirebaseAuth.instance;
 
     showModalBottomSheet(
       isScrollControlled: true,
@@ -452,72 +414,74 @@ class _DetailSheetState extends State<DetailSheet> {
         top: Radius.circular(10),
       )),
       builder: (BuildContext context) {
-        return Container(
-          height: MediaQuery.of(context).viewInsets.bottom == 0
-              ? screenHeight * 0.3
-              : MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.bottom,
-          child: Column(
-            children: [
-              SizedBox(
-                height: screenHeight * 0.03,
-              ),
-              const Regular16px(
-                text: 'ชีทลิสต์ใหม่',
-              ),
-              SizedBox(
-                height: screenHeight * 0.03,
-              ),
-              Form(
-                key: _formKey,
-                child: Container(
-                  width: 150,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: AppColors.black400),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: MyTextFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    hintText: 'ชื่อชีทลิสต์',
-                    onSaved: (value) {
-                      _sheetLists.sheetListName = value!;
-                    },
-                    validator: RequiredValidator(errorText: 'Please enter sheet list name.'),
+        return SizedBox(
+          child: SizedBox(
+            height: MediaQuery.of(context).viewInsets.bottom == 0
+                ? screenHeight * 0.3
+                : MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.bottom,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: screenHeight * 0.03,
+                ),
+                const Regular16px(
+                  text: 'ชีทลิสต์ใหม่',
+                ),
+                SizedBox(
+                  height: screenHeight * 0.03,
+                ),
+                Form(
+                  key: _formKey,
+                  child: Container(
+                    width: 150,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: AppColors.black400),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: MyTextFormField(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      hintText: 'ชื่อชีทลิสต์',
+                      onSaved: (value) {
+                        _sheetLists.sheetListName = value!;
+                      },
+                      validator: RequiredValidator(errorText: 'Please enter sheet list name.'),
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: screenHeight * 0.03,
-              ),
-              PrimaryButton(
-                text: 'บันทึก',
-                onPressed: () async {
-                  _formKey.currentState!.save();
-                  try {
-                    myCollection
-                        .createSheetListCollection(
-                      _sheetLists.sheetListName,
-                      _sheetLists.sid = [],
-                      _sheetLists.authorId = _auth.currentUser!.uid,
-                      _sheetLists.sheetListId = uuid.v4(),
-                    )
-                        .then(
-                      (value) {
-                        _formKey.currentState!.reset();
-                        AutoRouter.of(context).popUntilRoot();
-                      },
-                    );
-                    await _firestoreDb.collection('users').doc(_auth.currentUser!.uid).update({
-                      'sheetLists': FieldValue.arrayUnion([_sheetLists.sheetListId])
-                    });
-                  } on FirebaseAuthException catch (e) {
-                    FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
-                  }
-                },
-              ),
-              SizedBox(
-                height: screenHeight * 0.03,
-              ),
-            ],
+                SizedBox(
+                  height: screenHeight * 0.03,
+                ),
+                PrimaryButton(
+                  text: 'บันทึก',
+                  onPressed: () async {
+                    _formKey.currentState!.save();
+                    try {
+                      myCollection
+                          .createSheetListCollection(
+                        _sheetLists.sheetListName,
+                        _sheetLists.sid = [],
+                        _sheetLists.authorId = _auth.currentUser!.uid,
+                        _sheetLists.sheetListId = uuid.v4(),
+                      )
+                          .then(
+                        (value) {
+                          _formKey.currentState!.reset();
+                          AutoRouter.of(context).popUntilRoot();
+                        },
+                      );
+                      await _firestoreDb.collection('users').doc(_auth.currentUser!.uid).update({
+                        'sheetLists': FieldValue.arrayUnion([_sheetLists.sheetListId])
+                      });
+                    } on FirebaseAuthException catch (e) {
+                      FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
+                    }
+                  },
+                ),
+                SizedBox(
+                  height: screenHeight * 0.03,
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -552,100 +516,96 @@ class _DetailSheetState extends State<DetailSheet> {
                         } else {
                           final mySheetLists = snapshot.data?.docs.where((document) => document["authorId"] == _auth.currentUser?.uid);
                           return SingleChildScrollView(
-                            child: Container(
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 20, right: 24, top: 28, bottom: 28),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Regular16px(
-                                          text: 'บันทึกชีทนี้ลง...',
-                                        ),
-                                        InkWell(
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              border: Border.all(color: AppColors.tertiary500),
-                                              borderRadius: BorderRadius.circular(5),
-                                            ),
-                                            child: Icon(
-                                              FontAwesomeIcons.plus,
-                                              color: AppColors.tertiary500,
-                                              size: 24,
-                                            ),
-                                          ),
-                                          onTap: () {
-                                            _BottomSheet(context);
-                                          },
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.all(screenWidth * GapDimension.w0_032),
-                                    child: GridView.builder(
-                                      physics: NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 3,
-                                        crossAxisSpacing: 8,
-                                        mainAxisSpacing: 8,
-                                        childAspectRatio: screenWidth < 480
-                                            ? MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.1)
-                                            : MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 0.4),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 20, right: 24, top: 28, bottom: 28),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Regular16px(
+                                        text: 'บันทึกชีทนี้ลง...',
                                       ),
-                                      itemCount: mySheetLists?.length,
-                                      itemBuilder: (context, index) {
-                                        var sheetLists = mySheetLists?.elementAt(index);
-                                        return Container(
-                                          child: LayoutBuilder(
-                                            builder: (context, constraints) {
-                                              return InkWell(
-                                                child: Column(
-                                                  children: [
-                                                    Container(
-                                                      height: constraints.maxHeight * 0.8,
-                                                      color: AppColors.black300,
-                                                    ),
-                                                    Container(
-                                                      height: constraints.maxHeight * 0.2,
-                                                      child: LayoutBuilder(
-                                                        builder: (context, constraints) {
-                                                          return Container(
-                                                            padding: EdgeInsets.only(top: screenWidth * 0.02),
-                                                            alignment: Alignment.topCenter,
-                                                            height: constraints.maxHeight * 0.5,
-                                                            child: Regular16px(text: sheetLists!['sheetListName']),
-                                                          );
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                onTap: () async {
-                                                  try {
-                                                    await _firestoreDb.collection('sheetList').doc(sheetLists!['sheetListId']).update({
-                                                      'sid': FieldValue.arrayUnion([sheetId])
-                                                    });
-                                                    Future.delayed(const Duration(milliseconds: 500), () {
-                                                      Navigator.of(context).pop();
-                                                      final String message = 'เพิ่มชีทเข้าชีทลิสต์เรียบร้อย!';
-                                                      FlushbarPopup.successFlushbar(context, Icon(FontAwesomeIcons.book), message);
-                                                    });
-                                                  } on FirebaseAuthException catch (e) {
-                                                    FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
-                                                  }
-                                                },
-                                              );
-                                            },
+                                      InkWell(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(color: AppColors.tertiary500),
+                                            borderRadius: BorderRadius.circular(5),
                                           ),
-                                        );
-                                      },
-                                    ),
+                                          child: const Icon(
+                                            FontAwesomeIcons.plus,
+                                            color: AppColors.tertiary500,
+                                            size: 24,
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          _BottomSheet(context);
+                                        },
+                                      )
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(screenWidth * GapDimension.w0_032),
+                                  child: GridView.builder(
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3,
+                                      crossAxisSpacing: 8,
+                                      mainAxisSpacing: 8,
+                                      childAspectRatio: screenWidth < 480
+                                          ? MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.1)
+                                          : MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 0.4),
+                                    ),
+                                    itemCount: mySheetLists?.length,
+                                    itemBuilder: (context, index) {
+                                      var sheetLists = mySheetLists?.elementAt(index);
+                                      return LayoutBuilder(
+                                        builder: (context, constraints) {
+                                          return InkWell(
+                                            child: Column(
+                                              children: [
+                                                Container(
+                                                  height: constraints.maxHeight * 0.8,
+                                                  color: AppColors.black300,
+                                                ),
+                                                SizedBox(
+                                                  height: constraints.maxHeight * 0.2,
+                                                  child: LayoutBuilder(
+                                                    builder: (context, constraints) {
+                                                      return Container(
+                                                        padding: EdgeInsets.only(top: screenWidth * 0.02),
+                                                        alignment: Alignment.topCenter,
+                                                        height: constraints.maxHeight * 0.5,
+                                                        child: Regular16px(text: sheetLists!['sheetListName']),
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            onTap: () async {
+                                              try {
+                                                await _firestoreDb.collection('sheetList').doc(sheetLists!['sheetListId']).update({
+                                                  'sid': FieldValue.arrayUnion([sheetId])
+                                                });
+                                                Future.delayed(const Duration(milliseconds: 500), () {
+                                                  Navigator.of(context).pop();
+                                                  const String message = 'เพิ่มชีทเข้าชีทลิสต์เรียบร้อย!';
+                                                  FlushbarPopup.successFlushbar(context, const Icon(FontAwesomeIcons.book), message);
+                                                });
+                                              } on FirebaseAuthException catch (e) {
+                                                FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
+                                              }
+                                            },
+                                          );
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
                             ),
                           );
                         }
@@ -669,13 +629,13 @@ class _DetailSheetState extends State<DetailSheet> {
       )),
       builder: (BuildContext context) {
         return SingleChildScrollView(
-          child: Container(
+          child: SizedBox(
             height: isPortrait ? screenWidth * 0.52 : screenWidth * 0.29,
             child: Padding(
               padding: EdgeInsets.only(top: screenWidth * 0.040, bottom: isPortrait ? screenWidth * 0.040 : screenWidth * 0.012),
               child: Column(
                 children: [
-                  Regular16px(
+                  const Regular16px(
                     text: 'แชร์ชีทไป...',
                   ),
                   Padding(
@@ -685,7 +645,7 @@ class _DetailSheetState extends State<DetailSheet> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Icon(
+                          const Icon(
                             FontAwesomeIcons.facebook,
                             color: Colors.blue,
                             size: 36,
@@ -693,12 +653,10 @@ class _DetailSheetState extends State<DetailSheet> {
                           SizedBox(
                             width: screenWidth * 0.08,
                           ),
-                          Regular16px(text: 'Facebook'),
+                          const Regular16px(text: 'Facebook'),
                         ],
                       ),
-                      onTap: () {
-                        print("Facebook");
-                      },
+                      onTap: () {},
                     ),
                   ),
                   InkWell(
@@ -708,7 +666,7 @@ class _DetailSheetState extends State<DetailSheet> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Icon(
+                          const Icon(
                             FontAwesomeIcons.instagram,
                             color: Colors.pink,
                             size: 36,
@@ -716,13 +674,11 @@ class _DetailSheetState extends State<DetailSheet> {
                           SizedBox(
                             width: screenWidth * 0.08,
                           ),
-                          Regular16px(text: 'Instagram'),
+                          const Regular16px(text: 'Instagram'),
                         ],
                       ),
                     ),
-                    onTap: () {
-                      print("Instagram");
-                    },
+                    onTap: () {},
                   ),
                   InkWell(
                     child: Padding(
@@ -731,7 +687,7 @@ class _DetailSheetState extends State<DetailSheet> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Icon(
+                          const Icon(
                             FontAwesomeIcons.twitter,
                             color: Colors.blue,
                             size: 36,
@@ -739,13 +695,11 @@ class _DetailSheetState extends State<DetailSheet> {
                           SizedBox(
                             width: screenWidth * 0.08,
                           ),
-                          Regular16px(text: 'Twitter'),
+                          const Regular16px(text: 'Twitter'),
                         ],
                       ),
                     ),
-                    onTap: () {
-                      print("Twitter");
-                    },
+                    onTap: () {},
                   ),
                 ],
               ),
