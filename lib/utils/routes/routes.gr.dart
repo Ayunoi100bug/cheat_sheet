@@ -22,12 +22,12 @@ import '../../view/create_sheet_screen/create_detail_sheet.dart' as _i19;
 import '../../view/create_sheet_screen/import_sheet_screen.dart' as _i18;
 import '../../view/create_sheet_screen/pick_demo_pages.dart' as _i21;
 import '../../view/create_sheet_screen/view_import_sheet.dart' as _i20;
-import '../../view/home_screen/ask_question.dart' as _i12;
-import '../../view/home_screen/create_question.dart' as _i13;
 import '../../view/home_screen/create_review.dart' as _i16;
-import '../../view/home_screen/detail_question.dart' as _i14;
 import '../../view/home_screen/detail_sheet.dart' as _i10;
 import '../../view/home_screen/home_screen.dart' as _i7;
+import '../../view/home_screen/question/ask_question.dart' as _i12;
+import '../../view/home_screen/question/create_question.dart' as _i13;
+import '../../view/home_screen/question/detail_question.dart' as _i14;
 import '../../view/home_screen/read_sheet.dart' as _i11;
 import '../../view/home_screen/review_sheet.dart' as _i15;
 import '../../view/home_screen/searching_sheet.dart' as _i9;
@@ -164,7 +164,6 @@ class AppRouter extends _i32.RootStackRouter {
         child: _i11.ReadSheet(
           key: args.key,
           sheetId: args.sheetId,
-          file: args.file,
         ),
       );
     },
@@ -178,13 +177,18 @@ class AppRouter extends _i32.RootStackRouter {
         child: _i12.AskQuestion(
           key: args.key,
           sheetId: args.sheetId,
+          askingPage: args.askingPage,
         ),
       );
     },
     CreateQuestionRoute.name: (routeData) {
       return _i32.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i13.CreateQuestion(),
+        child: _i13.CreateQuestion(
+          key: args.key,
+          sheetId: args.sheetId,
+          askingPage: args.askingPage,
+        ),
       );
     },
     DetailQuestionRoute.name: (routeData) {
@@ -770,7 +774,6 @@ class ReadSheetRoute extends _i32.PageRouteInfo<ReadSheetRouteArgs> {
           args: ReadSheetRouteArgs(
             key: key,
             sheetId: sheetId,
-            file: file,
           ),
           rawPathParams: {'sheetId': sheetId},
         );
@@ -782,7 +785,6 @@ class ReadSheetRouteArgs {
   const ReadSheetRouteArgs({
     this.key,
     required this.sheetId,
-    required this.file,
   });
 
   final _i33.Key? key;
@@ -793,7 +795,7 @@ class ReadSheetRouteArgs {
 
   @override
   String toString() {
-    return 'ReadSheetRouteArgs{key: $key, sheetId: $sheetId, file: $file}';
+    return 'ReadSheetRouteArgs{key: $key, sheetId: $sheetId}';
   }
 }
 
@@ -803,12 +805,14 @@ class AskQuestionRoute extends _i32.PageRouteInfo<AskQuestionRouteArgs> {
   AskQuestionRoute({
     _i33.Key? key,
     required String sheetId,
+    required int askingPage,
   }) : super(
           AskQuestionRoute.name,
           path: ':sheetId/read_sheet/ask_question',
           args: AskQuestionRouteArgs(
             key: key,
             sheetId: sheetId,
+            askingPage: askingPage,
           ),
           rawPathParams: {'sheetId': sheetId},
         );
@@ -820,15 +824,18 @@ class AskQuestionRouteArgs {
   const AskQuestionRouteArgs({
     this.key,
     required this.sheetId,
+    required this.askingPage,
   });
 
   final _i33.Key? key;
 
   final String sheetId;
 
+  final int askingPage;
+
   @override
   String toString() {
-    return 'AskQuestionRouteArgs{key: $key, sheetId: $sheetId}';
+    return 'AskQuestionRouteArgs{key: $key, sheetId: $sheetId, askingPage: $askingPage}';
   }
 }
 
@@ -839,9 +846,33 @@ class CreateQuestionRoute extends _i32.PageRouteInfo<void> {
       : super(
           CreateQuestionRoute.name,
           path: ':sheetId/read_sheet/ask_question/create_question',
+          args: CreateQuestionRouteArgs(
+            key: key,
+            sheetId: sheetId,
+            askingPage: askingPage,
+          ),
         );
 
   static const String name = 'CreateQuestionRoute';
+}
+
+class CreateQuestionRouteArgs {
+  const CreateQuestionRouteArgs({
+    this.key,
+    required this.sheetId,
+    required this.askingPage,
+  });
+
+  final _i32.Key? key;
+
+  final String sheetId;
+
+  final int askingPage;
+
+  @override
+  String toString() {
+    return 'CreateQuestionRouteArgs{key: $key, sheetId: $sheetId, askingPage: $askingPage}';
+  }
 }
 
 /// generated route for
