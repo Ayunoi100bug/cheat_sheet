@@ -1,4 +1,3 @@
-
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/components/sheet.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -170,6 +169,7 @@ class _SearchingSheetState extends State<SearchingSheet> {
                               );
                             }
                             return Sheet(
+                              rating: sheet?["rating"],
                               sheetCoverImage: sheet?["sheetCoverImage"],
                               authorImage: userSnapshot.data?["profileImage"],
                               title: sheet?["sheetName"],
@@ -251,7 +251,6 @@ class _AllSortState extends State<AllSort> {
   final List<String> value = <String>['rating', 'priceMore', 'priceLess', 'typeFree', 'typeBuy', 'sheetNew', 'sheetOld'];
 
   Widget build(BuildContext context) {
-
     return ListView.builder(
       shrinkWrap: true,
       itemCount: 7,
@@ -274,6 +273,5 @@ class _AllSortState extends State<AllSort> {
         );
       },
     );
-
   }
 }

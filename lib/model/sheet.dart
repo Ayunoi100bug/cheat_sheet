@@ -11,6 +11,7 @@ class Sheets {
   String sid = uuid.v4();
   bool sheetTypeFree;
   int? price;
+  double rating = 0;
   int buyer = 0;
   String authorId;
   List? review = [];
@@ -31,6 +32,7 @@ class Sheets {
         sheetCoverImage = json['sheetCoverImage'],
         sid = json['sid'],
         sheetTypeFree = json['sheetType'],
+        rating = json['rating'],
         price = json['price'],
         buyer = json['buyer'],
         authorId = json['authorId'],
@@ -43,6 +45,7 @@ class Sheets {
         'sheetCoverImage': sheetCoverImage,
         'sid': sid,
         'sheetTypeFree': sheetTypeFree,
+        'rating': rating,
         'price': price,
         'buyer': buyer,
         'authorId': authorId,

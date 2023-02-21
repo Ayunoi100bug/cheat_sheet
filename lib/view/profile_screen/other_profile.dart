@@ -27,9 +27,7 @@ class _OtherProfileState extends State<OtherProfile> {
             children: [
               SizedBox(
                 width: double.infinity,
-                height: screenWidth < 480
-                    ? screenHeight * 0.24
-                    : screenHeight * 0.48,
+                height: screenWidth < 480 ? screenHeight * 0.24 : screenHeight * 0.48,
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     return Row(
@@ -38,16 +36,14 @@ class _OtherProfileState extends State<OtherProfile> {
                           width: constraints.maxWidth * 0.4,
                           height: double.infinity,
                           child: Padding(
-                            padding:
-                                EdgeInsets.all(constraints.maxHeight * 0.12),
+                            padding: EdgeInsets.all(constraints.maxHeight * 0.12),
                             child: Container(
                               decoration: BoxDecoration(
                                 image: DecorationImage(
                                   image: AssetImage('assets/images/logo.png'),
                                   // fit: BoxFit.fill,
                                 ),
-                                border: Border.all(
-                                    color: AppColors.black800, width: 2.0),
+                                border: Border.all(color: AppColors.black800, width: 2.0),
                                 shape: BoxShape.circle,
                               ),
                             ),
@@ -65,8 +61,7 @@ class _OtherProfileState extends State<OtherProfile> {
                                   IconButton(
                                     icon: Icon(Icons.edit),
                                     onPressed: () {
-                                      AutoRouter.of(context).push(
-                                          EditProfileRoute(userId: "userId"));
+                                      AutoRouter.of(context).push(EditProfileRoute(userId: "userId"));
                                     },
                                   ),
                                 ],
@@ -76,8 +71,7 @@ class _OtherProfileState extends State<OtherProfile> {
                               height: constraints.maxHeight * 0.3,
                               width: constraints.maxWidth * 0.6,
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Column(
                                     children: [
@@ -120,6 +114,7 @@ class _OtherProfileState extends State<OtherProfile> {
                   itemCount: 10,
                   itemBuilder: (context, index) {
                     return Sheet(
+                      rating: 4.5,
                       authorImage: 'assets/images/logo.png',
                       title: 'สถิติพื้นฐานooooooooooo',
                       priceSheet: 10,

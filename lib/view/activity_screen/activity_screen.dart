@@ -136,6 +136,7 @@ class _ActivityScreenState extends State<ActivityScreen> with AutomaticKeepAlive
               itemCount: 3,
               itemBuilder: (context, index) {
                 return Sheet(
+                  rating: 4.5,
                   authorImage:
                       'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10224779237682961&width=200&ext=1678426745&hash=AeSupq2Xh_IJA7iaWys',
                   title: 'สถิติพื้นฐานooooooooooo',
@@ -178,6 +179,7 @@ class _ActivityScreenState extends State<ActivityScreen> with AutomaticKeepAlive
               itemCount: 3,
               itemBuilder: (context, index) {
                 return Sheet(
+                  rating: 4.5,
                   authorImage:
                       'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10224779237682961&width=200&ext=1678426745&hash=AeSupq2Xh_IJA7iaWys',
                   title: 'สถิติพื้นฐานooooooooooo',
