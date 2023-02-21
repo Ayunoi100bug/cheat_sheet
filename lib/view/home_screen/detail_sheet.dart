@@ -13,8 +13,10 @@ import 'package:cheat_sheet/res/gap_dimension.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/view_model/create_firestore.dart';
+
 import 'package:cheat_sheet/view_model/file_passer_for_read.dart';
 import 'package:cheat_sheet/view_model/read_firestore.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -92,6 +94,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                 context: context,
                                                 builder: (BuildContext context) {
                                                   return AlertDialog(
+
                                                     content: Column(
                                                       mainAxisSize: MainAxisSize.min,
                                                       children: [
@@ -108,6 +111,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                               );
                                                             },
                                                           ),
+
                                                         ),
                                                         SizedBox(
                                                           height: screenWidth * 0.04,
@@ -419,34 +423,60 @@ class _DetailSheetState extends State<DetailSheet> {
       )),
       builder: (BuildContext context) {
         return SizedBox(
-          child: SizedBox(
-            height: MediaQuery.of(context).viewInsets.bottom == 0
-                ? screenHeight * 0.3
-                : MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.bottom,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: screenHeight * 0.03,
+
+          height: MediaQuery.of(context).viewInsets.bottom == 0
+              ? screenHeight * 0.3
+              : MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.bottom,
+          child: Column(
+            children: [
+              SizedBox(
+                height: screenHeight * 0.03,
+              ),
+              const Regular16px(
+                text: 'ชีทลิสต์ใหม่',
+              ),
+              SizedBox(
+                height: screenHeight * 0.03,
+              ),
+              Form(
+                key: _formKey,
+                child: Container(
+                  width: 150,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppColors.black400),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: MyTextFormField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    hintText: 'ชื่อชีทลิสต์',
+                    onSaved: (value) {
+                      _sheetLists.sheetListName = value!;
+                    },
+                    validator: RequiredValidator(errorText: 'โปรดใส่ชื่อชีทลิสต์ของคุณ'),
+                  ),
                 ),
-                const Regular16px(
-                  text: 'ชีทลิสต์ใหม่',
-                ),
-                SizedBox(
-                  height: screenHeight * 0.03,
-                ),
-                Form(
-                  key: _formKey,
-                  child: Container(
-                    width: 150,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: AppColors.black400),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: MyTextFormField(
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      hintText: 'ชื่อชีทลิสต์',
-                      onSaved: (value) {
-                        _sheetLists.sheetListName = value!;
+              ),
+              SizedBox(
+                height: screenHeight * 0.03,
+              ),
+              PrimaryButton(
+                text: 'บันทึก',
+                onPressed: () async {
+                  _formKey.currentState!.save();
+                  try {
+                    myCollection
+                        .createSheetListCollection(
+                      _sheetLists.sheetListName,
+                      _sheetLists.sid = [],
+                      _sheetLists.authorId = _auth.currentUser!.uid,
+                      _sheetLists.sheetListId = uuid.v4(),
+                    )
+                        .then(
+                      (value) {
+                        _formKey.currentState!.reset();
+                        AutoRouter.of(context).popUntilRoot();
+                        FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, 'สร้างชีทลิสต์สำเร็จ');
+
                       },
                       validator: RequiredValidator(errorText: 'Please enter sheet list name.'),
                     ),
@@ -596,8 +626,16 @@ class _DetailSheetState extends State<DetailSheet> {
                                                 });
                                                 Future.delayed(const Duration(milliseconds: 500), () {
                                                   Navigator.of(context).pop();
-                                                  const String message = 'เพิ่มชีทเข้าชีทลิสต์เรียบร้อย!';
-                                                  FlushbarPopup.successFlushbar(context, const Icon(FontAwesomeIcons.book), message);
+
+                                                  const String message = 'เพิ่มชีทเข้าชีทลิสต์สำเร็จ!';
+                                                  FlushbarPopup.successFlushbar(
+                                                      context,
+                                                      const Icon(
+                                                        FontAwesomeIcons.book,
+                                                        color: AppColors.white,
+                                                      ),
+                                                      message);
+
                                                 });
                                               } on FirebaseAuthException catch (e) {
                                                 FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
