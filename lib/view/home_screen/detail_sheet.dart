@@ -480,7 +480,7 @@ class _DetailSheetState extends State<DetailSheet> {
                     onSaved: (value) {
                       _sheetLists.sheetListName = value!;
                     },
-                    validator: RequiredValidator(errorText: 'Please enter sheet list name.'),
+                    validator: RequiredValidator(errorText: 'โปรดใส่ชื่อชีทลิสต์ของคุณ'),
                   ),
                 ),
               ),
@@ -628,7 +628,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                 });
                                                 Future.delayed(const Duration(milliseconds: 500), () {
                                                   Navigator.of(context).pop();
-                                                  const String message = 'เพิ่มชีทเข้าชีทลิสต์เรียบร้อย!';
+                                                  const String message = 'เพิ่มชีทเข้าชีทลิสต์สำเร็จ!';
                                                   FlushbarPopup.successFlushbar(
                                                       context,
                                                       const Icon(
