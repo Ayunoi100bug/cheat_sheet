@@ -94,7 +94,6 @@ class _DetailSheetState extends State<DetailSheet> {
                                                 context: context,
                                                 builder: (BuildContext context) {
                                                   return AlertDialog(
-
                                                     content: Column(
                                                       mainAxisSize: MainAxisSize.min,
                                                       children: [
@@ -111,7 +110,6 @@ class _DetailSheetState extends State<DetailSheet> {
                                                               );
                                                             },
                                                           ),
-
                                                         ),
                                                         SizedBox(
                                                           height: screenWidth * 0.04,
@@ -423,7 +421,6 @@ class _DetailSheetState extends State<DetailSheet> {
       )),
       builder: (BuildContext context) {
         return SizedBox(
-
           height: MediaQuery.of(context).viewInsets.bottom == 0
               ? screenHeight * 0.3
               : MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.bottom,
@@ -475,47 +472,49 @@ class _DetailSheetState extends State<DetailSheet> {
                       (value) {
                         _formKey.currentState!.reset();
                         AutoRouter.of(context).popUntilRoot();
-                        FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, 'สร้างชีทลิสต์สำเร็จ');
-
                       },
-                      validator: RequiredValidator(errorText: 'Please enter sheet list name.'),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: screenHeight * 0.03,
-                ),
-                PrimaryButton(
-                  text: 'บันทึก',
-                  onPressed: () async {
-                    _formKey.currentState!.save();
-                    try {
-                      myCollection
-                          .createSheetListCollection(
-                        _sheetLists.sheetListName,
-                        _sheetLists.sid = [],
-                        _sheetLists.authorId = _auth.currentUser!.uid,
-                        _sheetLists.sheetListId = uuid.v4(),
-                      )
-                          .then(
-                        (value) {
-                          _formKey.currentState!.reset();
-                          AutoRouter.of(context).popUntilRoot();
-                        },
-                      );
-                      await _firestoreDb.collection('users').doc(_auth.currentUser!.uid).update({
-                        'sheetLists': FieldValue.arrayUnion([_sheetLists.sheetListId])
-                      });
-                    } on FirebaseAuthException catch (e) {
-                      FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
-                    }
-                  },
-                ),
-                SizedBox(
-                  height: screenHeight * 0.03,
-                ),
-              ],
-            ),
+                    );
+                    await _firestoreDb.collection('users').doc(_auth.currentUser!.uid).update({
+                      'sheetLists': FieldValue.arrayUnion([_sheetLists.sheetListId])
+                    });
+                  } on FirebaseAuthException catch (e) {
+                    FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
+                  }
+                },
+              ),
+              SizedBox(
+                height: screenHeight * 0.03,
+              ),
+              PrimaryButton(
+                text: 'บันทึก',
+                onPressed: () async {
+                  _formKey.currentState!.save();
+                  try {
+                    myCollection
+                        .createSheetListCollection(
+                      _sheetLists.sheetListName,
+                      _sheetLists.sid = [],
+                      _sheetLists.authorId = _auth.currentUser!.uid,
+                      _sheetLists.sheetListId = uuid.v4(),
+                    )
+                        .then(
+                      (value) {
+                        _formKey.currentState!.reset();
+                        AutoRouter.of(context).popUntilRoot();
+                      },
+                    );
+                    await _firestoreDb.collection('users').doc(_auth.currentUser!.uid).update({
+                      'sheetLists': FieldValue.arrayUnion([_sheetLists.sheetListId])
+                    });
+                  } on FirebaseAuthException catch (e) {
+                    FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
+                  }
+                },
+              ),
+              SizedBox(
+                height: screenHeight * 0.03,
+              ),
+            ],
           ),
         );
       },
@@ -635,7 +634,6 @@ class _DetailSheetState extends State<DetailSheet> {
                                                         color: AppColors.white,
                                                       ),
                                                       message);
-
                                                 });
                                               } on FirebaseAuthException catch (e) {
                                                 FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
