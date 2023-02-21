@@ -61,7 +61,7 @@ class _CreateSheetScreenState extends State<CreateSheetScreen> with AutomaticKee
                             if (file == null) return;
                             if (context.mounted) {
                               Provider.of<FilePasser>(context, listen: false).setFile(file);
-                              AutoRouter.of(context).push(const PickDemoPagesRoute());
+                              AutoRouter.of(context).push(const ViewImportSheetRoute());
                             }
                           }),
                     ],
