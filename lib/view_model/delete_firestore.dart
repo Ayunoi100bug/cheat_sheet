@@ -28,9 +28,18 @@ class DeleteDocument {
   final _firestore = FirebaseFirestore.instance;
 
   Future<void> deleteReview(BuildContext context, String reviewId, String sheetId) async {
+    double result = 0;
+    var currentReviewSnapshot = await _firestore.collection("review").doc(reviewId).get();
+    Map<String, dynamic> currentReviewData = currentReviewSnapshot.data()!;
+    var currentSheetSnapshot = await _firestore.collection("sheet").doc(sheetId).get();
+    Map<String, dynamic> currentSheetData = currentSheetSnapshot.data()!;
+    List? reviewInSheet = currentSheetData['review'];
+    reviewInSheet ??= [];
+    result = ((currentSheetData['rating'] * reviewInSheet.length) - currentReviewData['rating']) / (reviewInSheet.length - 1);
     await _firestore.collection('sheet').doc(sheetId).update({
       'review': FieldValue.arrayRemove([reviewId])
     });
+    await _firestore.collection('sheet').doc(sheetId).update({'rating': result});
     _firestore.collection("review").doc(reviewId).delete().then((value) {
       AutoRouter.of(context).popUntilRoot();
       const String message = 'ลบความคิดเห็นสำเร็จ';

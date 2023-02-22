@@ -66,6 +66,7 @@ class _SheetListDetailState extends State<SheetListDetail> {
                               );
                             }
                             return Sheet(
+                              rating: sheetSnapshot.data?["rating"],
                               sheetCoverImage: sheetSnapshot.data?["sheetCoverImage"],
                               authorImage: userSnapshot.data?['profileImage'],
                               title: sheetSnapshot.data?["sheetName"],

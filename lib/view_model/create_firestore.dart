@@ -99,6 +99,7 @@ class CreateCollection {
       'detailSheet': argDetailSheet.toString().trim(),
       'sheetCoverImage': urlSheetCoverImage,
       'sheetTypeFree': argSheetType,
+      'rating': mySheet.rating,
       'price': argPrice,
       'sid': sheetId,
       'buyer': mySheet.buyer,
@@ -116,15 +117,14 @@ class CreateCollection {
     });
   }
 
-
   Future<void> createReviewCollection(String argText, String argRid, String argReviewerId, String argSheetId, double argRating, int argLike,
       BuildContext context, String _review) async {
+    double result = 0;
     if (argRating == 0) {
       const String message = 'กรุณาระบุคะแนนที่ท่านต้องการให้ก่อน!';
       FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, message);
       return;
     }
-
     await _firestore.collection("review").doc(argRid).set({
       'timestamp': myReview.timestamp,
       'text': argText.toString().trim(),
@@ -134,9 +134,17 @@ class CreateCollection {
       'rid': argRid,
       'like': argLike,
     });
+    var currentReviewSnapshot = await _firestore.collection("review").doc(_review).get();
+    Map<String, dynamic> currentReviewData = currentReviewSnapshot.data()!;
+    var currentSheetSnapshot = await _firestore.collection("sheet").doc(argSheetId).get();
+    Map<String, dynamic> currentSheetData = currentSheetSnapshot.data()!;
+    List? reviewInSheet = currentSheetData['review'];
+    reviewInSheet ??= [];
+    result = ((currentSheetData['rating'] * reviewInSheet.length) + currentReviewData['rating']) / (reviewInSheet.length + 1);
     await _firestore.collection('sheet').doc(argSheetId).update({
       'review': FieldValue.arrayUnion([_review])
-    }).then(
+    });
+    await _firestore.collection('sheet').doc(argSheetId).update({'rating': result}).then(
       (value) {
         AutoRouter.of(context).popUntilRoot();
         const String message = 'รีวิวสำเร็จแล้ว!';

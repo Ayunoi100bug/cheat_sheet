@@ -199,7 +199,10 @@ void _BottomReview(BuildContext context, String textReview, double rating, Strin
                   alignment: Alignment.center,
                   height: isPortrait ? screenHeight * 0.08 : screenWidth * 0.08,
                   width: double.infinity,
-                  child: const Regular16px(text: 'Delete')),
+                  child: const Regular16px(
+                    text: 'Delete',
+                    color: AppColors.error500,
+                  )),
               onTap: () {
                 showDialog(
                   context: context,
