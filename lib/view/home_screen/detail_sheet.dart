@@ -129,8 +129,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                             alignment: Alignment.center,
                                             children: [
                                               CachedNetworkImage(
-                                                imageUrl:
-                                                    "https://static.trueplookpanya.com/tppy/member/m_665000_667500/665461/cms/images/%E0%B9%84%E0%B8%AD%E0%B9%80%E0%B8%94%E0%B8%B5%E0%B8%A2%E0%B8%88%E0%B8%94%E0%B8%8A%E0%B8%B5%E0%B8%97%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B_04.jpg",
+                                                imageUrl: sheetData["sheetCoverImage"],
                                                 color: AppColors.black400,
                                                 colorBlendMode: BlendMode.modulate,
                                                 fit: BoxFit.cover,
