@@ -27,7 +27,7 @@ class CreateCollection {
   Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetCoverImage: '', sheetTypeFree: true, authorId: '');
   SheetLists mySheetLists = SheetLists(sheetListName: '', sid: [], authorId: '', sheetListId: '');
   Reviews myReview = Reviews(text: '', rid: '', reviewerId: '', sheetId: '', rating: 0, like: 0);
-  Question myQuestion = Question(text: '', sheetId: '', authorId: '', askingPage: 0);
+  Question myQuestion = Question(text: '', sheetId: '', questionerId: '', askingPage: 0);
 
   Future<void> createUserCollection(String argUsername, String argEmail, String argUid) async {
     const String defaultPath = "images/default_profile.png";
@@ -155,13 +155,13 @@ class CreateCollection {
     );
   }
 
-  Future<void> createQuestionCollection(String argText, String argSheetId, String argAuthorId, BuildContext context, int argAskingPage) async {
+  Future<void> createQuestionCollection(String argText, String argSheetId, String argQuestionerId, BuildContext context, int argAskingPage) async {
     await _firestore.collection("question").doc(myQuestion.qid).set({
       'timestamp': myQuestion.timestamp,
       'qid': myQuestion.qid,
       'text': argText.toString().trim(),
       'sheetId': argSheetId,
-      'authorId': argAuthorId,
+      'questionerId': argQuestionerId,
       'askingPage': argAskingPage,
     });
     await _firestore.collection('sheet').doc(argSheetId).update({

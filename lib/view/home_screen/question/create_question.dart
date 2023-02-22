@@ -30,7 +30,7 @@ class CreateQuestion extends StatefulWidget {
 class _CreateQuestionState extends State<CreateQuestion> {
   @override
   Widget build(BuildContext context) {
-    final Question _question = Question(text: '', authorId: '', sheetId: '', askingPage: 0);
+    final Question _question = Question(text: '', questionerId: '', sheetId: '', askingPage: 0);
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
@@ -139,7 +139,7 @@ class _CreateQuestionState extends State<CreateQuestion> {
                               try {
                                 myCollection
                                     .createQuestionCollection(_question.text, _question.sheetId = widget.sheetId,
-                                        _question.authorId = _auth.currentUser!.uid, context, _question.askingPage = widget.askingPage)
+                                        _question.questionerId = _auth.currentUser!.uid, context, _question.askingPage = widget.askingPage)
                                     .then((value) => _formKey.currentState!.reset());
                               } on FirebaseAuthException catch (e) {
                                 FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
