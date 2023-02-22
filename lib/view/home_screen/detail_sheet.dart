@@ -253,7 +253,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                   size: 16,
                                                   onPressed: () async {
                                                     if (sheetData['price'] == 0) {
-                                                      final file = await PDFApi.loadPDFFromFirebase(sheetData["authorId"], widget.sheetId);
+                                                      final file = await PDFApi.loadPDFFromFirebase(widget.sheetId);
                                                       if (context.mounted) {
                                                         Provider.of<FilePasserForRead>(context, listen: false).setFile(file);
                                                         AutoRouter.of(context).push(ReadSheetRoute(sheetId: widget.sheetId));
@@ -288,7 +288,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                   if (sheetData['price'] == 0 ||
                                                       currentUserData['buyedSheet'].contains(sheetData['sid']) ||
                                                       currentUserData['uid'] == sheetData['authorId']) {
-                                                    final file = await PDFApi.loadPDFFromFirebase(sheetData['authorId'], widget.sheetId);
+                                                    final file = await PDFApi.loadPDFFromFirebase(widget.sheetId);
                                                     if (context.mounted) {
                                                       Provider.of<FilePasserForRead>(context, listen: false).setFile(file);
                                                       AutoRouter.of(context).push(ReadSheetRoute(sheetId: widget.sheetId));

@@ -39,18 +39,17 @@ class PDFApi {
     return File(result.paths.first.toString());
   }
 
-  static Future<File> loadPDFFromFirebase(String userId, String sheetId) async {
-    final refPDF =
-        await firebaseStorage.FirebaseStorage.instance.ref().child('users').child('/' + userId).child('/sheet').child('/' + sheetId + '.pdf');
+  static Future<File> loadPDFFromFirebase(String sheetId) async {
+    final refPDF = await firebaseStorage.FirebaseStorage.instance.ref().child('sheets').child(sheetId).child(sheetId + '.pdf');
 
-    final String url = 'users/' + userId + '/sheet/' + sheetId + '.pdf';
+    final String url = 'sheets/' + sheetId + '/' + sheetId + '.pdf';
 
     final bytes = await refPDF.getData();
 
     return _storeFile(url, bytes!);
   }
 
-  static Future<firebaseStorage.UploadTask?> uploadToFirebase(BuildContext context, File? inputFile, String userId, String sheetId) async {
+  static Future<firebaseStorage.UploadTask?> uploadToFirebase(BuildContext context, File? inputFile, String sheetId) async {
     if (inputFile == null) {
       final String message = 'มีบางอย่างผิดปกติ กรุณาลองอีกครั้ง';
       FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, message);
@@ -59,8 +58,8 @@ class PDFApi {
 
     firebaseStorage.UploadTask uploadTask;
 
-    firebaseStorage.Reference ref =
-        firebaseStorage.FirebaseStorage.instance.ref().child('users').child('/' + userId).child('/sheet').child('/' + sheetId + '.pdf');
+
+    firebaseStorage.Reference ref = firebaseStorage.FirebaseStorage.instance.ref().child('sheets').child(sheetId).child(sheetId + '.pdf');
 
     final metadata = firebaseStorage.SettableMetadata(
       contentType: 'file/pdf',
@@ -72,23 +71,18 @@ class PDFApi {
     return Future.value(uploadTask);
   }
 
-  static Future<firebaseStorage.UploadTask?> createCoverSheetImage(String userId, String sheetId) async {
-    final File file = await loadPDFFromFirebase(userId, sheetId);
+  static Future<firebaseStorage.UploadTask?> createCoverSheetImage(String sheetId) async {
+    final File file = await loadPDFFromFirebase(sheetId);
 
     imglib.Image coverImage = await _getImageFromPdf(file, 1);
 
     File imageFile = await _imageToFile(coverImage);
 
-    return _uploadCoverImageToFirebase(userId, sheetId, imageFile);
+    return _uploadCoverImageToFirebase(sheetId, imageFile);
   }
 
-  static Future<String> getCoverImage(String userId, String sheetId) async {
-    final coverImage = await firebaseStorage.FirebaseStorage.instance
-        .ref()
-        .child('users')
-        .child('/' + userId)
-        .child('/cover_sheet_image')
-        .child('/' + sheetId + '.png');
+  static Future<String> getCoverImage(String sheetId) async {
+    final coverImage = await firebaseStorage.FirebaseStorage.instance.ref().child('sheets').child(sheetId).child('cover_image.png');
 
     final String imageUrl = await coverImage.getDownloadURL();
 
@@ -130,11 +124,10 @@ class PDFApi {
     return libImage!;
   }
 
-  static Future<firebaseStorage.UploadTask> _uploadCoverImageToFirebase(String userId, String sheetId, File coverImage) async {
+  static Future<firebaseStorage.UploadTask> _uploadCoverImageToFirebase(String sheetId, File coverImage) async {
     firebaseStorage.UploadTask uploadTask;
 
-    firebaseStorage.Reference ref =
-        firebaseStorage.FirebaseStorage.instance.ref().child('users').child('/' + userId).child('/cover_sheet_image').child('/' + sheetId + '.png');
+    firebaseStorage.Reference ref = firebaseStorage.FirebaseStorage.instance.ref().child('sheets').child(sheetId).child('cover_image.png');
 
     final metadata = firebaseStorage.SettableMetadata(
       contentType: 'file/png',

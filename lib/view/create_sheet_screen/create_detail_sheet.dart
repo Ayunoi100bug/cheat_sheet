@@ -225,11 +225,11 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                             text: 'เสร็จสิ้น',
                             onPressed: () async {
                               _formKey.currentState!.save();
-                              firebaseStorage.UploadTask? task = await PDFApi.uploadToFirebase(context, pdfFile, userId, sheetId);
+                              firebaseStorage.UploadTask? task = await PDFApi.uploadToFirebase(context, pdfFile, sheetId);
                               task!.whenComplete(() async {
-                                firebaseStorage.UploadTask? coverImage = await PDFApi.createCoverSheetImage(userId, sheetId);
+                                firebaseStorage.UploadTask? coverImage = await PDFApi.createCoverSheetImage(sheetId);
                                 coverImage!.whenComplete(() async {
-                                  String coverImage = await PDFApi.getCoverImage(userId, sheetId);
+                                  String coverImage = await PDFApi.getCoverImage(sheetId);
                                   try {
                                     myCollection
                                         .createSheetCollection(
