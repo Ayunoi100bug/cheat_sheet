@@ -81,7 +81,7 @@ class PDFApi {
   }
 
   static Future<String> getCoverImage(String sheetId) async {
-    final coverImage = await firebaseStorage.FirebaseStorage.instance.ref().child('sheets').child(sheetId).child('cover_image.jpg');
+    final coverImage = await firebaseStorage.FirebaseStorage.instance.ref().child('sheets').child(sheetId).child('cover_image.png');
 
     final String imageUrl = await coverImage.getDownloadURL();
 
@@ -126,7 +126,7 @@ class PDFApi {
   static Future<firebaseStorage.UploadTask> _uploadCoverImageToFirebase(String sheetId, File coverImage) async {
     firebaseStorage.UploadTask uploadTask;
 
-    firebaseStorage.Reference ref = firebaseStorage.FirebaseStorage.instance.ref().child('sheets').child(sheetId).child('cover_image.jpg');
+    firebaseStorage.Reference ref = firebaseStorage.FirebaseStorage.instance.ref().child('sheets').child(sheetId).child('cover_image.png');
 
     final metadata = firebaseStorage.SettableMetadata(
       contentType: 'file/png',

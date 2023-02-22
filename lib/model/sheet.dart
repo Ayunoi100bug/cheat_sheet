@@ -8,6 +8,7 @@ class Sheets {
   String sheetName;
   String detailSheet;
   String sheetCoverImage;
+  List<int> demoPages;
   String sid = uuid.v4();
   bool sheetTypeFree;
   int? price;
@@ -19,6 +20,7 @@ class Sheets {
     required this.sheetName,
     required this.detailSheet,
     required this.sheetCoverImage,
+    required this.demoPages,
     required this.sheetTypeFree,
     this.price,
     required this.authorId,
@@ -29,6 +31,7 @@ class Sheets {
         sheetName = json['sheetName'],
         detailSheet = json['detailSheet'],
         sheetCoverImage = json['sheetCoverImage'],
+        demoPages = json["demoPages"],
         sid = json['sid'],
         sheetTypeFree = json['sheetType'],
         price = json['price'],
@@ -41,6 +44,7 @@ class Sheets {
         'sheetName': sheetName,
         'detailSheet': detailSheet,
         'sheetCoverImage': sheetCoverImage,
+        'demoPages': demoPages,
         'sid': sid,
         'sheetTypeFree': sheetTypeFree,
         'price': price,
