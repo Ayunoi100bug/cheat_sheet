@@ -133,9 +133,22 @@ class EditReviewData {
   final _firestore = FirebaseFirestore.instance;
 
   Future<void> editReview(BuildContext context, String currentRid, String newTextReview, double newRating) async {
+    var currentReviewSnapshot = await _firestore.collection("review").doc(currentRid).get();
+    Map<String, dynamic> currentReviewData = currentReviewSnapshot.data()!;
+    var currentSheetSnapshot = await _firestore.collection("sheet").doc(currentReviewData['sheetId']).get();
+    Map<String, dynamic> currentSheetData = currentSheetSnapshot.data()!;
+    List? reviewInSheet = currentSheetData['review'];
+    reviewInSheet ??= [];
+    double result = (currentSheetData['rating'] * reviewInSheet.length) - currentReviewData['rating'];
     await _firestore.collection('review').doc(currentRid).update({
       'text': newTextReview,
       'rating': newRating,
+    });
+    var newReviewSnapshot = await _firestore.collection("review").doc(currentRid).get();
+    Map<String, dynamic> newReviewData = newReviewSnapshot.data()!;
+    result = (result + newReviewData['rating']) / reviewInSheet.length;
+    await _firestore.collection('sheet').doc(currentReviewData['sheetId']).update({
+      'rating': result,
     }).then((value) {
       Future.delayed(const Duration(milliseconds: 200), () {
         AutoRouter.of(context).popUntilRoot();

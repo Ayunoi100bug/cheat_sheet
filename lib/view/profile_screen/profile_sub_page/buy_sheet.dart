@@ -53,6 +53,7 @@ class BuySheet extends StatelessWidget {
                         );
                       }
                       return Sheet(
+                        rating: sheet["rating"],
                         sheetCoverImage: sheet["sheetCoverImage"],
                         authorImage: userSnapshot.data?["profileImage"],
                         title: sheet["sheetName"],

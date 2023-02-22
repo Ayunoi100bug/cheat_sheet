@@ -15,6 +15,7 @@ class Sheet extends StatelessWidget {
   final int priceSheet;
   final String sheetId;
   final String sheetCoverImage;
+  final double rating;
   const Sheet(
       {super.key,
       required this.authorImage,
@@ -22,7 +23,8 @@ class Sheet extends StatelessWidget {
       required this.username,
       required this.priceSheet,
       required this.sheetId,
-      required this.sheetCoverImage});
+      required this.sheetCoverImage,
+      required this.rating});
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +32,14 @@ class Sheet extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
 
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    var isLandScape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+    var isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
+    String ratingSheet;
+
+    if (rating.toString().contains('.') && !rating.toString().endsWith('.0')) {
+      ratingSheet = rating.toStringAsFixed(1);
+    } else {
+      ratingSheet = rating.toString().replaceAll(RegExp(r'.0+$'), "");
+    }
 
     return Card(
       elevation: 4,
@@ -66,18 +74,13 @@ class Sheet extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Container(
-                                padding: EdgeInsets.only(
-                                    left: constraints.maxWidth * 0.025,
-                                    right: constraints.maxWidth * 0.025),
+                                padding: EdgeInsets.only(left: constraints.maxWidth * 0.025, right: constraints.maxWidth * 0.025),
                                 alignment: Alignment.center,
-                                height: isPortrait
-                                    ? constraints.maxHeight * 0.45
-                                    : constraints.maxHeight * 0.4,
+                                height: isPortrait ? constraints.maxHeight * 0.45 : constraints.maxHeight * 0.4,
                                 width: constraints.maxWidth * 0.3,
                                 child: CircleAvatar(
                                   radius: 50,
-                                  backgroundImage:
-                                      CachedNetworkImageProvider(authorImage),
+                                  backgroundImage: CachedNetworkImageProvider(authorImage),
                                 ),
                               ),
                               Container(
@@ -87,8 +90,7 @@ class Sheet extends StatelessWidget {
                                 ),
                                 height: constraints.maxHeight * 0.7,
                                 width: constraints.maxWidth * 0.7,
-                                child: LayoutBuilder(
-                                    builder: (context, constraints) {
+                                child: LayoutBuilder(builder: (context, constraints) {
                                   return Column(
                                     children: [
                                       Container(
@@ -151,9 +153,10 @@ class Sheet extends StatelessWidget {
                                 children: [
                                   Icon(
                                     Icons.star,
+                                    color: AppColors.warning400,
                                     size: constraints.maxHeight * 0.25,
                                   ),
-                                  Light12px(text: '4.5'),
+                                  Light12px(text: ratingSheet),
                                 ],
                               ),
                             ],

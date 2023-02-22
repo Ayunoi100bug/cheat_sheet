@@ -58,6 +58,7 @@ class PDFApi {
 
     firebaseStorage.UploadTask uploadTask;
 
+
     firebaseStorage.Reference ref = firebaseStorage.FirebaseStorage.instance.ref().child('sheets').child(sheetId).child(sheetId + '.pdf');
 
     final metadata = firebaseStorage.SettableMetadata(
@@ -81,7 +82,7 @@ class PDFApi {
   }
 
   static Future<String> getCoverImage(String sheetId) async {
-    final coverImage = await firebaseStorage.FirebaseStorage.instance.ref().child('sheets').child(sheetId).child('cover_image.jpg');
+    final coverImage = await firebaseStorage.FirebaseStorage.instance.ref().child('sheets').child(sheetId).child('cover_image.png');
 
     final String imageUrl = await coverImage.getDownloadURL();
 
@@ -100,8 +101,8 @@ class PDFApi {
   static Future<File> _imageToFile(imglib.Image inputImage) async {
     final dir = await getExternalStorageDirectory();
 
-    File imageFile = new File('${dir!.path}/image.jpg');
-    new File(imageFile.path).writeAsBytes(imglib.encodeJpg(inputImage));
+    File imageFile = new File('${dir!.path}/image.png');
+    new File(imageFile.path).writeAsBytes(imglib.encodePng(inputImage));
 
     return imageFile;
   }
@@ -126,10 +127,10 @@ class PDFApi {
   static Future<firebaseStorage.UploadTask> _uploadCoverImageToFirebase(String sheetId, File coverImage) async {
     firebaseStorage.UploadTask uploadTask;
 
-    firebaseStorage.Reference ref = firebaseStorage.FirebaseStorage.instance.ref().child('sheets').child(sheetId).child('cover_image.jpg');
+    firebaseStorage.Reference ref = firebaseStorage.FirebaseStorage.instance.ref().child('sheets').child(sheetId).child('cover_image.png');
 
     final metadata = firebaseStorage.SettableMetadata(
-      contentType: 'file/jpg',
+      contentType: 'file/png',
       customMetadata: {'picked-file-path': coverImage.path},
     );
 
