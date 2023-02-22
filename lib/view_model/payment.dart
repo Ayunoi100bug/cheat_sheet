@@ -33,10 +33,7 @@ class PaymentApi {
     try {
       await _stripe.presentPaymentSheet();
       if (context.mounted) {
-        await UpdateCollection().userTopup(context, coinAmount).then((value) {
-          String message = 'ได้รับ $coinAmount เหรียญ';
-          FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
-        });
+        await UpdateCollection().userTopup(context, coinAmount);
       }
     } on StripeException catch (e) {
       debugPrint(e.toString());
