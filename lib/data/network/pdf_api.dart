@@ -58,7 +58,6 @@ class PDFApi {
 
     firebaseStorage.UploadTask uploadTask;
 
-
     firebaseStorage.Reference ref = firebaseStorage.FirebaseStorage.instance.ref().child('sheets').child(sheetId).child(sheetId + '.pdf');
 
     final metadata = firebaseStorage.SettableMetadata(

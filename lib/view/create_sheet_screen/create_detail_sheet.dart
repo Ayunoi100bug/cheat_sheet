@@ -23,7 +23,8 @@ import '../../res/components/flushbar.dart';
 import '../../res/components/flushbar_icon.dart';
 
 class CreateDetailSheet extends StatefulWidget {
-  const CreateDetailSheet({super.key});
+  final List<int> demoPages;
+  const CreateDetailSheet({super.key, required this.demoPages});
 
   @override
   State<CreateDetailSheet> createState() => _CreateDetailSheetState();
@@ -33,7 +34,7 @@ enum SheetType { free, sell }
 
 class _CreateDetailSheetState extends State<CreateDetailSheet> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetCoverImage: '', sheetTypeFree: true, price: 0, authorId: '');
+  Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetCoverImage: '', demoPages: [], sheetTypeFree: true, price: 0, authorId: '');
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   CreateCollection myCollection = CreateCollection();
   SheetType? _sheetType = SheetType.free;
@@ -237,6 +238,7 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                                       mySheet.sheetName,
                                       mySheet.detailSheet,
                                       coverImage,
+                                      widget.demoPages,
                                       mySheet.sheetTypeFree,
                                       mySheet.price,
                                       mySheet.authorId = userId,

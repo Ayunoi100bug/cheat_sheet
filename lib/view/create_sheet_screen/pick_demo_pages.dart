@@ -1,20 +1,39 @@
+import 'dart:io';
+
+import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/components/flushbar_icon.dart';
 import 'package:cheat_sheet/res/typo.dart';
+import 'package:cheat_sheet/utils/routes/routes.gr.dart';
+import 'package:cheat_sheet/view_model/file_passer.dart';
 import 'package:flutter/material.dart';
+import 'package:pdf_render/pdf_render.dart';
+import 'package:pdf_render/pdf_render_widgets.dart';
+import 'package:provider/provider.dart';
 import '../../res/components/flushbar.dart';
 
 class PickDemoPages extends StatefulWidget {
-  const PickDemoPages({super.key});
+  final PdfDocument doc;
+  final int pagesNumber;
+  const PickDemoPages({super.key, required this.doc, required this.pagesNumber});
 
   @override
   State<PickDemoPages> createState() => _PickDemoPagesState();
 }
 
 class _PickDemoPagesState extends State<PickDemoPages> {
-  static const int _count = 10;
-  final List<bool> _checks = List.generate(_count, (_) => false);
+  late int _count;
   List<int> _selectedItems = [];
+  late List<bool> _checks;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _count = widget.pagesNumber;
+    _checks = List.generate(_count, (_) => false);
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +42,7 @@ class _PickDemoPagesState extends State<PickDemoPages> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _selectedItems = _selectedItems.map((number) => number + 1).toList();
+          AutoRouter.of(context).push(CreateDetailSheetRoute(demoPages: _selectedItems));
         },
         backgroundColor: AppColors.primary500,
         child: const Icon(Icons.arrow_forward_ios_rounded),
@@ -53,8 +72,7 @@ class _PickDemoPagesState extends State<PickDemoPages> {
                     itemBuilder: (context, index) {
                       return Stack(
                         children: [
-                          Image.network(
-                              'https://static.trueplookpanya.com/tppy/member/m_665000_667500/665461/cms/images/%E0%B9%84%E0%B8%AD%E0%B9%80%E0%B8%94%E0%B8%B5%E0%B8%A2%E0%B8%88%E0%B8%94%E0%B8%8A%E0%B8%B5%E0%B8%97%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B_25.jpg'),
+                          PdfPageView(pdfDocument: widget.doc, pageNumber: index + 1),
                           Align(
                             alignment: Alignment.topRight,
                             child: Checkbox(
@@ -73,11 +91,13 @@ class _PickDemoPagesState extends State<PickDemoPages> {
                                   return;
                                 }
                                 _checks[index] = !_checks[index];
-                                if (_selectedItems.contains(index)) {
-                                  _selectedItems.remove(index);
+                                int pageNumber = index + 1;
+                                if (_selectedItems.contains(pageNumber)) {
+                                  _selectedItems.remove(pageNumber);
                                 } else {
-                                  _selectedItems.add(index);
+                                  _selectedItems.add(pageNumber);
                                 }
+                                _selectedItems.sort();
                               });
                             },
                           ),

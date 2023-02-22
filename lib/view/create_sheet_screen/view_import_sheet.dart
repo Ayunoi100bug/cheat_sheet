@@ -6,6 +6,7 @@ import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/view_model/file_passer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:pdf_render/pdf_render.dart';
 import 'package:provider/provider.dart';
 import '../../res/colors.dart';
 import '../../res/components/flushbar.dart';
@@ -82,8 +83,9 @@ class _ViewImportSheetState extends State<ViewImportSheet> {
                 text: 'ยกเลิก',
               ),
               PrimaryButton(
-                onPressed: () {
-                  AutoRouter.of(context).push(const CreateDetailSheetRoute());
+                onPressed: () async {
+                  PdfDocument doc = await PdfDocument.openFile(pdfFile!.path);
+                  AutoRouter.of(context).push(PickDemoPagesRoute(doc: doc, pagesNumber: doc.pageCount));
                 },
                 text: 'ต่อไป',
               ),

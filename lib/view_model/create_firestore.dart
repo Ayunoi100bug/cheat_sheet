@@ -23,7 +23,7 @@ class CreateCollection {
   final _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
   Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
-  Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetCoverImage: '', sheetTypeFree: true, authorId: '');
+  Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetCoverImage: '', demoPages: [], sheetTypeFree: true, authorId: '');
   SheetLists mySheetLists = SheetLists(sheetListName: '', sid: [], authorId: '', sheetListId: '');
   Reviews myReview = Reviews(text: '', rid: '', reviewerId: '', sheetId: '', rating: 0, like: 0);
 
@@ -91,13 +91,14 @@ class CreateCollection {
     }
   }
 
-  Future<void> createSheetCollection(String sheetId, String argSheetName, String argDetailSheet, String urlSheetCoverImage, bool argSheetType,
-      int? argPrice, String argAuthorId) async {
+  Future<void> createSheetCollection(String sheetId, String argSheetName, String argDetailSheet, String urlSheetCoverImage, List<int> demoPages,
+      bool argSheetType, int? argPrice, String argAuthorId) async {
     await _firestore.collection("sheet").doc(sheetId).set({
       'timestamp': mySheet.timestamp,
       'sheetName': argSheetName.toString().trim(),
       'detailSheet': argDetailSheet.toString().trim(),
       'sheetCoverImage': urlSheetCoverImage,
+      'demoPages': demoPages,
       'sheetTypeFree': argSheetType,
       'rating': mySheet.rating,
       'price': argPrice,

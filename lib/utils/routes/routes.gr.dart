@@ -14,6 +14,7 @@
 import 'package:auto_route/auto_route.dart' as _i32;
 import 'package:auto_route/empty_router_widgets.dart' as _i5;
 import 'package:flutter/material.dart' as _i33;
+import 'package:pdf_render/pdf_render.dart' as _i34;
 
 import '../../view/activity_screen/activity_screen.dart' as _i17;
 import '../../view/create_sheet_screen/create_detail_sheet.dart' as _i19;
@@ -245,9 +246,13 @@ class AppRouter extends _i32.RootStackRouter {
       );
     },
     CreateDetailSheetRoute.name: (routeData) {
+      final args = routeData.argsAs<CreateDetailSheetRouteArgs>();
       return _i32.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i19.CreateDetailSheet(),
+        child: _i19.CreateDetailSheet(
+          key: args.key,
+          demoPages: args.demoPages,
+        ),
       );
     },
     ViewImportSheetRoute.name: (routeData) {
@@ -257,9 +262,14 @@ class AppRouter extends _i32.RootStackRouter {
       );
     },
     PickDemoPagesRoute.name: (routeData) {
+      final args = routeData.argsAs<PickDemoPagesRouteArgs>();
       return _i32.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i21.PickDemoPages(),
+        child: _i21.PickDemoPages(
+          key: args.key,
+          doc: args.doc,
+          pagesNumber: args.pagesNumber,
+        ),
       );
     },
     SheetListScreen.name: (routeData) {
@@ -1013,14 +1023,37 @@ class CreateSheetScreen extends _i32.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i19.CreateDetailSheet]
-class CreateDetailSheetRoute extends _i32.PageRouteInfo<void> {
-  const CreateDetailSheetRoute()
-      : super(
+class CreateDetailSheetRoute
+    extends _i32.PageRouteInfo<CreateDetailSheetRouteArgs> {
+  CreateDetailSheetRoute({
+    _i33.Key? key,
+    required List<int> demoPages,
+  }) : super(
           CreateDetailSheetRoute.name,
           path: 'create_detail_sheet',
+          args: CreateDetailSheetRouteArgs(
+            key: key,
+            demoPages: demoPages,
+          ),
         );
 
   static const String name = 'CreateDetailSheetRoute';
+}
+
+class CreateDetailSheetRouteArgs {
+  const CreateDetailSheetRouteArgs({
+    this.key,
+    required this.demoPages,
+  });
+
+  final _i33.Key? key;
+
+  final List<int> demoPages;
+
+  @override
+  String toString() {
+    return 'CreateDetailSheetRouteArgs{key: $key, demoPages: $demoPages}';
+  }
 }
 
 /// generated route for
@@ -1037,14 +1070,41 @@ class ViewImportSheetRoute extends _i32.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i21.PickDemoPages]
-class PickDemoPagesRoute extends _i32.PageRouteInfo<void> {
-  const PickDemoPagesRoute()
-      : super(
+class PickDemoPagesRoute extends _i32.PageRouteInfo<PickDemoPagesRouteArgs> {
+  PickDemoPagesRoute({
+    _i33.Key? key,
+    required _i34.PdfDocument doc,
+    required int pagesNumber,
+  }) : super(
           PickDemoPagesRoute.name,
           path: 'pick_demo_pages',
+          args: PickDemoPagesRouteArgs(
+            key: key,
+            doc: doc,
+            pagesNumber: pagesNumber,
+          ),
         );
 
   static const String name = 'PickDemoPagesRoute';
+}
+
+class PickDemoPagesRouteArgs {
+  const PickDemoPagesRouteArgs({
+    this.key,
+    required this.doc,
+    required this.pagesNumber,
+  });
+
+  final _i33.Key? key;
+
+  final _i34.PdfDocument doc;
+
+  final int pagesNumber;
+
+  @override
+  String toString() {
+    return 'PickDemoPagesRouteArgs{key: $key, doc: $doc, pagesNumber: $pagesNumber}';
+  }
 }
 
 /// generated route for
