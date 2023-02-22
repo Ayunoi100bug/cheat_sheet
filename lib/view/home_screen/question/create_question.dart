@@ -1,15 +1,22 @@
 import 'dart:io';
 
+import 'package:cheat_sheet/model/question.dart';
 import 'package:cheat_sheet/res/colors.dart';
+import 'package:cheat_sheet/res/components/form_field.dart';
 import 'package:cheat_sheet/res/typo.dart';
+import 'package:cheat_sheet/view_model/create_firestore.dart';
 import 'package:cheat_sheet/view_model/file_passer_for_read.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:pdf_render/pdf_render_widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
 import '../../../res/button.dart';
+import '../../../res/components/flushbar.dart';
+import '../../../res/components/flushbar_icon.dart';
 
 class CreateQuestion extends StatefulWidget {
   final String sheetId;
@@ -23,20 +30,24 @@ class CreateQuestion extends StatefulWidget {
 class _CreateQuestionState extends State<CreateQuestion> {
   @override
   Widget build(BuildContext context) {
+    final Question _question = Question(text: '', authorId: '', sheetId: '', askingPage: 0);
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    var isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
+    CreateCollection myCollection = CreateCollection();
+    final _auth = FirebaseAuth.instance;
 
     File? file = Provider.of<FilePasserForRead>(context).getFile();
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: LayoutBuilder(builder: (context, constraints) {
           return SingleChildScrollView(
             child: Column(
               children: [
-                Container(
+                SizedBox(
                   height: isPortrait ? constraints.maxHeight * 0.1 : constraints.maxHeight * 0.3,
                   child: LayoutBuilder(builder: (context, constraints) {
                     return Row(
@@ -96,16 +107,17 @@ class _CreateQuestionState extends State<CreateQuestion> {
                     width: isPortrait ? screenWidth : screenWidth * 0.6,
                     height: isPortrait ? screenHeight * 0.1 : screenHeight * 0.5,
                     padding: EdgeInsets.all(screenHeight * 0.004),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: AppColors.black500),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: TextField(
-                      maxLines: null,
-                      scrollPadding: const EdgeInsets.all(12.0),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'คำถาม',
+                    child: Form(
+                      key: _formKey,
+                      child: MyTextFormField(
+                        hintText: 'กรอกคำถามได้ที่นี่',
+                        minLine: 5,
+                        maxLine: 5,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: RequiredValidator(errorText: 'กรุณากรอกคำถามให้เรียบร้อย'),
+                        onSaved: (value) {
+                          _question.text = value!;
+                        },
                       ),
                     ),
                   ),
@@ -121,9 +133,18 @@ class _CreateQuestionState extends State<CreateQuestion> {
                       children: [
                         OutlineButton(text: 'ยกเลิก', onPressed: () {}),
                         PrimaryButton(
-                          text: 'ยืนยัน',
-                          onPressed: () {},
-                        )
+                            text: 'ยืนยัน',
+                            onPressed: () async {
+                              _formKey.currentState!.save();
+                              try {
+                                myCollection
+                                    .createQuestionCollection(_question.text, _question.sheetId = widget.sheetId,
+                                        _question.authorId = _auth.currentUser!.uid, context, _question.askingPage = widget.askingPage)
+                                    .then((value) => _formKey.currentState!.reset());
+                              } on FirebaseAuthException catch (e) {
+                                FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
+                              }
+                            })
                       ],
                     ),
                   ),

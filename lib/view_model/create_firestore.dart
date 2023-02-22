@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:cheat_sheet/model/question.dart';
 import 'package:cheat_sheet/model/review.dart';
 import 'package:cheat_sheet/model/sheet.dart';
 import 'package:cheat_sheet/model/sheet_list.dart';
@@ -26,6 +27,7 @@ class CreateCollection {
   Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetCoverImage: '', sheetTypeFree: true, authorId: '');
   SheetLists mySheetLists = SheetLists(sheetListName: '', sid: [], authorId: '', sheetListId: '');
   Reviews myReview = Reviews(text: '', rid: '', reviewerId: '', sheetId: '', rating: 0, like: 0);
+  Question myQuestion = Question(text: '', sheetId: '', authorId: '', askingPage: 0);
 
   Future<void> createUserCollection(String argUsername, String argEmail, String argUid) async {
     const String defaultPath = "images/default_profile.png";
@@ -149,6 +151,26 @@ class CreateCollection {
         AutoRouter.of(context).popUntilRoot();
         const String message = 'รีวิวสำเร็จแล้ว!';
         FlushbarPopup.successFlushbar(context, const Icon(Icons.reviews), message);
+      },
+    );
+  }
+
+  Future<void> createQuestionCollection(String argText, String argSheetId, String argAuthorId, BuildContext context, int argAskingPage) async {
+    await _firestore.collection("question").doc(myQuestion.qid).set({
+      'timestamp': myQuestion.timestamp,
+      'qid': myQuestion.qid,
+      'text': argText.toString().trim(),
+      'sheetId': argSheetId,
+      'authorId': argAuthorId,
+      'askingPage': argAskingPage,
+    });
+    await _firestore.collection('sheet').doc(argSheetId).update({
+      'review': FieldValue.arrayUnion([myQuestion.qid])
+    }).then(
+      (value) {
+        AutoRouter.of(context).popUntilRoot();
+        const String message = 'สร้างคำถามสำเร็จ!';
+        FlushbarPopup.successFlushbar(context, const Icon(Icons.question_answer), message);
       },
     );
   }
