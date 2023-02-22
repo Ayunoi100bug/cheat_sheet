@@ -80,6 +80,7 @@ class _DetailSheetState extends State<DetailSheet> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    String ratingSheet;
 
     return StreamBuilder<DocumentSnapshot>(
         stream: _firestore.collection("sheet").doc(widget.sheetId).snapshots(),
@@ -92,6 +93,11 @@ class _DetailSheetState extends State<DetailSheet> {
           Map<String, dynamic> sheetData = snapshot.data!.data() as Map<String, dynamic>;
           List? reviewInSheet = sheetData['review'];
           reviewInSheet ??= []; //ถ้า reviewInSheet เท่ากับ null จะให้เป็น []
+          if (sheetData['rating'].toString().contains('.') && !sheetData['rating'].toString().endsWith('.0')) {
+            ratingSheet = sheetData['rating'].toStringAsFixed(1);
+          } else {
+            ratingSheet = sheetData['rating'].toString().replaceAll(RegExp(r'.0+$'), "");
+          }
           return StreamBuilder<DocumentSnapshot>(
               stream: _firestore.collection("users").doc(sheetData['authorId']).snapshots(),
               builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> authorSnapshot) {
@@ -202,7 +208,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                         Row(
                                           children: [
                                             RatingBarIndicator(
-                                              rating: 4,
+                                              rating: sheetData['rating'],
                                               itemBuilder: (context, index) => const Icon(
                                                 Icons.star,
                                                 color: AppColors.warning400,
@@ -213,7 +219,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                             SizedBox(
                                               width: screenWidth * 0.01,
                                             ),
-                                            const Regular12px(text: "5"),
+                                            Regular12px(text: ratingSheet),
                                           ],
                                         ),
                                         Row(
