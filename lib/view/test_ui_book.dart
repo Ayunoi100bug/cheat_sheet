@@ -66,11 +66,11 @@ class _TestUIPageState extends State<TestUIPage> {
                     height: screenHeight * 0.3,
                     child: Column(
                       children: [
-                        Ask(
-                          focus: true,
-                          selectedIndex: 0,
-                          currentIndex: 0,
-                        ),
+                        // Ask(
+                        //   focus: true,
+                        //   selectedIndex: 0,
+                        //   currentIndex: 0,
+                        // ),
                         ListView.builder(
                           itemCount: 3,
                           shrinkWrap: true,

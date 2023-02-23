@@ -166,7 +166,7 @@ class CreateCollection {
       'askingPage': argAskingPage,
     });
     await _firestore.collection('sheet').doc(argSheetId).update({
-      'review': FieldValue.arrayUnion([myQuestion.qid])
+      'question': FieldValue.arrayUnion([myQuestion.qid])
     }).then(
       (value) {
         AutoRouter.of(context).popUntilRoot();
