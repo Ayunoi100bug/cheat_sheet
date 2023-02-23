@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/view/home_screen/question/ask_question.dart';
@@ -10,11 +11,21 @@ class Ask extends StatefulWidget {
   final int selectedIndex;
   final int currentIndex;
   final bool focus;
+  final String userImage;
+  final String username;
+  final String questionText;
+  final String authorId;
+  final String sheetId;
   const Ask({
     super.key,
     required this.focus,
     required this.selectedIndex,
     required this.currentIndex,
+    required this.userImage,
+    required this.username,
+    required this.questionText,
+    required this.authorId,
+    required this.sheetId,
   });
 
   @override
@@ -43,10 +54,11 @@ class _AskState extends State<Ask> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     InkWell(
-                      child: Container(
+                      child: SizedBox(
                         width: isPortrait ? constraints.maxWidth * 0.12 : constraints.maxWidth * 0.05,
-                        child: Image.asset(
-                          'assets/images/logo.png', //userImage
+                        child: CircleAvatar(
+                          backgroundImage: CachedNetworkImageProvider(widget.userImage),
+                          radius: 12,
                         ),
                       ),
                       onTap: () {
@@ -64,7 +76,7 @@ class _AskState extends State<Ask> {
                               ),
                               width: isPortrait ? constraints.maxWidth * 0.56 : constraints.maxWidth * 0.625,
                               child: Regular16px(
-                                text: "UserName",
+                                text: widget.username,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -110,9 +122,7 @@ class _AskState extends State<Ask> {
                           width: isPortrait ? constraints.maxWidth * 0.88 : constraints.maxWidth * 0.95,
                           child: Regular14px(
                             color: AppColors.black600,
-                            text: "ขอบคุณมากครับที่ทำสรุปดีๆแบบนี้ออกมาแนะนำเลยครับนักเขียนคนนี้เขียนดีทุกสรุปเลยครับ",
-
-                            // activateOverflow: true,
+                            text: widget.questionText,
                           ),
                         ),
                       ],
