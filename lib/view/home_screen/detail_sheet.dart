@@ -17,13 +17,11 @@ import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/view_model/create_firestore.dart';
 
 import 'package:cheat_sheet/view_model/file_passer_for_read.dart';
-import 'package:cheat_sheet/view_model/read_firestore.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:cheat_sheet/view_model/update_firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -188,7 +186,6 @@ class _DetailSheetState extends State<DetailSheet> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Medium20px(
-                                          //  text: sheetData["sheetName"],
                                           text: sheetData["sheetName"],
                                           activateOverflow: true,
                                           maxLine: 2,
