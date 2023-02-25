@@ -101,15 +101,24 @@ class Medium20px extends StatelessWidget {
   final Color color;
   final String text;
   final double size;
+  final int? maxLine;
   final bool activateOverflow;
   final bool underline;
-  const Medium20px(
-      {super.key, this.color = AppColors.black800, required this.text, this.size = 20, this.activateOverflow = false, this.underline = false});
+  const Medium20px({
+    super.key,
+    this.color = AppColors.black800,
+    required this.text,
+    this.size = 20,
+    this.maxLine,
+    this.activateOverflow = false,
+    this.underline = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
+      maxLines: maxLine,
       style: TextStyle(
         fontFamily: 'BaiJamjuree',
         color: color,
