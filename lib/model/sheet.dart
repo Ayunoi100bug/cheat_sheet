@@ -16,6 +16,7 @@ class Sheets {
   int buyer = 0;
   String authorId;
   List? review = [];
+  List? question = [];
 
   Sheets({
     required this.sheetName,

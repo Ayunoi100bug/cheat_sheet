@@ -17,13 +17,11 @@ import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/view_model/create_firestore.dart';
 
 import 'package:cheat_sheet/view_model/file_passer_for_read.dart';
-import 'package:cheat_sheet/view_model/read_firestore.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:cheat_sheet/view_model/update_firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -187,7 +185,11 @@ class _DetailSheetState extends State<DetailSheet> {
                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Medium20px(text: sheetData["sheetName"]),
+                                        Medium20px(
+                                          text: sheetData["sheetName"],
+                                          activateOverflow: true,
+                                          maxLine: 2,
+                                        ),
                                         SingleChildScrollView(
                                           padding: EdgeInsets.zero,
                                           scrollDirection: Axis.horizontal,
@@ -234,40 +236,64 @@ class _DetailSheetState extends State<DetailSheet> {
                                             Regular14px(text: authorData['username']),
                                           ],
                                         ),
-                                        Wrap(
-                                          spacing: 10,
-                                          children: [
-                                            Icon(
-                                              Icons.favorite_outline,
-                                              color: AppColors.black600,
-                                              size: isPortrait ? 32 : 36,
-                                            ),
-                                            InkWell(
-                                              child: Icon(
-                                                Icons.playlist_add_rounded,
+                                        if (sheetData['authorId'] == _auth.currentUser!.uid) ...[
+                                          Wrap(
+                                            spacing: 10,
+                                            children: [
+                                              InkWell(
+                                                child: Icon(
+                                                  Icons.edit,
+                                                  color: AppColors.black500,
+                                                  size: isPortrait ? 32 : 36,
+                                                ),
+                                                onTap: () {},
+                                              ),
+                                              InkWell(
+                                                child: Icon(
+                                                  Icons.delete_outline_rounded,
+                                                  color: AppColors.error500,
+                                                  size: isPortrait ? 32 : 36,
+                                                ),
+                                                onTap: () {},
+                                              ),
+                                            ],
+                                          ),
+                                        ] else ...[
+                                          Wrap(
+                                            spacing: 10,
+                                            children: [
+                                              Icon(
+                                                Icons.favorite_outline,
                                                 color: AppColors.black600,
                                                 size: isPortrait ? 32 : 36,
                                               ),
-                                              onTap: () {
-                                                _BottomSheetList(context, widget.sheetId);
-                                              },
-                                            ),
-                                            Icon(
-                                              UniconsLine.arrow_circle_down,
-                                              color: AppColors.black600,
-                                              size: isPortrait ? 32 : 36,
-                                            ),
-                                            InkWell(
-                                              child: Icon(
-                                                UniconsLine.share,
+                                              InkWell(
+                                                child: Icon(
+                                                  Icons.playlist_add_rounded,
+                                                  color: AppColors.black600,
+                                                  size: isPortrait ? 32 : 36,
+                                                ),
+                                                onTap: () {
+                                                  _BottomSheetList(context, widget.sheetId);
+                                                },
+                                              ),
+                                              Icon(
+                                                UniconsLine.arrow_circle_down,
+                                                color: AppColors.black600,
                                                 size: isPortrait ? 32 : 36,
                                               ),
-                                              onTap: () {
-                                                _shareSheet(context);
-                                              },
-                                            ),
-                                          ],
-                                        ),
+                                              InkWell(
+                                                child: Icon(
+                                                  UniconsLine.share,
+                                                  size: isPortrait ? 32 : 36,
+                                                ),
+                                                onTap: () {
+                                                  _shareSheet(context);
+                                                },
+                                              ),
+                                            ],
+                                          )
+                                        ],
                                         StreamBuilder<DocumentSnapshot>(
                                             stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
                                             builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> currentUserSnapshot) {
