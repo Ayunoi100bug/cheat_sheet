@@ -1,6 +1,7 @@
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/view_model/file_passer.dart';
 import 'package:cheat_sheet/view_model/file_passer_for_read.dart';
+import 'package:cheat_sheet/view_model/image_passer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +27,9 @@ class MyApp extends StatelessWidget {
         }),
         ChangeNotifierProvider(create: (context) {
           return FilePasserForRead();
+        }),
+        ChangeNotifierProvider(create: (context) {
+          return ImagePasser();
         }),
       ],
       child: MaterialApp.router(
