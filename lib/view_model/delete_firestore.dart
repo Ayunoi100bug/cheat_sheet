@@ -3,7 +3,6 @@ import 'package:cheat_sheet/res/components/flushbar.dart';
 import 'package:cheat_sheet/res/components/flushbar_icon.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:auto_route/auto_route.dart';
 
 class DeleteCollection {
   final _firestore = FirebaseFirestore.instance;
@@ -45,5 +44,15 @@ class DeleteDocument {
       const String message = 'ลบความคิดเห็นสำเร็จ';
       FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
     });
+  }
+
+  Future<void> deleteSheet(BuildContext context, String sheetId) async {
+    Navigator.pop(context);
+    AutoRouter.of(context).navigateNamed('/home/');
+
+    Future.delayed(const Duration(milliseconds: 500), () {});
+    _firestore.collection('sheet').doc(sheetId).delete();
+    const String message = 'ลบชีทสำเร็จ';
+    FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, message);
   }
 }
