@@ -78,89 +78,95 @@ class _AskQuestionState extends State<AskQuestion> {
 
     File? file = Provider.of<FilePasserForRead>(context).getFile();
 
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.add,
-          color: AppColors.white,
-          size: 40,
-        ),
-        onPressed: () {
-          AutoRouter.of(context).push(CreateQuestionRoute(sheetId: widget.sheetId, askingPage: widget.askingPage));
-        },
-        backgroundColor: AppColors.tertiary600,
-      ),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return Padding(
-            padding: EdgeInsets.only(top: screenHeight * 0.024),
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.only(
-                    top: screenHeight * 0.020,
-                    left: screenHeight * 0.036,
-                    right: screenHeight * 0.036,
-                    bottom: screenHeight * 0.020,
-                  ),
-                  height: isPortrait ? constraints.maxHeight * 0.6 : constraints.maxHeight * 0.4,
-                  child: Container(
-                    child: PdfDocumentLoader.openFile(
-                      file!.path,
-                      pageNumber: widget.askingPage,
-                      pageBuilder: (context, textureBuilder, pageSize) => textureBuilder(),
-                    ),
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    print('${_cardPosition}');
-                  },
-                  child: SizedBox(
-                    height: isPortrait ? screenHeight * 0.23 : screenHeight * 0.6,
-                    child: StreamBuilder<QuerySnapshot>(
-                        stream: _firestore.collection("question").snapshots(),
-                        builder: (BuildContext context, AsyncSnapshot questionSnapshot) {
-                          if (!questionSnapshot.hasData) {
-                            return Container();
-                          } else if (questionSnapshot.connectionState == ConnectionState.waiting) {
-                            return const Center(child: CircularProgressIndicator());
-                          }
-                          final myQuestion = questionSnapshot.data?.docs.where((document) => document["askingPage"] == widget.askingPage);
-                          return ListView.builder(
+    return StreamBuilder<DocumentSnapshot>(
+        stream: _firestore.collection("sheet").doc(widget.sheetId).snapshots(),
+        builder: (BuildContext context, AsyncSnapshot sheetSnapshot) {
+          Map<String, dynamic> sheetData = sheetSnapshot.data!.data() as Map<String, dynamic>;
+          List? questionInSheet = sheetData['question'];
+          questionInSheet ??= [];
+          return Scaffold(
+            floatingActionButton: FloatingActionButton(
+              child: Icon(
+                Icons.add,
+                color: AppColors.white,
+                size: 40,
+              ),
+              onPressed: () {
+                AutoRouter.of(context).push(CreateQuestionRoute(sheetId: widget.sheetId, askingPage: widget.askingPage));
+              },
+              backgroundColor: AppColors.tertiary600,
+            ),
+            body: LayoutBuilder(
+              builder: (context, constraints) {
+                return Padding(
+                  padding: EdgeInsets.only(top: screenHeight * 0.024),
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.only(
+                          top: screenHeight * 0.020,
+                          left: screenHeight * 0.036,
+                          right: screenHeight * 0.036,
+                          bottom: screenHeight * 0.020,
+                        ),
+                        height: isPortrait ? constraints.maxHeight * 0.6 : constraints.maxHeight * 0.4,
+                        child: Container(
+                          child: PdfDocumentLoader.openFile(
+                            file!.path,
+                            pageNumber: widget.askingPage,
+                            pageBuilder: (context, textureBuilder, pageSize) => textureBuilder(),
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          print('${_cardPosition}');
+                        },
+                        child: SizedBox(
+                          height: isPortrait ? screenHeight * 0.23 : screenHeight * 0.6,
+                          child: ListView.builder(
                               controller: _scrollController,
-                              itemCount: myQuestion!.length,
+                              itemCount: questionInSheet!.length,
                               itemBuilder: (BuildContext context, int index) {
-                                final question = myQuestion!.elementAt(index);
                                 return StreamBuilder<DocumentSnapshot>(
-                                    stream: _firestore.collection("users").doc(question['questionerId']).snapshots(),
-                                    builder: (BuildContext context, AsyncSnapshot userSnapshot) {
-                                      if (!userSnapshot.hasData) {
+                                    stream: _firestore.collection("question").doc(questionInSheet![index]).snapshots(),
+                                    builder: (BuildContext context, AsyncSnapshot questionSnapshot) {
+                                      if (!questionSnapshot.hasData || questionSnapshot.data!['askingPage'] != widget.askingPage) {
                                         return Container();
-                                      } else if (userSnapshot.connectionState == ConnectionState.waiting) {
+                                      } else if (questionSnapshot.connectionState == ConnectionState.waiting) {
                                         return const Center(child: CircularProgressIndicator());
                                       }
-                                      Map<String, dynamic> userData = userSnapshot.data!.data() as Map<String, dynamic>;
-                                      return Ask(
-                                        authorId: userData['uid'],
-                                        userImage: userData['profileImage'],
-                                        username: userData['username'],
-                                        sheetId: widget.sheetId,
-                                        questionText: question['text'],
-                                        focus: _cardPosition == index ? true : false,
-                                        selectedIndex: 0,
-                                        currentIndex: 0,
-                                      );
+                                      return StreamBuilder<DocumentSnapshot>(
+                                          stream: _firestore.collection("users").doc(questionSnapshot.data!['questionerId']).snapshots(),
+                                          builder: (BuildContext context, AsyncSnapshot userSnapshot) {
+                                            if (!userSnapshot.hasData) {
+                                              return Container();
+                                            } else if (userSnapshot.connectionState == ConnectionState.waiting) {
+                                              return const Center(child: CircularProgressIndicator());
+                                            }
+                                            return Ask(
+                                              authorId: userSnapshot.data!['uid'],
+                                              userImage: userSnapshot.data!['profileImage'],
+                                              username: userSnapshot.data!['username'],
+                                              userId: userSnapshot.data!['uid'],
+                                              sheetId: widget.sheetId,
+                                              questionId: questionSnapshot.data!['qid'],
+                                              questionText: questionSnapshot.data!['text'],
+                                              focus: _cardPosition == index ? true : false,
+                                              selectedIndex: 0,
+                                              currentIndex: 0,
+                                            );
+                                          });
                                     });
-                              });
-                        }),
+                              }),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                );
+              },
             ),
           );
-        },
-      ),
-    );
+        });
   }
 }
