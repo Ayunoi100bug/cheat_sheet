@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/model/sheet.dart';
 import 'package:cheat_sheet/model/user.dart';
+import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/components/flushbar.dart';
 import 'package:cheat_sheet/res/components/flushbar_icon.dart';
 import 'package:cheat_sheet/view_model/auth.dart';
@@ -10,6 +11,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../res/components/popup_auth.dart';
 
@@ -125,6 +127,76 @@ class EditProfileData {
         const String message = 'เปลี่ยนข้อมูลสำเร็จ';
         FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
       });
+    });
+  }
+}
+
+class UpdateSheetListData {
+  final _firestore = FirebaseFirestore.instance;
+
+  Future<void> editSheetList(BuildContext context, String currentSheetListId, String newText) async {
+    await _firestore.collection('sheetList').doc(currentSheetListId).update({
+      'sheetListName': newText,
+    }).then((value) {
+      Future.delayed(const Duration(milliseconds: 200), () {
+        AutoRouter.of(context).popUntilRoot();
+        const String message = 'เปลี่ยนข้อมูลสำเร็จ';
+        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+      });
+    });
+  }
+
+  Future<void> updateSheetList(BuildContext context, String currentSheetListId, String currentSheetId) async {
+    var currentSheetListSnapshot = await _firestore.collection("sheetList").doc(currentSheetListId).get();
+    Map<String, dynamic> currentSheetListData = currentSheetListSnapshot.data()!;
+    var currentSheetSnapshot = await _firestore.collection("sheet").doc(currentSheetId).get();
+    Map<String, dynamic> currentSheetData = currentSheetSnapshot.data()!;
+    if (currentSheetListData['sheetListCoverImage'] == '') {
+      await _firestore.collection('sheetList').doc(currentSheetListId).update({'sheetListCoverImage': currentSheetData['sheetCoverImage']});
+    }
+    await _firestore.collection('sheetList').doc(currentSheetListId).update({
+      'sid': FieldValue.arrayUnion([currentSheetId])
+    });
+
+    Future.delayed(const Duration(milliseconds: 500), () {
+      Navigator.of(context).pop();
+
+      const String message = 'เพิ่มชีทเข้าชีทลิสต์สำเร็จ!';
+      FlushbarPopup.successFlushbar(
+          context,
+          const Icon(
+            FontAwesomeIcons.book,
+            color: AppColors.white,
+          ),
+          message);
+    });
+  }
+
+  Future<void> removeSheetFromList(BuildContext context, String currentSheetListId, String currentSheetId) async {
+    await _firestore.collection('sheetList').doc(currentSheetListId).update({
+      'sid': FieldValue.arrayRemove([currentSheetId])
+    });
+    var currentSheetListSnapshot = await _firestore.collection("sheetList").doc(currentSheetListId).get();
+    Map<String, dynamic> currentSheetListData = currentSheetListSnapshot.data()!;
+    List? sheet = currentSheetListData['sid'];
+    if (sheet!.isEmpty) {
+      await _firestore.collection('sheetList').doc(currentSheetListId).update({'sheetListCoverImage': ''});
+      return;
+    }
+    var sheetSnapshot = await _firestore.collection("sheet").doc(currentSheetListData['sid'][0]).get();
+    Map<String, dynamic> sheetData = sheetSnapshot.data()!;
+    await _firestore.collection('sheetList').doc(currentSheetListId).update({'sheetListCoverImage': sheetData['sheetCoverImage']});
+    Future.delayed(const Duration(milliseconds: 500), () {
+      Navigator.of(context).pop();
+
+      const String message = 'ลบชีทออกจากชีทลิสต์สำเร็จ!';
+      FlushbarPopup.successFlushbar(
+          context,
+          const Icon(
+            FontAwesomeIcons.book,
+            color: AppColors.white,
+          ),
+          message);
     });
   }
 }

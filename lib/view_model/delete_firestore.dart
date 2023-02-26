@@ -46,4 +46,8 @@ class DeleteDocument {
       FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
     });
   }
+
+  Future<void> deleteSheetList(BuildContext context, String sheetListId) async {
+    _firestore.collection("sheetList").doc(sheetListId).delete();
+  }
 }
