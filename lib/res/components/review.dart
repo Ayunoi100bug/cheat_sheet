@@ -49,8 +49,6 @@ class _ReviewState extends State<Review> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
 
     return Card(
@@ -104,17 +102,6 @@ class _ReviewState extends State<Review> {
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Icon(
-                                  Icons.thumb_up_outlined,
-                                  size: isPortrait ? constraints.maxWidth * 0.15 : constraints.maxWidth * 0.075,
-                                ),
-                                SizedBox(
-                                  width: isPortrait ? constraints.maxWidth * 0.1 : constraints.maxWidth * 0.05,
-                                ),
-                                Regular14px(text: widget.like.toString()),
-                                SizedBox(
-                                  width: isPortrait ? constraints.maxWidth * 0.1 : constraints.maxWidth * 0.05,
-                                ),
                                 StreamBuilder(
                                     stream: _auth.authStateChanges(),
                                     builder: (context, AsyncSnapshot<User?> snapshot) {
@@ -125,16 +112,19 @@ class _ReviewState extends State<Review> {
                                           child: CircularProgressIndicator(),
                                         );
                                       }
-                                      return InkWell(
-                                        onTap: () {
-                                          _BottomReview(context, widget.textReview, widget.userRating, widget.reviewId, widget.sheetId);
-                                        },
-                                        child: const Icon(
-                                          FontAwesomeIcons.ellipsisV,
-                                          color: AppColors.black700,
-                                          size: 16,
-                                        ),
-                                      );
+                                      if (widget.userId == _auth.currentUser!.uid) {
+                                        return InkWell(
+                                          onTap: () {
+                                            _BottomReview(context, widget.textReview, widget.userRating, widget.reviewId, widget.sheetId);
+                                          },
+                                          child: const Icon(
+                                            FontAwesomeIcons.ellipsisV,
+                                            color: AppColors.black700,
+                                            size: 16,
+                                          ),
+                                        );
+                                      }
+                                      return Container();
                                     }),
                               ],
                             );
@@ -189,7 +179,7 @@ void _BottomReview(BuildContext context, String textReview, double rating, Strin
                   alignment: Alignment.center,
                   height: isPortrait ? screenHeight * 0.08 : screenWidth * 0.08,
                   width: double.infinity,
-                  child: const Regular16px(text: 'Edit')),
+                  child: const Regular16px(text: 'แก้ไข')),
               onTap: () {
                 _BottomEditReview(context, textReview, rating, reviewId);
               },
@@ -200,7 +190,7 @@ void _BottomReview(BuildContext context, String textReview, double rating, Strin
                   height: isPortrait ? screenHeight * 0.08 : screenWidth * 0.08,
                   width: double.infinity,
                   child: const Regular16px(
-                    text: 'Delete',
+                    text: 'ลบ',
                     color: AppColors.error500,
                   )),
               onTap: () {

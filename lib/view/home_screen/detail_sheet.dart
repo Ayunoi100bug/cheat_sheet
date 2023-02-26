@@ -396,10 +396,18 @@ class _DetailSheetState extends State<DetailSheet> {
                                     ),
                                   ],
                                 ),
+                                if (reviewInSheet!.isEmpty) ...[
+                                  SizedBox(
+                                    height: screenWidth * 0.57,
+                                    child: const Center(
+                                      child: Regular16px(text: "ยังไม่มีรีวิว"),
+                                    ),
+                                  ),
+                                ],
                                 ListView.builder(
                                   physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
-                                  itemCount: reviewInSheet!.length > 2 ? 2 : reviewInSheet.length,
+                                  itemCount: reviewInSheet.length > 2 ? 2 : reviewInSheet.length,
                                   itemBuilder: (BuildContext context, index) {
                                     return StreamBuilder<DocumentSnapshot>(
                                         stream: _firestore.collection("review").doc(reviewInSheet![index]).snapshots(),
@@ -434,19 +442,21 @@ class _DetailSheetState extends State<DetailSheet> {
                                         });
                                   },
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(vertical: screenWidth * 0.04),
-                                  child: InkWell(
-                                    child: const Regular14px(
-                                      text: "ดูทั้งหมด",
-                                      underline: true,
-                                      color: AppColors.primary600,
+                                if (reviewInSheet.isNotEmpty) ...[
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(vertical: screenWidth * 0.04),
+                                    child: InkWell(
+                                      child: const Regular14px(
+                                        text: "ดูทั้งหมด",
+                                        underline: true,
+                                        color: AppColors.primary600,
+                                      ),
+                                      onTap: () {
+                                        AutoRouter.of(context).push(ReviewSheetRoute(sheetId: widget.sheetId));
+                                      },
                                     ),
-                                    onTap: () {
-                                      AutoRouter.of(context).push(ReviewSheetRoute(sheetId: widget.sheetId));
-                                    },
                                   ),
-                                ),
+                                ],
                               ],
                             ),
                           ),

@@ -3,7 +3,6 @@ import 'package:cheat_sheet/res/components/flushbar.dart';
 import 'package:cheat_sheet/res/components/flushbar_icon.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:auto_route/auto_route.dart';
 
 class DeleteCollection {
   final _firestore = FirebaseFirestore.instance;
@@ -39,7 +38,7 @@ class DeleteDocument {
     await _firestore.collection('sheet').doc(sheetId).update({
       'review': FieldValue.arrayRemove([reviewId])
     });
-    await _firestore.collection('sheet').doc(sheetId).update({'rating': result});
+    await _firestore.collection('sheet').doc(sheetId).update({'rating': result.isNaN ? 0.toDouble() : result});
     _firestore.collection("review").doc(reviewId).delete().then((value) {
       AutoRouter.of(context).popUntilRoot();
       const String message = 'ลบความคิดเห็นสำเร็จ';
