@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:blinking_text/blinking_text.dart';
@@ -508,7 +509,7 @@ class _DetailSheetState extends State<DetailSheet> {
                 text: 'ชีทลิสต์ใหม่',
               ),
               SizedBox(
-                height: screenHeight * 0.03,
+                height: screenHeight * 0.025,
               ),
               Form(
                 key: _formKey,
@@ -537,40 +538,14 @@ class _DetailSheetState extends State<DetailSheet> {
                   _formKey.currentState!.save();
                   try {
                     myCollection
-                        .createSheetListCollection(
+                        .createSheetListAndUpdateCollection(
+                      context,
                       _sheetLists.sheetListName,
                       _sheetLists.sid = [],
                       _sheetLists.authorId = _auth.currentUser!.uid,
                       _sheetLists.sheetListId = uuid.v4(),
-                    )
-                        .then(
-                      (value) {
-                        _formKey.currentState!.reset();
-                        AutoRouter.of(context).popUntilRoot();
-                      },
-                    );
-                    await _firestoreDb.collection('users').doc(_auth.currentUser!.uid).update({
-                      'sheetLists': FieldValue.arrayUnion([_sheetLists.sheetListId])
-                    });
-                  } on FirebaseAuthException catch (e) {
-                    FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
-                  }
-                },
-              ),
-              SizedBox(
-                height: screenHeight * 0.03,
-              ),
-              PrimaryButton(
-                text: 'บันทึก',
-                onPressed: () async {
-                  _formKey.currentState!.save();
-                  try {
-                    myCollection
-                        .createSheetListCollection(
-                      _sheetLists.sheetListName,
-                      _sheetLists.sid = [],
-                      _sheetLists.authorId = _auth.currentUser!.uid,
-                      _sheetLists.sheetListId = uuid.v4(),
+                      _sheetLists.sheetListCoverImage = '',
+                      widget.sheetId,
                     )
                         .then(
                       (value) {
@@ -676,7 +651,39 @@ class _DetailSheetState extends State<DetailSheet> {
                                               children: [
                                                 Container(
                                                   height: constraints.maxHeight * 0.8,
-                                                  color: AppColors.black300,
+                                                  color: sheetLists!['sheetListCoverImage'] == '' ? AppColors.black300 : Colors.transparent,
+                                                  child: Stack(
+                                                    children: [
+                                                      sheetLists['sid'].contains(widget.sheetId)
+                                                          ? Opacity(
+                                                              opacity: 0.5,
+                                                              child: CachedNetworkImage(
+                                                                imageUrl: sheetLists["sheetListCoverImage"],
+                                                              ),
+                                                            )
+                                                          : Container(
+                                                              child: sheetLists['sheetListCoverImage'] != ''
+                                                                  ? CachedNetworkImage(
+                                                                      imageUrl: sheetLists["sheetListCoverImage"],
+                                                                    )
+                                                                  : Container(),
+                                                            ),
+                                                      Center(
+                                                        child: sheetLists['sid'].contains(widget.sheetId)
+                                                            ? InkWell(
+                                                                child: const Icon(
+                                                                  FontAwesomeIcons.check,
+                                                                  color: AppColors.tertiary600,
+                                                                ),
+                                                                onTap: () {
+                                                                  UpdateSheetListData()
+                                                                      .removeSheetFromList(context, sheetLists['sheetListId'], widget.sheetId);
+                                                                },
+                                                              )
+                                                            : Container(),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                                 SizedBox(
                                                   height: constraints.maxHeight * 0.2,
@@ -686,7 +693,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                         padding: EdgeInsets.only(top: screenWidth * 0.02),
                                                         alignment: Alignment.topCenter,
                                                         height: constraints.maxHeight * 0.5,
-                                                        child: Regular16px(text: sheetLists!['sheetListName']),
+                                                        child: Regular16px(text: sheetLists['sheetListName']),
                                                       );
                                                     },
                                                   ),
@@ -695,21 +702,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                             ),
                                             onTap: () async {
                                               try {
-                                                await _firestoreDb.collection('sheetList').doc(sheetLists!['sheetListId']).update({
-                                                  'sid': FieldValue.arrayUnion([sheetId])
-                                                });
-                                                Future.delayed(const Duration(milliseconds: 500), () {
-                                                  Navigator.of(context).pop();
-
-                                                  const String message = 'เพิ่มชีทเข้าชีทลิสต์สำเร็จ!';
-                                                  FlushbarPopup.successFlushbar(
-                                                      context,
-                                                      const Icon(
-                                                        FontAwesomeIcons.book,
-                                                        color: AppColors.white,
-                                                      ),
-                                                      message);
-                                                });
+                                                UpdateSheetListData().updateSheetList(context, sheetLists['sheetListId'], widget.sheetId);
                                               } on FirebaseAuthException catch (e) {
                                                 FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
                                               }

@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/view_model/delete_firestore.dart';
@@ -6,6 +7,8 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 import '../button.dart';
+import 'flushbar.dart';
+import 'flushbar_icon.dart';
 
 Widget Popup_DeletePage(BuildContext context) {
   double screenHeight = MediaQuery.of(context).size.height;
@@ -273,7 +276,13 @@ Widget Popup_DeleteSheetList(BuildContext context) {
           OutlineButton(text: 'ยกเลิก', onPressed: () {}),
           PrimaryButton(
             text: 'ลบชีทลิสต์',
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pop();
+              AutoRouter.of(context).navigateNamed('/sheet_list');
+              DeleteDocument().deleteSheetList(context, sheetListId).then((value) {
+                FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, 'ลบชีทลิสต์สำเร็จ');
+              });
+            },
             color: AppColors.error600,
           ),
         ],

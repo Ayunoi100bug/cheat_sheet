@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cheat_sheet/model/sheet_list.dart';
 import 'package:cheat_sheet/model/user.dart';
 import 'package:cheat_sheet/res/button.dart';
@@ -36,6 +37,7 @@ class _SheetListScreenState extends State<SheetListScreen> with AutomaticKeepAli
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
 
     return StreamBuilder(
         stream: _auth.authStateChanges(),
@@ -91,7 +93,7 @@ class _SheetListScreenState extends State<SheetListScreen> with AutomaticKeepAli
                                 physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
+                                  crossAxisCount: isPortrait ? 3 : 5,
                                   crossAxisSpacing: 8,
                                   mainAxisSpacing: 8,
                                   childAspectRatio: screenWidth < 480
@@ -109,7 +111,12 @@ class _SheetListScreenState extends State<SheetListScreen> with AutomaticKeepAli
                                           children: [
                                             Container(
                                               height: constraints.maxHeight * 0.8,
-                                              color: AppColors.black300,
+                                              color: sheetLists['sheetListCoverImage'] == '' ? AppColors.black300 : Colors.transparent,
+                                              child: sheetLists['sheetListCoverImage'] != ''
+                                                  ? CachedNetworkImage(
+                                                      imageUrl: sheetLists["sheetListCoverImage"],
+                                                    )
+                                                  : Container(),
                                             ),
                                             InkWell(
                                               child: SizedBox(
@@ -221,6 +228,7 @@ void _BottomSheet(context) {
                     _sheetLists.sid = [],
                     _sheetLists.authorId = _auth.currentUser!.uid,
                     _sheetLists.sheetListId = uuid.v4(),
+                    _sheetLists.sheetListCoverImage = '',
                   )
                       .then(
                     (value) {

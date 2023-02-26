@@ -46,6 +46,10 @@ class DeleteDocument {
     });
   }
 
+  Future<void> deleteSheetList(BuildContext context, String sheetListId) async {
+    await _firestore.collection("sheetList").doc(sheetListId).delete();
+  }
+
   Future<void> deleteQuestion(BuildContext context, String questionId, String sheetId) async {
     var currentReviewSnapshot = await _firestore.collection("question").doc(questionId).get();
     Map<String, dynamic> currentReviewData = currentReviewSnapshot.data()!;
@@ -61,6 +65,7 @@ class DeleteDocument {
       const String message = 'ลบความคิดเห็นสำเร็จ';
       FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
     });
+  }
 
   Future<void> deleteSheet(BuildContext context, String sheetId) async {
     Navigator.pop(context);

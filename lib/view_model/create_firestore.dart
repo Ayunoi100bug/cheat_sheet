@@ -6,6 +6,7 @@ import 'package:cheat_sheet/model/review.dart';
 import 'package:cheat_sheet/model/sheet.dart';
 import 'package:cheat_sheet/model/sheet_list.dart';
 import 'package:cheat_sheet/model/user.dart';
+import 'package:cheat_sheet/view_model/update_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -14,7 +15,9 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../res/colors.dart';
 import '../res/components/flushbar.dart';
 import '../res/components/flushbar_icon.dart';
 
@@ -110,13 +113,40 @@ class CreateCollection {
     });
   }
 
-  Future<void> createSheetListCollection(String argSheetListName, List? argSid, String argAuthorId, String argSheetListId) async {
+  Future<void> createSheetListCollection(
+      String argSheetListName, List? argSid, String argAuthorId, String argSheetListId, String? argSheetListCoverImage) async {
     await _firestore.collection("sheetList").doc(argSheetListId).set({
       'timestamp': mySheetLists.timestamp,
       'sheetListName': argSheetListName.toString().trim(),
       'sid': argSid,
       'authorId': argAuthorId,
       'sheetListId': argSheetListId,
+      'sheetListCoverImage': argSheetListCoverImage,
+    });
+  }
+
+  Future<void> createSheetListAndUpdateCollection(BuildContext context, String argSheetListName, List? argSid, String argAuthorId,
+      String argSheetListId, String? argSheetListCoverImage, String sheetId) async {
+    await _firestore.collection("sheetList").doc(argSheetListId).set({
+      'timestamp': mySheetLists.timestamp,
+      'sheetListName': argSheetListName.toString().trim(),
+      'sid': argSid,
+      'authorId': argAuthorId,
+      'sheetListId': argSheetListId,
+      'sheetListCoverImage': argSheetListCoverImage,
+    });
+    UpdateSheetListData().updateSheetList(context, argSheetListId, sheetId);
+    Future.delayed(const Duration(milliseconds: 500), () {
+      Navigator.of(context).pop();
+
+      const String message = 'เพิ่มชีทเข้าชีทลิสต์สำเร็จ!';
+      FlushbarPopup.successFlushbar(
+          context,
+          const Icon(
+            FontAwesomeIcons.book,
+            color: AppColors.white,
+          ),
+          message);
     });
   }
 
