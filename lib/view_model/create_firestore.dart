@@ -179,9 +179,7 @@ class CreateCollection {
     });
     await _firestore.collection('sheet').doc(argSheetId).update({'rating': result}).then(
       (value) {
-        AutoRouter.of(context).popUntilRoot();
-        const String message = 'รีวิวสำเร็จแล้ว!';
-        FlushbarPopup.successFlushbar(context, const Icon(Icons.reviews), message);
+        AutoRouter.of(context).pop();
       },
     );
   }
@@ -194,6 +192,8 @@ class CreateCollection {
       'sheetId': argSheetId,
       'questionerId': argQuestionerId,
       'askingPage': argAskingPage,
+      'like': myQuestion.like,
+      'dislike': myQuestion.dislike,
     });
     await _firestore.collection('sheet').doc(argSheetId).update({
       'question': FieldValue.arrayUnion([myQuestion.qid])

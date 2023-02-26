@@ -3,7 +3,6 @@ import 'package:cheat_sheet/res/components/flushbar.dart';
 import 'package:cheat_sheet/res/components/flushbar_icon.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:auto_route/auto_route.dart';
 
 class DeleteCollection {
   final _firestore = FirebaseFirestore.instance;
@@ -49,5 +48,32 @@ class DeleteDocument {
 
   Future<void> deleteSheetList(BuildContext context, String sheetListId) async {
     await _firestore.collection("sheetList").doc(sheetListId).delete();
+  }
+
+  Future<void> deleteQuestion(BuildContext context, String questionId, String sheetId) async {
+    var currentReviewSnapshot = await _firestore.collection("question").doc(questionId).get();
+    Map<String, dynamic> currentReviewData = currentReviewSnapshot.data()!;
+    var currentSheetSnapshot = await _firestore.collection("sheet").doc(sheetId).get();
+    Map<String, dynamic> currentSheetData = currentSheetSnapshot.data()!;
+    List? questionInSheet = currentSheetData['question'];
+    questionInSheet ??= [];
+    await _firestore.collection('sheet').doc(sheetId).update({
+      'question': FieldValue.arrayRemove([questionId])
+    });
+    await _firestore.collection("question").doc(questionId).delete().then((value) {
+      AutoRouter.of(context).popUntilRoot();
+      const String message = 'ลบความคิดเห็นสำเร็จ';
+      FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+    });
+  }
+
+  Future<void> deleteSheet(BuildContext context, String sheetId) async {
+    Navigator.pop(context);
+    AutoRouter.of(context).navigateNamed('/home/');
+
+    await Future.delayed(const Duration(milliseconds: 500), () {});
+    await _firestore.collection('sheet').doc(sheetId).delete();
+    const String message = 'ลบชีทสำเร็จ';
+    FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, message);
   }
 }

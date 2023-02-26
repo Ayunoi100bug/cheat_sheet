@@ -26,6 +26,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../res/components/popup_auth.dart';
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -61,9 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
         stream: _auth.authStateChanges(),
         builder: (context, AsyncSnapshot<User?> snapshot) {
           if (!snapshot.hasData) {
-            return const Center(
-              child: Text("This is page when not login"),
-            );
+            return Popup_Login(context);
           } else if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),

@@ -36,6 +36,7 @@ import '../../data/network/pdf_api.dart';
 import '../../model/sheet.dart';
 import '../../model/sheet_list.dart';
 import '../../res/components/form_field.dart';
+import '../../res/components/popup_dialog.dart';
 
 class DetailSheet extends StatefulWidget {
   final String sheetId;
@@ -255,7 +256,12 @@ class _DetailSheetState extends State<DetailSheet> {
                                                   color: AppColors.error500,
                                                   size: isPortrait ? 32 : 36,
                                                 ),
-                                                onTap: () {},
+                                                onTap: () {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (BuildContext context) => Popup_DeleteSheet(context, widget.sheetId),
+                                                  );
+                                                },
                                               ),
                                             ],
                                           ),

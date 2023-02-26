@@ -230,3 +230,25 @@ class EditReviewData {
     });
   }
 }
+
+class EditQuestionData {
+  final _firestore = FirebaseFirestore.instance;
+
+  Future<void> editQuestion(BuildContext context, String currentQid, String newTextQuestion) async {
+    var currentQuestionSnapshot = await _firestore.collection("question").doc(currentQid).get();
+    Map<String, dynamic> currentQuestionData = currentQuestionSnapshot.data()!;
+    var currentSheetSnapshot = await _firestore.collection("sheet").doc(currentQuestionData['sheetId']).get();
+    Map<String, dynamic> currentSheetData = currentSheetSnapshot.data()!;
+    List? questionInSheet = currentSheetData['question'];
+    questionInSheet ??= [];
+    await _firestore.collection('question').doc(currentQid).update({
+      'text': newTextQuestion,
+    }).then((value) {
+      Future.delayed(const Duration(milliseconds: 200), () {
+        AutoRouter.of(context).popUntilRoot();
+        const String message = 'เปลี่ยนข้อมูลสำเร็จ';
+        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+      });
+    });
+  }
+}
