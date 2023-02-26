@@ -57,7 +57,7 @@ class DeleteDocument {
     await _firestore.collection('sheet').doc(sheetId).update({
       'question': FieldValue.arrayRemove([questionId])
     });
-    _firestore.collection("question").doc(questionId).delete().then((value) {
+    await _firestore.collection("question").doc(questionId).delete().then((value) {
       AutoRouter.of(context).popUntilRoot();
       const String message = 'ลบความคิดเห็นสำเร็จ';
       FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);

@@ -81,6 +81,11 @@ class _AskQuestionState extends State<AskQuestion> {
     return StreamBuilder<DocumentSnapshot>(
         stream: _firestore.collection("sheet").doc(widget.sheetId).snapshots(),
         builder: (BuildContext context, AsyncSnapshot sheetSnapshot) {
+          if (!sheetSnapshot.hasData) {
+            return Container();
+          } else if (sheetSnapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
           Map<String, dynamic> sheetData = sheetSnapshot.data!.data() as Map<String, dynamic>;
           List? questionInSheet = sheetData['question'];
           questionInSheet ??= [];
