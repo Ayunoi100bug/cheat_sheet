@@ -42,7 +42,6 @@ class _MainScreenState extends State<MainScreen> {
         Fluttertoast.cancel();
         return true;
       },
-
       child: StreamBuilder(
           stream: _auth.authStateChanges(),
           builder: (context, AsyncSnapshot<User?> snapshot) {

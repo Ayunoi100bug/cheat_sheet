@@ -9,12 +9,16 @@ class Question {
   String questionerId;
   int askingPage;
   List? answer = [];
+  int? like = 0;
+  int? dislike = 0;
 
   Question({
     required this.text,
     required this.sheetId,
     required this.questionerId,
     required this.askingPage,
+    this.like,
+    this.dislike,
   });
 
   Question.fromJson(Map<String, dynamic> json)
@@ -23,7 +27,9 @@ class Question {
         text = json['text'],
         sheetId = json['sheetId'],
         questionerId = json['questionerId'],
-        askingPage = json['askingPage'];
+        askingPage = json['askingPage'],
+        like = json['like'],
+        dislike = json['dislike'];
 
   Map<String, dynamic> toJson() => {
         'timestamp': timestamp,
@@ -32,5 +38,7 @@ class Question {
         'sheetId': sheetId,
         'questionerId': questionerId,
         'askingPage': askingPage,
+        'like': like,
+        'dislike': dislike,
       };
 }

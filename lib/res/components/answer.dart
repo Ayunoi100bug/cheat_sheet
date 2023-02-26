@@ -27,10 +27,7 @@ class _AnswerState extends State<Answer> {
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
 
     return Padding(
-      padding: EdgeInsets.only(
-          left: screenWidth * 0.1,
-          right: screenWidth * 0.032,
-          bottom: screenWidth * 0.024),
+      padding: EdgeInsets.only(left: screenWidth * 0.1, right: screenWidth * 0.032, bottom: screenWidth * 0.024),
       child: Card(
         color: widget.focus ? AppColors.warning100 : AppColors.white,
         elevation: 6,
@@ -47,9 +44,7 @@ class _AnswerState extends State<Answer> {
                   children: [
                     InkWell(
                       child: SizedBox(
-                        width: isPortrait
-                            ? constraints.maxWidth * 0.12
-                            : constraints.maxWidth * 0.05,
+                        width: isPortrait ? constraints.maxWidth * 0.12 : constraints.maxWidth * 0.05,
                         child: Image.asset(
                           'assets/images/logo.png', //userImage
                         ),
@@ -65,13 +60,9 @@ class _AnswerState extends State<Answer> {
                             Container(
                               alignment: Alignment.centerLeft,
                               padding: EdgeInsets.symmetric(
-                                horizontal: isPortrait
-                                    ? constraints.maxWidth * 0.024
-                                    : constraints.maxWidth * 0.012,
+                                horizontal: isPortrait ? constraints.maxWidth * 0.024 : constraints.maxWidth * 0.012,
                               ),
-                              width: isPortrait
-                                  ? constraints.maxWidth * 0.56
-                                  : constraints.maxWidth * 0.625,
+                              width: isPortrait ? constraints.maxWidth * 0.56 : constraints.maxWidth * 0.625,
                               child: Regular16px(
                                 text: "UserName",
                                 fontWeight: FontWeight.w500,
@@ -80,19 +71,14 @@ class _AnswerState extends State<Answer> {
                             Container(
                               alignment: Alignment.centerRight,
                               padding: EdgeInsets.symmetric(
-                                horizontal: isPortrait
-                                    ? constraints.maxWidth * 0.024
-                                    : constraints.maxWidth * 0.012,
+                                horizontal: isPortrait ? constraints.maxWidth * 0.024 : constraints.maxWidth * 0.012,
                               ),
-                              width: isPortrait
-                                  ? constraints.maxWidth * 0.32
-                                  : constraints.maxWidth * 0.325,
+                              width: isPortrait ? constraints.maxWidth * 0.32 : constraints.maxWidth * 0.325,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: screenWidth * 0.02),
+                                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
                                     child: InkWell(
                                       child: Icon(
                                         Icons.thumb_up_off_alt_outlined,
@@ -111,20 +97,13 @@ class _AnswerState extends State<Answer> {
                         ),
                         Container(
                           padding: EdgeInsets.symmetric(
-                            horizontal: isPortrait
-                                ? constraints.maxWidth * 0.024
-                                : constraints.maxWidth * 0.012,
-                            vertical: isPortrait
-                                ? constraints.maxWidth * 0.01
-                                : constraints.maxWidth * 0.01,
+                            horizontal: isPortrait ? constraints.maxWidth * 0.024 : constraints.maxWidth * 0.012,
+                            vertical: isPortrait ? constraints.maxWidth * 0.01 : constraints.maxWidth * 0.01,
                           ),
-                          width: isPortrait
-                              ? constraints.maxWidth * 0.88
-                              : constraints.maxWidth * 0.95,
+                          width: isPortrait ? constraints.maxWidth * 0.88 : constraints.maxWidth * 0.95,
                           child: Regular14px(
                             color: AppColors.black600,
-                            text:
-                                "ขอบคุณมากครับที่ทำสรุปดีๆแบบนี้ออกมาแนะนำเลยครับนักเขียนคนนี้เขียนดีทุกสรุปเลยครับ",
+                            text: "ขอบคุณมากครับที่ทำสรุปดีๆแบบนี้ออกมาแนะนำเลยครับนักเขียนคนนี้เขียนดีทุกสรุปเลยครับ",
                           ),
                         ),
                       ],
