@@ -193,6 +193,54 @@ Widget Popup_DeleteReview(BuildContext context, String reviewId, String sheetId)
   );
 }
 
+Widget Popup_DeleteQuestion(BuildContext context, String questionId, String sheetId) {
+  double screenHeight = MediaQuery.of(context).size.height;
+
+  return AlertDialog(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
+    title: Column(
+      children: [
+        Image.asset(
+          'assets/images/error.png',
+          width: 70,
+        ),
+        SizedBox(
+          height: screenHeight * 0.008,
+        ),
+        Regular14px(text: 'ต้องการที่จะลบคำถามนี้หรือไม่?'),
+        SizedBox(
+          height: screenHeight * 0.008,
+        ),
+        Regular12px(
+          text: 'คำถามนี้จะถูกลบถาวร',
+          color: AppColors.black600,
+        ),
+      ],
+    ),
+    actions: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          OutlineButton(
+              text: 'ยกเลิก',
+              onPressed: () {
+                Navigator.pop(context);
+              }),
+          PrimaryButton(
+            text: 'ลบคำถาม',
+            onPressed: () {
+              DeleteDocument().deleteQuestion(context, questionId, sheetId);
+            },
+            color: AppColors.error600,
+          ),
+        ],
+      ),
+    ],
+  );
+}
+
 Widget Popup_DeleteSheetList(BuildContext context) {
   double screenHeight = MediaQuery.of(context).size.height;
   return AlertDialog(

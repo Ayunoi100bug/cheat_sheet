@@ -46,6 +46,22 @@ class DeleteDocument {
     });
   }
 
+  Future<void> deleteQuestion(BuildContext context, String questionId, String sheetId) async {
+    var currentReviewSnapshot = await _firestore.collection("question").doc(questionId).get();
+    Map<String, dynamic> currentReviewData = currentReviewSnapshot.data()!;
+    var currentSheetSnapshot = await _firestore.collection("sheet").doc(sheetId).get();
+    Map<String, dynamic> currentSheetData = currentSheetSnapshot.data()!;
+    List? questionInSheet = currentSheetData['question'];
+    questionInSheet ??= [];
+    await _firestore.collection('sheet').doc(sheetId).update({
+      'question': FieldValue.arrayRemove([questionId])
+    });
+    await _firestore.collection("question").doc(questionId).delete().then((value) {
+      AutoRouter.of(context).popUntilRoot();
+      const String message = 'ลบความคิดเห็นสำเร็จ';
+      FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+    });
+
   Future<void> deleteSheet(BuildContext context, String sheetId) async {
     Navigator.pop(context);
     AutoRouter.of(context).navigateNamed('/home/');
