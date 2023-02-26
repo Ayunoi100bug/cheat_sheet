@@ -4,6 +4,7 @@ import 'package:cheat_sheet/view/create_sheet_screen/create_detail_sheet.dart';
 import 'package:cheat_sheet/view/create_sheet_screen/import_sheet_screen.dart';
 import 'package:cheat_sheet/view/create_sheet_screen/pick_demo_pages.dart';
 import 'package:cheat_sheet/view/create_sheet_screen/view_import_sheet.dart';
+import 'package:cheat_sheet/view/home_screen/edit_sheet.dart';
 import 'package:cheat_sheet/view/home_screen/question/ask_question.dart';
 import 'package:cheat_sheet/view/home_screen/question/create_question.dart';
 import 'package:cheat_sheet/view/home_screen/create_review.dart';
@@ -47,6 +48,7 @@ import 'package:cheat_sheet/view/test_ui_book.dart';
         AutoRoute(path: ':sheetId/read_sheet/ask_question/:questionId', name: 'DetailQuestionRoute', page: DetailQuestion),
         AutoRoute(path: ':sheetId/review_sheet', name: 'ReviewSheetRoute', page: ReviewSheet),
         AutoRoute(path: ':sheetId/create_review', name: 'CreateReviewRoute', page: CreateReview),
+        AutoRoute(path: ':sheetId/edit_sheet', name: 'EditSheetRoute', page: EditSheet),
       ]),
       AutoRoute(path: 'activity', name: 'ActivityRoute', page: EmptyRouterPage, children: [
         AutoRoute(path: '', page: ActivityScreen),

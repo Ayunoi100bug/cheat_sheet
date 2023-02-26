@@ -247,7 +247,9 @@ class _DetailSheetState extends State<DetailSheet> {
                                                   color: AppColors.black500,
                                                   size: isPortrait ? 32 : 36,
                                                 ),
-                                                onTap: () {},
+                                                onTap: () {
+                                                  AutoRouter.of(context).push(EditSheetRoute());
+                                                },
                                               ),
                                               InkWell(
                                                 child: Icon(
