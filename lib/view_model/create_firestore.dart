@@ -6,6 +6,7 @@ import 'package:cheat_sheet/model/review.dart';
 import 'package:cheat_sheet/model/sheet.dart';
 import 'package:cheat_sheet/model/sheet_list.dart';
 import 'package:cheat_sheet/model/user.dart';
+import 'package:cheat_sheet/view_model/update_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -134,12 +135,7 @@ class CreateCollection {
       'sheetListId': argSheetListId,
       'sheetListCoverImage': argSheetListCoverImage,
     });
-    var currentSheetSnapshot = await _firestore.collection("sheet").doc(sheetId).get();
-    Map<String, dynamic> currentSheetData = currentSheetSnapshot.data()!;
-    await _firestore.collection('sheetList').doc(argSheetListId).update({
-      'sid': FieldValue.arrayUnion([sheetId]),
-      'sheetListCoverImage': currentSheetData['sheetCoverImage']
-    });
+    UpdateSheetListData().updateSheetList(context, argSheetListId, sheetId);
     Future.delayed(const Duration(milliseconds: 500), () {
       Navigator.of(context).pop();
 

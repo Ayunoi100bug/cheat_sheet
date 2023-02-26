@@ -48,6 +48,6 @@ class DeleteDocument {
   }
 
   Future<void> deleteSheetList(BuildContext context, String sheetListId) async {
-    _firestore.collection("sheetList").doc(sheetListId).delete();
+    await _firestore.collection("sheetList").doc(sheetListId).delete();
   }
 }

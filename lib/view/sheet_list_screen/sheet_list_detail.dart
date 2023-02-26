@@ -218,7 +218,7 @@ void _BottomEditSheetList(BuildContext context, String sheetListId, String textS
               padding: EdgeInsets.only(right: screenHeight * 0.032),
               alignment: Alignment.centerRight,
               child: PrimaryButton(
-                text: 'ส่ง',
+                text: 'ยืนยัน',
                 onPressed: () async {
                   _formKey.currentState!.save();
                   try {
