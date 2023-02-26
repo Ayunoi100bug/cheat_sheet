@@ -65,7 +65,7 @@ Widget Popup_DeleteAllSheet(BuildContext context) {
         SizedBox(
           height: screenHeight * 0.008,
         ),
-        const Regular14px(text: 'ต้องการที่จะลบชีทหรือไม่?'),
+        const Regular14px(text: 'ต้องการที่จะลบชีททั้งหมดหรือไม่?'),
         SizedBox(
           height: screenHeight * 0.008,
         ),

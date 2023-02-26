@@ -50,8 +50,8 @@ class DeleteDocument {
     Navigator.pop(context);
     AutoRouter.of(context).navigateNamed('/home/');
 
-    Future.delayed(const Duration(milliseconds: 500), () {});
-    _firestore.collection('sheet').doc(sheetId).delete();
+    await Future.delayed(const Duration(milliseconds: 500), () {});
+    await _firestore.collection('sheet').doc(sheetId).delete();
     const String message = 'ลบชีทสำเร็จ';
     FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, message);
   }

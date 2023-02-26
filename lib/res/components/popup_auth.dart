@@ -35,6 +35,7 @@ Widget Popup_Login(BuildContext context) {
             text: 'เข้าสู่ระบบ',
             onPressed: () {
               AutoRouter.of(context).push(LoginRoute());
+              Navigator.pop(context);
             },
           ),
         ],
