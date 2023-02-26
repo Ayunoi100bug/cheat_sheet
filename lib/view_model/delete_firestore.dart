@@ -38,7 +38,7 @@ class DeleteDocument {
     await _firestore.collection('sheet').doc(sheetId).update({
       'review': FieldValue.arrayRemove([reviewId])
     });
-    await _firestore.collection('sheet').doc(sheetId).update({'rating': result});
+    await _firestore.collection('sheet').doc(sheetId).update({'rating': result.isNaN ? 0.toDouble() : result});
     _firestore.collection("review").doc(reviewId).delete().then((value) {
       AutoRouter.of(context).popUntilRoot();
       const String message = 'ลบความคิดเห็นสำเร็จ';
