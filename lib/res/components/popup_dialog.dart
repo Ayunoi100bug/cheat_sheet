@@ -49,7 +49,7 @@ Widget Popup_DeletePage(BuildContext context) {
   );
 }
 
-Widget Popup_DeleteSheet(BuildContext context) {
+Widget Popup_DeleteAllSheet(BuildContext context) {
   double screenHeight = MediaQuery.of(context).size.height;
 
   return AlertDialog(
@@ -65,11 +65,11 @@ Widget Popup_DeleteSheet(BuildContext context) {
         SizedBox(
           height: screenHeight * 0.008,
         ),
-        Regular14px(text: 'ต้องการที่จะลบชีทหรือไม่?'),
+        const Regular14px(text: 'ต้องการที่จะลบชีททั้งหมดหรือไม่?'),
         SizedBox(
           height: screenHeight * 0.008,
         ),
-        Regular12px(
+        const Regular12px(
           text: 'ชีทนี้จะถูกลบถาวร',
           color: AppColors.black600,
         ),
@@ -97,6 +97,54 @@ Widget Popup_DeleteSheet(BuildContext context) {
   );
 }
 
+Widget Popup_DeleteSheet(BuildContext context, String sheetId) {
+  double screenHeight = MediaQuery.of(context).size.height;
+
+  return AlertDialog(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
+    title: Column(
+      children: [
+        Image.asset(
+          'assets/images/error.png',
+          width: 70,
+        ),
+        SizedBox(
+          height: screenHeight * 0.008,
+        ),
+        const Regular14px(text: 'ต้องการที่จะลบชีทหรือไม่?'),
+        SizedBox(
+          height: screenHeight * 0.008,
+        ),
+        const Regular12px(
+          text: 'ชีทนี้จะถูกลบถาวร',
+          color: AppColors.black600,
+        ),
+      ],
+    ),
+    actions: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          OutlineButton(
+              text: 'ยกเลิก',
+              onPressed: () {
+                Navigator.pop(context);
+              }),
+          PrimaryButton(
+            text: 'ลบชีท',
+            onPressed: () {
+              DeleteDocument().deleteSheet(context, sheetId);
+            },
+            color: AppColors.error600,
+          ),
+        ],
+      ),
+    ],
+  );
+}
+
 Widget Popup_DeleteReview(BuildContext context, String reviewId, String sheetId) {
   double screenHeight = MediaQuery.of(context).size.height;
 
@@ -113,11 +161,11 @@ Widget Popup_DeleteReview(BuildContext context, String reviewId, String sheetId)
         SizedBox(
           height: screenHeight * 0.008,
         ),
-        Regular14px(text: 'ต้องการที่จะลบความคิดเห็นนี้หรือไม่?'),
+        const Regular14px(text: 'ต้องการที่จะลบความคิดเห็นนี้หรือไม่?'),
         SizedBox(
           height: screenHeight * 0.008,
         ),
-        Regular12px(
+        const Regular12px(
           text: 'ความคิดเห็นนี้จะถูกลบถาวร',
           color: AppColors.black600,
         ),
@@ -208,11 +256,11 @@ Widget Popup_DeleteSheetList(BuildContext context) {
         SizedBox(
           height: screenHeight * 0.008,
         ),
-        Regular14px(text: 'ต้องการที่จะลบชีทลิสต์หรือไม่?'),
+        const Regular14px(text: 'ต้องการที่จะลบชีทลิสต์หรือไม่?'),
         SizedBox(
           height: screenHeight * 0.008,
         ),
-        Regular12px(
+        const Regular12px(
           text: 'ชีทลิสต์นี้จะถูกลบถาวร',
           color: AppColors.black600,
         ),
@@ -250,8 +298,8 @@ Widget Popup_CancleCreate(BuildContext context) {
         SizedBox(
           height: screenHeight * 0.008,
         ),
-        Regular14px(text: 'ต้องการที่จะยกเลิกการสร้างชีทหรือไม่?'),
-        Regular12px(
+        const Regular14px(text: 'ต้องการที่จะยกเลิกการสร้างชีทหรือไม่?'),
+        const Regular12px(
           text: 'หากคุณยกเลิก สิ่งที่คุณสร้างจะหายไป',
           color: AppColors.black600,
         ),
