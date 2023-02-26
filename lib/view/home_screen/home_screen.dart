@@ -3,16 +3,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/components/flushbar.dart';
 import 'package:cheat_sheet/res/components/popup_dialog.dart';
-import 'package:cheat_sheet/res/components/popup_auth.dart';
 import 'package:cheat_sheet/res/components/sheet.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
-import 'package:cheat_sheet/view/home_screen/searching_sheet.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../res/colors.dart';
-import '../../res/components/popup_create_tag.dart';
-import '../../res/gap_dimension.dart';
 import '../../res/typo.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -47,50 +43,46 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
               child: Column(
                 children: [
                   ElevatedButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => Popup_DeleteSheet(context),
-                        );
-                      },
-                      child: const Text("ปุ่มลบชีททั้งหมด")),
-                  ElevatedButton(
-                      onPressed: () {
-                        AutoRouter.of(context).push(const SearchingSheetRoute());
-                      },
-                      child: const Text('ปุ่มไปหน้าค้นหาชั่วคราว')),
-                  InkWell(
-                    onTap: () {
+                    onPressed: () {
                       showDialog(
                         context: context,
-                        builder: (BuildContext context) => Popup_CreateTag(context),
+                        builder: (BuildContext context) => Popup_DeleteSheet(context),
                       );
                     },
-                    child: const Text('Popup Create Tag'),
+                    child: const Text("ปุ่มลบชีททั้งหมด"),
                   ),
                   Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.02),
-                    child: TextField(
-                      cursorColor: AppColors.black900,
-                      decoration: InputDecoration(
-                          isDense: true,
-                          fillColor: AppColors.black200,
-                          filled: true,
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(50), borderSide: BorderSide(width: 1, color: AppColors.primary800)),
-                          hintText: 'Search',
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(50), borderSide: BorderSide(width: 1, color: AppColors.primary800)),
-                          hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
-                          prefixIcon: Container(
-                            padding: EdgeInsets.all(15),
-                            child: Icon(
+                    child: GestureDetector(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+                        width: screenWidth,
+                        height: isPortrait ? screenWidth * 0.13 : screenWidth * 0.06,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: AppColors.primary800),
+                          borderRadius: BorderRadius.circular(50),
+                          color: AppColors.black200,
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(
                               Icons.search,
                               color: AppColors.primary800,
+                              size: 18,
                             ),
-                            width: 18,
-                          )),
+                            SizedBox(width: screenWidth * 0.02),
+                            const Regular16px(
+                              text: 'Search',
+                              color: Colors.grey,
+                              size: 18,
+                            ),
+                          ],
+                        ),
+                      ),
+                      onTap: () {
+                        AutoRouter.of(context).push(const SearchingSheetRoute());
+                      },
                     ),
                   ),
                   Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
