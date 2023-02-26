@@ -144,7 +144,7 @@ void _BottomSheetList(BuildContext context, String sheetListId, String textSheet
                   alignment: Alignment.center,
                   height: isPortrait ? screenHeight * 0.08 : screenWidth * 0.08,
                   width: double.infinity,
-                  child: const Regular16px(text: 'Edit')),
+                  child: const Regular16px(text: 'แก้ไข')),
               onTap: () {
                 _BottomEditSheetList(context, sheetListId, textSheetListName);
               },
@@ -155,7 +155,7 @@ void _BottomSheetList(BuildContext context, String sheetListId, String textSheet
                   height: isPortrait ? screenHeight * 0.08 : screenWidth * 0.08,
                   width: double.infinity,
                   child: const Regular16px(
-                    text: 'Delete',
+                    text: 'ลบ',
                     color: AppColors.error500,
                   )),
               onTap: () {
@@ -210,7 +210,7 @@ void _BottomEditSheetList(BuildContext context, String sheetListId, String textS
                       _sheetList.sheetListName = value!;
                     }
                   },
-                  validator: RequiredValidator(errorText: 'Please enter sheet list name.'),
+                  validator: RequiredValidator(errorText: 'กรุณากรอกชื่อของชีทลิสต์.'),
                 ),
               ),
             ),
