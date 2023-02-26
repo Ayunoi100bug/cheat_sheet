@@ -129,11 +129,9 @@ class _ReviewState extends State<Review> {
                                         onTap: () {
                                           _BottomReview(context, widget.textReview, widget.userRating, widget.reviewId, widget.sheetId);
                                         },
-                                        child: const Icon(
-                                          FontAwesomeIcons.ellipsisV,
-                                          color: AppColors.black700,
-                                          size: 16,
-                                        ),
+                                        child: widget.userId == _auth.currentUser!.uid
+                                            ? const Icon(FontAwesomeIcons.ellipsisV, color: AppColors.black700, size: 16)
+                                            : Container(),
                                       );
                                     }),
                               ],
