@@ -150,8 +150,6 @@ class CreateCollection {
     await _firestore.collection('sheet').doc(argSheetId).update({'rating': result}).then(
       (value) {
         AutoRouter.of(context).pop();
-        const String message = 'รีวิวสำเร็จแล้ว!';
-        // FlushbarPopup.successFlushbar(context, const Icon(Icons.reviews), message);
       },
     );
   }

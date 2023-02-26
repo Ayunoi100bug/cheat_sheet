@@ -110,12 +110,10 @@ class _AskQuestionState extends State<AskQuestion> {
                           bottom: screenHeight * 0.020,
                         ),
                         height: isPortrait ? constraints.maxHeight * 0.6 : constraints.maxHeight * 0.4,
-                        child: Container(
-                          child: PdfDocumentLoader.openFile(
-                            file!.path,
-                            pageNumber: widget.askingPage,
-                            pageBuilder: (context, textureBuilder, pageSize) => textureBuilder(),
-                          ),
+                        child: PdfDocumentLoader.openFile(
+                          file!.path,
+                          pageNumber: widget.askingPage,
+                          pageBuilder: (context, textureBuilder, pageSize) => textureBuilder(),
                         ),
                       ),
                       InkWell(
