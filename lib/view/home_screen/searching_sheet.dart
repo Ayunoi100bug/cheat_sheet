@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import '../../utils/routes/routes.gr.dart';
 import '../../res/colors.dart';
 import '../../res/typo.dart';
-import '../../utils/routes/routes.gr.dart';
 
 class SearchingSheet extends StatefulWidget {
   const SearchingSheet({super.key});
@@ -88,21 +87,21 @@ class _SearchingSheetState extends State<SearchingSheet> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.02),
                     child: TextField(
+                      autofocus: true,
                       cursorColor: AppColors.black900,
                       decoration: InputDecoration(
                         isDense: true,
                         fillColor: AppColors.black200,
                         filled: true,
                         enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50), borderSide: BorderSide(width: 1, color: AppColors.primary800)),
+                            borderRadius: BorderRadius.circular(50), borderSide: const BorderSide(width: 1, color: AppColors.primary800)),
                         hintText: 'Search',
                         focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50), borderSide: BorderSide(width: 1, color: AppColors.primary800)),
+                            borderRadius: BorderRadius.circular(50), borderSide: const BorderSide(width: 1, color: AppColors.primary800)),
                         hintStyle: const TextStyle(color: Colors.grey, fontSize: 18),
-                        prefixIcon: Container(
-                          padding: const EdgeInsets.all(15),
+                        prefixIcon: const SizedBox(
                           width: 18,
-                          child: const Icon(
+                          child: Icon(
                             Icons.search,
                             color: AppColors.primary800,
                           ),
