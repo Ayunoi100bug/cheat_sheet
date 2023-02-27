@@ -10,4 +10,9 @@ class FlushbarIcon {
     Icons.check_circle_outline_outlined,
     color: Colors.white,
   );
+
+  static Icon createQuestionIcon = const Icon(
+    Icons.question_answer,
+    color: Colors.white,
+  );
 }
