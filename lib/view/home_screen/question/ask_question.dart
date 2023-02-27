@@ -51,20 +51,22 @@ class _AskQuestionState extends State<AskQuestion> {
     } else {
       _cardPosition = firstVisibleItemIndex + 1;
     }
-    setState(() {});
+    // setState(() {});
   }
 
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
-    _scrollController.addListener(_scrollListenerWithItemCount);
+    _scrollController = FixedExtentScrollController();
+    // _scrollController.addListener(_scrollListenerWithItemCount);
   }
 
   @override
   void dispose() {
+    _scrollController.dispose();
+
     super.dispose();
-    _scrollController.removeListener(_scrollListenerWithItemCount);
+    // _scrollController.removeListener(_scrollListenerWithItemCount);
   }
 
   @override
@@ -127,41 +129,50 @@ class _AskQuestionState extends State<AskQuestion> {
                         },
                         child: SizedBox(
                           height: isPortrait ? screenHeight * 0.23 : screenHeight * 0.6,
-                          child: ListView.builder(
-                              controller: _scrollController,
-                              itemCount: questionInSheet!.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return StreamBuilder<DocumentSnapshot>(
-                                    stream: _firestore.collection("question").doc(questionInSheet![index]).snapshots(),
-                                    builder: (BuildContext context, AsyncSnapshot questionSnapshot) {
-                                      if (!questionSnapshot.hasData || questionSnapshot.data!['askingPage'] != widget.askingPage) {
-                                        return Container();
-                                      } else if (questionSnapshot.connectionState == ConnectionState.waiting) {
-                                        return const Center(child: CircularProgressIndicator());
-                                      }
-                                      return StreamBuilder<DocumentSnapshot>(
-                                          stream: _firestore.collection("users").doc(questionSnapshot.data!['questionerId']).snapshots(),
-                                          builder: (BuildContext context, AsyncSnapshot userSnapshot) {
-                                            if (!userSnapshot.hasData) {
-                                              return Container();
-                                            } else if (userSnapshot.connectionState == ConnectionState.waiting) {
-                                              return const Center(child: CircularProgressIndicator());
-                                            }
-                                            return Ask(
-                                              authorId: userSnapshot.data!['uid'],
-                                              userImage: userSnapshot.data!['profileImage'],
-                                              username: userSnapshot.data!['username'],
-                                              userId: userSnapshot.data!['uid'],
-                                              sheetId: widget.sheetId,
-                                              questionId: questionSnapshot.data!['qid'],
-                                              questionText: questionSnapshot.data!['text'],
-                                              focus: _cardPosition == index ? true : false,
-                                              selectedIndex: 0,
-                                              currentIndex: 0,
-                                            );
-                                          });
-                                    });
-                              }),
+                          child: ListWheelScrollView.useDelegate(
+                            controller: _scrollController,
+                            itemExtent: 80,
+                            physics: FixedExtentScrollPhysics(),
+                            onSelectedItemChanged: (index) => setState(() {
+                              _cardPosition = index;
+                              print(_cardPosition);
+                            }),
+                            perspective: 0.0001,
+                            childDelegate: ListWheelChildBuilderDelegate(
+                                childCount: questionInSheet!.length,
+                                builder: (context, index) {
+                                  return StreamBuilder<DocumentSnapshot>(
+                                      stream: _firestore.collection("question").doc(questionInSheet![index]).snapshots(),
+                                      builder: (BuildContext context, AsyncSnapshot questionSnapshot) {
+                                        if (!questionSnapshot.hasData || questionSnapshot.data!['askingPage'] != widget.askingPage) {
+                                          return Container();
+                                        } else if (questionSnapshot.connectionState == ConnectionState.waiting) {
+                                          return const Center(child: CircularProgressIndicator());
+                                        }
+                                        return StreamBuilder<DocumentSnapshot>(
+                                            stream: _firestore.collection("users").doc(questionSnapshot.data!['questionerId']).snapshots(),
+                                            builder: (BuildContext context, AsyncSnapshot userSnapshot) {
+                                              if (!userSnapshot.hasData) {
+                                                return Container();
+                                              } else if (userSnapshot.connectionState == ConnectionState.waiting) {
+                                                return const Center(child: CircularProgressIndicator());
+                                              }
+                                              return Ask(
+                                                authorId: userSnapshot.data!['uid'],
+                                                userImage: userSnapshot.data!['profileImage'],
+                                                username: userSnapshot.data!['username'],
+                                                userId: userSnapshot.data!['uid'],
+                                                sheetId: widget.sheetId,
+                                                questionId: questionSnapshot.data!['qid'],
+                                                questionText: questionSnapshot.data!['text'],
+                                                focus: _cardPosition == index ? true : false,
+                                                selectedIndex: index,
+                                                currentIndex: _cardPosition,
+                                              );
+                                            });
+                                      });
+                                }),
+                          ),
                         ),
                       ),
                     ],
