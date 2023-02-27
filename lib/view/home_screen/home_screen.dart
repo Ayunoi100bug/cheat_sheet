@@ -43,12 +43,10 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
               child: Column(
                 children: [
                   ElevatedButton(
-
                     onPressed: () {
-
                       showDialog(
                         context: context,
-                        builder: (BuildContext context) => Popup_DeleteSheet(context),
+                        builder: (BuildContext context) => Popup_DeleteAllSheet(context),
                       );
                     },
                     child: const Text("ปุ่มลบชีททั้งหมด"),
