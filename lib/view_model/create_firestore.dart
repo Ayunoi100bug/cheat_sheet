@@ -201,7 +201,13 @@ class CreateCollection {
       (value) {
         AutoRouter.of(context).popUntilRoot();
         const String message = 'สร้างคำถามสำเร็จ!';
-        FlushbarPopup.successFlushbar(context, const Icon(Icons.question_answer), message);
+        FlushbarPopup.successFlushbar(
+            context,
+            const Icon(
+              Icons.question_answer,
+              color: AppColors.white,
+            ),
+            message);
       },
     );
   }
