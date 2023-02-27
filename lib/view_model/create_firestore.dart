@@ -184,10 +184,11 @@ class CreateCollection {
     );
   }
 
-  Future<void> createQuestionCollection(String argText, String argSheetId, String argQuestionerId, BuildContext context, int argAskingPage) async {
-    await _firestore.collection("question").doc(myQuestion.qid).set({
+  Future<void> createQuestionCollection(
+      String argText, String argQuestionId, String argSheetId, String argQuestionerId, BuildContext context, int argAskingPage) async {
+    await _firestore.collection("question").doc(argQuestionId).set({
       'timestamp': myQuestion.timestamp,
-      'qid': myQuestion.qid,
+      'qid': argQuestionId,
       'text': argText.toString().trim(),
       'sheetId': argSheetId,
       'questionerId': argQuestionerId,
@@ -196,7 +197,7 @@ class CreateCollection {
       'dislike': myQuestion.dislike,
     });
     await _firestore.collection('sheet').doc(argSheetId).update({
-      'question': FieldValue.arrayUnion([myQuestion.qid])
+      'question': FieldValue.arrayUnion([argQuestionId])
     }).then(
       (value) {
         AutoRouter.of(context).popUntilRoot();
