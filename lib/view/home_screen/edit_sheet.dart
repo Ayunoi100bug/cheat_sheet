@@ -87,26 +87,31 @@ class _EditSheetState extends State<EditSheet> {
                     key: _formKey,
                     child: Column(
                       children: [
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.only(top: screenWidth * 0.08),
-                              height: screenHeight * 0.4,
-                              width: screenWidth,
-                              child: CachedNetworkImage(
-                                imageUrl: sheetData["sheetCoverImage"],
-                                color: AppColors.black400,
-                                colorBlendMode: BlendMode.modulate,
-                                fit: BoxFit.cover,
+                        InkWell(
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.only(top: screenWidth * 0.08),
+                                height: screenHeight * 0.4,
+                                width: screenWidth,
+                                child: CachedNetworkImage(
+                                  imageUrl: sheetData["sheetCoverImage"],
+                                  color: AppColors.black400,
+                                  colorBlendMode: BlendMode.modulate,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            ),
-                            const Medium16px(
-                              text: 'แก้ไขตัวอย่างชีท',
-                              color: AppColors.white,
-                            ),
-                          ],
+                              const Medium16px(
+                                text: 'แก้ไขตัวอย่างชีท',
+                                color: AppColors.white,
+                              ),
+                            ],
+                          ),
+                          onTap: (){
+                            //  AutoRouter.of(context).push(ReviewSheetRoute(sheetId: widget.sheetId));
+                          },
                         ),
                         Container(
                             margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
