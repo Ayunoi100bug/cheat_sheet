@@ -235,9 +235,16 @@ class AppRouter extends _i33.RootStackRouter {
       );
     },
     EditSheetRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<EditSheetRouteArgs>(
+          orElse: () =>
+              EditSheetRouteArgs(sheetId: pathParams.getString('sheetId')));
       return _i33.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i17.EditSheet(),
+        child: _i17.EditSheet(
+          key: args.key,
+          sheetId: args.sheetId,
+        ),
       );
     },
     ActivityScreen.name: (routeData) {
@@ -1011,14 +1018,37 @@ class CreateReviewRouteArgs {
 
 /// generated route for
 /// [_i17.EditSheet]
-class EditSheetRoute extends _i33.PageRouteInfo<void> {
-  const EditSheetRoute()
-      : super(
+class EditSheetRoute extends _i33.PageRouteInfo<EditSheetRouteArgs> {
+  EditSheetRoute({
+    _i34.Key? key,
+    required String sheetId,
+  }) : super(
           EditSheetRoute.name,
           path: ':sheetId/edit_sheet',
+          args: EditSheetRouteArgs(
+            key: key,
+            sheetId: sheetId,
+          ),
+          rawPathParams: {'sheetId': sheetId},
         );
 
   static const String name = 'EditSheetRoute';
+}
+
+class EditSheetRouteArgs {
+  const EditSheetRouteArgs({
+    this.key,
+    required this.sheetId,
+  });
+
+  final _i34.Key? key;
+
+  final String sheetId;
+
+  @override
+  String toString() {
+    return 'EditSheetRouteArgs{key: $key, sheetId: $sheetId}';
+  }
 }
 
 /// generated route for
