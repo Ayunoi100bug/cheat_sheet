@@ -1,7 +1,6 @@
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:flutter/material.dart';
-
 import 'components/custom_appbar.dart';
 
 class PrimaryButton extends StatelessWidget {

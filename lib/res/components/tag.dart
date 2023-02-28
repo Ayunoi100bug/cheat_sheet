@@ -1,9 +1,6 @@
 import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/colors.dart';
-import 'package:cheat_sheet/res/typo.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class Tag extends StatelessWidget {
   final String subject;
