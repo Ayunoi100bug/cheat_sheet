@@ -154,7 +154,7 @@ class AuthService {
       success = true;
     }
     if (success == true) {
-      if (context.mounted) AutoRouter.of(context).replaceNamed("/home/");
+      if (context.mounted) AutoRouter.of(context).navigateNamed("/home/");
       await _auth.signOut().then((value) {
         FlushbarPopup.errorFlushbarNoAppbar(context, FlushbarIcon.successIcon, "ออกจากระบบสำเร็จ");
       });
