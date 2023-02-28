@@ -146,20 +146,18 @@ class AuthService {
     bool success = false;
     if (_user!.providerData[0].providerId == 'google.com') {
       await GoogleSignIn().signOut();
-      await _auth.signOut();
       success = true;
     } else if (_user!.providerData[0].providerId == 'facebook.com') {
       await FacebookAuth.i.logOut();
-      await _auth.signOut();
       success = true;
-    } else {
-      await _auth.signOut();
+    } else if (_user!.providerData[0].providerId == 'password') {
       success = true;
     }
-    if (success == true && context.mounted) {
-      AutoRouter.of(context).navigateNamed("/home/");
-      Navigator.pop(context);
-      FlushbarPopup.errorFlushbarNoAppbar(context, FlushbarIcon.successIcon, "ออกจากระบบสำเร็จ");
+    if (success == true) {
+      if (context.mounted) AutoRouter.of(context).navigateNamed("/home/");
+      await _auth.signOut().then((value) {
+        FlushbarPopup.errorFlushbarNoAppbar(context, FlushbarIcon.successIcon, "ออกจากระบบสำเร็จ");
+      });
       success = false;
     }
   }

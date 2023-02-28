@@ -46,8 +46,8 @@ class _ReadSheetState extends State<ReadSheet> {
             AutoRouter.of(context).push(AskQuestionRoute(sheetId: widget.sheetId, askingPage: currentPage + 1));
           },
           child: const Icon(
-            Icons.back_hand_outlined,
-            color: AppColors.warning600,
+            Icons.question_mark_outlined,
+            color: AppColors.error500,
             size: 30,
           ),
         ),
