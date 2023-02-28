@@ -43,6 +43,11 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
               child: Column(
                 children: [
                   ElevatedButton(
+                      onPressed: () {
+                        AutoRouter.of(context).push(TestUIRoute());
+                      },
+                      child: Text('ทดลอง')),
+                  ElevatedButton(
                     onPressed: () {
                       showDialog(
                         context: context,

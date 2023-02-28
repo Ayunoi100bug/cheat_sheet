@@ -73,9 +73,9 @@ class PDFApi {
   static Future<firebaseStorage.UploadTask?> createCoverSheetImage(String sheetId) async {
     final File file = await loadPDFFromFirebase(sheetId);
 
-    imglib.Image coverImage = await _getImageFromPdf(file, 1);
+    imglib.Image coverImage = await getImageFromPdf(file, 1);
 
-    File imageFile = await _imageToFile(coverImage);
+    File imageFile = await imageToFile(coverImage);
 
     return _uploadCoverImageToFirebase(sheetId, imageFile);
   }
@@ -97,7 +97,7 @@ class PDFApi {
     return file;
   }
 
-  static Future<File> _imageToFile(imglib.Image inputImage) async {
+  static Future<File> imageToFile(imglib.Image inputImage) async {
     final dir = await getExternalStorageDirectory();
 
     File imageFile = new File('${dir!.path}/image.png');
@@ -106,7 +106,7 @@ class PDFApi {
     return imageFile;
   }
 
-  static Future<imglib.Image> _getImageFromPdf(File inputFile, int pageNumber) async {
+  static Future<imglib.Image> getImageFromPdf(File inputFile, int pageNumber) async {
     final renderPdf.PdfDocument doc = await renderPdf.PdfDocument.openFile(inputFile.path);
     final int numberAllPages = doc.pageCount;
 
