@@ -1,15 +1,14 @@
 import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/colors.dart';
-import 'package:cheat_sheet/res/typo.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class Tag extends StatelessWidget {
   final String subject;
+  final IconData? icon;
   const Tag({
     super.key,
     required this.subject,
+    this.icon,
   });
 
   @override
@@ -20,11 +19,12 @@ class Tag extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 2),
-      child: PrimaryButton(
+      child: TagButton(
         height: isPortrait ? screenHeight * 0.03 : screenHeight * 0.015,
         width: isPortrait ? screenHeight * 0.01 : screenHeight * 0.015,
         text: subject,
         size: isPortrait ? 10 : 15,
+        icon: icon,
         onPressed: () {},
         textcolor: AppColors.orange600,
         color: AppColors.orange100,
