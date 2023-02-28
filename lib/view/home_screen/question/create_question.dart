@@ -170,8 +170,8 @@ class _CreateQuestionState extends State<CreateQuestion> {
                           firebaseStorage.UploadTask? task = await ImageApi.uploadToFirebase(image, questionId);
                           task!.whenComplete(() {
                             myCollection
-                                .createQuestionCollection(_question.text, questionId, _question.sheetId = widget.sheetId,
-                                    _question.questionerId = _auth.currentUser!.uid, context, _question.askingPage = widget.askingPage)
+                                .createQuestionCollection(
+                                    _question.text, questionId, widget.sheetId, _auth.currentUser!.uid, context, widget.askingPage)
                                 .then((value) => _formKey.currentState!.reset());
                           });
                         } on FirebaseAuthException catch (e) {
