@@ -15,6 +15,7 @@ import 'package:cheat_sheet/res/components/tag.dart';
 import 'package:cheat_sheet/res/gap_dimension.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
+import 'package:cheat_sheet/view_model/auth.dart';
 import 'package:cheat_sheet/view_model/create_firestore.dart';
 
 import 'package:cheat_sheet/view_model/file_passer_for_read.dart';
@@ -239,7 +240,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                             Regular14px(text: authorData['username']),
                                           ],
                                         ),
-                                        if (sheetData['authorId'] == _auth.currentUser!.uid) ...[
+                                        if (AuthService().isLogged() == true && sheetData['authorId'] == _auth.currentUser!.uid) ...[
                                           Wrap(
                                             spacing: 10,
                                             children: [
