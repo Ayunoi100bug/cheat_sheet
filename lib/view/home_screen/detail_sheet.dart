@@ -199,6 +199,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                             children: const [
                                               Tag(
                                                 subject: "คณิตศาสาตร์",
+                                                icon: Icons.add,
                                               ),
                                               Tag(
                                                 subject: "คณิตพื้นฐาน",
