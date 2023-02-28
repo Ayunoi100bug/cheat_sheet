@@ -22,20 +22,11 @@ import '../../../res/components/ask.dart';
 class AskQuestion extends StatefulWidget {
   final String sheetId;
   final int askingPage;
-  final List<String> profileImages;
-  final List<String> userName;
-  final List<String> descriptions;
-  final List<String> likesCount;
-  final int listNumber;
-  const AskQuestion(
-      {super.key,
-      @PathParam() required this.sheetId,
-      required this.askingPage,
-      required this.profileImages,
-      required this.userName,
-      required this.descriptions,
-      required this.likesCount,
-      required this.listNumber});
+  const AskQuestion({
+    super.key,
+    @PathParam() required this.sheetId,
+    required this.askingPage,
+  });
 
   @override
   State<AskQuestion> createState() => _AskQuestionState();

@@ -178,11 +178,6 @@ class AppRouter extends _i33.RootStackRouter {
           key: args.key,
           sheetId: args.sheetId,
           askingPage: args.askingPage,
-          profileImages: args.profileImages,
-          userName: args.userName,
-          descriptions: args.descriptions,
-          likesCount: args.likesCount,
-          listNumber: args.listNumber,
         ),
       );
     },
@@ -829,11 +824,6 @@ class AskQuestionRoute extends _i33.PageRouteInfo<AskQuestionRouteArgs> {
     _i34.Key? key,
     required String sheetId,
     required int askingPage,
-    required List<String> profileImages,
-    required List<String> userName,
-    required List<String> descriptions,
-    required List<String> likesCount,
-    required int listNumber,
   }) : super(
           AskQuestionRoute.name,
           path: ':sheetId/read_sheet/ask_question',
@@ -841,11 +831,6 @@ class AskQuestionRoute extends _i33.PageRouteInfo<AskQuestionRouteArgs> {
             key: key,
             sheetId: sheetId,
             askingPage: askingPage,
-            profileImages: profileImages,
-            userName: userName,
-            descriptions: descriptions,
-            likesCount: likesCount,
-            listNumber: listNumber,
           ),
           rawPathParams: {'sheetId': sheetId},
         );
@@ -858,11 +843,6 @@ class AskQuestionRouteArgs {
     this.key,
     required this.sheetId,
     required this.askingPage,
-    required this.profileImages,
-    required this.userName,
-    required this.descriptions,
-    required this.likesCount,
-    required this.listNumber,
   });
 
   final _i34.Key? key;
@@ -871,19 +851,9 @@ class AskQuestionRouteArgs {
 
   final int askingPage;
 
-  final List<String> profileImages;
-
-  final List<String> userName;
-
-  final List<String> descriptions;
-
-  final List<String> likesCount;
-
-  final int listNumber;
-
   @override
   String toString() {
-    return 'AskQuestionRouteArgs{key: $key, sheetId: $sheetId, askingPage: $askingPage, profileImages: $profileImages, userName: $userName, descriptions: $descriptions, likesCount: $likesCount, listNumber: $listNumber}';
+    return 'AskQuestionRouteArgs{key: $key, sheetId: $sheetId, askingPage: $askingPage}';
   }
 }
 
