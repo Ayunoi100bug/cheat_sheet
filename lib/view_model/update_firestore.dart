@@ -252,3 +252,20 @@ class EditQuestionData {
     });
   }
 }
+
+class EditSheetData {
+  final _firestore = FirebaseFirestore.instance;
+
+  Future<void> editSheet(BuildContext context, String currentSid, String newName, String newDetail) async {
+    await _firestore.collection('sheet').doc(currentSid).update({
+      'sheetName': newName,
+      'detailSheet': newDetail,
+    }).then(
+      (value) => Future.delayed(const Duration(milliseconds: 200), () {
+        AutoRouter.of(context).popUntilRoot();
+        const String message = 'เปลี่ยนรายละเอียดชีทสำเร็จ';
+        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+      }),
+    );
+  }
+}

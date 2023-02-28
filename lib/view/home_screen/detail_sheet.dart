@@ -251,7 +251,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                   size: isPortrait ? 32 : 36,
                                                 ),
                                                 onTap: () {
-                                                  AutoRouter.of(context).push(EditSheetRoute());
+                                                  AutoRouter.of(context).push(EditSheetRoute(sheetId: widget.sheetId));
                                                 },
                                               ),
                                               InkWell(
