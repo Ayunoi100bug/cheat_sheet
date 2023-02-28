@@ -16,27 +16,17 @@ import 'flushbar.dart';
 import 'form_field.dart';
 
 class Ask extends StatefulWidget {
-  final int selectedIndex;
-  final int currentIndex;
   final bool focus;
   final String userImage;
   final String username;
-  final String userId;
   final String questionText;
-  final String questionId;
-  final String authorId;
   final String sheetId;
   const Ask({
     super.key,
     required this.focus,
-    required this.selectedIndex,
-    required this.currentIndex,
     required this.userImage,
     required this.username,
-    required this.userId,
     required this.questionText,
-    required this.questionId,
-    required this.authorId,
     required this.sheetId,
   });
 
@@ -75,9 +65,7 @@ class _AskState extends State<Ask> {
                           radius: 12,
                         ),
                       ),
-                      onTap: () {
-                        print("${widget.selectedIndex + widget.currentIndex}");
-                      },
+                      onTap: () {},
                     ),
                     Column(
                       children: [
@@ -116,17 +104,17 @@ class _AskState extends State<Ask> {
                                   SizedBox(
                                     width: screenWidth * 0.02,
                                   ),
-                                  InkWell(
-                                    child: widget.userId == _auth.currentUser!.uid
-                                        ? Icon(
-                                            FontAwesomeIcons.ellipsisV,
-                                            size: 16,
-                                          )
-                                        : Container(),
-                                    onTap: () {
-                                      _BottomQuestion(context, widget.questionText, widget.questionId, widget.sheetId);
-                                    },
-                                  ),
+                                  // InkWell(
+                                  //   child: widget.userId == _auth.currentUser!.uid
+                                  //       ? Icon(
+                                  //           FontAwesomeIcons.ellipsisV,
+                                  //           size: 16,
+                                  //         )
+                                  //       : Container(),
+                                  //   onTap: () {
+                                  //     _BottomQuestion(context, widget.questionText, widget.questionId, widget.sheetId);
+                                  //   },
+                                  // ),
                                 ],
                               ),
                             ),
