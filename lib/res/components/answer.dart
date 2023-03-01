@@ -6,14 +6,10 @@ import '../button.dart';
 import '../gap_dimension.dart';
 
 class Answer extends StatefulWidget {
-  final int selectedIndex;
-  final int currentIndex;
   final bool focus;
   const Answer({
     super.key,
     required this.focus,
-    required this.selectedIndex,
-    required this.currentIndex,
   });
 
   @override
@@ -49,9 +45,7 @@ class _AnswerState extends State<Answer> {
                           'assets/images/logo.png', //userImage
                         ),
                       ),
-                      onTap: () {
-                        print("${widget.selectedIndex + widget.currentIndex}");
-                      },
+                      onTap: () {},
                     ),
                     Column(
                       children: [
@@ -103,7 +97,7 @@ class _AnswerState extends State<Answer> {
                           width: isPortrait ? constraints.maxWidth * 0.88 : constraints.maxWidth * 0.95,
                           child: Regular14px(
                             color: AppColors.black600,
-                            text: "ขอบคุณมากครับที่ทำสรุปดีๆแบบนี้ออกมาแนะนำเลยครับนักเขียนคนนี้เขียนดีทุกสรุปเลยครับ",
+                            text: "ใช่ครับ แบบนี้ถูกแล้ว",
                           ),
                         ),
                       ],

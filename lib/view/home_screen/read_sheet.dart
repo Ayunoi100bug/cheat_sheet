@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import '../../res/colors.dart';
 import '../../res/components/bottom_sheet.dart';
 import '../../utils/routes/routes.gr.dart';
+import '../../view_model/read_firestore.dart';
 
 class ReadSheet extends StatefulWidget {
   final String sheetId;
@@ -42,8 +43,11 @@ class _ReadSheetState extends State<ReadSheet> {
           splashColor: AppColors.warning100,
           backgroundColor: AppColors.warning200.withOpacity(0.7),
           elevation: 0,
-          onPressed: () {
-            AutoRouter.of(context).push(AskQuestionRoute(sheetId: widget.sheetId, askingPage: currentPage + 1));
+          onPressed: () async {
+            AutoRouter.of(context).push(AskQuestionRoute(
+              sheetId: widget.sheetId,
+              askingPage: currentPage + 1,
+            ));
           },
           child: const Icon(
             Icons.question_mark_outlined,

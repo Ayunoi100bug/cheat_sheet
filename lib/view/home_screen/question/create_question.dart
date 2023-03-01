@@ -53,7 +53,6 @@ class _CreateQuestionState extends State<CreateQuestion> {
     File? file = Provider.of<FilePasserForRead>(context).getFile();
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: LayoutBuilder(builder: (context, constraints) {
           return SingleChildScrollView(
@@ -159,6 +158,7 @@ class _CreateQuestionState extends State<CreateQuestion> {
                         ),
                       ),
                     ),
+
                     FloatingActionButton(
                       onPressed: () async {
                         var image = await ToImageWidget.toImage(_controller.finish());
@@ -183,6 +183,7 @@ class _CreateQuestionState extends State<CreateQuestion> {
                     ),
                   ],
                 ),
+
               ],
             ),
           );
