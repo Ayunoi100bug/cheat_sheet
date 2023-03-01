@@ -77,8 +77,6 @@ class _TestUIPageState extends State<TestUIPage> {
                           itemBuilder: (context, index) {
                             return Answer(
                               focus: false,
-                              selectedIndex: 0,
-                              currentIndex: 0,
                             );
                           },
                         ),

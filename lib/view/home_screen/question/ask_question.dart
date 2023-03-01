@@ -14,6 +14,7 @@ import 'package:cheat_sheet/view/home_screen/question/detail_question.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:inview_notifier_list/inview_notifier_list.dart';
 import 'package:pdf_render/pdf_render_widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -40,7 +41,8 @@ class _AskQuestionState extends State<AskQuestion> {
   @override
   void initState() {
     super.initState();
-    _scrollController = FixedExtentScrollController();
+    _scrollController = ScrollController();
+    // _scrollController = FixedExtentScrollController();
   }
 
   @override
@@ -78,22 +80,22 @@ class _AskQuestionState extends State<AskQuestion> {
             padding: EdgeInsets.only(top: screenHeight * 0.024),
             child: Column(
               children: [
-                Container(
-                  padding: EdgeInsets.only(
-                    top: screenHeight * 0.020,
-                    left: screenHeight * 0.036,
-                    right: screenHeight * 0.036,
-                    bottom: screenHeight * 0.020,
-                  ),
-                  height: isPortrait ? constraints.maxHeight * 0.6 : constraints.maxHeight * 0.4,
-                  child: PdfDocumentLoader.openFile(
-                    file!.path,
-                    pageNumber: widget.askingPage,
-                    pageBuilder: (context, textureBuilder, pageSize) => textureBuilder(),
-                  ),
-                ),
+                // Container(
+                //   padding: EdgeInsets.only(
+                //     top: screenHeight * 0.020,
+                //     left: screenHeight * 0.036,
+                //     right: screenHeight * 0.036,
+                //     bottom: screenHeight * 0.020,
+                //   ),
+                //   height: isPortrait ? constraints.maxHeight * 0.6 : constraints.maxHeight * 0.4,
+                //   child: PdfDocumentLoader.openFile(
+                //     file!.path,
+                //     pageNumber: widget.askingPage,
+                //     pageBuilder: (context, textureBuilder, pageSize) => textureBuilder(),
+                //   ),
+                // ),
                 SizedBox(
-                  height: isPortrait ? screenHeight * 0.23 : screenHeight * 0.6,
+                  height: isPortrait ? screenHeight * 0.8 : screenHeight * 0.6,
                   child: FutureBuilder(
                       future: _firestore
                           .collection('question')
@@ -105,34 +107,33 @@ class _AskQuestionState extends State<AskQuestion> {
                           return Center(child: CircularProgressIndicator());
                         }
                         int questionCount = snapshot.data!.docs.length;
-                        return ListWheelScrollView.useDelegate(
+                        return ListView.builder(
                           controller: _scrollController,
-                          itemExtent: 80,
-                          physics: FixedExtentScrollPhysics(),
-                          onSelectedItemChanged: (index) => setState(() {
-                            _cardPosition = index;
-                          }),
-                          perspective: 0.0001,
-                          childDelegate: ListWheelChildBuilderDelegate(
-                              childCount: questionCount,
-                              builder: (context, index) {
-                                DocumentSnapshot question = snapshot.data!.docs[index];
-                                return FutureBuilder(
-                                    future: _firestore.collection('users').doc(question['questionerId']).get(),
-                                    builder: (context, userSnapshot) {
-                                      Map<String, dynamic>? user = userSnapshot.data!.data();
-                                      if (!snapshot.hasData) {
-                                        return Center(child: CircularProgressIndicator());
-                                      }
-                                      return Ask(
-                                        userImage: user!['profileImage'],
-                                        username: user['username'],
-                                        sheetId: widget.sheetId,
-                                        questionText: question['text'],
-                                        focus: _cardPosition == index ? true : false,
-                                      );
-                                    });
-                              }),
+                          shrinkWrap: true,
+                          itemCount: questionCount,
+                          itemBuilder: (context, index) {
+                            DocumentSnapshot question = snapshot.data!.docs[index];
+                            return FutureBuilder(
+                                future: _firestore.collection('users').doc(question['questionerId']).get(),
+                                builder: (context, userSnapshot) {
+                                  if (!snapshot.hasData) {
+                                    return Center(child: CircularProgressIndicator());
+                                  }
+                                  Map<String, dynamic>? user = userSnapshot.data!.data();
+                                  return InkWell(
+                                    onTap: () {
+                                      AutoRouter.of(context).push(DetailQuestionRoute(questionId: question.id, sheetId: widget.sheetId));
+                                    },
+                                    child: Ask(
+                                      userImage: user!['profileImage'],
+                                      username: user['username'],
+                                      sheetId: widget.sheetId,
+                                      questionText: question['text'],
+                                      focus: false,
+                                    ),
+                                  );
+                                });
+                          },
                         );
                       }),
                 ),

@@ -56,7 +56,6 @@ class _CreateQuestionState extends State<CreateQuestion> {
     File? file = Provider.of<FilePasserForRead>(context).getFile();
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: LayoutBuilder(builder: (context, constraints) {
           return SingleChildScrollView(
@@ -146,33 +145,28 @@ class _CreateQuestionState extends State<CreateQuestion> {
                     ),
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.18, right: isPortrait ? 0 : screenWidth * 0.18),
-                  height: screenWidth < 420 ? constraints.maxHeight * 0.1 : constraints.maxWidth * 0.1,
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    padding: EdgeInsets.all(isPortrait ? screenWidth * 0.032 : screenWidth * 0.016),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        OutlineButton(text: 'ยกเลิก', onPressed: () {}),
-                        PrimaryButton(
-                            text: 'ยืนยัน',
-                            onPressed: () async {
-                              var image = await ToImageWidget.toImage(_controller.finish());
-                              Provider.of<ImagePasser>(context, listen: false).setImage(image);
-                              _formKey.currentState!.save();
-                              try {
-                                myCollection
-                                    .createQuestionCollection(_question.text, _question.sheetId = widget.sheetId,
-                                        _question.questionerId = _auth.currentUser!.uid, context, _question.askingPage = widget.askingPage)
-                                    .then((value) => _formKey.currentState!.reset());
-                              } on FirebaseAuthException catch (e) {
-                                FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
-                              }
-                            })
-                      ],
-                    ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenWidth * 0.025),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      OutlineButton(text: 'ยกเลิก', onPressed: () {}),
+                      PrimaryButton(
+                          text: 'ยืนยัน',
+                          onPressed: () async {
+                            var image = await ToImageWidget.toImage(_controller.finish());
+                            Provider.of<ImagePasser>(context, listen: false).setImage(image);
+                            _formKey.currentState!.save();
+                            try {
+                              myCollection
+                                  .createQuestionCollection(_question.text, _question.sheetId = widget.sheetId,
+                                      _question.questionerId = _auth.currentUser!.uid, context, _question.askingPage = widget.askingPage)
+                                  .then((value) => _formKey.currentState!.reset());
+                            } on FirebaseAuthException catch (e) {
+                              FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
+                            }
+                          })
+                    ],
                   ),
                 )
               ],

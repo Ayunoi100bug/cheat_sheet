@@ -65,7 +65,9 @@ class _AskState extends State<Ask> {
                           radius: 12,
                         ),
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        print("user image");
+                      },
                     ),
                     Column(
                       children: [
@@ -93,11 +95,9 @@ class _AskState extends State<Ask> {
                                 children: [
                                   Padding(
                                     padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
-                                    child: InkWell(
+                                    child: GestureDetector(
                                       child: Icon(Icons.thumb_up_off_alt_outlined, size: 18),
-                                      onTap: () {
-                                        print("like");
-                                      },
+                                      onTap: () {},
                                     ),
                                   ),
                                   Regular14px(text: "99"),
