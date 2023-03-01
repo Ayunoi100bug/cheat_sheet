@@ -62,13 +62,11 @@ class _TestUIPageState extends State<TestUIPage> {
             },
             child: Text('กดเพื่อแปลง pdf เป็น image')),
         ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               convertFile();
               setState(() {});
-              print(resultFile);
-              Builder(
-                builder: (context) => Image.file(file),
-              );
+              print(await resultFile.readAsBytes());
+
               setState(() {});
             },
             child: Text('กดเพื่อแปลงไฟล์')),
