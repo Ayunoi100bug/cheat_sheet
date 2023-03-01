@@ -53,7 +53,9 @@ class UpdateCollection {
     Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
     var authorSnapshot = await _firestore.collection("users").doc(authorId).get();
     Map<String, dynamic> authorData = authorSnapshot.data()!;
-    if ((currentUserData['uid'] == authorId || currentUserData['buyedSheet'].contains(sid))) {
+    var buyerSnapshot = await _firestore.collection("users").where("buyedSheet", arrayContains: sid).get();
+    int buyerAmount = buyerSnapshot.docs.length;
+    if ((sheetPrice == 0 || currentUserData['uid'] == authorId || currentUserData['buyedSheet'].contains(sid))) {
       return;
     } else if (currentUserData['coin'] < sheetPrice && context.mounted) {
       const String message = 'ยอดเงินคงเหลือไม่เพียงพอ';
@@ -65,20 +67,18 @@ class UpdateCollection {
       'coin': (currentUserData['coin'] - sheetPrice),
       'buyedSheet': FieldValue.arrayUnion([sid]),
     });
-    var buyerSnapshot = await _firestore.collection("users").where("buyedSheet", arrayContains: sid).get();
-    int buyerAmount = buyerSnapshot.docs.length;
+    if (context.mounted) {
+      const String message = 'ซื้อชีทสำเร็จ';
+      FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+    }
     await _firestore.collection("users").doc(authorId).update({
       'timestamp': myUser.timestamp,
       'coin': (authorData['coin'] + sheetPrice),
     });
     await _firestore.collection("sheet").doc(sid).update({
       'timestamp': mySheet.timestamp,
-      'buyer': buyerAmount,
+      'buyer': buyerAmount + 1,
     });
-    if (context.mounted) {
-      const String message = 'ซื้อชีทสำเร็จ';
-      FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
-    }
   }
 
   Future<void> userTopup(BuildContext context, int recieve) async {
@@ -250,5 +250,22 @@ class EditQuestionData {
         FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
       });
     });
+  }
+}
+
+class EditSheetData {
+  final _firestore = FirebaseFirestore.instance;
+
+  Future<void> editSheet(BuildContext context, String currentSid, String newName, String newDetail) async {
+    await _firestore.collection('sheet').doc(currentSid).update({
+      'sheetName': newName,
+      'detailSheet': newDetail,
+    }).then(
+      (value) => Future.delayed(const Duration(milliseconds: 200), () {
+        AutoRouter.of(context).popUntilRoot();
+        const String message = 'เปลี่ยนรายละเอียดชีทสำเร็จ';
+        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+      }),
+    );
   }
 }

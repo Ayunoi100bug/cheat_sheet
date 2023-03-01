@@ -44,7 +44,7 @@ class _PickDemoPagesState extends State<PickDemoPages> {
         onPressed: () {
           AutoRouter.of(context).push(CreateDetailSheetRoute(demoPages: _selectedItems));
         },
-        backgroundColor: AppColors.primary500,
+        backgroundColor: AppColors.tertiary500,
         child: const Icon(Icons.arrow_forward_ios_rounded),
       ),
       body: SafeArea(
