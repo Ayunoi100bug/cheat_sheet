@@ -61,11 +61,12 @@ class _AskQuestionState extends State<AskQuestion> {
         onPressed: () {
           if (_auth.currentUser != null) {
             AutoRouter.of(context).push(CreateQuestionRoute(sheetId: widget.sheetId, askingPage: widget.askingPage));
+          } else {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => Popup_Login(context),
+            );
           }
-          showDialog(
-            context: context,
-            builder: (BuildContext context) => Popup_Login(context),
-          );
         },
         backgroundColor: AppColors.tertiary600,
         child: const Icon(
