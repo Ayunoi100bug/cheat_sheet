@@ -1,5 +1,6 @@
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/utils/stripe_key.dart';
+import 'package:cheat_sheet/view_model/color_passer.dart';
 import 'package:cheat_sheet/view_model/file_passer.dart';
 import 'package:cheat_sheet/view_model/file_passer_for_read.dart';
 import 'package:cheat_sheet/view_model/question_image_passer.dart';
@@ -34,6 +35,9 @@ class MyApp extends StatelessWidget {
         }),
         ChangeNotifierProvider(create: (context) {
           return QuestionImagePasser();
+        }),
+        ChangeNotifierProvider(create: (context) {
+          return ColorPasser();
         }),
       ],
       child: MaterialApp.router(

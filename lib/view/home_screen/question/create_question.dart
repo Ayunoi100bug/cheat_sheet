@@ -5,6 +5,8 @@ import 'package:cheat_sheet/data/network/image_api.dart';
 import 'package:cheat_sheet/model/question.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/components/form_field.dart';
+import 'package:cheat_sheet/res/components/tools_bar/tools_paint_bar.dart';
+import 'package:cheat_sheet/view_model/color_passer.dart';
 import 'package:cheat_sheet/view_model/create_firestore.dart';
 import 'package:cheat_sheet/view_model/file_passer_for_read.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -36,9 +38,16 @@ class _CreateQuestionState extends State<CreateQuestion> {
   PainterController _controller = _newController();
   static PainterController _newController() {
     PainterController controller = new PainterController();
-    controller.backgroundColor = Colors.green.withOpacity(0.2);
+    controller.backgroundColor = Colors.green.withOpacity(0);
     controller.thickness = 5.0;
     return controller;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<ColorPasser>(context, listen: false).reset();
   }
 
   @override
@@ -69,52 +78,11 @@ class _CreateQuestionState extends State<CreateQuestion> {
                       children: [
                         Container(
                           padding: EdgeInsets.only(left: screenHeight * 0.008),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: isPortrait ? screenWidth * 0.012 : screenHeight * 0.1,
-                              ),
-                              Icon(
-                                Icons.undo,
-                                size: isPortrait ? screenHeight * 0.036 : screenWidth * 0.044,
-                                color: AppColors.black700,
-                              ),
-                              SizedBox(
-                                width: isPortrait ? screenWidth * 0.04 : screenHeight * 0.2,
-                              ),
-                              Icon(
-                                Icons.brush,
-                                size: isPortrait ? screenHeight * 0.036 : screenWidth * 0.044,
-                                color: AppColors.black700,
-                              ),
-                              SizedBox(
-                                width: isPortrait ? screenWidth * 0.04 : screenHeight * 0.2,
-                              ),
-                              Icon(
-                                FontAwesomeIcons.eraser,
-                                size: isPortrait ? screenHeight * 0.036 : screenWidth * 0.044,
-                                color: AppColors.black700,
-                              ),
-                              SizedBox(
-                                width: isPortrait ? screenWidth * 0.056 : screenHeight * 0.22,
-                              ),
-                              Icon(
-                                Icons.delete,
-                                size: isPortrait ? screenHeight * 0.036 : screenWidth * 0.044,
-                                color: AppColors.black700,
-                              ),
-                              SizedBox(
-                                width: isPortrait ? screenWidth * 0.044 : screenHeight * 0.44,
-                              ),
-                              Slider(
-                                value: _controller.thickness,
-                                onChanged: (value) => {},
-                                min: 1.0,
-                                max: 20.0,
-                                activeColor: AppColors.primary500,
-                                inactiveColor: AppColors.black300,
-                              ),
-                            ],
+                          child: ToolsPaintBar(
+                            controller: _controller,
+                            screenWidth: screenWidth,
+                            screenHeight: screenHeight,
+                            isPortrait: isPortrait,
                           ),
                         ),
                       ],
@@ -161,7 +129,6 @@ class _CreateQuestionState extends State<CreateQuestion> {
                         ),
                       ),
                     ),
-
                     FloatingActionButton(
                       onPressed: () async {
                         PictureDetails image = _controller.finish();
@@ -188,7 +155,6 @@ class _CreateQuestionState extends State<CreateQuestion> {
                     ),
                   ],
                 ),
-
               ],
             ),
           );

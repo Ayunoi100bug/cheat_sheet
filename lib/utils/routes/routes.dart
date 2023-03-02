@@ -1,5 +1,6 @@
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/empty_router_widgets.dart';
+import 'package:cheat_sheet/res/components/tools_bar/color_picker_page.dart';
 import 'package:cheat_sheet/view/create_sheet_screen/create_detail_sheet.dart';
 import 'package:cheat_sheet/view/create_sheet_screen/import_sheet_screen.dart';
 import 'package:cheat_sheet/view/create_sheet_screen/pick_demo_pages.dart';
@@ -46,6 +47,7 @@ import 'package:cheat_sheet/view/test_ui_book.dart';
         AutoRoute(path: ':sheetId/read_sheet', name: 'ReadSheetRoute', page: ReadSheet),
         AutoRoute(path: ':sheetId/read_sheet/ask_question', name: 'AskQuestionRoute', page: AskQuestion),
         AutoRoute(path: ':sheetId/read_sheet/ask_question/create_question', name: 'CreateQuestionRoute', page: CreateQuestion),
+        AutoRoute(path: ':sheetId/read_sheet/ask_question/create_question/pick_color', name: 'PickColorRoute', page: ColorPickerPage),
         AutoRoute(path: ':sheetId/read_sheet/ask_question/:questionId', name: 'DetailQuestionRoute', page: DetailQuestion),
         AutoRoute(path: ':sheetId/review_sheet', name: 'ReviewSheetRoute', page: ReviewSheet),
         AutoRoute(path: ':sheetId/create_review', name: 'CreateReviewRoute', page: CreateReview),
