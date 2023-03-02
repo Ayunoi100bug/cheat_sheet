@@ -94,7 +94,7 @@ class AuthService {
       showDialog(
         barrierDismissible: false,
         context: context,
-        builder: (BuildContext context) => Popup_error(context, "อีเมลล์ปัจจุบันไม่ถูกต้อง", "โปรดลองใหม่อีกครั้ง"),
+        builder: (BuildContext context) => Popup_error(context, "รหัสผ่านไม่ถูกต้อง", "โปรดลองใหม่อีกครั้ง"),
       );
     }
   }
