@@ -344,7 +344,8 @@ class _DetailSheetState extends State<DetailSheet> {
                                                       currentUserData['uid'] == sheetData['authorId']) {
                                                     if (context.mounted) {
                                                       Provider.of<FilePasserForRead>(context, listen: false).setFile(file);
-                                                      AutoRouter.of(context).push(ReadSheetRoute(sheetId: widget.sheetId));
+                                                      AutoRouter.of(context)
+                                                          .push(ReadSheetRoute(sheetId: widget.sheetId, sheetTitle: sheetData['sheetName']));
                                                     }
                                                   }
                                                   if (context.mounted) {
