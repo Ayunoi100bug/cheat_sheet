@@ -116,7 +116,6 @@ class _SidebarMenuState extends State<SidebarMenu> {
                       ),
                       onTap: () {
                         myAuth.logOut(context);
-                        Navigator.pop(context);
                       },
                     ),
                   ],

@@ -75,75 +75,77 @@ class _DetailQuestionState extends State<DetailQuestion> {
 
                     return Scaffold(
                       body: SafeArea(
-                        child: Column(
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.only(top: screenWidth * 0.08),
-                              height: screenHeight * 0.4,
-                              width: screenWidth,
-                              child: Stack(
-                                children: [
-                                  AspectRatio(
-                                    aspectRatio: A4_RATIO,
-                                    child: PdfDocumentLoader.openFile(
-                                      file!.path,
-                                      pageNumber: widget.askingPage,
-                                      pageBuilder: (context, textureBuilder, pageSize) => textureBuilder(),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Container(
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.only(top: screenWidth * 0.08),
+                                height: screenHeight * 0.4,
+                                width: screenWidth,
+                                child: Stack(
+                                  children: [
+                                    AspectRatio(
+                                      aspectRatio: A4_RATIO,
+                                      child: PdfDocumentLoader.openFile(
+                                        file!.path,
+                                        pageNumber: widget.askingPage,
+                                        pageBuilder: (context, textureBuilder, pageSize) => textureBuilder(),
+                                      ),
                                     ),
-                                  ),
-                                  AspectRatio(
-                                    aspectRatio: A4_RATIO,
-                                    child: Image.file(questionImage!),
-                                  ),
-                                ],
+                                    AspectRatio(
+                                      aspectRatio: A4_RATIO,
+                                      child: Image.file(questionImage!),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            SizedBox(height: screenWidth * 0.08),
-                            Ask(
-                              userImage: user['profileImage'],
-                              username: user['username'],
-                              sheetId: widget.sheetId,
-                              questionText: questionData["text"],
-                              focus: false,
-                            ),
-                            const Answer(
-                              focus: false,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: screenHeight * 0.012, left: screenHeight * 0.012, right: screenHeight * 0.012),
-                              child: Container(
-                                width: isPortrait ? screenWidth : screenWidth * 0.6,
-                                height: isPortrait ? screenHeight * 0.1 : screenHeight * 0.5,
-                                padding: EdgeInsets.all(screenHeight * 0.004),
-                                child: Form(
-                                  key: _formKey,
-                                  child: MyTextFormField(
-                                    hintText: 'ตอบกลับคำถามได้ที่นี่',
-                                    minLine: 5,
-                                    maxLine: 5,
-                                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                                    validator: RequiredValidator(errorText: 'กรุณากรอกคำถามให้เรียบร้อย'),
-                                    onSaved: (value) {},
+                              SizedBox(height: screenWidth * 0.08),
+                              Ask(
+                                userImage: user['profileImage'],
+                                username: user['username'],
+                                sheetId: widget.sheetId,
+                                questionText: questionData["text"],
+                                focus: false,
+                              ),
+                              const Answer(
+                                focus: false,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: screenHeight * 0.012, left: screenHeight * 0.012, right: screenHeight * 0.012),
+                                child: Container(
+                                  width: isPortrait ? screenWidth : screenWidth * 0.6,
+                                  height: isPortrait ? screenHeight * 0.1 : screenHeight * 0.5,
+                                  padding: EdgeInsets.all(screenHeight * 0.004),
+                                  child: Form(
+                                    key: _formKey,
+                                    child: MyTextFormField(
+                                      hintText: 'ตอบกลับคำถามได้ที่นี่',
+                                      minLine: 5,
+                                      maxLine: 5,
+                                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                                      validator: RequiredValidator(errorText: 'กรุณากรอกคำถามให้เรียบร้อย'),
+                                      onSaved: (value) {},
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenWidth * 0.025),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  OutlineButton(
-                                      text: 'ยกเลิก',
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      }),
-                                  PrimaryButton(text: 'ยืนยัน', onPressed: () async {}),
-                                ],
-                              ),
-                            )
-                          ],
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenWidth * 0.025),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    OutlineButton(
+                                        text: 'ยกเลิก',
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        }),
+                                    PrimaryButton(text: 'ยืนยัน', onPressed: () async {}),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     );
