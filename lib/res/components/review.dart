@@ -121,7 +121,6 @@ class _ReviewState extends State<Review> {
                                             ? const Icon(FontAwesomeIcons.ellipsisV, color: AppColors.black700, size: 16)
                                             : Container(),
                                       );
-
                                     }),
                               ],
                             );
@@ -222,7 +221,9 @@ void _BottomEditReview(BuildContext context, String textReview, double ratingRev
     )),
     builder: (BuildContext context) {
       return SizedBox(
-        height: isPortrait ? screenHeight * 0.5 : screenWidth * 0.5,
+        height: MediaQuery.of(context).viewInsets.bottom == 0
+            ? screenHeight * 0.5
+            : (MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.bottom) / 0.8,
         child: Column(
           children: [
             Container(
@@ -258,7 +259,7 @@ void _BottomEditReview(BuildContext context, String textReview, double ratingRev
                       _review.text = value!;
                     }
                   },
-                  validator: RequiredValidator(errorText: 'Please enter sheet list name.'),
+                  validator: RequiredValidator(errorText: 'กรุณากรอกความคิดเห็นของท่าน.'),
                 ),
               ),
             ),

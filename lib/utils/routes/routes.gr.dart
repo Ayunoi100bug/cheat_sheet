@@ -192,18 +192,14 @@ class AppRouter extends _i34.RootStackRouter {
       );
     },
     DetailQuestionRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<DetailQuestionRouteArgs>(
-          orElse: () => DetailQuestionRouteArgs(
-                sheetId: pathParams.getString('sheetId'),
-                questionId: pathParams.getString('questionId'),
-              ));
+      final args = routeData.argsAs<DetailQuestionRouteArgs>();
       return _i34.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i14.DetailQuestion(
           key: args.key,
           sheetId: args.sheetId,
           questionId: args.questionId,
+          askingPage: args.askingPage,
         ),
       );
     },
@@ -932,6 +928,7 @@ class DetailQuestionRoute extends _i34.PageRouteInfo<DetailQuestionRouteArgs> {
     _i35.Key? key,
     required String sheetId,
     required String questionId,
+    required int askingPage,
   }) : super(
           DetailQuestionRoute.name,
           path: ':sheetId/read_sheet/ask_question/:questionId',
@@ -939,6 +936,7 @@ class DetailQuestionRoute extends _i34.PageRouteInfo<DetailQuestionRouteArgs> {
             key: key,
             sheetId: sheetId,
             questionId: questionId,
+            askingPage: askingPage,
           ),
           rawPathParams: {
             'sheetId': sheetId,
@@ -954,6 +952,7 @@ class DetailQuestionRouteArgs {
     this.key,
     required this.sheetId,
     required this.questionId,
+    required this.askingPage,
   });
 
   final _i35.Key? key;
@@ -962,9 +961,11 @@ class DetailQuestionRouteArgs {
 
   final String questionId;
 
+  final int askingPage;
+
   @override
   String toString() {
-    return 'DetailQuestionRouteArgs{key: $key, sheetId: $sheetId, questionId: $questionId}';
+    return 'DetailQuestionRouteArgs{key: $key, sheetId: $sheetId, questionId: $questionId, askingPage: $askingPage}';
   }
 }
 

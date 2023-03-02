@@ -1,21 +1,30 @@
+import 'dart:io';
+
 import 'package:auto_route/annotations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cheat_sheet/res/components/answer.dart';
 import 'package:cheat_sheet/res/typo.dart';
+import 'package:cheat_sheet/view_model/file_passer_for_read.dart';
+import 'package:cheat_sheet/view_model/question_image_passer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:pdf_render/pdf_render_widgets.dart';
+import 'package:provider/provider.dart';
 
 import '../../../res/button.dart';
 import '../../../res/colors.dart';
 import '../../../res/components/ask.dart';
 import '../../../res/components/form_field.dart';
 
+const double A4_RATIO = 1 / 1.3;
+
 class DetailQuestion extends StatefulWidget {
   final String sheetId;
   final String questionId;
-  const DetailQuestion({super.key, @PathParam() required this.sheetId, @PathParam() required this.questionId});
+  final int askingPage;
+  const DetailQuestion({super.key, @PathParam() required this.sheetId, @PathParam() required this.questionId, required this.askingPage});
 
   @override
   State<DetailQuestion> createState() => _DetailQuestionState();
@@ -30,6 +39,9 @@ class _DetailQuestionState extends State<DetailQuestion> {
     double screenHeight = MediaQuery.of(context).size.height;
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+
+    final File? file = Provider.of<FilePasserForRead>(context).getFile();
+    final File? questionImage = Provider.of<QuestionImagePasser>(context).getFile();
 
     return StreamBuilder<DocumentSnapshot>(
       stream: _firestore.collection("question").doc(widget.questionId).snapshots(),
@@ -70,11 +82,21 @@ class _DetailQuestionState extends State<DetailQuestion> {
                               padding: EdgeInsets.only(top: screenWidth * 0.08),
                               height: screenHeight * 0.4,
                               width: screenWidth,
-                              child: CachedNetworkImage(
-                                imageUrl: sheetData["sheetCoverImage"],
-                                color: AppColors.black400,
-                                colorBlendMode: BlendMode.modulate,
-                                fit: BoxFit.cover,
+                              child: Stack(
+                                children: [
+                                  AspectRatio(
+                                    aspectRatio: A4_RATIO,
+                                    child: PdfDocumentLoader.openFile(
+                                      file!.path,
+                                      pageNumber: widget.askingPage,
+                                      pageBuilder: (context, textureBuilder, pageSize) => textureBuilder(),
+                                    ),
+                                  ),
+                                  AspectRatio(
+                                    aspectRatio: A4_RATIO,
+                                    child: Image.file(questionImage!),
+                                  ),
+                                ],
                               ),
                             ),
                             SizedBox(height: screenWidth * 0.08),

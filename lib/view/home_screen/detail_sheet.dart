@@ -200,7 +200,6 @@ class _DetailSheetState extends State<DetailSheet> {
                                             children: const [
                                               Tag(
                                                 subject: "คณิตศาสาตร์",
-                                                icon: Icons.add,
                                               ),
                                               Tag(
                                                 subject: "คณิตพื้นฐาน",
@@ -316,16 +315,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                   text: sheetData['price'] == 0 ? "อ่านชีท" : sheetData['price'].toString(),
                                                   size: 16,
                                                   onPressed: () async {
-                                                    if (sheetData['price'] == 0) {
-                                                      if (context.mounted) {
-                                                        Provider.of<FilePasserForRead>(context, listen: false).setFile(file);
-                                                        AutoRouter.of(context)
-                                                            .push(ReadSheetRoute(sheetId: widget.sheetId, sheetTitle: sheetData['sheetName']));
-                                                      }
-                                                    }
-                                                    if (context.mounted) {
-                                                      await updateFS.userBuySheet(context, sheetData['sid'], authorData['uid'], sheetData['price']);
-                                                    }
+                                                    await updateFS.userBuySheet(context, sheetData['sid'], authorData['uid'], sheetData['price']);
                                                   },
                                                 );
                                               } else if (currentUserSnapshot.connectionState == ConnectionState.waiting) {
@@ -391,87 +381,188 @@ class _DetailSheetState extends State<DetailSheet> {
                             padding: EdgeInsets.symmetric(
                               horizontal: screenWidth * 0.04,
                             ),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Medium16px(text: "รีวิว"),
-                                    InkWell(
-                                      child: const Regular14px(
-                                        text: "เขียนรีวิว",
-                                        underline: true,
-                                        color: AppColors.primary600,
-                                      ),
-                                      onTap: () {
-                                        AutoRouter.of(context).push(CreateReviewRoute(sheetId: widget.sheetId));
-                                      },
-                                    ),
-                                  ],
-                                ),
-                                if (reviewInSheet!.isEmpty) ...[
-                                  SizedBox(
-                                    height: screenWidth * 0.57,
-                                    child: const Center(
-                                      child: Regular16px(text: "ยังไม่มีรีวิว"),
-                                    ),
-                                  ),
-                                ],
-                                ListView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: reviewInSheet.length > 2 ? 2 : reviewInSheet.length,
-                                  itemBuilder: (BuildContext context, index) {
-                                    return StreamBuilder<DocumentSnapshot>(
-                                        stream: _firestore.collection("review").doc(reviewInSheet![index]).snapshots(),
-                                        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> reviewSnapshot) {
-                                          if (!reviewSnapshot.hasData) {
-                                            return Container();
-                                          } else if (reviewSnapshot.connectionState == ConnectionState.waiting) {
-                                            return const Center(child: CircularProgressIndicator());
-                                          } else {
+                            child: StreamBuilder<DocumentSnapshot>(
+                                stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
+                                builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> currentUserSnapshot) {
+                                  if (!currentUserSnapshot.hasData) {
+                                    return Container();
+                                  } else if (_auth.currentUser == null) {
+                                    return Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            const Medium16px(text: "รีวิว"),
+                                            Container(),
+                                          ],
+                                        ),
+                                        if (reviewInSheet!.isEmpty) ...[
+                                          SizedBox(
+                                            height: screenWidth * 0.57,
+                                            child: const Center(
+                                              child: Regular16px(text: "ยังไม่มีรีวิว"),
+                                            ),
+                                          ),
+                                        ],
+                                        ListView.builder(
+                                          physics: const NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: reviewInSheet.length > 2 ? 2 : reviewInSheet.length,
+                                          itemBuilder: (BuildContext context, index) {
                                             return StreamBuilder<DocumentSnapshot>(
-                                              stream: _firestore.collection("users").doc(reviewSnapshot.data!['reviewerId']).snapshots(),
-                                              builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userReviewSnapshot) {
-                                                if (!userReviewSnapshot.hasData) {
-                                                  return Container();
-                                                } else if (userReviewSnapshot.connectionState == ConnectionState.waiting) {
-                                                  return const Center(child: CircularProgressIndicator());
-                                                } else {
-                                                  return Review(
-                                                      sheetId: sheetData['sid'],
-                                                      userId: userReviewSnapshot.data!['uid'],
-                                                      userImage: userReviewSnapshot.data!['profileImage'],
-                                                      userName: userReviewSnapshot.data!['username'],
-                                                      userRating: reviewSnapshot.data!['rating'],
-                                                      textReview: reviewSnapshot.data!['text'],
-                                                      reviewId: reviewSnapshot.data!['rid'],
-                                                      dateTime: reviewSnapshot.data!['timestamp'],
-                                                      like: reviewSnapshot.data!['like']);
-                                                }
+                                                stream: _firestore.collection("review").doc(reviewInSheet![index]).snapshots(),
+                                                builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> reviewSnapshot) {
+                                                  if (!reviewSnapshot.hasData) {
+                                                    return Container();
+                                                  } else if (reviewSnapshot.connectionState == ConnectionState.waiting) {
+                                                    return const Center(child: CircularProgressIndicator());
+                                                  } else {
+                                                    return StreamBuilder<DocumentSnapshot>(
+                                                      stream: _firestore.collection("users").doc(reviewSnapshot.data!['reviewerId']).snapshots(),
+                                                      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userReviewSnapshot) {
+                                                        if (!userReviewSnapshot.hasData) {
+                                                          return Container();
+                                                        } else if (userReviewSnapshot.connectionState == ConnectionState.waiting) {
+                                                          return const Center(child: CircularProgressIndicator());
+                                                        } else {
+                                                          return Review(
+                                                              sheetId: sheetData['sid'],
+                                                              userId: userReviewSnapshot.data!['uid'],
+                                                              userImage: userReviewSnapshot.data!['profileImage'],
+                                                              userName: userReviewSnapshot.data!['username'],
+                                                              userRating: reviewSnapshot.data!['rating'],
+                                                              textReview: reviewSnapshot.data!['text'],
+                                                              reviewId: reviewSnapshot.data!['rid'],
+                                                              dateTime: reviewSnapshot.data!['timestamp'],
+                                                              like: reviewSnapshot.data!['like']);
+                                                        }
+                                                      },
+                                                    );
+                                                  }
+                                                });
+                                          },
+                                        ),
+                                        if (reviewInSheet.isNotEmpty) ...[
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(vertical: screenWidth * 0.04),
+                                            child: InkWell(
+                                              child: const Regular14px(
+                                                text: "ดูทั้งหมด",
+                                                underline: true,
+                                                color: AppColors.primary600,
+                                              ),
+                                              onTap: () {
+                                                AutoRouter.of(context).push(ReviewSheetRoute(sheetId: widget.sheetId));
                                               },
-                                            );
-                                          }
-                                        });
-                                  },
-                                ),
-                                if (reviewInSheet.isNotEmpty) ...[
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(vertical: screenWidth * 0.04),
-                                    child: InkWell(
-                                      child: const Regular14px(
-                                        text: "ดูทั้งหมด",
-                                        underline: true,
-                                        color: AppColors.primary600,
-                                      ),
-                                      onTap: () {
-                                        AutoRouter.of(context).push(ReviewSheetRoute(sheetId: widget.sheetId));
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ],
-                            ),
+                                            ),
+                                          ),
+                                        ],
+                                      ],
+                                    );
+                                  } else if (currentUserSnapshot.connectionState == ConnectionState.waiting) {
+                                    return const Center(child: CircularProgressIndicator());
+                                  }
+                                  Map<String, dynamic>? currentUserData = currentUserSnapshot.data!.data() as Map<String, dynamic>;
+                                  return StreamBuilder<QuerySnapshot>(
+                                      stream: _firestore
+                                          .collection("review")
+                                          .where('reviewerId', isEqualTo: currentUserData['uid'])
+                                          .where('sheetId', isEqualTo: sheetData['sid'])
+                                          .snapshots(),
+                                      builder: (context, reviewSnapshot) {
+                                        int reviewLength = reviewSnapshot.data!.docs.length;
+                                        if (!reviewSnapshot.hasData) {
+                                          return Container();
+                                        } else if (reviewSnapshot.connectionState == ConnectionState.waiting) {
+                                          return const Center(child: CircularProgressIndicator());
+                                        }
+                                        return Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                const Medium16px(text: "รีวิว"),
+                                                sheetData['authorId'] != currentUserData['uid'] &&
+                                                        (currentUserData['buyedSheet'].contains(sheetData['sid']) || sheetData['price'] == 0) &&
+                                                        reviewLength == 0
+                                                    ? InkWell(
+                                                        child: const Regular14px(
+                                                          text: "เขียนรีวิว",
+                                                          underline: true,
+                                                          color: AppColors.primary600,
+                                                        ),
+                                                        onTap: () {
+                                                          AutoRouter.of(context).push(CreateReviewRoute(sheetId: widget.sheetId));
+                                                        },
+                                                      )
+                                                    : Container(),
+                                              ],
+                                            ),
+                                            if (reviewInSheet!.isEmpty) ...[
+                                              SizedBox(
+                                                height: screenWidth * 0.57,
+                                                child: const Center(
+                                                  child: Regular16px(text: "ยังไม่มีรีวิว"),
+                                                ),
+                                              ),
+                                            ],
+                                            ListView.builder(
+                                              physics: const NeverScrollableScrollPhysics(),
+                                              shrinkWrap: true,
+                                              itemCount: reviewInSheet.length > 2 ? 2 : reviewInSheet.length,
+                                              itemBuilder: (BuildContext context, index) {
+                                                return StreamBuilder<DocumentSnapshot>(
+                                                    stream: _firestore.collection("review").doc(reviewInSheet![index]).snapshots(),
+                                                    builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> reviewSnapshot) {
+                                                      if (!reviewSnapshot.hasData) {
+                                                        return Container();
+                                                      } else if (reviewSnapshot.connectionState == ConnectionState.waiting) {
+                                                        return const Center(child: CircularProgressIndicator());
+                                                      } else {
+                                                        return StreamBuilder<DocumentSnapshot>(
+                                                          stream: _firestore.collection("users").doc(reviewSnapshot.data!['reviewerId']).snapshots(),
+                                                          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userReviewSnapshot) {
+                                                            if (!userReviewSnapshot.hasData) {
+                                                              return Container();
+                                                            } else if (userReviewSnapshot.connectionState == ConnectionState.waiting) {
+                                                              return const Center(child: CircularProgressIndicator());
+                                                            } else {
+                                                              return Review(
+                                                                  sheetId: sheetData['sid'],
+                                                                  userId: userReviewSnapshot.data!['uid'],
+                                                                  userImage: userReviewSnapshot.data!['profileImage'],
+                                                                  userName: userReviewSnapshot.data!['username'],
+                                                                  userRating: reviewSnapshot.data!['rating'],
+                                                                  textReview: reviewSnapshot.data!['text'],
+                                                                  reviewId: reviewSnapshot.data!['rid'],
+                                                                  dateTime: reviewSnapshot.data!['timestamp'],
+                                                                  like: reviewSnapshot.data!['like']);
+                                                            }
+                                                          },
+                                                        );
+                                                      }
+                                                    });
+                                              },
+                                            ),
+                                            if (reviewInSheet.isNotEmpty) ...[
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(vertical: screenWidth * 0.04),
+                                                child: InkWell(
+                                                  child: const Regular14px(
+                                                    text: "ดูทั้งหมด",
+                                                    underline: true,
+                                                    color: AppColors.primary600,
+                                                  ),
+                                                  onTap: () {
+                                                    AutoRouter.of(context).push(ReviewSheetRoute(sheetId: widget.sheetId));
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          ],
+                                        );
+                                      });
+                                }),
                           ),
                         ],
                       ),
