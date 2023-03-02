@@ -159,15 +159,13 @@ class AppRouter extends _i34.RootStackRouter {
       );
     },
     ReadSheetRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<ReadSheetRouteArgs>(
-          orElse: () =>
-              ReadSheetRouteArgs(sheetId: pathParams.getString('sheetId')));
+      final args = routeData.argsAs<ReadSheetRouteArgs>();
       return _i34.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i11.ReadSheet(
           key: args.key,
           sheetId: args.sheetId,
+          sheetTitle: args.sheetTitle,
         ),
       );
     },
@@ -810,12 +808,14 @@ class ReadSheetRoute extends _i34.PageRouteInfo<ReadSheetRouteArgs> {
   ReadSheetRoute({
     _i35.Key? key,
     required String sheetId,
+    required String sheetTitle,
   }) : super(
           ReadSheetRoute.name,
           path: ':sheetId/read_sheet',
           args: ReadSheetRouteArgs(
             key: key,
             sheetId: sheetId,
+            sheetTitle: sheetTitle,
           ),
           rawPathParams: {'sheetId': sheetId},
         );
@@ -827,15 +827,18 @@ class ReadSheetRouteArgs {
   const ReadSheetRouteArgs({
     this.key,
     required this.sheetId,
+    required this.sheetTitle,
   });
 
   final _i35.Key? key;
 
   final String sheetId;
 
+  final String sheetTitle;
+
   @override
   String toString() {
-    return 'ReadSheetRouteArgs{key: $key, sheetId: $sheetId}';
+    return 'ReadSheetRouteArgs{key: $key, sheetId: $sheetId, sheetTitle: $sheetTitle}';
   }
 }
 
