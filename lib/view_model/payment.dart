@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:cheat_sheet/res/components/flushbar.dart';
 import 'package:cheat_sheet/res/components/flushbar_icon.dart';
 import 'package:cheat_sheet/view_model/update_firestore.dart';
+import 'package:cheat_sheet/view_model/auth.dart';
+import 'package:cheat_sheet/res/components/popup_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
@@ -13,6 +15,13 @@ class PaymentApi {
   Map<String, dynamic>? paymentIntentData;
 
   Future<void> stripePayment(BuildContext context, int coinAmount, int price) async {
+    if (!AuthService().isLogged()) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => Popup_Login(context),
+      );
+      return;
+    }
     try {
       paymentIntentData = await createPaymentIntent(price.toString(), "THB");
       await _stripe.initPaymentSheet(

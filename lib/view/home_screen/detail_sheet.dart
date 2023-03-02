@@ -316,16 +316,18 @@ class _DetailSheetState extends State<DetailSheet> {
                                             builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> currentUserSnapshot) {
                                               if (!currentUserSnapshot.hasData) {
                                                 return Container();
-                                              } else if (_auth.currentUser == null) {
+                                              } else if (!AuthService().isLogged()) {
                                                 return PrimaryButton(
                                                   coinIcon: sheetData['price'] == 0 ? false : true,
                                                   text: sheetData['price'] == 0 ? "อ่านชีท" : sheetData['price'].toString(),
                                                   size: 16,
                                                   onPressed: () async {
-                                                    if (context.mounted) {
+                                                    if (sheetData['price'] == 0) {
                                                       Provider.of<FilePasserForRead>(context, listen: false).setFile(file);
                                                       AutoRouter.of(context)
                                                           .push(ReadSheetRoute(sheetId: widget.sheetId, sheetTitle: sheetData['sheetName']));
+                                                    } else {
+                                                      await updateFS.userBuySheet(context, sheetData['sid'], authorData['uid'], sheetData['price']);
                                                     }
                                                   },
                                                 );

@@ -47,6 +47,7 @@ class UpdateCollection {
         context: context,
         builder: (BuildContext context) => Popup_Login(context),
       );
+      return;
     }
     var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
     Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
