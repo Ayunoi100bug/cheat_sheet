@@ -94,7 +94,7 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                             right: isPortrait ? screenHeight * 0.024 : screenHeight * 0.048),
                         child: MyTextFormField(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: RequiredValidator(errorText: 'Please enter sheet name.'),
+                          validator: RequiredValidator(errorText: 'กรุณากรอกชื่อชีทของท่าน.'),
                           onSaved: (value) {
                             mySheet.sheetName = value!;
                           },
@@ -113,7 +113,7 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                       margin: EdgeInsets.only(left: screenHeight * 0.024, right: screenHeight * 0.024),
                       child: MyTextFormField(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: RequiredValidator(errorText: 'Please enter detail.'),
+                        validator: RequiredValidator(errorText: 'กรุณากรอกรายละเอียดของชีท.'),
                         minLine: 6,
                         maxLine: 6,
                         onSaved: (value) {
@@ -200,7 +200,7 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                               hintText: 'หน่วย coin',
                               keyboardType: TextInputType.number,
                               autovalidateMode: AutovalidateMode.onUserInteraction,
-                              validator: RequiredValidator(errorText: 'Please enter price.'),
+                              validator: RequiredValidator(errorText: 'กรุณาระบุราคา.'),
                               onSaved: (value) {
                                 mySheet.price = int.parse(value!);
                               }),

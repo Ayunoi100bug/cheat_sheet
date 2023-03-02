@@ -147,7 +147,7 @@ class _EditProfileState extends State<EditProfile> {
                                 child: MyTextFormField(
                                     autovalidateMode: AutovalidateMode.onUserInteraction,
                                     hintText: data['username'],
-                                    validator: RequiredValidator(errorText: 'Please enter new username.'),
+                                    validator: RequiredValidator(errorText: 'กรุณากรอก username ใหม่ของท่าน.'),
                                     onSaved: (value) {
                                       if (value == '') {
                                         users.username = data['username'];

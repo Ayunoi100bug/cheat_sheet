@@ -234,7 +234,7 @@ void _BottomEditQuestion(BuildContext context, String textQuestion, String quest
                       _question.text = value!;
                     }
                   },
-                  validator: RequiredValidator(errorText: 'Please enter sheet list name.'),
+                  validator: RequiredValidator(errorText: 'กรุณากรอกคำถามของท่าน.'),
                 ),
               ),
             ),

@@ -69,7 +69,7 @@ class _CreateReviewState extends State<CreateReview> {
                     onSaved: (value) {
                       _review.text = value!;
                     },
-                    validator: RequiredValidator(errorText: 'Please enter sheet list name.'),
+                    validator: RequiredValidator(errorText: ''),
                   ),
                 ),
               ),

@@ -210,7 +210,7 @@ void _BottomSheet(context) {
                   onSaved: (value) {
                     _sheetLists.sheetListName = value!;
                   },
-                  validator: RequiredValidator(errorText: 'Please enter sheet list name.'),
+                  validator: RequiredValidator(errorText: 'กรุณากรอกชื่อชีทลิสต์ของท่าน.'),
                 ),
               ),
             ),
