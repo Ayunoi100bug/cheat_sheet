@@ -1,26 +1,20 @@
-import 'dart:async';
 import 'dart:io';
 
-import 'package:auto_route/annotations.dart';
 import 'package:cheat_sheet/data/network/image_api.dart';
 import 'package:cheat_sheet/res/colors.dart';
-import 'package:cheat_sheet/res/typo.dart';
+
 import 'package:cheat_sheet/view_model/file_passer_for_read.dart';
 import 'package:cheat_sheet/view_model/question_image_passer.dart';
-import 'package:cheat_sheet/view_model/read_firestore.dart';
 
-import 'package:clickable_list_wheel_view/clickable_list_wheel_widget.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
-import 'package:cheat_sheet/view/home_screen/question/detail_question.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:inview_notifier_list/inview_notifier_list.dart';
-import 'package:pdf_render/pdf_render_widgets.dart';
 import 'package:provider/provider.dart';
 
 import '../../../res/components/ask.dart';
+import '../../../res/components/popup_auth.dart';
 
 class AskQuestion extends StatefulWidget {
   final String sheetId;
@@ -37,8 +31,6 @@ class AskQuestion extends StatefulWidget {
 
 class _AskQuestionState extends State<AskQuestion> {
   late ScrollController _scrollController;
-
-  int _cardPosition = 0;
 
   @override
   void initState() {
@@ -66,15 +58,21 @@ class _AskQuestionState extends State<AskQuestion> {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        child: Icon(
+        onPressed: () {
+          if (_auth.currentUser != null) {
+            AutoRouter.of(context).push(CreateQuestionRoute(sheetId: widget.sheetId, askingPage: widget.askingPage));
+          }
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => Popup_Login(context),
+          );
+        },
+        backgroundColor: AppColors.tertiary600,
+        child: const Icon(
           Icons.add,
           color: AppColors.white,
           size: 40,
         ),
-        onPressed: () {
-          AutoRouter.of(context).push(CreateQuestionRoute(sheetId: widget.sheetId, askingPage: widget.askingPage));
-        },
-        backgroundColor: AppColors.tertiary600,
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
@@ -125,9 +123,11 @@ class _AskQuestionState extends State<AskQuestion> {
                                   return InkWell(
                                     onTap: () async {
                                       File questionImage = await ImageApi.loadQuestionImage(question.id);
-                                      Provider.of<QuestionImagePasser>(context, listen: false).setFile(questionImage);
-                                      AutoRouter.of(context)
-                                          .push(DetailQuestionRoute(questionId: question.id, sheetId: widget.sheetId, askingPage: widget.askingPage));
+                                      if (context.mounted) {
+                                        Provider.of<QuestionImagePasser>(context, listen: false).setFile(questionImage);
+                                        AutoRouter.of(context).push(
+                                            DetailQuestionRoute(questionId: question.id, sheetId: widget.sheetId, askingPage: widget.askingPage));
+                                      }
                                     },
                                     child: Ask(
                                       userImage: user!['profileImage'],

@@ -42,12 +42,11 @@ class UpdateCollection {
   }
 
   Future<void> userBuySheet(BuildContext context, String sid, String authorId, int sheetPrice) async {
-    if (!myAuth.isLogged()) {
+    if (!myAuth.isLogged() && sheetPrice > 0) {
       showDialog(
         context: context,
         builder: (BuildContext context) => Popup_Login(context),
       );
-      return;
     }
     var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
     Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;

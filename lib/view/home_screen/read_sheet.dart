@@ -74,7 +74,7 @@ class _ReadSheetState extends State<ReadSheet> {
                           width: screenWidth,
                           alignment: Alignment.center,
                           child: Bold24px(
-                            text: "sheetName",
+                            text: widget.sheetTitle,
                             activateOverflow: true,
                           ),
                         ),

@@ -149,7 +149,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                         SizedBox(
                                                           height: screenWidth * 0.04,
                                                         ),
-                                                        const BlinkText('สามารถเลื่อนไปทางขวาได้',
+                                                        const BlinkText('เลื่อนไปทางขวาเพื่อดูเพิ่มเติม',
                                                             style: TextStyle(fontSize: 20, color: AppColors.black800),
                                                             beginColor: AppColors.black800,
                                                             endColor: AppColors.white,
@@ -322,7 +322,11 @@ class _DetailSheetState extends State<DetailSheet> {
                                                   text: sheetData['price'] == 0 ? "อ่านชีท" : sheetData['price'].toString(),
                                                   size: 16,
                                                   onPressed: () async {
-                                                    await updateFS.userBuySheet(context, sheetData['sid'], authorData['uid'], sheetData['price']);
+                                                    if (context.mounted) {
+                                                      Provider.of<FilePasserForRead>(context, listen: false).setFile(file);
+                                                      AutoRouter.of(context)
+                                                          .push(ReadSheetRoute(sheetId: widget.sheetId, sheetTitle: sheetData['sheetName']));
+                                                    }
                                                   },
                                                 );
                                               } else if (currentUserSnapshot.connectionState == ConnectionState.waiting) {
@@ -477,12 +481,12 @@ class _DetailSheetState extends State<DetailSheet> {
                                           .where('sheetId', isEqualTo: sheetData['sid'])
                                           .snapshots(),
                                       builder: (context, reviewSnapshot) {
-                                        int reviewLength = reviewSnapshot.data!.docs.length;
                                         if (!reviewSnapshot.hasData) {
                                           return Container();
                                         } else if (reviewSnapshot.connectionState == ConnectionState.waiting) {
                                           return const Center(child: CircularProgressIndicator());
                                         }
+                                        int reviewLength = reviewSnapshot.data!.docs.length;
                                         return Column(
                                           children: [
                                             Row(

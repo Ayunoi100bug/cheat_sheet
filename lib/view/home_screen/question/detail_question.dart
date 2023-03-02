@@ -1,9 +1,7 @@
 import 'dart:io';
 
 import 'package:auto_route/annotations.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cheat_sheet/res/components/answer.dart';
-import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/view_model/file_passer_for_read.dart';
 import 'package:cheat_sheet/view_model/question_image_passer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,7 +12,6 @@ import 'package:pdf_render/pdf_render_widgets.dart';
 import 'package:provider/provider.dart';
 
 import '../../../res/button.dart';
-import '../../../res/colors.dart';
 import '../../../res/components/ask.dart';
 import '../../../res/components/form_field.dart';
 
@@ -111,39 +108,41 @@ class _DetailQuestionState extends State<DetailQuestion> {
                               const Answer(
                                 focus: false,
                               ),
-                              Padding(
-                                padding: EdgeInsets.only(top: screenHeight * 0.012, left: screenHeight * 0.012, right: screenHeight * 0.012),
-                                child: Container(
-                                  width: isPortrait ? screenWidth : screenWidth * 0.6,
-                                  height: isPortrait ? screenHeight * 0.1 : screenHeight * 0.5,
-                                  padding: EdgeInsets.all(screenHeight * 0.004),
-                                  child: Form(
-                                    key: _formKey,
-                                    child: MyTextFormField(
-                                      hintText: 'ตอบกลับคำถามได้ที่นี่',
-                                      minLine: 5,
-                                      maxLine: 5,
-                                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                                      validator: RequiredValidator(errorText: 'กรุณากรอกคำถามให้เรียบร้อย'),
-                                      onSaved: (value) {},
+                              if (_auth.currentUser != null) ...[
+                                Padding(
+                                  padding: EdgeInsets.only(top: screenHeight * 0.012, left: screenHeight * 0.012, right: screenHeight * 0.012),
+                                  child: Container(
+                                    width: isPortrait ? screenWidth : screenWidth * 0.6,
+                                    height: isPortrait ? screenHeight * 0.1 : screenHeight * 0.5,
+                                    padding: EdgeInsets.all(screenHeight * 0.004),
+                                    child: Form(
+                                      key: _formKey,
+                                      child: MyTextFormField(
+                                        hintText: 'ตอบกลับคำถามได้ที่นี่',
+                                        minLine: 5,
+                                        maxLine: 5,
+                                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                                        validator: RequiredValidator(errorText: 'กรุณากรอกคำถามให้เรียบร้อย'),
+                                        onSaved: (value) {},
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenWidth * 0.025),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    OutlineButton(
-                                        text: 'ยกเลิก',
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        }),
-                                    PrimaryButton(text: 'ยืนยัน', onPressed: () async {}),
-                                  ],
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenWidth * 0.025),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      OutlineButton(
+                                          text: 'ยกเลิก',
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          }),
+                                      PrimaryButton(text: 'ยืนยัน', onPressed: () async {}),
+                                    ],
+                                  ),
                                 ),
-                              )
+                              ]
                             ],
                           ),
                         ),
