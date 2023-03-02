@@ -254,8 +254,8 @@ class _AllSortState extends State<AllSort> {
               setState(
                 () {
                   sort = value.toString();
-                  AutoRouter.of(context).popAndPush(const SearchingSheetRoute());
                   Navigator.of(context).pop();
+                  AutoRouter.of(context).popAndPush(const SearchingSheetRoute());
                 },
               );
             },
