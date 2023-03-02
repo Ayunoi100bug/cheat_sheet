@@ -101,7 +101,12 @@ class PDFApi {
     final dir = await getExternalStorageDirectory();
 
     File imageFile = new File('${dir!.path}/image.png');
-    new File(imageFile.path).writeAsBytes(imglib.encodePng(inputImage));
+    Uint8List bytes = imglib.encodePng(inputImage);
+    print('----------------------bytes after con ------------------------');
+    print(bytes);
+    new File(imageFile.path).writeAsBytes(bytes);
+    print('----------------------bytes after writes ------------------------');
+    print(await imageFile.readAsBytes());
 
     return imageFile;
   }
@@ -126,7 +131,7 @@ class PDFApi {
   static Future<firebaseStorage.UploadTask> _uploadCoverImageToFirebase(String sheetId, File coverImage) async {
     firebaseStorage.UploadTask uploadTask;
 
-    firebaseStorage.Reference ref = firebaseStorage.FirebaseStorage.instance.ref().child('sheets').child(sheetId).child('cover_image.png');
+    firebaseStorage.Reference ref = firebaseStorage.FirebaseStorage.instance.ref().child('cover_image_test.png');
 
     final metadata = firebaseStorage.SettableMetadata(
       contentType: 'file/png',

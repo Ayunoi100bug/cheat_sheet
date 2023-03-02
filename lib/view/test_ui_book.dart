@@ -7,6 +7,8 @@ import 'package:cheat_sheet/view/home_screen/question/ask_question.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf_render/pdf_render_widgets.dart';
 
+import 'package:firebase_storage/firebase_storage.dart' as firebaseStorage;
+
 import '../res/colors.dart';
 import '../res/components/ask.dart';
 
@@ -25,7 +27,7 @@ class _TestUIPageState extends State<TestUIPage> {
   late File resultFile;
 
   void seet() async {
-    String sheetId = 'ac171422-beff-4362-a547-14d21654e272';
+    String sheetId = '31d64616-2753-4e3a-8b01-3cb081be97ad';
     file = await PDFApi.loadPDFFromFirebase(sheetId);
     setState(() {});
   }
@@ -65,13 +67,37 @@ class _TestUIPageState extends State<TestUIPage> {
             onPressed: () async {
               convertFile();
               setState(() {});
-              print(await resultFile.readAsBytes());
-
-              setState(() {});
             },
             child: Text('กดเพื่อแปลงไฟล์')),
-        Text('data'),
-        Text('data'),
+        ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return Scaffold(
+                  body: Image.file(resultFile),
+                );
+              }));
+            },
+            child: Text('ลองรูป')),
+        ElevatedButton(
+            onPressed: () async {
+              setImage();
+              setState(() {});
+              convertFile();
+              setState(() {});
+              print(image);
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return Scaffold(
+                  body: Image.file(resultFile),
+                );
+              }));
+            },
+            child: Text('ลองรูป')),
+        ElevatedButton(
+            onPressed: () async {
+              firebaseStorage.UploadTask? task = await PDFApi.createCoverSheetImage('31d64616-2753-4e3a-8b01-3cb081be97ad');
+              print(task);
+            },
+            child: Text('ทดสอบอัพ')),
       ]),
     );
   }
