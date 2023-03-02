@@ -14,7 +14,8 @@ import '../../view_model/read_firestore.dart';
 
 class ReadSheet extends StatefulWidget {
   final String sheetId;
-  const ReadSheet({super.key, @PathParam() required this.sheetId});
+  final String sheetTitle;
+  const ReadSheet({super.key, @PathParam() required this.sheetId, required this.sheetTitle});
 
   @override
   State<ReadSheet> createState() => _ReadSheetState();
