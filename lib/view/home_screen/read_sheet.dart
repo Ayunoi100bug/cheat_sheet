@@ -3,14 +3,13 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/view_model/file_passer_for_read.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:provider/provider.dart';
 
 import '../../res/colors.dart';
-import '../../res/components/bottom_sheet.dart';
 import '../../utils/routes/routes.gr.dart';
-import '../../view_model/read_firestore.dart';
 
 class ReadSheet extends StatefulWidget {
   final String sheetId;
@@ -24,6 +23,7 @@ late bool isOpen = false;
 final _scaffoldKey = GlobalKey<ScaffoldState>();
 
 class _ReadSheetState extends State<ReadSheet> {
+  final _firestore = FirebaseFirestore.instance;
   late PDFViewController controller;
   int numberPages = 0;
   int currentPage = 0;
@@ -38,22 +38,20 @@ class _ReadSheetState extends State<ReadSheet> {
 
     return Scaffold(
       key: _scaffoldKey,
-      floatingActionButton: Container(
-        child: FloatingActionButton(
-          splashColor: AppColors.warning100,
-          backgroundColor: AppColors.warning200.withOpacity(0.7),
-          elevation: 0,
-          onPressed: () async {
-            AutoRouter.of(context).push(AskQuestionRoute(
-              sheetId: widget.sheetId,
-              askingPage: currentPage + 1,
-            ));
-          },
-          child: const Icon(
-            Icons.question_mark_outlined,
-            color: AppColors.error500,
-            size: 30,
-          ),
+      floatingActionButton: FloatingActionButton(
+        splashColor: AppColors.warning100,
+        backgroundColor: AppColors.warning200.withOpacity(0.7),
+        elevation: 0,
+        onPressed: () async {
+          AutoRouter.of(context).push(AskQuestionRoute(
+            sheetId: widget.sheetId,
+            askingPage: currentPage + 1,
+          ));
+        },
+        child: const Icon(
+          Icons.question_mark_outlined,
+          color: AppColors.error500,
+          size: 30,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -74,16 +72,14 @@ class _ReadSheetState extends State<ReadSheet> {
                         Container(
                           width: screenWidth,
                           alignment: Alignment.center,
-                          child: Bold24px(text: "สถิติพื้นฐาน"),
+                          child: Bold24px(
+                            text: "sheetName",
+                            activateOverflow: true,
+                          ),
                         ),
                         Container(
                           alignment: Alignment.centerRight,
                           padding: EdgeInsets.only(right: screenWidth * 0.075),
-                          // child: Icon(
-                          //   Icons.book_outlined,
-                          //   size: 36,
-                          //   color: AppColors.black700,
-                          // ),
                         ),
                       ],
                     ),
@@ -138,38 +134,6 @@ class _ReadSheetState extends State<ReadSheet> {
           ],
         ),
       ),
-      // bottomSheet: Column(
-      //   crossAxisAlignment: CrossAxisAlignment.stretch,
-      //   mainAxisSize: MainAxisSize.min,
-      //   children: [
-      //     Container(
-      //       alignment: Alignment.center,
-      //       color: AppColors.black300,
-      //       height: screenHeight * 0.03,
-      //       width: screenWidth,
-      //       child: OutlinedButton(
-      //         style: OutlinedButton.styleFrom(
-      //           minimumSize: Size.fromHeight(40),
-      //           side: BorderSide(
-      //             color: Colors.transparent,
-      //           ),
-      //         ),
-      //         child: Icon(
-      //           isOpen
-      //               ? Icons.keyboard_double_arrow_down
-      //               : Icons.keyboard_double_arrow_up,
-      //           color: AppColors.black900,
-      //         ),
-      //         onPressed: () {
-      //           setState(() {
-      //             isOpen = !isOpen;
-      //           });
-      //         },
-      //       ),
-      //     ),
-      //     isOpen ? BottomSheetWidget() : Container(),
-      //   ],
-      // ),
     );
   }
 }
