@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:auto_route/annotations.dart';
+import 'package:cheat_sheet/data/network/image_api.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/view_model/file_passer_for_read.dart';
+import 'package:cheat_sheet/view_model/question_image_passer.dart';
 import 'package:cheat_sheet/view_model/read_firestore.dart';
 
 import 'package:clickable_list_wheel_view/clickable_list_wheel_widget.dart';
@@ -121,8 +123,11 @@ class _AskQuestionState extends State<AskQuestion> {
                                   }
                                   Map<String, dynamic>? user = userSnapshot.data!.data();
                                   return InkWell(
-                                    onTap: () {
-                                      AutoRouter.of(context).push(DetailQuestionRoute(questionId: question.id, sheetId: widget.sheetId));
+                                    onTap: () async {
+                                      File questionImage = await ImageApi.loadQuestionImage(question.id);
+                                      Provider.of<QuestionImagePasser>(context, listen: false).setFile(questionImage);
+                                      AutoRouter.of(context)
+                                          .push(DetailQuestionRoute(questionId: question.id, sheetId: widget.sheetId, askingPage: widget.askingPage));
                                     },
                                     child: Ask(
                                       userImage: user!['profileImage'],
