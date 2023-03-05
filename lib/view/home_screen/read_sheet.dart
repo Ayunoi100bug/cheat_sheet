@@ -40,8 +40,8 @@ class _ReadSheetState extends State<ReadSheet> {
     return Scaffold(
       key: _scaffoldKey,
       floatingActionButton: FloatingActionButton(
-        splashColor: AppColors.warning100,
-        backgroundColor: AppColors.warning200.withOpacity(0.7),
+        splashColor: AppColors.tertiary600,
+        backgroundColor: AppColors.tertiary700.withOpacity(0.7),
         elevation: 0,
         onPressed: () async {
           AutoRouter.of(context).push(AskQuestionRoute(
@@ -51,7 +51,7 @@ class _ReadSheetState extends State<ReadSheet> {
         },
         child: const Icon(
           Icons.question_mark_outlined,
-          color: AppColors.error500,
+          color: AppColors.white,
           size: 30,
         ),
       ),

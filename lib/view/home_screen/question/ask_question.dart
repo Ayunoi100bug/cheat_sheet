@@ -36,7 +36,6 @@ class _AskQuestionState extends State<AskQuestion> {
   void initState() {
     super.initState();
     _scrollController = ScrollController();
-    // _scrollController = FixedExtentScrollController();
   }
 
   @override
@@ -75,26 +74,13 @@ class _AskQuestionState extends State<AskQuestion> {
           size: 40,
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: LayoutBuilder(
         builder: (context, constraints) {
           return Padding(
             padding: EdgeInsets.only(top: screenHeight * 0.024),
             child: Column(
               children: [
-                // Container(
-                //   padding: EdgeInsets.only(
-                //     top: screenHeight * 0.020,
-                //     left: screenHeight * 0.036,
-                //     right: screenHeight * 0.036,
-                //     bottom: screenHeight * 0.020,
-                //   ),
-                //   height: isPortrait ? constraints.maxHeight * 0.6 : constraints.maxHeight * 0.4,
-                //   child: PdfDocumentLoader.openFile(
-                //     file!.path,
-                //     pageNumber: widget.askingPage,
-                //     pageBuilder: (context, textureBuilder, pageSize) => textureBuilder(),
-                //   ),
-                // ),
                 SizedBox(
                   height: isPortrait ? screenHeight * 0.8 : screenHeight * 0.6,
                   child: FutureBuilder(
@@ -149,6 +135,5 @@ class _AskQuestionState extends State<AskQuestion> {
         },
       ),
     );
-    // });
   }
 }
