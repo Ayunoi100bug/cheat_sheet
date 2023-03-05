@@ -1,8 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-
-import 'package:cheat_sheet/res/button.dart';
-import 'package:cheat_sheet/res/components/flushbar.dart';
-import 'package:cheat_sheet/res/components/popup_dialog.dart';
 import 'package:cheat_sheet/res/components/sheet.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -42,15 +38,6 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // ElevatedButton(
-                  //   onPressed: () {
-                  //     showDialog(
-                  //       context: context,
-                  //       builder: (BuildContext context) => Popup_DeleteAllSheet(context),
-                  //     );
-                  //   },
-                  //   child: const Text("ปุ่มลบชีททั้งหมด"),
-                  // ),
                   Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.02),

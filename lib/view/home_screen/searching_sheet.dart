@@ -16,6 +16,78 @@ class SearchingSheet extends StatefulWidget {
 class _SearchingSheetState extends State<SearchingSheet> {
   final _firestore = FirebaseFirestore.instance;
 
+  final TextEditingController _searchController = TextEditingController();
+  late Future resultLoaded;
+  List _allResult = [];
+  List _resultList = [];
+  List _authorResult = [];
+  List _authorList = [];
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(_onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    resultLoaded = getSheetSnapshot();
+  }
+
+  _onSearchChanged() {
+    searchResultsList();
+  }
+
+  searchResultsList() {
+    var showResult = [];
+    var authorResult = [];
+
+    if (_searchController.text != "") {
+      for (var sheetSnapshot in _allResult) {
+        var sheetName = sheetSnapshot['sheetName'].toLowerCase();
+        if (sheetName.contains(_searchController.text.toLowerCase())) {
+          showResult.add(sheetSnapshot);
+          for (var userSnapshot in _authorResult) {
+            if (userSnapshot['uid'] == sheetSnapshot['authorId']) {
+              authorResult.add(userSnapshot);
+            }
+          }
+        }
+      }
+    } else {
+      showResult = List.from(_allResult);
+      authorResult = List.from(_authorResult);
+    }
+    setState(() {
+      _resultList = showResult;
+      _authorList = authorResult;
+    });
+  }
+
+  getSheetSnapshot() async {
+    var sheetData = await _firestore.collection('sheet').get();
+    var authorData = await _firestore.collection('users').get();
+    setState(() {
+      _allResult = sheetData.docs.map((doc) => doc.data()).toList();
+      for (var sheetData in sheetData.docs) {
+        for (var userSnapshot in authorData.docs) {
+          if (userSnapshot['uid'] == sheetData['authorId']) {
+            _authorResult.add(userSnapshot);
+          }
+        }
+      }
+    });
+    searchResultsList();
+    return "Complete";
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -66,120 +138,220 @@ class _SearchingSheetState extends State<SearchingSheet> {
         },
       );
     }
-
-    return StreamBuilder<QuerySnapshot>(
-      stream: sortStream,
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) {
-          return Container();
-        } else if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        final int documentCount = snapshot.data!.docs.length;
-        return Scaffold(
-          body: SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: screenHeight * 0.02,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.02),
-                    child: TextField(
-                      autofocus: true,
-                      cursorColor: AppColors.black900,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        fillColor: AppColors.black200,
-                        filled: true,
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50), borderSide: const BorderSide(width: 1, color: AppColors.primary800)),
-                        hintText: 'Search',
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50), borderSide: const BorderSide(width: 1, color: AppColors.primary800)),
-                        hintStyle: const TextStyle(color: Colors.grey, fontSize: 18),
-                        prefixIcon: const SizedBox(
-                          width: 18,
-                          child: Icon(
-                            Icons.search,
-                            color: AppColors.primary800,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: screenHeight * 0.02,
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(left: screenWidth * 0.04, right: screenWidth * 0.04),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Medium20px(text: 'ผลลัพธ์การค้นหา'),
-                        InkWell(
-                          child: const Icon(
-                            Icons.filter_alt_outlined,
-                            color: AppColors.tertiary600,
-                            size: 30,
-                          ),
-                          onTap: () {
-                            _sortSheet(context);
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: screenHeight * 0.02,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.038),
-                    child: GridView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: isPortrait ? 3 : 5,
-                        crossAxisSpacing: 12,
-                        mainAxisSpacing: 16,
-                        mainAxisExtent: isPortrait ? 200 : 250,
-                      ),
-                      itemCount: documentCount,
-                      itemBuilder: (context, index) {
-                        var sheet = snapshot.data?.docs[index];
-                        return StreamBuilder<DocumentSnapshot>(
-                          stream: _firestore.collection("users").doc(sheet?["authorId"]).snapshots(),
-                          builder: (context, userSnapshot) {
-                            if (!userSnapshot.hasData) {
-                              return Container();
-                            } else if (userSnapshot.connectionState == ConnectionState.waiting) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-                            return Sheet(
-                              rating: sheet?["rating"],
-                              sheetCoverImage: sheet?["sheetCoverImage"],
-                              authorImage: userSnapshot.data?["profileImage"],
-                              title: sheet?["sheetName"],
-                              priceSheet: sheet?["price"],
-                              username: userSnapshot.data?["username"],
-                              sheetId: sheet?["sid"],
-                            );
-                          },
-                        );
-                      },
-                      padding: const EdgeInsets.only(bottom: 8),
-                    ),
-                  ),
-                ],
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: screenHeight * 0.02,
               ),
-            ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.02),
+                child: TextField(
+                  controller: _searchController,
+                  autofocus: true,
+                  cursorColor: AppColors.black900,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    fillColor: AppColors.black200,
+                    filled: true,
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50), borderSide: const BorderSide(width: 1, color: AppColors.primary800)),
+                    hintText: 'Search',
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50), borderSide: const BorderSide(width: 1, color: AppColors.primary800)),
+                    hintStyle: const TextStyle(color: Colors.grey, fontSize: 18),
+                    prefixIcon: const SizedBox(
+                      width: 18,
+                      child: Icon(
+                        Icons.search,
+                        color: AppColors.primary800,
+                      ),
+                    ),
+                  ),
+                  onChanged: (value) {
+                    // searchFromFirebase(value);
+                  },
+                ),
+              ),
+              SizedBox(
+                height: screenHeight * 0.02,
+              ),
+              Container(
+                padding: EdgeInsets.only(left: screenWidth * 0.04, right: screenWidth * 0.04),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Medium20px(text: 'ผลลัพธ์การค้นหา'),
+                    InkWell(
+                      child: const Icon(
+                        Icons.filter_alt_outlined,
+                        color: AppColors.tertiary600,
+                        size: 30,
+                      ),
+                      onTap: () {
+                        _sortSheet(context);
+                      },
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: screenHeight * 0.02,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.038),
+                child: GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: isPortrait ? 3 : 5,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 16,
+                    mainAxisExtent: isPortrait ? 200 : 250,
+                  ),
+                  itemCount: _resultList.length,
+                  itemBuilder: (context, index) {
+                    return Sheet(
+                      rating: _resultList[index]['rating'].toDouble() ?? 0,
+                      sheetCoverImage: _resultList[index]['sheetCoverImage'],
+                      authorImage: _authorList[index]['profileImage'] ?? "",
+                      title: _resultList[index]['sheetName'] ?? "",
+                      priceSheet: _resultList[index]['priceSheet'] ?? 0,
+                      username: _authorList[index]['username'] ?? "",
+                      sheetId: _resultList[index]['sheetId'] ?? "",
+                    );
+                  },
+                  padding: const EdgeInsets.only(bottom: 8),
+                ),
+              ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
+
+    // return StreamBuilder<QuerySnapshot>(
+    //   stream: sortStream,
+    //   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+    //     if (!snapshot.hasData) {
+    //       return Container();
+    //     } else if (snapshot.connectionState == ConnectionState.waiting) {
+    //       return const Center(child: CircularProgressIndicator());
+    //     }
+    //     final int documentCount = snapshot.data!.docs.length;
+    //     return Scaffold(
+    //       body: SafeArea(
+    //         child: SingleChildScrollView(
+    //           child: Column(
+    //             children: [
+    //               SizedBox(
+    //                 height: screenHeight * 0.02,
+    //               ),
+    //               Padding(
+    //                 padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.02),
+    //                 child: TextField(
+    //                   autofocus: true,
+    //                   cursorColor: AppColors.black900,
+    //                   decoration: InputDecoration(
+    //                     isDense: true,
+    //                     fillColor: AppColors.black200,
+    //                     filled: true,
+    //                     enabledBorder: OutlineInputBorder(
+    //                         borderRadius: BorderRadius.circular(50), borderSide: const BorderSide(width: 1, color: AppColors.primary800)),
+    //                     hintText: 'Search',
+    //                     focusedBorder: OutlineInputBorder(
+    //                         borderRadius: BorderRadius.circular(50), borderSide: const BorderSide(width: 1, color: AppColors.primary800)),
+    //                     hintStyle: const TextStyle(color: Colors.grey, fontSize: 18),
+    //                     prefixIcon: const SizedBox(
+    //                       width: 18,
+    //                       child: Icon(
+    //                         Icons.search,
+    //                         color: AppColors.primary800,
+    //                       ),
+    //                     ),
+    //                   ),
+    //                   onChanged: (value) {
+    //                     searchFromFirebase(value);
+    //                     // setState(() {
+    //                     //   name = value;
+    //                     // });
+    //                   },
+    //                 ),
+    //               ),
+    //               SizedBox(
+    //                 height: screenHeight * 0.02,
+    //               ),
+    //               Container(
+    //                 padding: EdgeInsets.only(left: screenWidth * 0.04, right: screenWidth * 0.04),
+    //                 child: Row(
+    //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //                   children: [
+    //                     const Medium20px(text: 'ผลลัพธ์การค้นหา'),
+    //                     InkWell(
+    //                       child: const Icon(
+    //                         Icons.filter_alt_outlined,
+    //                         color: AppColors.tertiary600,
+    //                         size: 30,
+    //                       ),
+    //                       onTap: () {
+    //                         _sortSheet(context);
+    //                       },
+    //                     )
+    //                   ],
+    //                 ),
+    //               ),
+    //               SizedBox(
+    //                 height: screenHeight * 0.02,
+    //               ),
+    //               Padding(
+    //                 padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.038),
+    //                 child: GridView.builder(
+    //                   physics: const NeverScrollableScrollPhysics(),
+    //                   shrinkWrap: true,
+    //                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    //                     crossAxisCount: isPortrait ? 3 : 5,
+    //                     crossAxisSpacing: 12,
+    //                     mainAxisSpacing: 16,
+    //                     mainAxisExtent: isPortrait ? 200 : 250,
+    //                   ),
+    //                   itemCount: documentCount,
+    //                   itemBuilder: (context, index) {
+    //                     // var sheet = snapshot.data?.docs[index];
+    //
+    //                     // return StreamBuilder<DocumentSnapshot>(
+    //                     //   stream: _firestore.collection("users").doc(sheet?["authorId"]).snapshots(),
+    //                     //   builder: (context, userSnapshot) {
+    //                     //     if (!userSnapshot.hasData) {
+    //                     //       return Container();
+    //                     //     } else if (userSnapshot.connectionState == ConnectionState.waiting) {
+    //                     //       return const Center(
+    //                     //         child: CircularProgressIndicator(),
+    //                     //       );
+    //                     //     }
+    //                     //        return Sheet(
+    //                     //   rating: sheet?["rating"],
+    //                     //   sheetCoverImage: sheet?["sheetCoverImage"],
+    //                     //   authorImage: userSnapshot.data?["profileImage"],
+    //                     //   title: sheet?["sheetName"],
+    //                     //   priceSheet: sheet?["price"],
+    //                     //   username: userSnapshot.data?["username"],
+    //                     //   sheetId: sheet?["sid"],
+    //                     // );
+    //                     //   },
+    //                     // );
+    //                   },
+    //                   padding: const EdgeInsets.only(bottom: 8),
+    //                 ),
+    //               ),
+    //             ],
+    //           ),
+    //         ),
+    //       ),
+    //     );
+    //   },
+    // );
   }
 }
 
