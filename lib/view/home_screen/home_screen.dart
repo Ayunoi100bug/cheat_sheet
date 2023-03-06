@@ -42,6 +42,11 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        AutoRouter.of(context).push(FirstLoginRoute());
+                      },
+                      child: Text('ทดสอบหน้าใหม่')),
                   // ElevatedButton(
                   //   onPressed: () {
                   //     showDialog(
