@@ -5,107 +5,93 @@ import '../colors.dart';
 class MyTextFormField extends StatelessWidget {
   final String? hintText;
   final String? helperText;
+  final AutovalidateMode autovalidateMode;
   final FormFieldValidator<String> validator;
-  final FormFieldSetter<String> onSaved;
+  final FormFieldSetter<String>? onSaved;
+  final FormFieldSetter<String>? onChanged;
   final TextInputType? keyboardType;
+  final TextEditingController? controller;
+  final String? initialValue;
   final bool obscureText;
+  final bool enabled;
+  final int maxLine;
+  final int minLine;
+  final double fontSize;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
 
   MyTextFormField({
     super.key,
     this.hintText,
     this.helperText,
+    required this.autovalidateMode,
     required this.validator,
-    required this.onSaved,
+    this.onSaved,
+    this.onChanged,
     this.keyboardType = TextInputType.text,
+    this.controller,
+    this.initialValue,
     this.obscureText = false,
+    this.enabled = true,
+    this.maxLine = 1,
+    this.minLine = 1,
+    this.fontSize = 14,
+    this.prefixIcon,
+    this.suffixIcon,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       decoration: InputDecoration(
+        prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
         enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-              width: 1, color: AppColors.black800, style: BorderStyle.solid),
+          borderSide: BorderSide(width: 1, color: AppColors.black800, style: BorderStyle.solid),
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
         ),
         focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-              width: 1, color: AppColors.black800, style: BorderStyle.solid),
+          borderSide: BorderSide(width: 1, color: AppColors.black800, style: BorderStyle.solid),
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
         ),
-        contentPadding: EdgeInsets.fromLTRB(20.0, 12.0, 20.0, 12.0),
+        disabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(width: 1, color: AppColors.black800, style: BorderStyle.solid),
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
+          ),
+        ),
+        focusedErrorBorder: const OutlineInputBorder(
+          borderSide: BorderSide(width: 1, color: AppColors.error500, style: BorderStyle.solid),
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
+          ),
+        ),
+        errorBorder: const OutlineInputBorder(
+          borderSide: BorderSide(width: 1, color: AppColors.error500, style: BorderStyle.solid),
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
+          ),
+        ),
         hintText: hintText,
         helperText: helperText,
         isDense: true,
       ),
-      style: TextStyle(fontSize: 14),
+      style: TextStyle(fontSize: fontSize),
       validator: validator,
+      autovalidateMode: autovalidateMode,
       keyboardType: keyboardType,
+      initialValue: initialValue,
       obscureText: obscureText,
+      enabled: enabled,
+      controller: controller,
       onSaved: onSaved,
-    );
-  }
-}
-
-class MyTextFormFieldLarge extends StatelessWidget {
-  final String? hintText;
-  final String? helperText;
-  final FormFieldValidator<String> validator;
-  final FormFieldSetter<String> onSaved;
-  final TextInputType? keyboardType;
-  final bool obscureText;
-
-  MyTextFormFieldLarge({
-    super.key,
-    this.hintText,
-    this.helperText,
-    required this.validator,
-    required this.onSaved,
-    this.keyboardType = TextInputType.text,
-    this.obscureText = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
-    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    var isLandScape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
-
-    return TextFormField(
-      decoration: InputDecoration(
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-              width: 1, color: AppColors.black800, style: BorderStyle.solid),
-          borderRadius: BorderRadius.all(
-            Radius.circular(10),
-          ),
-        ),
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-              width: 1, color: AppColors.black800, style: BorderStyle.solid),
-          borderRadius: BorderRadius.all(
-            Radius.circular(10),
-          ),
-        ),
-        contentPadding: EdgeInsets.all(
-            isPortrait ? screenWidth * 0.12 : screenWidth * 0.05),
-        hintText: hintText,
-        helperText: helperText,
-        isDense: true,
-      ),
-      style: TextStyle(fontSize: 14),
-      validator: validator,
-      keyboardType: keyboardType,
-      obscureText: obscureText,
-      onSaved: onSaved,
-      maxLines: null,
+      onChanged: onChanged,
+      maxLines: maxLine,
+      minLines: minLine,
     );
   }
 }

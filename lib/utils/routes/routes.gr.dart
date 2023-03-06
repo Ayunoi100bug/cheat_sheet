@@ -11,96 +11,142 @@
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:io' as _i23;
+import 'dart:ui' as _i37;
 
-import 'package:auto_route/auto_route.dart' as _i21;
-import 'package:auto_route/empty_router_widgets.dart' as _i4;
-import 'package:flutter/material.dart' as _i22;
+import 'package:auto_route/auto_route.dart' as _i35;
+import 'package:auto_route/empty_router_widgets.dart' as _i5;
+import 'package:flutter/material.dart' as _i36;
+import 'package:painter/painter.dart' as _i38;
+import 'package:pdf_render/pdf_render.dart' as _i39;
 
-import '../../view/activity_screen/activity_screen.dart' as _i14;
-import '../../view/create_sheet_screen/create_detail_sheet.dart' as _i16;
-import '../../view/create_sheet_screen/import_sheet_screen.dart' as _i15;
-import '../../view/create_sheet_screen/view_import_sheet.dart' as _i17;
-import '../../view/home_screen/ask_question.dart' as _i9;
-import '../../view/home_screen/create_question.dart' as _i10;
-import '../../view/home_screen/create_review.dart' as _i13;
-import '../../view/home_screen/detail_question.dart' as _i11;
-import '../../view/home_screen/detail_sheet.dart' as _i7;
-import '../../view/home_screen/home_screen.dart' as _i5;
-import '../../view/home_screen/read_sheet.dart' as _i8;
-import '../../view/home_screen/review_sheet.dart' as _i12;
+import '../../res/components/tools_bar/color_picker_page.dart' as _i14;
+import '../../view/activity_screen/activity_screen.dart' as _i20;
+import '../../view/create_sheet_screen/create_detail_sheet.dart' as _i22;
+import '../../view/create_sheet_screen/import_sheet_screen.dart' as _i21;
+import '../../view/create_sheet_screen/pick_demo_pages.dart' as _i24;
+import '../../view/create_sheet_screen/view_import_sheet.dart' as _i23;
+import '../../view/home_screen/create_review.dart' as _i17;
+import '../../view/home_screen/detail_sheet.dart' as _i10;
+import '../../view/home_screen/edit_sheet.dart' as _i18;
+import '../../view/home_screen/home_screen.dart' as _i7;
+import '../../view/home_screen/question/ask_question.dart' as _i12;
+import '../../view/home_screen/question/create_question.dart' as _i13;
+import '../../view/home_screen/question/detail_question.dart' as _i15;
+import '../../view/home_screen/question/edit_demo.dart' as _i19;
+import '../../view/home_screen/read_sheet.dart' as _i11;
+import '../../view/home_screen/review_sheet.dart' as _i16;
+import '../../view/home_screen/searching_sheet.dart' as _i9;
 import '../../view/login.dart' as _i2;
 import '../../view/main_screen.dart' as _i1;
-import '../../view/profile_screen/edit_profile.dart' as _i20;
-import '../../view/profile_screen/profile_screen.dart' as _i19;
+import '../../view/profile_screen/edit_profile.dart' as _i28;
+import '../../view/profile_screen/profile_screen.dart' as _i27;
 import '../../view/register.dart' as _i3;
-import '../../view/sheet_list_screen/sheet_list_screen.dart' as _i18;
-import '../../view/test_ui_book.dart' as _i6;
+import '../../view/sheet_list_screen/sheet_list_detail.dart' as _i26;
+import '../../view/sheet_list_screen/sheet_list_screen.dart' as _i25;
+import '../../view/side_bar_menu/bank_account/add_card.dart' as _i34;
+import '../../view/side_bar_menu/bank_account/add_payment_methods.dart' as _i33;
+import '../../view/side_bar_menu/bank_account/bank_account.dart' as _i32;
+import '../../view/side_bar_menu/my_account/change_email.dart' as _i30;
+import '../../view/side_bar_menu/my_account/change_password.dart' as _i31;
+import '../../view/side_bar_menu/my_account/my_account.dart' as _i29;
+import '../../view/side_bar_menu/notification_setting.dart' as _i4;
+import '../../view/side_bar_menu/top_up.dart' as _i6;
+import '../../view/test_ui_book.dart' as _i8;
 
-class AppRouter extends _i21.RootStackRouter {
-  AppRouter([_i22.GlobalKey<_i22.NavigatorState>? navigatorKey])
+class AppRouter extends _i35.RootStackRouter {
+  AppRouter([_i36.GlobalKey<_i36.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
-  final Map<String, _i21.PageFactory> pagesMap = {
+  final Map<String, _i35.PageFactory> pagesMap = {
     MainScreen.name: (routeData) {
-      return _i21.MaterialPageX<dynamic>(
+      return _i35.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i1.MainScreen(),
       );
     },
     LoginRoute.name: (routeData) {
-      return _i21.MaterialPageX<dynamic>(
+      return _i35.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i2.LoginScreen(),
       );
     },
     RegisterRoute.name: (routeData) {
-      return _i21.MaterialPageX<dynamic>(
+      return _i35.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i3.RegisterScreen(),
       );
     },
-    HomeRoute.name: (routeData) {
-      return _i21.MaterialPageX<dynamic>(
+    NotificationSettingRoute.name: (routeData) {
+      return _i35.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i4.EmptyRouterPage(),
+        child: const _i4.NotificationSetting(),
+      );
+    },
+    MyAccountRoute.name: (routeData) {
+      return _i35.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i5.EmptyRouterPage(),
+      );
+    },
+    TopUpRoute.name: (routeData) {
+      return _i35.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i6.TopUp(),
+      );
+    },
+    BankAccountRoute.name: (routeData) {
+      return _i35.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i5.EmptyRouterPage(),
+      );
+    },
+    HomeRoute.name: (routeData) {
+      return _i35.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i5.EmptyRouterPage(),
       );
     },
     ActivityRoute.name: (routeData) {
-      return _i21.MaterialPageX<dynamic>(
+      return _i35.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i4.EmptyRouterPage(),
+        child: const _i5.EmptyRouterPage(),
       );
     },
     CreateSheetRoute.name: (routeData) {
-      return _i21.MaterialPageX<dynamic>(
+      return _i35.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i4.EmptyRouterPage(),
+        child: const _i5.EmptyRouterPage(),
       );
     },
     SheetListRoute.name: (routeData) {
-      return _i21.MaterialPageX<dynamic>(
+      return _i35.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i4.EmptyRouterPage(),
+        child: const _i5.EmptyRouterPage(),
       );
     },
     ProfileRoute.name: (routeData) {
-      return _i21.MaterialPageX<dynamic>(
+      return _i35.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i4.EmptyRouterPage(),
+        child: const _i5.EmptyRouterPage(),
       );
     },
     HomeScreen.name: (routeData) {
-      return _i21.MaterialPageX<dynamic>(
+      return _i35.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i5.HomeScreen(),
+        child: const _i7.HomeScreen(),
       );
     },
     TestUIRoute.name: (routeData) {
-      return _i21.MaterialPageX<dynamic>(
+      return _i35.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i6.TestUIPage(),
+        child: const _i8.TestUIPage(),
+      );
+    },
+    SearchingSheetRoute.name: (routeData) {
+      return _i35.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i9.SearchingSheet(),
       );
     },
     DetailSheetRoute.name: (routeData) {
@@ -108,9 +154,9 @@ class AppRouter extends _i21.RootStackRouter {
       final args = routeData.argsAs<DetailSheetRouteArgs>(
           orElse: () =>
               DetailSheetRouteArgs(sheetId: pathParams.getString('sheetId')));
-      return _i21.MaterialPageX<dynamic>(
+      return _i35.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i7.DetailSheet(
+        child: _i10.DetailSheet(
           key: args.key,
           sheetId: args.sheetId,
         ),
@@ -118,47 +164,57 @@ class AppRouter extends _i21.RootStackRouter {
     },
     ReadSheetRoute.name: (routeData) {
       final args = routeData.argsAs<ReadSheetRouteArgs>();
-      return _i21.MaterialPageX<dynamic>(
+      return _i35.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i8.ReadSheet(
+        child: _i11.ReadSheet(
           key: args.key,
           sheetId: args.sheetId,
-          file: args.file,
+          sheetTitle: args.sheetTitle,
         ),
       );
     },
     AskQuestionRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<AskQuestionRouteArgs>(
-          orElse: () =>
-              AskQuestionRouteArgs(sheetId: pathParams.getString('sheetId')));
-      return _i21.MaterialPageX<dynamic>(
+      final args = routeData.argsAs<AskQuestionRouteArgs>();
+      return _i35.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i9.AskQuestion(
+        child: _i12.AskQuestion(
           key: args.key,
           sheetId: args.sheetId,
+          askingPage: args.askingPage,
         ),
       );
     },
     CreateQuestionRoute.name: (routeData) {
-      return _i21.MaterialPageX<dynamic>(
+      final args = routeData.argsAs<CreateQuestionRouteArgs>();
+      return _i35.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i10.CreateQuestion(),
+        child: _i13.CreateQuestion(
+          key: args.key,
+          sheetId: args.sheetId,
+          askingPage: args.askingPage,
+        ),
+      );
+    },
+    PickColorRoute.name: (routeData) {
+      final args = routeData.argsAs<PickColorRouteArgs>();
+      return _i35.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _i14.ColorPickerPage(
+          key: args.key,
+          pickedColor: args.pickedColor,
+          controller: args.controller,
+        ),
       );
     },
     DetailQuestionRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<DetailQuestionRouteArgs>(
-          orElse: () => DetailQuestionRouteArgs(
-                sheetId: pathParams.getString('sheetId'),
-                questionId: pathParams.getString('questionId'),
-              ));
-      return _i21.MaterialPageX<dynamic>(
+      final args = routeData.argsAs<DetailQuestionRouteArgs>();
+      return _i35.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i11.DetailQuestion(
+        child: _i15.DetailQuestion(
           key: args.key,
           sheetId: args.sheetId,
           questionId: args.questionId,
+          askingPage: args.askingPage,
         ),
       );
     },
@@ -167,9 +223,9 @@ class AppRouter extends _i21.RootStackRouter {
       final args = routeData.argsAs<ReviewSheetRouteArgs>(
           orElse: () =>
               ReviewSheetRouteArgs(sheetId: pathParams.getString('sheetId')));
-      return _i21.MaterialPageX<dynamic>(
+      return _i35.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i12.ReviewSheet(
+        child: _i16.ReviewSheet(
           key: args.key,
           sheetId: args.sheetId,
         ),
@@ -180,52 +236,102 @@ class AppRouter extends _i21.RootStackRouter {
       final args = routeData.argsAs<CreateReviewRouteArgs>(
           orElse: () =>
               CreateReviewRouteArgs(sheetId: pathParams.getString('sheetId')));
-      return _i21.MaterialPageX<dynamic>(
+      return _i35.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i13.CreateReview(
+        child: _i17.CreateReview(
+          key: args.key,
+          sheetId: args.sheetId,
+        ),
+      );
+    },
+    EditSheetRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<EditSheetRouteArgs>(
+          orElse: () =>
+              EditSheetRouteArgs(sheetId: pathParams.getString('sheetId')));
+      return _i35.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _i18.EditSheet(
+          key: args.key,
+          sheetId: args.sheetId,
+        ),
+      );
+    },
+    EditDemoRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<EditDemoRouteArgs>(
+          orElse: () =>
+              EditDemoRouteArgs(sheetId: pathParams.getString('sheetId')));
+      return _i35.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _i19.EditDemo(
           key: args.key,
           sheetId: args.sheetId,
         ),
       );
     },
     ActivityScreen.name: (routeData) {
-      return _i21.MaterialPageX<dynamic>(
+      return _i35.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i14.ActivityScreen(),
+        child: const _i20.ActivityScreen(),
       );
     },
     CreateSheetScreen.name: (routeData) {
-      return _i21.MaterialPageX<dynamic>(
+      return _i35.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i15.CreateSheetScreen(),
+        child: const _i21.CreateSheetScreen(),
       );
     },
     CreateDetailSheetRoute.name: (routeData) {
-      return _i21.MaterialPageX<dynamic>(
+      final args = routeData.argsAs<CreateDetailSheetRouteArgs>();
+      return _i35.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i16.CreateDetailSheet(),
+        child: _i22.CreateDetailSheet(
+          key: args.key,
+          demoPages: args.demoPages,
+        ),
       );
     },
     ViewImportSheetRoute.name: (routeData) {
-      final args = routeData.argsAs<ViewImportSheetRouteArgs>();
-      return _i21.MaterialPageX<dynamic>(
+      return _i35.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i17.ViewImportSheet(
+        child: const _i23.ViewImportSheet(),
+      );
+    },
+    PickDemoPagesRoute.name: (routeData) {
+      final args = routeData.argsAs<PickDemoPagesRouteArgs>();
+      return _i35.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _i24.PickDemoPages(
           key: args.key,
-          file: args.file,
+          doc: args.doc,
+          pagesNumber: args.pagesNumber,
         ),
       );
     },
     SheetListScreen.name: (routeData) {
-      return _i21.MaterialPageX<dynamic>(
+      return _i35.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i18.SheetListScreen(),
+        child: const _i25.SheetListScreen(),
+      );
+    },
+    SheetListDetailRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<SheetListDetailRouteArgs>(
+          orElse: () => SheetListDetailRouteArgs(
+              sheetId: pathParams.getString('sheetId')));
+      return _i35.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _i26.SheetListDetail(
+          key: args.key,
+          sheetId: args.sheetId,
+        ),
       );
     },
     ProfileScreen.name: (routeData) {
-      return _i21.MaterialPageX<dynamic>(
+      return _i35.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i19.ProfileScreen(),
+        child: const _i27.ProfileScreen(),
       );
     },
     EditProfileRoute.name: (routeData) {
@@ -233,131 +339,198 @@ class AppRouter extends _i21.RootStackRouter {
       final args = routeData.argsAs<EditProfileRouteArgs>(
           orElse: () =>
               EditProfileRouteArgs(userId: pathParams.getString('userId')));
-      return _i21.MaterialPageX<dynamic>(
+      return _i35.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i20.EditProfile(
+        child: _i28.EditProfile(
           key: args.key,
           userId: args.userId,
         ),
       );
     },
+    MyAccount.name: (routeData) {
+      return _i35.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i29.MyAccount(),
+      );
+    },
+    ChangeEmailRoute.name: (routeData) {
+      return _i35.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i30.ChangeEmail(),
+      );
+    },
+    ChangePasswordRoute.name: (routeData) {
+      return _i35.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i31.ChangePassword(),
+      );
+    },
+    BankAccount.name: (routeData) {
+      return _i35.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i32.BankAccount(),
+      );
+    },
+    AddPaymentMethodsRoute.name: (routeData) {
+      return _i35.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i33.AddPaymentMethods(),
+      );
+    },
+    AddCardRoute.name: (routeData) {
+      return _i35.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i34.AddCard(),
+      );
+    },
   };
 
   @override
-  List<_i21.RouteConfig> get routes => [
-        _i21.RouteConfig(
+  List<_i35.RouteConfig> get routes => [
+        _i35.RouteConfig(
           MainScreen.name,
           path: '/',
           children: [
-            _i21.RouteConfig(
+            _i35.RouteConfig(
               HomeRoute.name,
               path: 'home',
               parent: MainScreen.name,
               children: [
-                _i21.RouteConfig(
+                _i35.RouteConfig(
                   HomeScreen.name,
                   path: '',
                   parent: HomeRoute.name,
                 ),
-                _i21.RouteConfig(
+                _i35.RouteConfig(
                   TestUIRoute.name,
                   path: 'test_ui',
                   parent: HomeRoute.name,
                 ),
-                _i21.RouteConfig(
+                _i35.RouteConfig(
+                  SearchingSheetRoute.name,
+                  path: 'searching',
+                  parent: HomeRoute.name,
+                ),
+                _i35.RouteConfig(
                   DetailSheetRoute.name,
                   path: ':sheetId',
                   parent: HomeRoute.name,
                 ),
-                _i21.RouteConfig(
+                _i35.RouteConfig(
                   ReadSheetRoute.name,
                   path: ':sheetId/read_sheet',
                   parent: HomeRoute.name,
                 ),
-                _i21.RouteConfig(
+                _i35.RouteConfig(
                   AskQuestionRoute.name,
                   path: ':sheetId/read_sheet/ask_question',
                   parent: HomeRoute.name,
                 ),
-                _i21.RouteConfig(
+                _i35.RouteConfig(
                   CreateQuestionRoute.name,
                   path: ':sheetId/read_sheet/ask_question/create_question',
                   parent: HomeRoute.name,
                 ),
-                _i21.RouteConfig(
+                _i35.RouteConfig(
+                  PickColorRoute.name,
+                  path:
+                      ':sheetId/read_sheet/ask_question/create_question/pick_color',
+                  parent: HomeRoute.name,
+                ),
+                _i35.RouteConfig(
                   DetailQuestionRoute.name,
                   path: ':sheetId/read_sheet/ask_question/:questionId',
                   parent: HomeRoute.name,
                 ),
-                _i21.RouteConfig(
+                _i35.RouteConfig(
                   ReviewSheetRoute.name,
                   path: ':sheetId/review_sheet',
                   parent: HomeRoute.name,
                 ),
-                _i21.RouteConfig(
+                _i35.RouteConfig(
                   CreateReviewRoute.name,
                   path: ':sheetId/create_review',
                   parent: HomeRoute.name,
                 ),
+                _i35.RouteConfig(
+                  EditSheetRoute.name,
+                  path: ':sheetId/edit_sheet',
+                  parent: HomeRoute.name,
+                ),
+                _i35.RouteConfig(
+                  EditDemoRoute.name,
+                  path: ':sheetId/edit_sheet/edit_demo',
+                  parent: HomeRoute.name,
+                ),
               ],
             ),
-            _i21.RouteConfig(
+            _i35.RouteConfig(
               ActivityRoute.name,
               path: 'activity',
               parent: MainScreen.name,
               children: [
-                _i21.RouteConfig(
+                _i35.RouteConfig(
                   ActivityScreen.name,
                   path: '',
                   parent: ActivityRoute.name,
                 )
               ],
             ),
-            _i21.RouteConfig(
+            _i35.RouteConfig(
               CreateSheetRoute.name,
               path: 'create_sheet',
               parent: MainScreen.name,
               children: [
-                _i21.RouteConfig(
+                _i35.RouteConfig(
                   CreateSheetScreen.name,
                   path: '',
                   parent: CreateSheetRoute.name,
                 ),
-                _i21.RouteConfig(
+                _i35.RouteConfig(
                   CreateDetailSheetRoute.name,
                   path: 'create_detail_sheet',
                   parent: CreateSheetRoute.name,
                 ),
-                _i21.RouteConfig(
+                _i35.RouteConfig(
                   ViewImportSheetRoute.name,
                   path: 'view_import_sheet',
                   parent: CreateSheetRoute.name,
                 ),
+                _i35.RouteConfig(
+                  PickDemoPagesRoute.name,
+                  path: 'pick_demo_pages',
+                  parent: CreateSheetRoute.name,
+                ),
               ],
             ),
-            _i21.RouteConfig(
+            _i35.RouteConfig(
               SheetListRoute.name,
               path: 'sheet_list',
               parent: MainScreen.name,
               children: [
-                _i21.RouteConfig(
+                _i35.RouteConfig(
                   SheetListScreen.name,
                   path: '',
                   parent: SheetListRoute.name,
-                )
+                ),
+                _i35.RouteConfig(
+                  SheetListDetailRoute.name,
+                  path: ':sheetId',
+                  parent: SheetListRoute.name,
+                ),
               ],
             ),
-            _i21.RouteConfig(
+            _i35.RouteConfig(
               ProfileRoute.name,
               path: 'profile',
               parent: MainScreen.name,
               children: [
-                _i21.RouteConfig(
+                _i35.RouteConfig(
                   ProfileScreen.name,
                   path: '',
                   parent: ProfileRoute.name,
                 ),
-                _i21.RouteConfig(
+                _i35.RouteConfig(
                   EditProfileRoute.name,
                   path: ':userId',
                   parent: ProfileRoute.name,
@@ -366,21 +539,71 @@ class AppRouter extends _i21.RootStackRouter {
             ),
           ],
         ),
-        _i21.RouteConfig(
+        _i35.RouteConfig(
           LoginRoute.name,
           path: '/login',
         ),
-        _i21.RouteConfig(
+        _i35.RouteConfig(
           RegisterRoute.name,
           path: '/register',
+        ),
+        _i35.RouteConfig(
+          NotificationSettingRoute.name,
+          path: '/notification_setting',
+        ),
+        _i35.RouteConfig(
+          MyAccountRoute.name,
+          path: '/my_account',
+          children: [
+            _i35.RouteConfig(
+              MyAccount.name,
+              path: '',
+              parent: MyAccountRoute.name,
+            ),
+            _i35.RouteConfig(
+              ChangeEmailRoute.name,
+              path: 'change_email',
+              parent: MyAccountRoute.name,
+            ),
+            _i35.RouteConfig(
+              ChangePasswordRoute.name,
+              path: 'change_password',
+              parent: MyAccountRoute.name,
+            ),
+          ],
+        ),
+        _i35.RouteConfig(
+          TopUpRoute.name,
+          path: '/top_up',
+        ),
+        _i35.RouteConfig(
+          BankAccountRoute.name,
+          path: '/bank_account',
+          children: [
+            _i35.RouteConfig(
+              BankAccount.name,
+              path: '',
+              parent: BankAccountRoute.name,
+            ),
+            _i35.RouteConfig(
+              AddPaymentMethodsRoute.name,
+              path: 'add_payment_methods',
+              parent: BankAccountRoute.name,
+            ),
+            _i35.RouteConfig(
+              AddCardRoute.name,
+              path: 'add_payment_methods/add_card',
+              parent: BankAccountRoute.name,
+            ),
+          ],
         ),
       ];
 }
 
 /// generated route for
 /// [_i1.MainScreen]
-class MainScreen extends _i21.PageRouteInfo<void> {
-  const MainScreen({List<_i21.PageRouteInfo>? children})
+class MainScreen extends _i35.PageRouteInfo<void> {
+  const MainScreen({List<_i35.PageRouteInfo>? children})
       : super(
           MainScreen.name,
           path: '/',
@@ -392,7 +615,7 @@ class MainScreen extends _i21.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.LoginScreen]
-class LoginRoute extends _i21.PageRouteInfo<void> {
+class LoginRoute extends _i35.PageRouteInfo<void> {
   const LoginRoute()
       : super(
           LoginRoute.name,
@@ -404,7 +627,7 @@ class LoginRoute extends _i21.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i3.RegisterScreen]
-class RegisterRoute extends _i21.PageRouteInfo<void> {
+class RegisterRoute extends _i35.PageRouteInfo<void> {
   const RegisterRoute()
       : super(
           RegisterRoute.name,
@@ -415,9 +638,59 @@ class RegisterRoute extends _i21.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i4.EmptyRouterPage]
-class HomeRoute extends _i21.PageRouteInfo<void> {
-  const HomeRoute({List<_i21.PageRouteInfo>? children})
+/// [_i4.NotificationSetting]
+class NotificationSettingRoute extends _i35.PageRouteInfo<void> {
+  const NotificationSettingRoute()
+      : super(
+          NotificationSettingRoute.name,
+          path: '/notification_setting',
+        );
+
+  static const String name = 'NotificationSettingRoute';
+}
+
+/// generated route for
+/// [_i5.EmptyRouterPage]
+class MyAccountRoute extends _i35.PageRouteInfo<void> {
+  const MyAccountRoute({List<_i35.PageRouteInfo>? children})
+      : super(
+          MyAccountRoute.name,
+          path: '/my_account',
+          initialChildren: children,
+        );
+
+  static const String name = 'MyAccountRoute';
+}
+
+/// generated route for
+/// [_i6.TopUp]
+class TopUpRoute extends _i35.PageRouteInfo<void> {
+  const TopUpRoute()
+      : super(
+          TopUpRoute.name,
+          path: '/top_up',
+        );
+
+  static const String name = 'TopUpRoute';
+}
+
+/// generated route for
+/// [_i5.EmptyRouterPage]
+class BankAccountRoute extends _i35.PageRouteInfo<void> {
+  const BankAccountRoute({List<_i35.PageRouteInfo>? children})
+      : super(
+          BankAccountRoute.name,
+          path: '/bank_account',
+          initialChildren: children,
+        );
+
+  static const String name = 'BankAccountRoute';
+}
+
+/// generated route for
+/// [_i5.EmptyRouterPage]
+class HomeRoute extends _i35.PageRouteInfo<void> {
+  const HomeRoute({List<_i35.PageRouteInfo>? children})
       : super(
           HomeRoute.name,
           path: 'home',
@@ -428,9 +701,9 @@ class HomeRoute extends _i21.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i4.EmptyRouterPage]
-class ActivityRoute extends _i21.PageRouteInfo<void> {
-  const ActivityRoute({List<_i21.PageRouteInfo>? children})
+/// [_i5.EmptyRouterPage]
+class ActivityRoute extends _i35.PageRouteInfo<void> {
+  const ActivityRoute({List<_i35.PageRouteInfo>? children})
       : super(
           ActivityRoute.name,
           path: 'activity',
@@ -441,9 +714,9 @@ class ActivityRoute extends _i21.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i4.EmptyRouterPage]
-class CreateSheetRoute extends _i21.PageRouteInfo<void> {
-  const CreateSheetRoute({List<_i21.PageRouteInfo>? children})
+/// [_i5.EmptyRouterPage]
+class CreateSheetRoute extends _i35.PageRouteInfo<void> {
+  const CreateSheetRoute({List<_i35.PageRouteInfo>? children})
       : super(
           CreateSheetRoute.name,
           path: 'create_sheet',
@@ -454,9 +727,9 @@ class CreateSheetRoute extends _i21.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i4.EmptyRouterPage]
-class SheetListRoute extends _i21.PageRouteInfo<void> {
-  const SheetListRoute({List<_i21.PageRouteInfo>? children})
+/// [_i5.EmptyRouterPage]
+class SheetListRoute extends _i35.PageRouteInfo<void> {
+  const SheetListRoute({List<_i35.PageRouteInfo>? children})
       : super(
           SheetListRoute.name,
           path: 'sheet_list',
@@ -467,9 +740,9 @@ class SheetListRoute extends _i21.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i4.EmptyRouterPage]
-class ProfileRoute extends _i21.PageRouteInfo<void> {
-  const ProfileRoute({List<_i21.PageRouteInfo>? children})
+/// [_i5.EmptyRouterPage]
+class ProfileRoute extends _i35.PageRouteInfo<void> {
+  const ProfileRoute({List<_i35.PageRouteInfo>? children})
       : super(
           ProfileRoute.name,
           path: 'profile',
@@ -480,8 +753,8 @@ class ProfileRoute extends _i21.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i5.HomeScreen]
-class HomeScreen extends _i21.PageRouteInfo<void> {
+/// [_i7.HomeScreen]
+class HomeScreen extends _i35.PageRouteInfo<void> {
   const HomeScreen()
       : super(
           HomeScreen.name,
@@ -492,8 +765,8 @@ class HomeScreen extends _i21.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i6.TestUIPage]
-class TestUIRoute extends _i21.PageRouteInfo<void> {
+/// [_i8.TestUIPage]
+class TestUIRoute extends _i35.PageRouteInfo<void> {
   const TestUIRoute()
       : super(
           TestUIRoute.name,
@@ -504,10 +777,22 @@ class TestUIRoute extends _i21.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i7.DetailSheet]
-class DetailSheetRoute extends _i21.PageRouteInfo<DetailSheetRouteArgs> {
+/// [_i9.SearchingSheet]
+class SearchingSheetRoute extends _i35.PageRouteInfo<void> {
+  const SearchingSheetRoute()
+      : super(
+          SearchingSheetRoute.name,
+          path: 'searching',
+        );
+
+  static const String name = 'SearchingSheetRoute';
+}
+
+/// generated route for
+/// [_i10.DetailSheet]
+class DetailSheetRoute extends _i35.PageRouteInfo<DetailSheetRouteArgs> {
   DetailSheetRoute({
-    _i22.Key? key,
+    _i36.Key? key,
     required String sheetId,
   }) : super(
           DetailSheetRoute.name,
@@ -528,7 +813,7 @@ class DetailSheetRouteArgs {
     required this.sheetId,
   });
 
-  final _i22.Key? key;
+  final _i36.Key? key;
 
   final String sheetId;
 
@@ -539,19 +824,19 @@ class DetailSheetRouteArgs {
 }
 
 /// generated route for
-/// [_i8.ReadSheet]
-class ReadSheetRoute extends _i21.PageRouteInfo<ReadSheetRouteArgs> {
+/// [_i11.ReadSheet]
+class ReadSheetRoute extends _i35.PageRouteInfo<ReadSheetRouteArgs> {
   ReadSheetRoute({
-    _i22.Key? key,
+    _i36.Key? key,
     required String sheetId,
-    required _i23.File file,
+    required String sheetTitle,
   }) : super(
           ReadSheetRoute.name,
           path: ':sheetId/read_sheet',
           args: ReadSheetRouteArgs(
             key: key,
             sheetId: sheetId,
-            file: file,
+            sheetTitle: sheetTitle,
           ),
           rawPathParams: {'sheetId': sheetId},
         );
@@ -563,33 +848,35 @@ class ReadSheetRouteArgs {
   const ReadSheetRouteArgs({
     this.key,
     required this.sheetId,
-    required this.file,
+    required this.sheetTitle,
   });
 
-  final _i22.Key? key;
+  final _i36.Key? key;
 
   final String sheetId;
 
-  final _i23.File file;
+  final String sheetTitle;
 
   @override
   String toString() {
-    return 'ReadSheetRouteArgs{key: $key, sheetId: $sheetId, file: $file}';
+    return 'ReadSheetRouteArgs{key: $key, sheetId: $sheetId, sheetTitle: $sheetTitle}';
   }
 }
 
 /// generated route for
-/// [_i9.AskQuestion]
-class AskQuestionRoute extends _i21.PageRouteInfo<AskQuestionRouteArgs> {
+/// [_i12.AskQuestion]
+class AskQuestionRoute extends _i35.PageRouteInfo<AskQuestionRouteArgs> {
   AskQuestionRoute({
-    _i22.Key? key,
+    _i36.Key? key,
     required String sheetId,
+    required int askingPage,
   }) : super(
           AskQuestionRoute.name,
           path: ':sheetId/read_sheet/ask_question',
           args: AskQuestionRouteArgs(
             key: key,
             sheetId: sheetId,
+            askingPage: askingPage,
           ),
           rawPathParams: {'sheetId': sheetId},
         );
@@ -601,37 +888,107 @@ class AskQuestionRouteArgs {
   const AskQuestionRouteArgs({
     this.key,
     required this.sheetId,
+    required this.askingPage,
   });
 
-  final _i22.Key? key;
+  final _i36.Key? key;
 
   final String sheetId;
 
+  final int askingPage;
+
   @override
   String toString() {
-    return 'AskQuestionRouteArgs{key: $key, sheetId: $sheetId}';
+    return 'AskQuestionRouteArgs{key: $key, sheetId: $sheetId, askingPage: $askingPage}';
   }
 }
 
 /// generated route for
-/// [_i10.CreateQuestion]
-class CreateQuestionRoute extends _i21.PageRouteInfo<void> {
-  const CreateQuestionRoute()
-      : super(
+/// [_i13.CreateQuestion]
+class CreateQuestionRoute extends _i35.PageRouteInfo<CreateQuestionRouteArgs> {
+  CreateQuestionRoute({
+    _i36.Key? key,
+    required String sheetId,
+    required int askingPage,
+  }) : super(
           CreateQuestionRoute.name,
           path: ':sheetId/read_sheet/ask_question/create_question',
+          args: CreateQuestionRouteArgs(
+            key: key,
+            sheetId: sheetId,
+            askingPage: askingPage,
+          ),
         );
 
   static const String name = 'CreateQuestionRoute';
 }
 
+class CreateQuestionRouteArgs {
+  const CreateQuestionRouteArgs({
+    this.key,
+    required this.sheetId,
+    required this.askingPage,
+  });
+
+  final _i36.Key? key;
+
+  final String sheetId;
+
+  final int askingPage;
+
+  @override
+  String toString() {
+    return 'CreateQuestionRouteArgs{key: $key, sheetId: $sheetId, askingPage: $askingPage}';
+  }
+}
+
 /// generated route for
-/// [_i11.DetailQuestion]
-class DetailQuestionRoute extends _i21.PageRouteInfo<DetailQuestionRouteArgs> {
+/// [_i14.ColorPickerPage]
+class PickColorRoute extends _i35.PageRouteInfo<PickColorRouteArgs> {
+  PickColorRoute({
+    _i36.Key? key,
+    required _i37.Color pickedColor,
+    required _i38.PainterController controller,
+  }) : super(
+          PickColorRoute.name,
+          path: ':sheetId/read_sheet/ask_question/create_question/pick_color',
+          args: PickColorRouteArgs(
+            key: key,
+            pickedColor: pickedColor,
+            controller: controller,
+          ),
+        );
+
+  static const String name = 'PickColorRoute';
+}
+
+class PickColorRouteArgs {
+  const PickColorRouteArgs({
+    this.key,
+    required this.pickedColor,
+    required this.controller,
+  });
+
+  final _i36.Key? key;
+
+  final _i37.Color pickedColor;
+
+  final _i38.PainterController controller;
+
+  @override
+  String toString() {
+    return 'PickColorRouteArgs{key: $key, pickedColor: $pickedColor, controller: $controller}';
+  }
+}
+
+/// generated route for
+/// [_i15.DetailQuestion]
+class DetailQuestionRoute extends _i35.PageRouteInfo<DetailQuestionRouteArgs> {
   DetailQuestionRoute({
-    _i22.Key? key,
+    _i36.Key? key,
     required String sheetId,
     required String questionId,
+    required int askingPage,
   }) : super(
           DetailQuestionRoute.name,
           path: ':sheetId/read_sheet/ask_question/:questionId',
@@ -639,6 +996,7 @@ class DetailQuestionRoute extends _i21.PageRouteInfo<DetailQuestionRouteArgs> {
             key: key,
             sheetId: sheetId,
             questionId: questionId,
+            askingPage: askingPage,
           ),
           rawPathParams: {
             'sheetId': sheetId,
@@ -654,25 +1012,28 @@ class DetailQuestionRouteArgs {
     this.key,
     required this.sheetId,
     required this.questionId,
+    required this.askingPage,
   });
 
-  final _i22.Key? key;
+  final _i36.Key? key;
 
   final String sheetId;
 
   final String questionId;
 
+  final int askingPage;
+
   @override
   String toString() {
-    return 'DetailQuestionRouteArgs{key: $key, sheetId: $sheetId, questionId: $questionId}';
+    return 'DetailQuestionRouteArgs{key: $key, sheetId: $sheetId, questionId: $questionId, askingPage: $askingPage}';
   }
 }
 
 /// generated route for
-/// [_i12.ReviewSheet]
-class ReviewSheetRoute extends _i21.PageRouteInfo<ReviewSheetRouteArgs> {
+/// [_i16.ReviewSheet]
+class ReviewSheetRoute extends _i35.PageRouteInfo<ReviewSheetRouteArgs> {
   ReviewSheetRoute({
-    _i22.Key? key,
+    _i36.Key? key,
     required String sheetId,
   }) : super(
           ReviewSheetRoute.name,
@@ -693,7 +1054,7 @@ class ReviewSheetRouteArgs {
     required this.sheetId,
   });
 
-  final _i22.Key? key;
+  final _i36.Key? key;
 
   final String sheetId;
 
@@ -704,10 +1065,10 @@ class ReviewSheetRouteArgs {
 }
 
 /// generated route for
-/// [_i13.CreateReview]
-class CreateReviewRoute extends _i21.PageRouteInfo<CreateReviewRouteArgs> {
+/// [_i17.CreateReview]
+class CreateReviewRoute extends _i35.PageRouteInfo<CreateReviewRouteArgs> {
   CreateReviewRoute({
-    _i22.Key? key,
+    _i36.Key? key,
     required String sheetId,
   }) : super(
           CreateReviewRoute.name,
@@ -728,7 +1089,7 @@ class CreateReviewRouteArgs {
     required this.sheetId,
   });
 
-  final _i22.Key? key;
+  final _i36.Key? key;
 
   final String sheetId;
 
@@ -739,8 +1100,78 @@ class CreateReviewRouteArgs {
 }
 
 /// generated route for
-/// [_i14.ActivityScreen]
-class ActivityScreen extends _i21.PageRouteInfo<void> {
+/// [_i18.EditSheet]
+class EditSheetRoute extends _i35.PageRouteInfo<EditSheetRouteArgs> {
+  EditSheetRoute({
+    _i36.Key? key,
+    required String sheetId,
+  }) : super(
+          EditSheetRoute.name,
+          path: ':sheetId/edit_sheet',
+          args: EditSheetRouteArgs(
+            key: key,
+            sheetId: sheetId,
+          ),
+          rawPathParams: {'sheetId': sheetId},
+        );
+
+  static const String name = 'EditSheetRoute';
+}
+
+class EditSheetRouteArgs {
+  const EditSheetRouteArgs({
+    this.key,
+    required this.sheetId,
+  });
+
+  final _i36.Key? key;
+
+  final String sheetId;
+
+  @override
+  String toString() {
+    return 'EditSheetRouteArgs{key: $key, sheetId: $sheetId}';
+  }
+}
+
+/// generated route for
+/// [_i19.EditDemo]
+class EditDemoRoute extends _i35.PageRouteInfo<EditDemoRouteArgs> {
+  EditDemoRoute({
+    _i36.Key? key,
+    required String sheetId,
+  }) : super(
+          EditDemoRoute.name,
+          path: ':sheetId/edit_sheet/edit_demo',
+          args: EditDemoRouteArgs(
+            key: key,
+            sheetId: sheetId,
+          ),
+          rawPathParams: {'sheetId': sheetId},
+        );
+
+  static const String name = 'EditDemoRoute';
+}
+
+class EditDemoRouteArgs {
+  const EditDemoRouteArgs({
+    this.key,
+    required this.sheetId,
+  });
+
+  final _i36.Key? key;
+
+  final String sheetId;
+
+  @override
+  String toString() {
+    return 'EditDemoRouteArgs{key: $key, sheetId: $sheetId}';
+  }
+}
+
+/// generated route for
+/// [_i20.ActivityScreen]
+class ActivityScreen extends _i35.PageRouteInfo<void> {
   const ActivityScreen()
       : super(
           ActivityScreen.name,
@@ -751,8 +1182,8 @@ class ActivityScreen extends _i21.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i15.CreateSheetScreen]
-class CreateSheetScreen extends _i21.PageRouteInfo<void> {
+/// [_i21.CreateSheetScreen]
+class CreateSheetScreen extends _i35.PageRouteInfo<void> {
   const CreateSheetScreen()
       : super(
           CreateSheetScreen.name,
@@ -763,55 +1194,94 @@ class CreateSheetScreen extends _i21.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i16.CreateDetailSheet]
-class CreateDetailSheetRoute extends _i21.PageRouteInfo<void> {
-  const CreateDetailSheetRoute()
-      : super(
+/// [_i22.CreateDetailSheet]
+class CreateDetailSheetRoute
+    extends _i35.PageRouteInfo<CreateDetailSheetRouteArgs> {
+  CreateDetailSheetRoute({
+    _i36.Key? key,
+    required List<int> demoPages,
+  }) : super(
           CreateDetailSheetRoute.name,
           path: 'create_detail_sheet',
+          args: CreateDetailSheetRouteArgs(
+            key: key,
+            demoPages: demoPages,
+          ),
         );
 
   static const String name = 'CreateDetailSheetRoute';
 }
 
+class CreateDetailSheetRouteArgs {
+  const CreateDetailSheetRouteArgs({
+    this.key,
+    required this.demoPages,
+  });
+
+  final _i36.Key? key;
+
+  final List<int> demoPages;
+
+  @override
+  String toString() {
+    return 'CreateDetailSheetRouteArgs{key: $key, demoPages: $demoPages}';
+  }
+}
+
 /// generated route for
-/// [_i17.ViewImportSheet]
-class ViewImportSheetRoute
-    extends _i21.PageRouteInfo<ViewImportSheetRouteArgs> {
-  ViewImportSheetRoute({
-    _i22.Key? key,
-    required _i23.File file,
-  }) : super(
+/// [_i23.ViewImportSheet]
+class ViewImportSheetRoute extends _i35.PageRouteInfo<void> {
+  const ViewImportSheetRoute()
+      : super(
           ViewImportSheetRoute.name,
           path: 'view_import_sheet',
-          args: ViewImportSheetRouteArgs(
-            key: key,
-            file: file,
-          ),
         );
 
   static const String name = 'ViewImportSheetRoute';
 }
 
-class ViewImportSheetRouteArgs {
-  const ViewImportSheetRouteArgs({
+/// generated route for
+/// [_i24.PickDemoPages]
+class PickDemoPagesRoute extends _i35.PageRouteInfo<PickDemoPagesRouteArgs> {
+  PickDemoPagesRoute({
+    _i36.Key? key,
+    required _i39.PdfDocument doc,
+    required int pagesNumber,
+  }) : super(
+          PickDemoPagesRoute.name,
+          path: 'pick_demo_pages',
+          args: PickDemoPagesRouteArgs(
+            key: key,
+            doc: doc,
+            pagesNumber: pagesNumber,
+          ),
+        );
+
+  static const String name = 'PickDemoPagesRoute';
+}
+
+class PickDemoPagesRouteArgs {
+  const PickDemoPagesRouteArgs({
     this.key,
-    required this.file,
+    required this.doc,
+    required this.pagesNumber,
   });
 
-  final _i22.Key? key;
+  final _i36.Key? key;
 
-  final _i23.File file;
+  final _i39.PdfDocument doc;
+
+  final int pagesNumber;
 
   @override
   String toString() {
-    return 'ViewImportSheetRouteArgs{key: $key, file: $file}';
+    return 'PickDemoPagesRouteArgs{key: $key, doc: $doc, pagesNumber: $pagesNumber}';
   }
 }
 
 /// generated route for
-/// [_i18.SheetListScreen]
-class SheetListScreen extends _i21.PageRouteInfo<void> {
+/// [_i25.SheetListScreen]
+class SheetListScreen extends _i35.PageRouteInfo<void> {
   const SheetListScreen()
       : super(
           SheetListScreen.name,
@@ -822,8 +1292,44 @@ class SheetListScreen extends _i21.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i19.ProfileScreen]
-class ProfileScreen extends _i21.PageRouteInfo<void> {
+/// [_i26.SheetListDetail]
+class SheetListDetailRoute
+    extends _i35.PageRouteInfo<SheetListDetailRouteArgs> {
+  SheetListDetailRoute({
+    _i36.Key? key,
+    required String sheetId,
+  }) : super(
+          SheetListDetailRoute.name,
+          path: ':sheetId',
+          args: SheetListDetailRouteArgs(
+            key: key,
+            sheetId: sheetId,
+          ),
+          rawPathParams: {'sheetId': sheetId},
+        );
+
+  static const String name = 'SheetListDetailRoute';
+}
+
+class SheetListDetailRouteArgs {
+  const SheetListDetailRouteArgs({
+    this.key,
+    required this.sheetId,
+  });
+
+  final _i36.Key? key;
+
+  final String sheetId;
+
+  @override
+  String toString() {
+    return 'SheetListDetailRouteArgs{key: $key, sheetId: $sheetId}';
+  }
+}
+
+/// generated route for
+/// [_i27.ProfileScreen]
+class ProfileScreen extends _i35.PageRouteInfo<void> {
   const ProfileScreen()
       : super(
           ProfileScreen.name,
@@ -834,10 +1340,10 @@ class ProfileScreen extends _i21.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i20.EditProfile]
-class EditProfileRoute extends _i21.PageRouteInfo<EditProfileRouteArgs> {
+/// [_i28.EditProfile]
+class EditProfileRoute extends _i35.PageRouteInfo<EditProfileRouteArgs> {
   EditProfileRoute({
-    _i22.Key? key,
+    _i36.Key? key,
     required String userId,
   }) : super(
           EditProfileRoute.name,
@@ -858,7 +1364,7 @@ class EditProfileRouteArgs {
     required this.userId,
   });
 
-  final _i22.Key? key;
+  final _i36.Key? key;
 
   final String userId;
 
@@ -866,4 +1372,76 @@ class EditProfileRouteArgs {
   String toString() {
     return 'EditProfileRouteArgs{key: $key, userId: $userId}';
   }
+}
+
+/// generated route for
+/// [_i29.MyAccount]
+class MyAccount extends _i35.PageRouteInfo<void> {
+  const MyAccount()
+      : super(
+          MyAccount.name,
+          path: '',
+        );
+
+  static const String name = 'MyAccount';
+}
+
+/// generated route for
+/// [_i30.ChangeEmail]
+class ChangeEmailRoute extends _i35.PageRouteInfo<void> {
+  const ChangeEmailRoute()
+      : super(
+          ChangeEmailRoute.name,
+          path: 'change_email',
+        );
+
+  static const String name = 'ChangeEmailRoute';
+}
+
+/// generated route for
+/// [_i31.ChangePassword]
+class ChangePasswordRoute extends _i35.PageRouteInfo<void> {
+  const ChangePasswordRoute()
+      : super(
+          ChangePasswordRoute.name,
+          path: 'change_password',
+        );
+
+  static const String name = 'ChangePasswordRoute';
+}
+
+/// generated route for
+/// [_i32.BankAccount]
+class BankAccount extends _i35.PageRouteInfo<void> {
+  const BankAccount()
+      : super(
+          BankAccount.name,
+          path: '',
+        );
+
+  static const String name = 'BankAccount';
+}
+
+/// generated route for
+/// [_i33.AddPaymentMethods]
+class AddPaymentMethodsRoute extends _i35.PageRouteInfo<void> {
+  const AddPaymentMethodsRoute()
+      : super(
+          AddPaymentMethodsRoute.name,
+          path: 'add_payment_methods',
+        );
+
+  static const String name = 'AddPaymentMethodsRoute';
+}
+
+/// generated route for
+/// [_i34.AddCard]
+class AddCardRoute extends _i35.PageRouteInfo<void> {
+  const AddCardRoute()
+      : super(
+          AddCardRoute.name,
+          path: 'add_payment_methods/add_card',
+        );
+
+  static const String name = 'AddCardRoute';
 }

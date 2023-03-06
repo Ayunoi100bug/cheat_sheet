@@ -1,6 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/colors.dart';
+import 'package:cheat_sheet/res/components/flushbar.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 
@@ -10,12 +11,12 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../gap_dimension.dart';
 import 'drawer_list.dart';
 
-import '../gap_dimension.dart';
+import 'flushbar_icon.dart';
 
 class SidebarMenu extends StatefulWidget {
   const SidebarMenu({super.key});
@@ -33,22 +34,19 @@ class _SidebarMenuState extends State<SidebarMenu> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    var isLandScape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+    var isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     return StreamBuilder(
       stream: _auth.authStateChanges(),
       builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
         if (snapshot.hasData) {
+          // Logged sidebar
           return SafeArea(
             child: LayoutBuilder(builder: (context, constraints) {
               return Drawer(
                 child: ListView(
                   children: [
-                    Image.asset('assets/images/logo.png',
-                        height: isPortrait
-                            ? constraints.maxHeight * 0.2
-                            : constraints.maxHeight * 0.4),
+                    Image.asset('assets/images/logo.png', height: isPortrait ? constraints.maxHeight * 0.2 : constraints.maxHeight * 0.4),
                     SizedBox(
                       height: isPortrait ? constraints.maxHeight * 0.7 : null,
                       child: Column(
@@ -56,20 +54,25 @@ class _SidebarMenuState extends State<SidebarMenu> {
                           CustomListTile(
                             icon: Icons.notifications_active_outlined,
                             title: 'ตั้งค่าการแจ้งเตือน',
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.pop(context);
+                              AutoRouter.of(context).push(NotificationSettingRoute());
+                            },
                           ),
                           CustomListTile(
                             icon: FluentSystemIcons.ic_fluent_shield_regular,
                             title: 'บัญชีของฉัน',
                             onTap: () {
-                              print("account");
+                              Navigator.pop(context);
+                              AutoRouter.of(context).push(MyAccountRoute());
                             },
                           ),
                           CustomListTile(
                             icon: FluentSystemIcons.ic_fluent_bank_regular,
                             title: 'ข้อมูลบัญชีธนาคาร',
                             onTap: () {
-                              print("bank");
+                              Navigator.pop(context);
+                              AutoRouter.of(context).push(BankAccountRoute());
                             },
                           ),
                           CustomListTile(
@@ -83,7 +86,8 @@ class _SidebarMenuState extends State<SidebarMenu> {
                             icon: FontAwesomeIcons.coins,
                             title: 'เติมเงิน',
                             onTap: () {
-                              print("payment");
+                              Navigator.pop(context);
+                              AutoRouter.of(context).push(TopUpRoute());
                             },
                           ),
                           CustomListTile(
@@ -111,9 +115,7 @@ class _SidebarMenuState extends State<SidebarMenu> {
                         ],
                       ),
                       onTap: () {
-                        myAuth.logOut();
-                        AutoRouter.of(context).navigateNamed("/home/");
-                        Navigator.pop(context);
+                        myAuth.logOut(context);
                       },
                     ),
                   ],
@@ -122,15 +124,13 @@ class _SidebarMenuState extends State<SidebarMenu> {
             }),
           );
         } else {
+          // Not logged sidebar
           return SafeArea(
             child: LayoutBuilder(builder: (context, constraints) {
               return Drawer(
                 child: ListView(
                   children: [
-                    Image.asset('assets/images/logo.png',
-                        height: isPortrait
-                            ? constraints.maxHeight * 0.2
-                            : constraints.maxHeight * 0.4),
+                    Image.asset('assets/images/logo.png', height: isPortrait ? constraints.maxHeight * 0.2 : constraints.maxHeight * 0.4),
                     SizedBox(
                       height: isPortrait ? constraints.maxHeight * 0.7 : null,
                       child: Column(
@@ -138,20 +138,25 @@ class _SidebarMenuState extends State<SidebarMenu> {
                           CustomListTile(
                             icon: Icons.notifications_active_outlined,
                             title: 'ตั้งค่าการแจ้งเตือน',
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.pop(context);
+                              AutoRouter.of(context).push(NotificationSettingRoute());
+                            },
                           ),
                           CustomListTile(
                             icon: FluentSystemIcons.ic_fluent_shield_regular,
                             title: 'บัญชีของฉัน',
                             onTap: () {
-                              print("account");
+                              Navigator.pop(context);
+                              AutoRouter.of(context).push(MyAccountRoute());
                             },
                           ),
                           CustomListTile(
                             icon: FluentSystemIcons.ic_fluent_bank_regular,
                             title: 'ข้อมูลบัญชีธนาคาร',
                             onTap: () {
-                              print("bank");
+                              Navigator.pop(context);
+                              AutoRouter.of(context).push(BankAccountRoute());
                             },
                           ),
                           CustomListTile(
@@ -165,7 +170,8 @@ class _SidebarMenuState extends State<SidebarMenu> {
                             icon: FontAwesomeIcons.coins,
                             title: 'เติมเงิน',
                             onTap: () {
-                              print("payment");
+                              Navigator.pop(context);
+                              AutoRouter.of(context).push(TopUpRoute());
                             },
                           ),
                           CustomListTile(
@@ -193,7 +199,7 @@ class _SidebarMenuState extends State<SidebarMenu> {
                         ],
                       ),
                       onTap: () {
-                        AutoRouter.of(context).push(LoginRoute());
+                        AutoRouter.of(context).push(const LoginRoute());
                         Navigator.pop(context);
                       },
                     ),

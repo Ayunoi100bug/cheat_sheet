@@ -4,13 +4,12 @@ import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/view_model/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
 import '../res/colors.dart';
 import '../res/components/form_field.dart';
+import '../res/components/popup_auth.dart';
 import '../res/gap_dimension.dart';
 import '../res/typo.dart';
 
@@ -23,8 +22,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  Users myUser =
-      Users(email: '', password: '', username: '', uid: '', profileImage: '');
+  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
   AuthService myAuth = AuthService();
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
 
@@ -43,10 +41,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Text("${snapshot.error}"),
               ),
             );
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
           }
-          if (snapshot.connectionState == ConnectionState.done) {
-            return Scaffold(
-              body: SafeArea(
+          return Scaffold(
+            body: SingleChildScrollView(
+              child: SafeArea(
                 child: Container(
                   width: double.infinity,
                   padding: EdgeInsets.only(
@@ -61,17 +61,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             const Medium20px(text: "ยินดีต้อนรับ!"),
                             SizedBox(height: screenHeight * GapDimension.h0_01),
                             const Regular16px(text: "ล็อกอินเพื่อเข้าใช้งาน"),
-                            SizedBox(
-                                height: screenHeight * GapDimension.h0_024),
+                            SizedBox(height: screenHeight * GapDimension.h0_024),
                           ],
                         ),
                         Container(
-                          height: screenWidth < 480
-                              ? screenHeight * GapDimension.h0_18
-                              : screenHeight * GapDimension.h0_36,
+                          height: screenWidth < 480 ? screenHeight * GapDimension.h0_18 : screenHeight * GapDimension.h0_36,
                           decoration: const BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage('assets/images/logo.png')),
+                            image: DecorationImage(image: AssetImage('assets/images/logo.png')),
                           ),
                         ),
                         Padding(
@@ -86,16 +82,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                   alignment: Alignment.centerLeft,
                                   child: Regular16px(text: "E-mail"),
                                 ),
-                                SizedBox(
-                                    height: screenHeight * GapDimension.h0_01),
-                                // I delete username because currently it can't use username to login.
+                                SizedBox(height: screenHeight * GapDimension.h0_01),
                                 MyTextFormField(
+                                  autovalidateMode: AutovalidateMode.onUserInteraction,
                                   validator: MultiValidator([
-                                    RequiredValidator(
-                                        errorText: 'Please enter e-mail.'),
-                                    EmailValidator(
-                                        errorText:
-                                            'Format of email is not correct.'),
+                                    RequiredValidator(errorText: 'โปรดกรอกอีเมลล์'),
+                                    EmailValidator(errorText: 'รูปแบบอีเมลล์ไม่ถูกต้อง'),
                                   ]),
                                   onSaved: (value) {
                                     myUser.email = value!;
@@ -103,27 +95,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                   keyboardType: TextInputType.emailAddress,
                                   hintText: "example@email.com",
                                 ),
-                                SizedBox(
-                                    height: screenHeight * GapDimension.h0_02),
+                                SizedBox(height: screenHeight * GapDimension.h0_02),
                                 const Align(
                                   alignment: Alignment.centerLeft,
                                   child: Regular16px(text: "รหัสผ่าน"),
                                 ),
-                                SizedBox(
-                                    height: screenHeight * GapDimension.h0_01),
+                                SizedBox(height: screenHeight * GapDimension.h0_01),
                                 MyTextFormField(
-                                  validator: RequiredValidator(
-                                      errorText: 'Please enter password.'),
+                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                                  validator: RequiredValidator(errorText: 'โปรดกรอกรหัสผ่าน'),
                                   onSaved: (value) {
                                     myUser.password = value!;
                                   },
                                   obscureText: true,
                                   hintText: "รหัสผ่าน",
                                 ),
-                                SizedBox(
-                                    height: screenWidth < 480
-                                        ? screenHeight * GapDimension.h0_03
-                                        : screenHeight * GapDimension.h0_06),
+                                SizedBox(height: screenWidth < 480 ? screenHeight * GapDimension.h0_03 : screenHeight * GapDimension.h0_06),
                                 SizedBox(
                                   height: 40,
                                   width: screenWidth * GapDimension.w0_4,
@@ -139,20 +126,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     onPressed: () async {
                                       if (_formKey.currentState!.validate()) {
                                         _formKey.currentState!.save();
-                                        try {
-                                          myAuth
-                                              .loginWithEmail(
-                                                  myUser.email, myUser.password)
-                                              .then((value) {
-                                            _formKey.currentState!.reset();
-                                            AutoRouter.of(context)
-                                                .navigateNamed("/home/");
-                                          });
-                                        } on FirebaseAuthException catch (e) {
-                                          Fluttertoast.showToast(
-                                              msg: e.message.toString(),
-                                              gravity: ToastGravity.BOTTOM);
-                                        }
+                                        await myAuth.loginWithEmail(context, myUser.email, myUser.password).then((value) {
+                                          _formKey.currentState!.reset();
+                                        });
                                       }
                                     },
                                     child: const Regular16px(
@@ -192,9 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: <Widget>[
                             Expanded(
                               child: Container(
-                                margin: EdgeInsets.only(
-                                    left: screenWidth * GapDimension.w0_048,
-                                    right: screenWidth * GapDimension.w0_048),
+                                margin: EdgeInsets.only(left: screenWidth * GapDimension.w0_048, right: screenWidth * GapDimension.w0_048),
                                 child: const Divider(
                                   thickness: 1,
                                 ),
@@ -210,43 +184,21 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: screenHeight * GapDimension.h0_016,
                         ),
                         Padding(
-                          padding: EdgeInsets.only(
-                              left: screenWidth * GapDimension.w0_044,
-                              right: screenWidth * GapDimension.w0_044),
+                          padding: EdgeInsets.only(left: screenWidth * GapDimension.w0_044, right: screenWidth * GapDimension.w0_044),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               IconButton(
                                 onPressed: () async {
-                                  try {
-                                    myAuth.loginWithGoogle().then((value) {
-                                      AutoRouter.of(context)
-                                          .navigateNamed("/home/");
-                                    });
-                                  } on FirebaseAuthException catch (e) {
-                                    Fluttertoast.showToast(
-                                        msg: e.message.toString(),
-                                        gravity: ToastGravity.BOTTOM);
-                                  }
+                                  await myAuth.loginWithGoogle(context);
                                 },
-                                icon: const Icon(
-                                  FontAwesomeIcons.google,
-                                  color: Colors.red,
-                                  size: 36,
+                                icon: Image.asset(
+                                  "assets/images/google.png",
                                 ),
                               ),
                               IconButton(
                                 onPressed: () async {
-                                  try {
-                                    myAuth.loginWithFacebook().then((value) {
-                                      AutoRouter.of(context)
-                                          .navigateNamed("/home/");
-                                    });
-                                  } on FirebaseAuthException catch (e) {
-                                    Fluttertoast.showToast(
-                                        msg: e.message.toString(),
-                                        gravity: ToastGravity.BOTTOM);
-                                  }
+                                  await myAuth.loginWithFacebook(context);
                                 },
                                 icon: const Icon(
                                   FontAwesomeIcons.facebook,
@@ -279,7 +231,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 underline: true,
                               ),
                               onPressed: () {
-                                AutoRouter.of(context).replace(RegisterRoute());
+                                AutoRouter.of(context).replace(const RegisterRoute());
                               },
                             ),
                           ],
@@ -289,11 +241,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-            );
-          }
-
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
+            ),
           );
         });
   }

@@ -1,6 +1,6 @@
 import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/components/answer.dart';
-import 'package:cheat_sheet/view/home_screen/ask_question.dart';
+import 'package:cheat_sheet/view/home_screen/question/ask_question.dart';
 import 'package:flutter/material.dart';
 
 import '../res/colors.dart';
@@ -33,9 +33,7 @@ class _TestUIPageState extends State<TestUIPage> {
                     right: screenHeight * 0.036,
                     bottom: screenHeight * 0.020,
                   ),
-                  height: isPortrait
-                      ? constraints.maxHeight * 0.6
-                      : constraints.maxHeight * 0.4,
+                  height: isPortrait ? constraints.maxHeight * 0.6 : constraints.maxHeight * 0.4,
                   child: SizedBox(
                     child: Container(
                       decoration: const BoxDecoration(
@@ -68,19 +66,17 @@ class _TestUIPageState extends State<TestUIPage> {
                     height: screenHeight * 0.3,
                     child: Column(
                       children: [
-                        Ask(
-                          focus: true,
-                          selectedIndex: 0,
-                          currentIndex: 0,
-                        ),
+                        // Ask(
+                        //   focus: true,
+                        //   selectedIndex: 0,
+                        //   currentIndex: 0,
+                        // ),
                         ListView.builder(
                           itemCount: 3,
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
                             return Answer(
                               focus: false,
-                              selectedIndex: 0,
-                              currentIndex: 0,
                             );
                           },
                         ),

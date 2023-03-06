@@ -1,6 +1,7 @@
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:flutter/material.dart';
+import 'components/custom_appbar.dart';
 
 class PrimaryButton extends StatelessWidget {
   final String text;
@@ -9,6 +10,7 @@ class PrimaryButton extends StatelessWidget {
   final double height;
   final double width;
   final double size;
+  final bool coinIcon;
   final void Function() onPressed;
   const PrimaryButton(
       {super.key,
@@ -18,6 +20,7 @@ class PrimaryButton extends StatelessWidget {
       this.height = 44,
       this.width = 116,
       this.size = 16,
+      this.coinIcon = false,
       required this.onPressed});
 
   @override
@@ -31,10 +34,77 @@ class PrimaryButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       onPressed: onPressed,
-      child: Regular16px(
-        text: text,
-        color: textcolor,
-        size: size,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (coinIcon) ...[
+            CustomAppBar.coin,
+            SizedBox(
+              width: 6,
+            ),
+          ],
+          Regular16px(
+            text: text,
+            color: textcolor,
+            size: size,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class TagButton extends StatelessWidget {
+  final String text;
+  final Color color;
+  final Color textcolor;
+  final double height;
+  final double width;
+  final double size;
+  final IconData? icon;
+  final double iconSize;
+  final void Function() onPressed;
+  const TagButton(
+      {super.key,
+      required this.text,
+      this.color = AppColors.tertiary500,
+      this.textcolor = AppColors.white,
+      this.height = 44,
+      this.width = 116,
+      this.size = 16,
+      this.icon,
+      this.iconSize = 18,
+      required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialButton(
+      height: height,
+      minWidth: width,
+      color: color,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      onPressed: onPressed,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Regular16px(
+            text: text,
+            color: textcolor,
+            size: size,
+          ),
+          if (icon != null) ...[
+            Align(
+              child: Icon(
+                icon,
+                color: textcolor,
+                size: iconSize,
+              ),
+            ),
+          ]
+        ],
       ),
     );
   }
