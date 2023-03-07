@@ -70,6 +70,11 @@ class PDFApi {
     return Future.value(uploadTask);
   }
 
+  static Future<void> deleteSheet(String sheetId) async {
+    firebaseStorage.FirebaseStorage.instance.ref().child('sheets').child(sheetId).child(sheetId + '.pdf').delete();
+    firebaseStorage.FirebaseStorage.instance.ref().child('sheets').child(sheetId).child('cover_image.png').delete();
+  }
+
   static Future<firebaseStorage.UploadTask?> createCoverSheetImage(String sheetId) async {
     final File file = await loadPDFFromFirebase(sheetId);
 
