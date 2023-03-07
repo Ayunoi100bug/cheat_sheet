@@ -73,7 +73,26 @@ class DeleteDocument {
 
     await Future.delayed(const Duration(milliseconds: 500), () {});
     await _firestore.collection('sheet').doc(sheetId).delete();
-    const String message = 'ลบชีทสำเร็จ';
-    FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, message);
+    await _firestore.collection('review').where('sheetId', isEqualTo: sheetId).get().then((value) {
+      value.docs.forEach((review) {
+        _firestore.collection('review').doc(review.id).delete();
+      });
+    });
+    await _firestore.collection('question').where('sheetId', isEqualTo: sheetId).get().then((value) {
+      value.docs.forEach((question) {
+        _firestore.collection('question').doc(question.id).delete();
+      });
+    });
+
+    await _firestore.collection('sheetList').get().then((value) {
+      value.docs.forEach((list) async {
+        await _firestore.collection('sheetList').doc(list.id).update({
+          'sid': FieldValue.arrayRemove([sheetId])
+        });
+      });
+    });
+
+    // const String message = 'ลบชีทสำเร็จ';
+    // FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, message);
   }
 }
