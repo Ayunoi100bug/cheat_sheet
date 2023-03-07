@@ -92,7 +92,12 @@ class DeleteDocument {
       });
     });
 
-    // const String message = 'ลบชีทสำเร็จ';
-    // FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, message);
+    await _firestore.collection('users').get().then((value) {
+      value.docs.forEach((user) {
+        _firestore.collection('users').doc(user.id).update({
+          'buyedSheet': FieldValue.arrayRemove([sheetId])
+        });
+      });
+    });
   }
 }
