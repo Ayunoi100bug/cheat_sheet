@@ -1,6 +1,8 @@
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/empty_router_widgets.dart';
 import 'package:cheat_sheet/res/components/tools_bar/color_picker_page.dart';
+import 'package:cheat_sheet/view/about_grade.dart';
+import 'package:cheat_sheet/view/about_subject.dart';
 import 'package:cheat_sheet/view/create_sheet_screen/create_detail_sheet.dart';
 import 'package:cheat_sheet/view/create_sheet_screen/import_sheet_screen.dart';
 import 'package:cheat_sheet/view/create_sheet_screen/pick_demo_pages.dart';
@@ -94,6 +96,10 @@ import 'package:cheat_sheet/view/test_ui_book.dart';
     AutoRoute(path: '', page: BankAccount),
     AutoRoute(path: 'add_payment_methods', name: 'AddPaymentMethodsRoute', page: AddPaymentMethods),
     AutoRoute(path: 'add_payment_methods/add_card', name: 'AddCardRoute', page: AddCard)
+  ]),
+  AutoRoute(path: '/first_login', name: 'FirstLoginRoute', page: EmptyRouterPage, children: [
+    AutoRoute(path: 'about_subject', name: 'AboutSubjectRoute', page: AboutSubject, initial: true),
+    AutoRoute(path: 'about_grade', name: 'AboutGradeRoute', page: AboutGrade),
   ]),
 ])
 class $AppRouter {}
