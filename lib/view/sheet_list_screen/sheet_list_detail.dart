@@ -88,7 +88,7 @@ class _SheetListDetailState extends State<SheetListDetail> {
                             );
                           }
                           return StreamBuilder<DocumentSnapshot>(
-                              stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
+                              stream: _firestore.collection("users").doc(sheetSnapshot.data?['authorId']).snapshots(),
                               builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userSnapshot) {
                                 if (!userSnapshot.hasData) {
                                   return Container();
