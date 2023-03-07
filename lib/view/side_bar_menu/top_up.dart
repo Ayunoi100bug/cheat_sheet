@@ -49,18 +49,21 @@ Widget _TopUpCoin(context, coin, image, money, int coinAmount, int price) {
   var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
   return InkWell(
     child: Container(
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: AppColors.secondary400),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: AppColors.tertiary600.withOpacity(0.7)),
       padding: const EdgeInsets.all(12),
       child: Column(
         children: [
-          Regular12px(text: coin),
+          Regular14px(text: coin, color: AppColors.white),
           SizedBox(height: isPortrait ? screenWidth * 0.032 : screenWidth * 0.020),
           Image.asset(
             image,
             height: 56,
           ),
           SizedBox(height: isPortrait ? screenWidth * 0.032 : screenWidth * 0.024),
-          Regular16px(text: money),
+          Medium20px(
+            text: money,
+            color: AppColors.error500,
+          ),
         ],
       ),
     ),

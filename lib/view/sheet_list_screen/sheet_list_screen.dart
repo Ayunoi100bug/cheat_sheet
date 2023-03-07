@@ -58,35 +58,25 @@ class _SheetListScreenState extends State<SheetListScreen> with AutomaticKeepAli
                 final mySheetLists = snapshot.data?.docs.where((document) => document["authorId"] == _auth.currentUser?.uid);
                 return Scaffold(
                   resizeToAvoidBottomInset: true,
+                  floatingActionButton: FloatingActionButton(
+                    splashColor: AppColors.tertiary600,
+                    backgroundColor: AppColors.tertiary700.withOpacity(0.7),
+                    elevation: 0,
+                    onPressed: () {
+                      _BottomSheet(context);
+                    },
+                    child: const Icon(
+                      Icons.add,
+                      color: AppColors.white,
+                      size: 40,
+                    ),
+                  ),
+                  floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
                   body: SafeArea(
                     child: LayoutBuilder(builder: (context, constraints) {
                       return SingleChildScrollView(
                         child: Column(
                           children: [
-                            Container(
-                              padding: EdgeInsets.only(top: screenWidth * 0.032, right: screenWidth * 0.032),
-                              child: InkWell(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(color: AppColors.tertiary500),
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: const Icon(
-                                        FontAwesomeIcons.plus,
-                                        color: AppColors.tertiary500,
-                                        size: 30,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                onTap: () {
-                                  _BottomSheet(context);
-                                },
-                              ),
-                            ),
                             Padding(
                               padding: EdgeInsets.all(screenWidth * GapDimension.w0_032),
                               child: GridView.builder(
