@@ -1,4 +1,6 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cheat_sheet/data/network/image_api.dart';
+import 'package:cheat_sheet/data/network/pdf_api.dart';
 import 'package:cheat_sheet/res/components/flushbar.dart';
 import 'package:cheat_sheet/res/components/flushbar_icon.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -78,9 +80,11 @@ class DeleteDocument {
         _firestore.collection('review').doc(review.id).delete();
       });
     });
+    await PDFApi.deleteSheet(sheetId);
     await _firestore.collection('question').where('sheetId', isEqualTo: sheetId).get().then((value) {
-      value.docs.forEach((question) {
+      value.docs.forEach((question) async {
         _firestore.collection('question').doc(question.id).delete();
+        await ImageApi.deleteQuestionImage(question.id);
       });
     });
 
