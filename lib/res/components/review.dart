@@ -118,7 +118,7 @@ class _ReviewState extends State<Review> {
                                           _BottomReview(context, widget.textReview, widget.userRating, widget.reviewId, widget.sheetId);
                                         },
                                         child: widget.userId == _auth.currentUser!.uid
-                                            ? const Icon(FontAwesomeIcons.ellipsisV, color: AppColors.black700, size: 16)
+                                            ? const Icon(FontAwesomeIcons.ellipsisV, color: AppColors.black600, size: 16)
                                             : Container(),
                                       );
                                     }),
