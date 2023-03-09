@@ -197,15 +197,18 @@ class _DetailSheetState extends State<DetailSheet> {
                                           padding: EdgeInsets.zero,
                                           scrollDirection: Axis.horizontal,
                                           child: Row(
-                                            children: const [
+                                            children: [
                                               Tag(
-                                                subject: "คณิตศาสาตร์",
+                                                subject: "คณิตศาสตร์",
+                                                onPressed: () {},
                                               ),
                                               Tag(
                                                 subject: "คณิตพื้นฐาน",
+                                                onPressed: () {},
                                               ),
                                               Tag(
                                                 subject: "สถิติ",
+                                                onPressed: () {},
                                               ),
                                             ],
                                           ),
