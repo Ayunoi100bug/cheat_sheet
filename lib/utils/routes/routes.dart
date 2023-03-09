@@ -3,6 +3,7 @@ import 'package:auto_route/empty_router_widgets.dart';
 import 'package:cheat_sheet/res/components/tools_bar/color_picker_page.dart';
 import 'package:cheat_sheet/view/about_grade.dart';
 import 'package:cheat_sheet/view/about_subject.dart';
+import 'package:cheat_sheet/view/activity_screen/all_achievement.dart';
 import 'package:cheat_sheet/view/create_sheet_screen/create_detail_sheet.dart';
 import 'package:cheat_sheet/view/create_sheet_screen/import_sheet_screen.dart';
 import 'package:cheat_sheet/view/create_sheet_screen/pick_demo_pages.dart';
@@ -58,6 +59,7 @@ import 'package:cheat_sheet/view/test_ui_book.dart';
       ]),
       AutoRoute(path: 'activity', name: 'ActivityRoute', page: EmptyRouterPage, children: [
         AutoRoute(path: '', page: ActivityScreen),
+        AutoRoute(path: 'all_achievement', name: 'AllAchievementRoute', page: AllAchievement),
       ]),
       AutoRoute(path: 'create_sheet', name: 'CreateSheetRoute', page: EmptyRouterPage, children: [
         AutoRoute(path: '', page: CreateSheetScreen),

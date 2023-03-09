@@ -1,8 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/components/achievement.dart';
 import 'package:cheat_sheet/res/components/diary_quest.dart';
 import 'package:cheat_sheet/res/components/sheet.dart';
 import 'package:cheat_sheet/res/typo.dart';
+import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:flutter/material.dart';
 
 class ActivityScreen extends StatefulWidget {
@@ -32,6 +34,11 @@ class _ActivityScreenState extends State<ActivityScreen> with AutomaticKeepAlive
                   horizontal: isPortrait ? screenWidth * 0.04 : screenWidth * 0.06, vertical: isPortrait ? screenWidth * 0.01 : screenWidth * 0.02),
               child: Row(
                 children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        AutoRouter.of(context).push(AllAchievementRoute());
+                      },
+                      child: Text('หน้าใหม่โจ้')),
                   const Medium20px(text: 'เควสประจำวัน'),
                   SizedBox(
                     width: screenWidth * 0.02,
