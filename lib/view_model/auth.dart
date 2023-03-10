@@ -143,23 +143,12 @@ class AuthService {
   }
 
   Future<void> logOut(BuildContext context) async {
-    bool success = false;
-    if (_user!.providerData[0].providerId == 'google.com') {
-      await GoogleSignIn().signOut();
-      success = true;
-    } else if (_user!.providerData[0].providerId == 'facebook.com') {
-      await FacebookAuth.i.logOut();
-      success = true;
-    } else if (_user!.providerData[0].providerId == 'password') {
-      success = true;
-    }
-    if (success == true) {
-      if (context.mounted) AutoRouter.of(context).navigateNamed("/home/");
-      await _auth.signOut().then((value) {
-        Navigator.pop(context);
+    await Future.wait([GoogleSignIn().signOut(), FacebookAuth.i.logOut(), _auth.signOut()]).then((value) {
+      Navigator.pop(context);
+      AutoRouter.of(context).navigateNamed("/home/");
+      SchedulerBinding.instance.addPostFrameCallback((_) {
         FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, "ออกจากระบบสำเร็จ");
       });
-      success = false;
-    }
+    });
   }
 }
