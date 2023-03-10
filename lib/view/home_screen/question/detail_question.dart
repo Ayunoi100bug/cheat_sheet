@@ -99,11 +99,13 @@ class _DetailQuestionState extends State<DetailQuestion> {
                               ),
                               SizedBox(height: screenWidth * 0.08),
                               Ask(
+                                userId: user['uid'],
+                                questionId: questionData['qid'],
                                 userImage: user['profileImage'],
                                 username: user['username'],
                                 sheetId: widget.sheetId,
                                 questionText: questionData["text"],
-                                focus: false,
+                                like: questionData['like'].toString(),
                               ),
                               const Answer(
                                 focus: false,

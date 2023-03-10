@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 
 import '../../../res/components/ask.dart';
 import '../../../res/components/popup_auth.dart';
+import '../../../res/typo.dart';
 
 class AskQuestion extends StatefulWidget {
   final String sheetId;
@@ -75,25 +76,33 @@ class _AskQuestionState extends State<AskQuestion> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return Padding(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
             padding: EdgeInsets.only(top: screenHeight * 0.024),
             child: Column(
               children: [
                 SizedBox(
                   height: isPortrait ? screenHeight * 0.8 : screenHeight * 0.6,
-                  child: FutureBuilder(
-                      future: _firestore
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: _firestore
                           .collection('question')
                           .where('sheetId', isEqualTo: widget.sheetId)
                           .where('askingPage', isEqualTo: widget.askingPage)
-                          .get(),
+                          .snapshots(),
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
                           return Center(child: CircularProgressIndicator());
                         }
                         int questionCount = snapshot.data!.docs.length;
+                        if (questionCount == 0) {
+                          return SizedBox(
+                            height: screenWidth * 0.57,
+                            child: const Center(
+                              child: Regular16px(text: "ยังไม่มีรีวิว"),
+                            ),
+                          );
+                        }
                         return ListView.builder(
                           controller: _scrollController,
                           shrinkWrap: true,
@@ -106,7 +115,7 @@ class _AskQuestionState extends State<AskQuestion> {
                                   if (!snapshot.hasData) {
                                     return Center(child: CircularProgressIndicator());
                                   }
-                                  Map<String, dynamic>? user = userSnapshot.data!.data();
+                                  Map<String, dynamic>? user = userSnapshot.data?.data();
                                   return InkWell(
                                     onTap: () async {
                                       File questionImage = await ImageApi.loadQuestionImage(question.id);
@@ -117,11 +126,13 @@ class _AskQuestionState extends State<AskQuestion> {
                                       }
                                     },
                                     child: Ask(
-                                      userImage: user!['profileImage'],
-                                      username: user['username'],
+                                      userId: user?['uid'],
+                                      questionId: question['qid'],
+                                      userImage: user?['profileImage'],
+                                      username: user?['username'],
                                       sheetId: widget.sheetId,
                                       questionText: question['text'],
-                                      focus: false,
+                                      like: question['like'].toString(),
                                     ),
                                   );
                                 });
@@ -131,8 +142,8 @@ class _AskQuestionState extends State<AskQuestion> {
                 ),
               ],
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }
