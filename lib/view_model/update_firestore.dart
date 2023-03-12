@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
@@ -62,23 +63,31 @@ class UpdateCollection {
       FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, message);
       return;
     }
-    await _firestore.collection("users").doc(currentUserData['uid']).update({
-      'timestamp': myUser.timestamp,
-      'coin': (currentUserData['coin'] - sheetPrice),
-      'buyedSheet': FieldValue.arrayUnion([sid]),
+    await Future.delayed(const Duration(milliseconds: 300), () {
+      if (context.mounted) {
+        const String message = 'ซื้อชีทสำเร็จ';
+        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+      }
     });
-    if (context.mounted) {
-      const String message = 'ซื้อชีทสำเร็จ';
-      FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
-    }
-    await _firestore.collection("users").doc(authorId).update({
-      'timestamp': myUser.timestamp,
-      'coin': (authorData['coin'] + sheetPrice),
-    });
-    await _firestore.collection("sheet").doc(sid).update({
-      'timestamp': mySheet.timestamp,
-      'buyer': buyerAmount + 1,
-    });
+    /** 
+     * * Future.wait ไว้ใช้สำหรับรอให้ตัวที่อยู่ด้านในทำงานเสร็จทุกตัวก่อน ถึงค่อยทำบรรทัดถัดไป
+     * TODO: สิ่งที่ต้องปรับหลังแก้ context คือเอา Flushbar ไปไว้ด้านล่างแทน ที่เอามาไว้ด้านบนแบบนี้คือแก้ขัดเฉยๆ
+    */
+    await Future.wait([
+      _firestore.collection("users").doc(currentUserData['uid']).update({
+        'timestamp': myUser.timestamp,
+        'coin': (currentUserData['coin'] - sheetPrice),
+        'buyedSheet': FieldValue.arrayUnion([sid]),
+      }),
+      _firestore.collection("users").doc(authorId).update({
+        'timestamp': myUser.timestamp,
+        'coin': (authorData['coin'] + sheetPrice),
+      }),
+      _firestore.collection("sheet").doc(sid).update({
+        'timestamp': mySheet.timestamp,
+        'buyer': buyerAmount + 1,
+      }),
+    ]);
   }
 
   Future<void> userTopup(BuildContext context, int recieve) async {
