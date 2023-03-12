@@ -251,7 +251,7 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                                           AutoRouter.of(context).popUntilRoot();
 
                                           final String message = 'อัพโหลดชีทสำเร็จ!';
-                                          FlushbarPopup.successFlushbar(context, FlushbarIcon.errorIcon, message);
+                                          FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
                                         });
                                       },
                                     );

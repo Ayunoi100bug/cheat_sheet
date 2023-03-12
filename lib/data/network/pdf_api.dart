@@ -105,8 +105,22 @@ class PDFApi {
   static Future<File> _imageToFile(imglib.Image inputImage) async {
     final dir = await getExternalStorageDirectory();
 
-    File imageFile = new File('${dir!.path}/image.png');
-    new File(imageFile.path).writeAsBytes(imglib.encodePng(inputImage));
+    File imageFile = File('${dir!.path}/image.png');
+    await Future.wait([
+      File(imageFile.path).writeAsBytes(imglib.encodePng(inputImage)),
+    ]);
+    int fileSize = await imageFile.length();
+    debugPrint("Before loop file size: $fileSize");
+    int i = 1;
+    while (fileSize == 0) {
+      if (fileSize != 0) break;
+      await Future.wait([
+        File(imageFile.path).writeAsBytes(imglib.encodePng(inputImage)),
+      ]);
+      fileSize = await imageFile.length();
+      debugPrint("Round $i Filesize: $fileSize");
+      i++;
+    }
 
     return imageFile;
   }
