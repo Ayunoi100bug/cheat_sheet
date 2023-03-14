@@ -228,7 +228,7 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                               _formKey.currentState!.save();
                               firebaseStorage.UploadTask? task = await PDFApi.uploadToFirebase(context, pdfFile, sheetId);
                               task!.whenComplete(() async {
-                                firebaseStorage.UploadTask? coverImage = await PDFApi.createCoverSheetImage(sheetId);
+                                firebaseStorage.UploadTask? coverImage = await PDFApi().createCoverSheetImage(sheetId);
                                 coverImage!.whenComplete(() async {
                                   String coverImage = await PDFApi.getCoverImage(sheetId);
                                   try {

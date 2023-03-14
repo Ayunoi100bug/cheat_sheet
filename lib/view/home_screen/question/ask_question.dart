@@ -92,14 +92,16 @@ class _AskQuestionState extends State<AskQuestion> {
                           .snapshots(),
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
-                          return Center(child: CircularProgressIndicator());
+                          return Container();
+                        } else if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(child: CircularProgressIndicator());
                         }
                         int questionCount = snapshot.data!.docs.length;
                         if (questionCount == 0) {
                           return SizedBox(
                             height: screenWidth * 0.57,
                             child: const Center(
-                              child: Regular16px(text: "ยังไม่มีรีวิว"),
+                              child: Regular16px(text: "ยังไม่มีคำถาม"),
                             ),
                           );
                         }
@@ -112,8 +114,10 @@ class _AskQuestionState extends State<AskQuestion> {
                             return FutureBuilder(
                                 future: _firestore.collection('users').doc(question['questionerId']).get(),
                                 builder: (context, userSnapshot) {
-                                  if (!snapshot.hasData) {
-                                    return Center(child: CircularProgressIndicator());
+                                  if (!userSnapshot.hasData) {
+                                    return Container();
+                                  } else if (userSnapshot.connectionState == ConnectionState.waiting) {
+                                    return const Center(child: CircularProgressIndicator());
                                   }
                                   Map<String, dynamic>? user = userSnapshot.data?.data();
                                   return InkWell(
