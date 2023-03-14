@@ -199,7 +199,9 @@ class _DetailSheetState extends State<DetailSheet> {
                                           child: Row(
                                             children: [
                                               Tag(
+
                                                 subject: "คณิตศาสาตร์",
+
                                                 onPressed: () {},
                                               ),
                                               Tag(
@@ -363,8 +365,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                       AutoRouter.of(context)
                                                           .push(ReadSheetRoute(sheetId: widget.sheetId, sheetTitle: sheetData['sheetName']));
                                                     }
-                                                  }
-                                                  if (context.mounted) {
+                                                  } else {
                                                     await updateFS.userBuySheet(context, sheetData['sid'], authorData['uid'], sheetData['price']);
                                                   }
                                                 },

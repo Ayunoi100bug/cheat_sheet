@@ -1,4 +1,6 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cheat_sheet/data/network/image_api.dart';
+import 'package:cheat_sheet/data/network/pdf_api.dart';
 import 'package:cheat_sheet/res/components/flushbar.dart';
 import 'package:cheat_sheet/res/components/flushbar_icon.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -73,7 +75,33 @@ class DeleteDocument {
 
     await Future.delayed(const Duration(milliseconds: 500), () {});
     await _firestore.collection('sheet').doc(sheetId).delete();
-    const String message = 'ลบชีทสำเร็จ';
-    FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, message);
+    await _firestore.collection('review').where('sheetId', isEqualTo: sheetId).get().then((value) {
+      value.docs.forEach((review) {
+        _firestore.collection('review').doc(review.id).delete();
+      });
+    });
+    await PDFApi.deleteSheet(sheetId);
+    await _firestore.collection('question').where('sheetId', isEqualTo: sheetId).get().then((value) {
+      value.docs.forEach((question) async {
+        _firestore.collection('question').doc(question.id).delete();
+        await ImageApi.deleteQuestionImage(question.id);
+      });
+    });
+
+    await _firestore.collection('sheetList').get().then((value) {
+      value.docs.forEach((list) async {
+        await _firestore.collection('sheetList').doc(list.id).update({
+          'sid': FieldValue.arrayRemove([sheetId])
+        });
+      });
+    });
+
+    await _firestore.collection('users').get().then((value) {
+      value.docs.forEach((user) async {
+        await _firestore.collection('users').doc(user.id).update({
+          'buyedSheet': FieldValue.arrayRemove([sheetId])
+        });
+      });
+    });
   }
 }
