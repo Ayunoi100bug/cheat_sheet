@@ -9,6 +9,7 @@ class Tag extends StatelessWidget {
     super.key,
     required this.subject,
     this.icon,
+    required Null Function() onPressed,
   });
 
   @override
