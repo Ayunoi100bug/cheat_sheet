@@ -82,6 +82,8 @@ class SelectTag extends StatefulWidget {
   const SelectTag({
     super.key,
     required this.subject,
+    this.icon,
+    required Null Function() onPressed,
     this.color = AppColors.orange100,
     this.textcolor = AppColors.orange600,
     this.height = 44,
