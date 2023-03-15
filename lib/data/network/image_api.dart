@@ -36,6 +36,10 @@ class ImageApi {
     return _storeFile(url, bytes!);
   }
 
+  static Future<void> deleteQuestionImage(String questionId) async {
+    firebaseStorage.FirebaseStorage.instance.ref().child('questions').child(questionId).child(questionId + '.png').delete();
+  }
+
   static Future<File> _storeFile(String url, Uint8List bytes) async {
     final fileName = basename(url);
     final dir = await getApplicationDocumentsDirectory();
