@@ -123,7 +123,6 @@ class _SearchingSheetState extends State<SearchingSheet> {
       }
     });
     searchResultsList();
-    return "Complete";
   }
 
   @override
