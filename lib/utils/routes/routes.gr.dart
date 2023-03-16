@@ -399,9 +399,13 @@ class AppRouter extends _i38.RootStackRouter {
       );
     },
     AboutSubjectRoute.name: (routeData) {
+      final args = routeData.argsAs<AboutSubjectRouteArgs>();
       return _i38.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i36.AboutSubject(),
+        child: _i36.AboutSubject(
+          key: args.key,
+          grade: args.grade,
+        ),
       );
     },
     AboutGradeRoute.name: (routeData) {
@@ -637,7 +641,7 @@ class AppRouter extends _i38.RootStackRouter {
               '#redirect',
               path: '',
               parent: FirstLoginRoute.name,
-              redirectTo: 'about_subject',
+              redirectTo: 'about_grade',
               fullMatch: true,
             ),
             _i38.RouteConfig(
@@ -1528,14 +1532,36 @@ class AddCardRoute extends _i38.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i36.AboutSubject]
-class AboutSubjectRoute extends _i38.PageRouteInfo<void> {
-  const AboutSubjectRoute()
-      : super(
+class AboutSubjectRoute extends _i38.PageRouteInfo<AboutSubjectRouteArgs> {
+  AboutSubjectRoute({
+    _i39.Key? key,
+    required String grade,
+  }) : super(
           AboutSubjectRoute.name,
           path: 'about_subject',
+          args: AboutSubjectRouteArgs(
+            key: key,
+            grade: grade,
+          ),
         );
 
   static const String name = 'AboutSubjectRoute';
+}
+
+class AboutSubjectRouteArgs {
+  const AboutSubjectRouteArgs({
+    this.key,
+    required this.grade,
+  });
+
+  final _i39.Key? key;
+
+  final String grade;
+
+  @override
+  String toString() {
+    return 'AboutSubjectRouteArgs{key: $key, grade: $grade}';
+  }
 }
 
 /// generated route for

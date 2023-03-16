@@ -100,8 +100,17 @@ import 'package:cheat_sheet/view/test_ui_book.dart';
     AutoRoute(path: 'add_payment_methods/add_card', name: 'AddCardRoute', page: AddCard)
   ]),
   AutoRoute(path: '/first_login', name: 'FirstLoginRoute', page: EmptyRouterPage, children: [
-    AutoRoute(path: 'about_subject', name: 'AboutSubjectRoute', page: AboutSubject, initial: true),
-    AutoRoute(path: 'about_grade', name: 'AboutGradeRoute', page: AboutGrade),
+    AutoRoute(
+      path: 'about_subject',
+      name: 'AboutSubjectRoute',
+      page: AboutSubject,
+    ),
+    AutoRoute(
+      path: 'about_grade',
+      name: 'AboutGradeRoute',
+      page: AboutGrade,
+      initial: true,
+    ),
   ]),
 ])
 class $AppRouter {}
