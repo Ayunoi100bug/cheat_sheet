@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cheat_sheet/data/network/pdf_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +10,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ImageApi {
-  static Future<firebaseStorage.UploadTask?> uploadToFirebase(PictureDetails image, String questionId) async {
+  Future<firebaseStorage.UploadTask?> uploadToFirebase(PictureDetails image, String questionId) async {
     final file = await _imageToFile(image);
 
     firebaseStorage.UploadTask uploadTask;
@@ -49,14 +50,38 @@ class ImageApi {
     return file;
   }
 
-  static Future<File> _imageToFile(PictureDetails image) async {
+  Future<File> _imageToFile(PictureDetails image) async {
     final dir = await getExternalStorageDirectory();
-
     final bytes = await image.toPNG();
 
-    File imageFile = new File('${dir!.path}/image.png');
-    new File(imageFile.path).writeAsBytes(bytes, flush: true);
+    File imageFile = File('${dir!.path}/image.png');
+    await Future.wait([
+      File(imageFile.path).writeAsBytes(bytes, flush: true),
+    ]);
 
-    return imageFile;
+    return drawImageCorruptHandler(bytes, imageFile);
+  }
+
+  Future<File> drawImageCorruptHandler(Uint8List newBytes, File handler) async {
+    int handlerSize = await handler.length();
+    if (handlerSize != 0) {
+      debugPrint("Image size is: $handlerSize, and it's not corrupt.");
+      return handler;
+    }
+    int i = 1;
+    while (handlerSize == 0) {
+      if (i == 1) debugPrint("Begin fixing...");
+      if (handlerSize != 0) {
+        debugPrint("Fixing ends with $handlerSize image file size.");
+        break;
+      }
+      await Future.wait([
+        File(handler.path).writeAsBytes(newBytes, flush: true),
+      ]);
+      handlerSize = await handler.length();
+      debugPrint("Round $i fixed, new image size is: $handlerSize");
+    }
+
+    return handler;
   }
 }
