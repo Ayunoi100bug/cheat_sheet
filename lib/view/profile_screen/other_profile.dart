@@ -8,7 +8,8 @@ import '../../res/typo.dart';
 import '../../utils/routes/routes.gr.dart';
 
 class OtherProfile extends StatefulWidget {
-  const OtherProfile({super.key});
+  final String userId;
+  const OtherProfile({super.key, @PathParam() required this.userId});
 
   @override
   State<OtherProfile> createState() => _OtherProfileState();

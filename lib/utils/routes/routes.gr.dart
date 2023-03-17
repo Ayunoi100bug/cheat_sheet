@@ -11,17 +11,17 @@
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:ui' as _i40;
+import 'dart:ui' as _i41;
 
-import 'package:auto_route/auto_route.dart' as _i38;
+import 'package:auto_route/auto_route.dart' as _i39;
 import 'package:auto_route/empty_router_widgets.dart' as _i5;
-import 'package:flutter/material.dart' as _i39;
-import 'package:painter/painter.dart' as _i41;
-import 'package:pdf_render/pdf_render.dart' as _i42;
+import 'package:flutter/material.dart' as _i40;
+import 'package:painter/painter.dart' as _i42;
+import 'package:pdf_render/pdf_render.dart' as _i43;
 
 import '../../res/components/tools_bar/color_picker_page.dart' as _i14;
-import '../../view/about_grade.dart' as _i37;
-import '../../view/about_subject.dart' as _i36;
+import '../../view/about_grade.dart' as _i38;
+import '../../view/about_subject.dart' as _i37;
 import '../../view/activity_screen/activity_screen.dart' as _i20;
 import '../../view/activity_screen/all_achievement.dart' as _i21;
 import '../../view/create_sheet_screen/create_detail_sheet.dart' as _i23;
@@ -42,118 +42,119 @@ import '../../view/home_screen/searching_sheet.dart' as _i9;
 import '../../view/login.dart' as _i2;
 import '../../view/main_screen.dart' as _i1;
 import '../../view/profile_screen/edit_profile.dart' as _i29;
+import '../../view/profile_screen/other_profile.dart' as _i30;
 import '../../view/profile_screen/profile_screen.dart' as _i28;
 import '../../view/register.dart' as _i3;
 import '../../view/sheet_list_screen/sheet_list_detail.dart' as _i27;
 import '../../view/sheet_list_screen/sheet_list_screen.dart' as _i26;
-import '../../view/side_bar_menu/bank_account/add_card.dart' as _i35;
-import '../../view/side_bar_menu/bank_account/add_payment_methods.dart' as _i34;
-import '../../view/side_bar_menu/bank_account/bank_account.dart' as _i33;
-import '../../view/side_bar_menu/my_account/change_email.dart' as _i31;
-import '../../view/side_bar_menu/my_account/change_password.dart' as _i32;
-import '../../view/side_bar_menu/my_account/my_account.dart' as _i30;
+import '../../view/side_bar_menu/bank_account/add_card.dart' as _i36;
+import '../../view/side_bar_menu/bank_account/add_payment_methods.dart' as _i35;
+import '../../view/side_bar_menu/bank_account/bank_account.dart' as _i34;
+import '../../view/side_bar_menu/my_account/change_email.dart' as _i32;
+import '../../view/side_bar_menu/my_account/change_password.dart' as _i33;
+import '../../view/side_bar_menu/my_account/my_account.dart' as _i31;
 import '../../view/side_bar_menu/notification_setting.dart' as _i4;
 import '../../view/side_bar_menu/top_up.dart' as _i6;
 import '../../view/test_ui_book.dart' as _i8;
 
-class AppRouter extends _i38.RootStackRouter {
-  AppRouter([_i39.GlobalKey<_i39.NavigatorState>? navigatorKey])
+class AppRouter extends _i39.RootStackRouter {
+  AppRouter([_i40.GlobalKey<_i40.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
-  final Map<String, _i38.PageFactory> pagesMap = {
+  final Map<String, _i39.PageFactory> pagesMap = {
     MainScreen.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i1.MainScreen(),
       );
     },
     LoginRoute.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i2.LoginScreen(),
       );
     },
     RegisterRoute.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i3.RegisterScreen(),
       );
     },
     NotificationSettingRoute.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i4.NotificationSetting(),
       );
     },
     MyAccountRoute.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i5.EmptyRouterPage(),
       );
     },
     TopUpRoute.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i6.TopUp(),
       );
     },
     BankAccountRoute.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i5.EmptyRouterPage(),
       );
     },
     FirstLoginRoute.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i5.EmptyRouterPage(),
       );
     },
     HomeRoute.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i5.EmptyRouterPage(),
       );
     },
     ActivityRoute.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i5.EmptyRouterPage(),
       );
     },
     CreateSheetRoute.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i5.EmptyRouterPage(),
       );
     },
     SheetListRoute.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i5.EmptyRouterPage(),
       );
     },
     ProfileRoute.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i5.EmptyRouterPage(),
       );
     },
     HomeScreen.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i7.HomeScreen(),
       );
     },
     TestUIRoute.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i8.TestUIPage(),
       );
     },
     SearchingSheetRoute.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i9.SearchingSheet(),
       );
@@ -163,7 +164,7 @@ class AppRouter extends _i38.RootStackRouter {
       final args = routeData.argsAs<DetailSheetRouteArgs>(
           orElse: () =>
               DetailSheetRouteArgs(sheetId: pathParams.getString('sheetId')));
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i10.DetailSheet(
           key: args.key,
@@ -173,7 +174,7 @@ class AppRouter extends _i38.RootStackRouter {
     },
     ReadSheetRoute.name: (routeData) {
       final args = routeData.argsAs<ReadSheetRouteArgs>();
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i11.ReadSheet(
           key: args.key,
@@ -184,7 +185,7 @@ class AppRouter extends _i38.RootStackRouter {
     },
     AskQuestionRoute.name: (routeData) {
       final args = routeData.argsAs<AskQuestionRouteArgs>();
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i12.AskQuestion(
           key: args.key,
@@ -195,7 +196,7 @@ class AppRouter extends _i38.RootStackRouter {
     },
     CreateQuestionRoute.name: (routeData) {
       final args = routeData.argsAs<CreateQuestionRouteArgs>();
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i13.CreateQuestion(
           key: args.key,
@@ -206,7 +207,7 @@ class AppRouter extends _i38.RootStackRouter {
     },
     PickColorRoute.name: (routeData) {
       final args = routeData.argsAs<PickColorRouteArgs>();
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i14.ColorPickerPage(
           key: args.key,
@@ -217,7 +218,7 @@ class AppRouter extends _i38.RootStackRouter {
     },
     DetailQuestionRoute.name: (routeData) {
       final args = routeData.argsAs<DetailQuestionRouteArgs>();
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i15.DetailQuestion(
           key: args.key,
@@ -232,7 +233,7 @@ class AppRouter extends _i38.RootStackRouter {
       final args = routeData.argsAs<ReviewSheetRouteArgs>(
           orElse: () =>
               ReviewSheetRouteArgs(sheetId: pathParams.getString('sheetId')));
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i16.ReviewSheet(
           key: args.key,
@@ -245,7 +246,7 @@ class AppRouter extends _i38.RootStackRouter {
       final args = routeData.argsAs<CreateReviewRouteArgs>(
           orElse: () =>
               CreateReviewRouteArgs(sheetId: pathParams.getString('sheetId')));
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i17.CreateReview(
           key: args.key,
@@ -258,7 +259,7 @@ class AppRouter extends _i38.RootStackRouter {
       final args = routeData.argsAs<EditSheetRouteArgs>(
           orElse: () =>
               EditSheetRouteArgs(sheetId: pathParams.getString('sheetId')));
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i18.EditSheet(
           key: args.key,
@@ -271,7 +272,7 @@ class AppRouter extends _i38.RootStackRouter {
       final args = routeData.argsAs<EditDemoRouteArgs>(
           orElse: () =>
               EditDemoRouteArgs(sheetId: pathParams.getString('sheetId')));
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i19.EditDemo(
           key: args.key,
@@ -280,26 +281,26 @@ class AppRouter extends _i38.RootStackRouter {
       );
     },
     ActivityScreen.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i20.ActivityScreen(),
       );
     },
     AllAchievementRoute.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i21.AllAchievement(),
       );
     },
     CreateSheetScreen.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i22.CreateSheetScreen(),
       );
     },
     CreateDetailSheetRoute.name: (routeData) {
       final args = routeData.argsAs<CreateDetailSheetRouteArgs>();
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i23.CreateDetailSheet(
           key: args.key,
@@ -308,14 +309,14 @@ class AppRouter extends _i38.RootStackRouter {
       );
     },
     ViewImportSheetRoute.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i24.ViewImportSheet(),
       );
     },
     PickDemoPagesRoute.name: (routeData) {
       final args = routeData.argsAs<PickDemoPagesRouteArgs>();
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i25.PickDemoPages(
           key: args.key,
@@ -325,7 +326,7 @@ class AppRouter extends _i38.RootStackRouter {
       );
     },
     SheetListScreen.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i26.SheetListScreen(),
       );
@@ -335,7 +336,7 @@ class AppRouter extends _i38.RootStackRouter {
       final args = routeData.argsAs<SheetListDetailRouteArgs>(
           orElse: () => SheetListDetailRouteArgs(
               sheetId: pathParams.getString('sheetId')));
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i27.SheetListDetail(
           key: args.key,
@@ -344,7 +345,7 @@ class AppRouter extends _i38.RootStackRouter {
       );
     },
     ProfileScreen.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i28.ProfileScreen(),
       );
@@ -354,7 +355,7 @@ class AppRouter extends _i38.RootStackRouter {
       final args = routeData.argsAs<EditProfileRouteArgs>(
           orElse: () =>
               EditProfileRouteArgs(userId: pathParams.getString('userId')));
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i29.EditProfile(
           key: args.key,
@@ -362,290 +363,308 @@ class AppRouter extends _i38.RootStackRouter {
         ),
       );
     },
-    MyAccount.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+    OtherProfileRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<OtherProfileRouteArgs>(
+          orElse: () =>
+              OtherProfileRouteArgs(userId: pathParams.getString('userId')));
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i30.MyAccount(),
+        child: _i30.OtherProfile(
+          key: args.key,
+          userId: args.userId,
+        ),
+      );
+    },
+    MyAccount.name: (routeData) {
+      return _i39.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i31.MyAccount(),
       );
     },
     ChangeEmailRoute.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i31.ChangeEmail(),
+        child: const _i32.ChangeEmail(),
       );
     },
     ChangePasswordRoute.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i32.ChangePassword(),
+        child: const _i33.ChangePassword(),
       );
     },
     BankAccount.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i33.BankAccount(),
+        child: const _i34.BankAccount(),
       );
     },
     AddPaymentMethodsRoute.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i34.AddPaymentMethods(),
+        child: const _i35.AddPaymentMethods(),
       );
     },
     AddCardRoute.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i35.AddCard(),
+        child: const _i36.AddCard(),
       );
     },
     AboutSubjectRoute.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i36.AboutSubject(),
+        child: const _i37.AboutSubject(),
       );
     },
     AboutGradeRoute.name: (routeData) {
-      return _i38.MaterialPageX<dynamic>(
+      return _i39.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i37.AboutGrade(),
+        child: const _i38.AboutGrade(),
       );
     },
   };
 
   @override
-  List<_i38.RouteConfig> get routes => [
-        _i38.RouteConfig(
+  List<_i39.RouteConfig> get routes => [
+        _i39.RouteConfig(
           MainScreen.name,
           path: '/',
           children: [
-            _i38.RouteConfig(
+            _i39.RouteConfig(
               HomeRoute.name,
               path: 'home',
               parent: MainScreen.name,
               children: [
-                _i38.RouteConfig(
+                _i39.RouteConfig(
                   HomeScreen.name,
                   path: '',
                   parent: HomeRoute.name,
                 ),
-                _i38.RouteConfig(
+                _i39.RouteConfig(
                   TestUIRoute.name,
                   path: 'test_ui',
                   parent: HomeRoute.name,
                 ),
-                _i38.RouteConfig(
+                _i39.RouteConfig(
                   SearchingSheetRoute.name,
                   path: 'searching',
                   parent: HomeRoute.name,
                 ),
-                _i38.RouteConfig(
+                _i39.RouteConfig(
                   DetailSheetRoute.name,
                   path: ':sheetId',
                   parent: HomeRoute.name,
                 ),
-                _i38.RouteConfig(
+                _i39.RouteConfig(
                   ReadSheetRoute.name,
                   path: ':sheetId/read_sheet',
                   parent: HomeRoute.name,
                 ),
-                _i38.RouteConfig(
+                _i39.RouteConfig(
                   AskQuestionRoute.name,
                   path: ':sheetId/read_sheet/ask_question',
                   parent: HomeRoute.name,
                 ),
-                _i38.RouteConfig(
+                _i39.RouteConfig(
                   CreateQuestionRoute.name,
                   path: ':sheetId/read_sheet/ask_question/create_question',
                   parent: HomeRoute.name,
                 ),
-                _i38.RouteConfig(
+                _i39.RouteConfig(
                   PickColorRoute.name,
                   path:
                       ':sheetId/read_sheet/ask_question/create_question/pick_color',
                   parent: HomeRoute.name,
                 ),
-                _i38.RouteConfig(
+                _i39.RouteConfig(
                   DetailQuestionRoute.name,
                   path: ':sheetId/read_sheet/ask_question/:questionId',
                   parent: HomeRoute.name,
                 ),
-                _i38.RouteConfig(
+                _i39.RouteConfig(
                   ReviewSheetRoute.name,
                   path: ':sheetId/review_sheet',
                   parent: HomeRoute.name,
                 ),
-                _i38.RouteConfig(
+                _i39.RouteConfig(
                   CreateReviewRoute.name,
                   path: ':sheetId/create_review',
                   parent: HomeRoute.name,
                 ),
-                _i38.RouteConfig(
+                _i39.RouteConfig(
                   EditSheetRoute.name,
                   path: ':sheetId/edit_sheet',
                   parent: HomeRoute.name,
                 ),
-                _i38.RouteConfig(
+                _i39.RouteConfig(
                   EditDemoRoute.name,
                   path: ':sheetId/edit_sheet/edit_demo',
                   parent: HomeRoute.name,
                 ),
               ],
             ),
-            _i38.RouteConfig(
+            _i39.RouteConfig(
               ActivityRoute.name,
               path: 'activity',
               parent: MainScreen.name,
               children: [
-                _i38.RouteConfig(
+                _i39.RouteConfig(
                   ActivityScreen.name,
                   path: '',
                   parent: ActivityRoute.name,
                 ),
-                _i38.RouteConfig(
+                _i39.RouteConfig(
                   AllAchievementRoute.name,
                   path: 'all_achievement',
                   parent: ActivityRoute.name,
                 ),
               ],
             ),
-            _i38.RouteConfig(
+            _i39.RouteConfig(
               CreateSheetRoute.name,
               path: 'create_sheet',
               parent: MainScreen.name,
               children: [
-                _i38.RouteConfig(
+                _i39.RouteConfig(
                   CreateSheetScreen.name,
                   path: '',
                   parent: CreateSheetRoute.name,
                 ),
-                _i38.RouteConfig(
+                _i39.RouteConfig(
                   CreateDetailSheetRoute.name,
                   path: 'create_detail_sheet',
                   parent: CreateSheetRoute.name,
                 ),
-                _i38.RouteConfig(
+                _i39.RouteConfig(
                   ViewImportSheetRoute.name,
                   path: 'view_import_sheet',
                   parent: CreateSheetRoute.name,
                 ),
-                _i38.RouteConfig(
+                _i39.RouteConfig(
                   PickDemoPagesRoute.name,
                   path: 'pick_demo_pages',
                   parent: CreateSheetRoute.name,
                 ),
               ],
             ),
-            _i38.RouteConfig(
+            _i39.RouteConfig(
               SheetListRoute.name,
               path: 'sheet_list',
               parent: MainScreen.name,
               children: [
-                _i38.RouteConfig(
+                _i39.RouteConfig(
                   SheetListScreen.name,
                   path: '',
                   parent: SheetListRoute.name,
                 ),
-                _i38.RouteConfig(
+                _i39.RouteConfig(
                   SheetListDetailRoute.name,
                   path: ':sheetId',
                   parent: SheetListRoute.name,
                 ),
               ],
             ),
-            _i38.RouteConfig(
+            _i39.RouteConfig(
               ProfileRoute.name,
               path: 'profile',
               parent: MainScreen.name,
               children: [
-                _i38.RouteConfig(
+                _i39.RouteConfig(
                   ProfileScreen.name,
                   path: '',
                   parent: ProfileRoute.name,
                 ),
-                _i38.RouteConfig(
+                _i39.RouteConfig(
                   EditProfileRoute.name,
                   path: ':userId',
+                  parent: ProfileRoute.name,
+                ),
+                _i39.RouteConfig(
+                  OtherProfileRoute.name,
+                  path: 'other_profile/:userId',
                   parent: ProfileRoute.name,
                 ),
               ],
             ),
           ],
         ),
-        _i38.RouteConfig(
+        _i39.RouteConfig(
           LoginRoute.name,
           path: '/login',
         ),
-        _i38.RouteConfig(
+        _i39.RouteConfig(
           RegisterRoute.name,
           path: '/register',
         ),
-        _i38.RouteConfig(
+        _i39.RouteConfig(
           NotificationSettingRoute.name,
           path: '/notification_setting',
         ),
-        _i38.RouteConfig(
+        _i39.RouteConfig(
           MyAccountRoute.name,
           path: '/my_account',
           children: [
-            _i38.RouteConfig(
+            _i39.RouteConfig(
               MyAccount.name,
               path: '',
               parent: MyAccountRoute.name,
             ),
-            _i38.RouteConfig(
+            _i39.RouteConfig(
               ChangeEmailRoute.name,
               path: 'change_email',
               parent: MyAccountRoute.name,
             ),
-            _i38.RouteConfig(
+            _i39.RouteConfig(
               ChangePasswordRoute.name,
               path: 'change_password',
               parent: MyAccountRoute.name,
             ),
           ],
         ),
-        _i38.RouteConfig(
+        _i39.RouteConfig(
           TopUpRoute.name,
           path: '/top_up',
         ),
-        _i38.RouteConfig(
+        _i39.RouteConfig(
           BankAccountRoute.name,
           path: '/bank_account',
           children: [
-            _i38.RouteConfig(
+            _i39.RouteConfig(
               BankAccount.name,
               path: '',
               parent: BankAccountRoute.name,
             ),
-            _i38.RouteConfig(
+            _i39.RouteConfig(
               AddPaymentMethodsRoute.name,
               path: 'add_payment_methods',
               parent: BankAccountRoute.name,
             ),
-            _i38.RouteConfig(
+            _i39.RouteConfig(
               AddCardRoute.name,
               path: 'add_payment_methods/add_card',
               parent: BankAccountRoute.name,
             ),
           ],
         ),
-        _i38.RouteConfig(
+        _i39.RouteConfig(
           FirstLoginRoute.name,
           path: '/first_login',
           children: [
-            _i38.RouteConfig(
+            _i39.RouteConfig(
               '#redirect',
               path: '',
               parent: FirstLoginRoute.name,
               redirectTo: 'about_subject',
               fullMatch: true,
             ),
-            _i38.RouteConfig(
+            _i39.RouteConfig(
               AboutSubjectRoute.name,
               path: 'about_subject',
               parent: FirstLoginRoute.name,
             ),
-            _i38.RouteConfig(
+            _i39.RouteConfig(
               AboutGradeRoute.name,
               path: 'about_grade',
               parent: FirstLoginRoute.name,
@@ -657,8 +676,8 @@ class AppRouter extends _i38.RootStackRouter {
 
 /// generated route for
 /// [_i1.MainScreen]
-class MainScreen extends _i38.PageRouteInfo<void> {
-  const MainScreen({List<_i38.PageRouteInfo>? children})
+class MainScreen extends _i39.PageRouteInfo<void> {
+  const MainScreen({List<_i39.PageRouteInfo>? children})
       : super(
           MainScreen.name,
           path: '/',
@@ -670,7 +689,7 @@ class MainScreen extends _i38.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.LoginScreen]
-class LoginRoute extends _i38.PageRouteInfo<void> {
+class LoginRoute extends _i39.PageRouteInfo<void> {
   const LoginRoute()
       : super(
           LoginRoute.name,
@@ -682,7 +701,7 @@ class LoginRoute extends _i38.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i3.RegisterScreen]
-class RegisterRoute extends _i38.PageRouteInfo<void> {
+class RegisterRoute extends _i39.PageRouteInfo<void> {
   const RegisterRoute()
       : super(
           RegisterRoute.name,
@@ -694,7 +713,7 @@ class RegisterRoute extends _i38.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i4.NotificationSetting]
-class NotificationSettingRoute extends _i38.PageRouteInfo<void> {
+class NotificationSettingRoute extends _i39.PageRouteInfo<void> {
   const NotificationSettingRoute()
       : super(
           NotificationSettingRoute.name,
@@ -706,8 +725,8 @@ class NotificationSettingRoute extends _i38.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.EmptyRouterPage]
-class MyAccountRoute extends _i38.PageRouteInfo<void> {
-  const MyAccountRoute({List<_i38.PageRouteInfo>? children})
+class MyAccountRoute extends _i39.PageRouteInfo<void> {
+  const MyAccountRoute({List<_i39.PageRouteInfo>? children})
       : super(
           MyAccountRoute.name,
           path: '/my_account',
@@ -719,7 +738,7 @@ class MyAccountRoute extends _i38.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i6.TopUp]
-class TopUpRoute extends _i38.PageRouteInfo<void> {
+class TopUpRoute extends _i39.PageRouteInfo<void> {
   const TopUpRoute()
       : super(
           TopUpRoute.name,
@@ -731,8 +750,8 @@ class TopUpRoute extends _i38.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.EmptyRouterPage]
-class BankAccountRoute extends _i38.PageRouteInfo<void> {
-  const BankAccountRoute({List<_i38.PageRouteInfo>? children})
+class BankAccountRoute extends _i39.PageRouteInfo<void> {
+  const BankAccountRoute({List<_i39.PageRouteInfo>? children})
       : super(
           BankAccountRoute.name,
           path: '/bank_account',
@@ -744,8 +763,8 @@ class BankAccountRoute extends _i38.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.EmptyRouterPage]
-class FirstLoginRoute extends _i38.PageRouteInfo<void> {
-  const FirstLoginRoute({List<_i38.PageRouteInfo>? children})
+class FirstLoginRoute extends _i39.PageRouteInfo<void> {
+  const FirstLoginRoute({List<_i39.PageRouteInfo>? children})
       : super(
           FirstLoginRoute.name,
           path: '/first_login',
@@ -757,8 +776,8 @@ class FirstLoginRoute extends _i38.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.EmptyRouterPage]
-class HomeRoute extends _i38.PageRouteInfo<void> {
-  const HomeRoute({List<_i38.PageRouteInfo>? children})
+class HomeRoute extends _i39.PageRouteInfo<void> {
+  const HomeRoute({List<_i39.PageRouteInfo>? children})
       : super(
           HomeRoute.name,
           path: 'home',
@@ -770,8 +789,8 @@ class HomeRoute extends _i38.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.EmptyRouterPage]
-class ActivityRoute extends _i38.PageRouteInfo<void> {
-  const ActivityRoute({List<_i38.PageRouteInfo>? children})
+class ActivityRoute extends _i39.PageRouteInfo<void> {
+  const ActivityRoute({List<_i39.PageRouteInfo>? children})
       : super(
           ActivityRoute.name,
           path: 'activity',
@@ -783,8 +802,8 @@ class ActivityRoute extends _i38.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.EmptyRouterPage]
-class CreateSheetRoute extends _i38.PageRouteInfo<void> {
-  const CreateSheetRoute({List<_i38.PageRouteInfo>? children})
+class CreateSheetRoute extends _i39.PageRouteInfo<void> {
+  const CreateSheetRoute({List<_i39.PageRouteInfo>? children})
       : super(
           CreateSheetRoute.name,
           path: 'create_sheet',
@@ -796,8 +815,8 @@ class CreateSheetRoute extends _i38.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.EmptyRouterPage]
-class SheetListRoute extends _i38.PageRouteInfo<void> {
-  const SheetListRoute({List<_i38.PageRouteInfo>? children})
+class SheetListRoute extends _i39.PageRouteInfo<void> {
+  const SheetListRoute({List<_i39.PageRouteInfo>? children})
       : super(
           SheetListRoute.name,
           path: 'sheet_list',
@@ -809,8 +828,8 @@ class SheetListRoute extends _i38.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.EmptyRouterPage]
-class ProfileRoute extends _i38.PageRouteInfo<void> {
-  const ProfileRoute({List<_i38.PageRouteInfo>? children})
+class ProfileRoute extends _i39.PageRouteInfo<void> {
+  const ProfileRoute({List<_i39.PageRouteInfo>? children})
       : super(
           ProfileRoute.name,
           path: 'profile',
@@ -822,7 +841,7 @@ class ProfileRoute extends _i38.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i7.HomeScreen]
-class HomeScreen extends _i38.PageRouteInfo<void> {
+class HomeScreen extends _i39.PageRouteInfo<void> {
   const HomeScreen()
       : super(
           HomeScreen.name,
@@ -834,7 +853,7 @@ class HomeScreen extends _i38.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i8.TestUIPage]
-class TestUIRoute extends _i38.PageRouteInfo<void> {
+class TestUIRoute extends _i39.PageRouteInfo<void> {
   const TestUIRoute()
       : super(
           TestUIRoute.name,
@@ -846,7 +865,7 @@ class TestUIRoute extends _i38.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i9.SearchingSheet]
-class SearchingSheetRoute extends _i38.PageRouteInfo<void> {
+class SearchingSheetRoute extends _i39.PageRouteInfo<void> {
   const SearchingSheetRoute()
       : super(
           SearchingSheetRoute.name,
@@ -858,9 +877,9 @@ class SearchingSheetRoute extends _i38.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i10.DetailSheet]
-class DetailSheetRoute extends _i38.PageRouteInfo<DetailSheetRouteArgs> {
+class DetailSheetRoute extends _i39.PageRouteInfo<DetailSheetRouteArgs> {
   DetailSheetRoute({
-    _i39.Key? key,
+    _i40.Key? key,
     required String sheetId,
   }) : super(
           DetailSheetRoute.name,
@@ -881,7 +900,7 @@ class DetailSheetRouteArgs {
     required this.sheetId,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
   final String sheetId;
 
@@ -893,9 +912,9 @@ class DetailSheetRouteArgs {
 
 /// generated route for
 /// [_i11.ReadSheet]
-class ReadSheetRoute extends _i38.PageRouteInfo<ReadSheetRouteArgs> {
+class ReadSheetRoute extends _i39.PageRouteInfo<ReadSheetRouteArgs> {
   ReadSheetRoute({
-    _i39.Key? key,
+    _i40.Key? key,
     required String sheetId,
     required String sheetTitle,
   }) : super(
@@ -919,7 +938,7 @@ class ReadSheetRouteArgs {
     required this.sheetTitle,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
   final String sheetId;
 
@@ -933,9 +952,9 @@ class ReadSheetRouteArgs {
 
 /// generated route for
 /// [_i12.AskQuestion]
-class AskQuestionRoute extends _i38.PageRouteInfo<AskQuestionRouteArgs> {
+class AskQuestionRoute extends _i39.PageRouteInfo<AskQuestionRouteArgs> {
   AskQuestionRoute({
-    _i39.Key? key,
+    _i40.Key? key,
     required String sheetId,
     required int askingPage,
   }) : super(
@@ -959,7 +978,7 @@ class AskQuestionRouteArgs {
     required this.askingPage,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
   final String sheetId;
 
@@ -973,9 +992,9 @@ class AskQuestionRouteArgs {
 
 /// generated route for
 /// [_i13.CreateQuestion]
-class CreateQuestionRoute extends _i38.PageRouteInfo<CreateQuestionRouteArgs> {
+class CreateQuestionRoute extends _i39.PageRouteInfo<CreateQuestionRouteArgs> {
   CreateQuestionRoute({
-    _i39.Key? key,
+    _i40.Key? key,
     required String sheetId,
     required int askingPage,
   }) : super(
@@ -998,7 +1017,7 @@ class CreateQuestionRouteArgs {
     required this.askingPage,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
   final String sheetId;
 
@@ -1012,11 +1031,11 @@ class CreateQuestionRouteArgs {
 
 /// generated route for
 /// [_i14.ColorPickerPage]
-class PickColorRoute extends _i38.PageRouteInfo<PickColorRouteArgs> {
+class PickColorRoute extends _i39.PageRouteInfo<PickColorRouteArgs> {
   PickColorRoute({
-    _i39.Key? key,
-    required _i40.Color pickedColor,
-    required _i41.PainterController controller,
+    _i40.Key? key,
+    required _i41.Color pickedColor,
+    required _i42.PainterController controller,
   }) : super(
           PickColorRoute.name,
           path: ':sheetId/read_sheet/ask_question/create_question/pick_color',
@@ -1037,11 +1056,11 @@ class PickColorRouteArgs {
     required this.controller,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
-  final _i40.Color pickedColor;
+  final _i41.Color pickedColor;
 
-  final _i41.PainterController controller;
+  final _i42.PainterController controller;
 
   @override
   String toString() {
@@ -1051,9 +1070,9 @@ class PickColorRouteArgs {
 
 /// generated route for
 /// [_i15.DetailQuestion]
-class DetailQuestionRoute extends _i38.PageRouteInfo<DetailQuestionRouteArgs> {
+class DetailQuestionRoute extends _i39.PageRouteInfo<DetailQuestionRouteArgs> {
   DetailQuestionRoute({
-    _i39.Key? key,
+    _i40.Key? key,
     required String sheetId,
     required String questionId,
     required int askingPage,
@@ -1083,7 +1102,7 @@ class DetailQuestionRouteArgs {
     required this.askingPage,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
   final String sheetId;
 
@@ -1099,9 +1118,9 @@ class DetailQuestionRouteArgs {
 
 /// generated route for
 /// [_i16.ReviewSheet]
-class ReviewSheetRoute extends _i38.PageRouteInfo<ReviewSheetRouteArgs> {
+class ReviewSheetRoute extends _i39.PageRouteInfo<ReviewSheetRouteArgs> {
   ReviewSheetRoute({
-    _i39.Key? key,
+    _i40.Key? key,
     required String sheetId,
   }) : super(
           ReviewSheetRoute.name,
@@ -1122,7 +1141,7 @@ class ReviewSheetRouteArgs {
     required this.sheetId,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
   final String sheetId;
 
@@ -1134,9 +1153,9 @@ class ReviewSheetRouteArgs {
 
 /// generated route for
 /// [_i17.CreateReview]
-class CreateReviewRoute extends _i38.PageRouteInfo<CreateReviewRouteArgs> {
+class CreateReviewRoute extends _i39.PageRouteInfo<CreateReviewRouteArgs> {
   CreateReviewRoute({
-    _i39.Key? key,
+    _i40.Key? key,
     required String sheetId,
   }) : super(
           CreateReviewRoute.name,
@@ -1157,7 +1176,7 @@ class CreateReviewRouteArgs {
     required this.sheetId,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
   final String sheetId;
 
@@ -1169,9 +1188,9 @@ class CreateReviewRouteArgs {
 
 /// generated route for
 /// [_i18.EditSheet]
-class EditSheetRoute extends _i38.PageRouteInfo<EditSheetRouteArgs> {
+class EditSheetRoute extends _i39.PageRouteInfo<EditSheetRouteArgs> {
   EditSheetRoute({
-    _i39.Key? key,
+    _i40.Key? key,
     required String sheetId,
   }) : super(
           EditSheetRoute.name,
@@ -1192,7 +1211,7 @@ class EditSheetRouteArgs {
     required this.sheetId,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
   final String sheetId;
 
@@ -1204,9 +1223,9 @@ class EditSheetRouteArgs {
 
 /// generated route for
 /// [_i19.EditDemo]
-class EditDemoRoute extends _i38.PageRouteInfo<EditDemoRouteArgs> {
+class EditDemoRoute extends _i39.PageRouteInfo<EditDemoRouteArgs> {
   EditDemoRoute({
-    _i39.Key? key,
+    _i40.Key? key,
     required String sheetId,
   }) : super(
           EditDemoRoute.name,
@@ -1227,7 +1246,7 @@ class EditDemoRouteArgs {
     required this.sheetId,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
   final String sheetId;
 
@@ -1239,7 +1258,7 @@ class EditDemoRouteArgs {
 
 /// generated route for
 /// [_i20.ActivityScreen]
-class ActivityScreen extends _i38.PageRouteInfo<void> {
+class ActivityScreen extends _i39.PageRouteInfo<void> {
   const ActivityScreen()
       : super(
           ActivityScreen.name,
@@ -1251,7 +1270,7 @@ class ActivityScreen extends _i38.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i21.AllAchievement]
-class AllAchievementRoute extends _i38.PageRouteInfo<void> {
+class AllAchievementRoute extends _i39.PageRouteInfo<void> {
   const AllAchievementRoute()
       : super(
           AllAchievementRoute.name,
@@ -1263,7 +1282,7 @@ class AllAchievementRoute extends _i38.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i22.CreateSheetScreen]
-class CreateSheetScreen extends _i38.PageRouteInfo<void> {
+class CreateSheetScreen extends _i39.PageRouteInfo<void> {
   const CreateSheetScreen()
       : super(
           CreateSheetScreen.name,
@@ -1276,9 +1295,9 @@ class CreateSheetScreen extends _i38.PageRouteInfo<void> {
 /// generated route for
 /// [_i23.CreateDetailSheet]
 class CreateDetailSheetRoute
-    extends _i38.PageRouteInfo<CreateDetailSheetRouteArgs> {
+    extends _i39.PageRouteInfo<CreateDetailSheetRouteArgs> {
   CreateDetailSheetRoute({
-    _i39.Key? key,
+    _i40.Key? key,
     required List<int> demoPages,
   }) : super(
           CreateDetailSheetRoute.name,
@@ -1298,7 +1317,7 @@ class CreateDetailSheetRouteArgs {
     required this.demoPages,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
   final List<int> demoPages;
 
@@ -1310,7 +1329,7 @@ class CreateDetailSheetRouteArgs {
 
 /// generated route for
 /// [_i24.ViewImportSheet]
-class ViewImportSheetRoute extends _i38.PageRouteInfo<void> {
+class ViewImportSheetRoute extends _i39.PageRouteInfo<void> {
   const ViewImportSheetRoute()
       : super(
           ViewImportSheetRoute.name,
@@ -1322,10 +1341,10 @@ class ViewImportSheetRoute extends _i38.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i25.PickDemoPages]
-class PickDemoPagesRoute extends _i38.PageRouteInfo<PickDemoPagesRouteArgs> {
+class PickDemoPagesRoute extends _i39.PageRouteInfo<PickDemoPagesRouteArgs> {
   PickDemoPagesRoute({
-    _i39.Key? key,
-    required _i42.PdfDocument doc,
+    _i40.Key? key,
+    required _i43.PdfDocument doc,
     required int pagesNumber,
   }) : super(
           PickDemoPagesRoute.name,
@@ -1347,9 +1366,9 @@ class PickDemoPagesRouteArgs {
     required this.pagesNumber,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
-  final _i42.PdfDocument doc;
+  final _i43.PdfDocument doc;
 
   final int pagesNumber;
 
@@ -1361,7 +1380,7 @@ class PickDemoPagesRouteArgs {
 
 /// generated route for
 /// [_i26.SheetListScreen]
-class SheetListScreen extends _i38.PageRouteInfo<void> {
+class SheetListScreen extends _i39.PageRouteInfo<void> {
   const SheetListScreen()
       : super(
           SheetListScreen.name,
@@ -1374,9 +1393,9 @@ class SheetListScreen extends _i38.PageRouteInfo<void> {
 /// generated route for
 /// [_i27.SheetListDetail]
 class SheetListDetailRoute
-    extends _i38.PageRouteInfo<SheetListDetailRouteArgs> {
+    extends _i39.PageRouteInfo<SheetListDetailRouteArgs> {
   SheetListDetailRoute({
-    _i39.Key? key,
+    _i40.Key? key,
     required String sheetId,
   }) : super(
           SheetListDetailRoute.name,
@@ -1397,7 +1416,7 @@ class SheetListDetailRouteArgs {
     required this.sheetId,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
   final String sheetId;
 
@@ -1409,7 +1428,7 @@ class SheetListDetailRouteArgs {
 
 /// generated route for
 /// [_i28.ProfileScreen]
-class ProfileScreen extends _i38.PageRouteInfo<void> {
+class ProfileScreen extends _i39.PageRouteInfo<void> {
   const ProfileScreen()
       : super(
           ProfileScreen.name,
@@ -1421,9 +1440,9 @@ class ProfileScreen extends _i38.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i29.EditProfile]
-class EditProfileRoute extends _i38.PageRouteInfo<EditProfileRouteArgs> {
+class EditProfileRoute extends _i39.PageRouteInfo<EditProfileRouteArgs> {
   EditProfileRoute({
-    _i39.Key? key,
+    _i40.Key? key,
     required String userId,
   }) : super(
           EditProfileRoute.name,
@@ -1444,7 +1463,7 @@ class EditProfileRouteArgs {
     required this.userId,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
   final String userId;
 
@@ -1455,8 +1474,43 @@ class EditProfileRouteArgs {
 }
 
 /// generated route for
-/// [_i30.MyAccount]
-class MyAccount extends _i38.PageRouteInfo<void> {
+/// [_i30.OtherProfile]
+class OtherProfileRoute extends _i39.PageRouteInfo<OtherProfileRouteArgs> {
+  OtherProfileRoute({
+    _i40.Key? key,
+    required String userId,
+  }) : super(
+          OtherProfileRoute.name,
+          path: 'other_profile/:userId',
+          args: OtherProfileRouteArgs(
+            key: key,
+            userId: userId,
+          ),
+          rawPathParams: {'userId': userId},
+        );
+
+  static const String name = 'OtherProfileRoute';
+}
+
+class OtherProfileRouteArgs {
+  const OtherProfileRouteArgs({
+    this.key,
+    required this.userId,
+  });
+
+  final _i40.Key? key;
+
+  final String userId;
+
+  @override
+  String toString() {
+    return 'OtherProfileRouteArgs{key: $key, userId: $userId}';
+  }
+}
+
+/// generated route for
+/// [_i31.MyAccount]
+class MyAccount extends _i39.PageRouteInfo<void> {
   const MyAccount()
       : super(
           MyAccount.name,
@@ -1467,8 +1521,8 @@ class MyAccount extends _i38.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i31.ChangeEmail]
-class ChangeEmailRoute extends _i38.PageRouteInfo<void> {
+/// [_i32.ChangeEmail]
+class ChangeEmailRoute extends _i39.PageRouteInfo<void> {
   const ChangeEmailRoute()
       : super(
           ChangeEmailRoute.name,
@@ -1479,8 +1533,8 @@ class ChangeEmailRoute extends _i38.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i32.ChangePassword]
-class ChangePasswordRoute extends _i38.PageRouteInfo<void> {
+/// [_i33.ChangePassword]
+class ChangePasswordRoute extends _i39.PageRouteInfo<void> {
   const ChangePasswordRoute()
       : super(
           ChangePasswordRoute.name,
@@ -1491,8 +1545,8 @@ class ChangePasswordRoute extends _i38.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i33.BankAccount]
-class BankAccount extends _i38.PageRouteInfo<void> {
+/// [_i34.BankAccount]
+class BankAccount extends _i39.PageRouteInfo<void> {
   const BankAccount()
       : super(
           BankAccount.name,
@@ -1503,8 +1557,8 @@ class BankAccount extends _i38.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i34.AddPaymentMethods]
-class AddPaymentMethodsRoute extends _i38.PageRouteInfo<void> {
+/// [_i35.AddPaymentMethods]
+class AddPaymentMethodsRoute extends _i39.PageRouteInfo<void> {
   const AddPaymentMethodsRoute()
       : super(
           AddPaymentMethodsRoute.name,
@@ -1515,8 +1569,8 @@ class AddPaymentMethodsRoute extends _i38.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i35.AddCard]
-class AddCardRoute extends _i38.PageRouteInfo<void> {
+/// [_i36.AddCard]
+class AddCardRoute extends _i39.PageRouteInfo<void> {
   const AddCardRoute()
       : super(
           AddCardRoute.name,
@@ -1527,8 +1581,8 @@ class AddCardRoute extends _i38.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i36.AboutSubject]
-class AboutSubjectRoute extends _i38.PageRouteInfo<void> {
+/// [_i37.AboutSubject]
+class AboutSubjectRoute extends _i39.PageRouteInfo<void> {
   const AboutSubjectRoute()
       : super(
           AboutSubjectRoute.name,
@@ -1539,8 +1593,8 @@ class AboutSubjectRoute extends _i38.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i37.AboutGrade]
-class AboutGradeRoute extends _i38.PageRouteInfo<void> {
+/// [_i38.AboutGrade]
+class AboutGradeRoute extends _i39.PageRouteInfo<void> {
   const AboutGradeRoute()
       : super(
           AboutGradeRoute.name,
