@@ -18,6 +18,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebaseStorage;
+import 'package:search_choices/search_choices.dart';
 
 import '../../model/sheet.dart';
 import '../../res/colors.dart';
@@ -193,75 +194,75 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                         padding: EdgeInsets.only(left: screenHeight * 0.024, top: isPortrait ? screenHeight * 0.02 : screenHeight * 0.04),
                         alignment: Alignment.centerLeft,
                         child: const Medium16px(text: 'แท็ก')),
-                    Padding(
-                      padding: EdgeInsets.only(left: screenHeight * 0.024),
-                      child: GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: isPortrait ? 3 : 5,
-                          crossAxisSpacing: 1,
-                          mainAxisSpacing: 1,
-                          mainAxisExtent: isPortrait ? 50 : 250,
-                        ),
-                        itemCount: selectedTag.length,
-                        itemBuilder: (context, index) {
-                          return Tag(
-                            subject: selectedTag[index],
-                            onPressed: () {},
-                          );
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      height: screenHeight * 0.04,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: screenHeight * 0.024, right: screenHeight * 0.2),
-                      child: TextField(
-                        controller: _tagController,
-                        cursorColor: AppColors.black900,
-                        decoration: InputDecoration(
-                          isDense: true,
-                          border: InputBorder.none,
-                          fillColor: AppColors.black200,
-                          filled: true,
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(width: 1, color: AppColors.primary800)),
-                          hintText: 'เพิ่ม/ค้นหาแท็ก',
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(width: 1, color: AppColors.primary800)),
-                          hintStyle: const TextStyle(color: AppColors.black400, fontSize: 18),
-                          suffixIcon: InkWell(
-                            child: Icon(
-                              Icons.add,
-                              color: AppColors.secondary500,
-                            ),
-                            onTap: () => print("add tag"),
-                          ),
-                        ),
-                        onChanged: (value) {
-                          _onTagChanged();
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      height: 200,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: _resultList.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Tag(
-                            subject: _resultList[index]['subject'] ?? "",
-                            onPressed: () {
-                              selectedTag.add(_resultList[index]['subject']);
-                              setState(() {});
-                              print(selectedTag);
-                            },
-                          );
-                        },
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: EdgeInsets.only(left: screenHeight * 0.024),
+                    //   child: GridView.builder(
+                    //     physics: const NeverScrollableScrollPhysics(),
+                    //     shrinkWrap: true,
+                    //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    //       crossAxisCount: isPortrait ? 3 : 5,
+                    //       crossAxisSpacing: 1,
+                    //       mainAxisSpacing: 1,
+                    //       mainAxisExtent: isPortrait ? 50 : 250,
+                    //     ),
+                    //     itemCount: selectedTag.length,
+                    //     itemBuilder: (context, index) {
+                    //       return Tag(
+                    //         subject: selectedTag[index],
+                    //         onPressed: () {},
+                    //       );
+                    //     },
+                    //   ),
+                    // ),
+                    // SizedBox(
+                    //   height: screenHeight * 0.04,
+                    // ),
+                    // Padding(
+                    //   padding: EdgeInsets.only(left: screenHeight * 0.024, right: screenHeight * 0.2),
+                    //   child: TextField(
+                    //     controller: _tagController,
+                    //     cursorColor: AppColors.black900,
+                    //     decoration: InputDecoration(
+                    //       isDense: true,
+                    //       border: InputBorder.none,
+                    //       fillColor: AppColors.black200,
+                    //       filled: true,
+                    //       enabledBorder: OutlineInputBorder(
+                    //           borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(width: 1, color: AppColors.primary800)),
+                    //       hintText: 'เพิ่ม/ค้นหาแท็ก',
+                    //       focusedBorder: OutlineInputBorder(
+                    //           borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(width: 1, color: AppColors.primary800)),
+                    //       hintStyle: const TextStyle(color: AppColors.black400, fontSize: 18),
+                    //       suffixIcon: InkWell(
+                    //         child: Icon(
+                    //           Icons.add,
+                    //           color: AppColors.secondary500,
+                    //         ),
+                    //         onTap: () => print("add tag"),
+                    //       ),
+                    //     ),
+                    //     onChanged: (value) {
+                    //       _onTagChanged();
+                    //     },
+                    //   ),
+                    // ),
+                    // SizedBox(
+                    //   height: 200,
+                    //   child: ListView.builder(
+                    //     shrinkWrap: true,
+                    //     itemCount: _resultList.length,
+                    //     itemBuilder: (BuildContext context, int index) {
+                    //       return Tag(
+                    //         subject: _resultList[index]['subject'] ?? "",
+                    //         onPressed: () {
+                    //           selectedTag.add(_resultList[index]['subject']);
+                    //           setState(() {});
+                    //           print(selectedTag);
+                    //         },
+                    //       );
+                    //     },
+                    //   ),
+                    // ),
                     Container(
                         margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
                         padding: EdgeInsets.only(left: screenHeight * 0.024, top: screenHeight * 0.02),
