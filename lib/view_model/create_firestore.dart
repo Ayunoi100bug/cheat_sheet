@@ -38,6 +38,7 @@ class CreateCollection {
     final String url = await storageRef.getDownloadURL();
     await _firestore.collection("users").doc(argUid).set({
       'timestamp': myUser.timestamp,
+      'lastDayLogin': myUser.lastDayLogin,
       'username': argUsername.toString().trim(),
       'email': argEmail.toString().trim(),
       'uid': argUid.toString().trim(),
@@ -45,6 +46,13 @@ class CreateCollection {
       'follower': myUser.follower,
       'following': myUser.following,
       'coin': myUser.coin,
+      'trackingAsk': myUser.trackingAsk,
+      'trackingBuySheet': myUser.trackingBuySheet,
+      'trackingCreateSheetList': myUser.trackingCreateSheetList,
+      'trackingLike': myUser.trackingLike,
+      'trackingLogin': myUser.trackingLogin,
+      'trackingReadSheet': myUser.trackingReadSheet,
+      'trackingReview': myUser.trackingReview,
       'sheetLists': myUser.sheetLists,
       'buyedSheet': myUser.buyedSheet,
     });
@@ -59,6 +67,7 @@ class CreateCollection {
       String? firstName = cutName?[0];
       await _firestore.collection("users").doc(currentuser?.uid).set({
         'timestamp': myUser.timestamp,
+        'lastDayLogin': myUser.lastDayLogin,
         'username': firstName,
         'email': currentuser?.email,
         'uid': currentuser?.uid,
@@ -66,6 +75,13 @@ class CreateCollection {
         'follower': myUser.follower,
         'following': myUser.following,
         'coin': myUser.coin,
+        'trackingAsk': myUser.trackingAsk,
+        'trackingBuySheet': myUser.trackingBuySheet,
+        'trackingCreateSheetList': myUser.trackingCreateSheetList,
+        'trackingLike': myUser.trackingLike,
+        'trackingLogin': myUser.trackingLogin,
+        'trackingReadSheet': myUser.trackingReadSheet,
+        'trackingReview': myUser.trackingReview,
         'sheetLists': myUser.sheetLists,
         'buyedSheet': myUser.buyedSheet,
       });
@@ -83,6 +99,7 @@ class CreateCollection {
       String profileImage = userData['picture']['data']['url'];
       await _firestore.collection("users").doc(currentuser?.uid).set({
         'timestamp': myUser.timestamp,
+        'lastDayLogin': myUser.lastDayLogin,
         'username': firstName,
         'email': currentuser?.email,
         'uid': currentuser?.uid,
@@ -90,6 +107,13 @@ class CreateCollection {
         'follower': myUser.follower,
         'following': myUser.following,
         'coin': myUser.coin,
+        'trackingAsk': myUser.trackingAsk,
+        'trackingBuySheet': myUser.trackingBuySheet,
+        'trackingCreateSheetList': myUser.trackingCreateSheetList,
+        'trackingLike': myUser.trackingLike,
+        'trackingLogin': myUser.trackingLogin,
+        'trackingReadSheet': myUser.trackingReadSheet,
+        'trackingReview': myUser.trackingReview,
         'sheetLists': myUser.sheetLists,
         'buyedSheet': myUser.buyedSheet,
       });

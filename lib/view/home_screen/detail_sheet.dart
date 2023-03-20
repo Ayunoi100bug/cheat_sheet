@@ -275,10 +275,15 @@ class _DetailSheetState extends State<DetailSheet> {
                                           Wrap(
                                             spacing: 10,
                                             children: [
-                                              Icon(
-                                                Icons.favorite_outline,
-                                                color: AppColors.black600,
-                                                size: isPortrait ? 32 : 36,
+                                              InkWell(
+                                                child: Icon(
+                                                  Icons.favorite_outline,
+                                                  color: AppColors.black600,
+                                                  size: isPortrait ? 32 : 36,
+                                                ),
+                                                onTap: () {
+                                                  UpdateCollection().achievement(context, 'trackingLike');
+                                                },
                                               ),
                                               InkWell(
                                                 child: Icon(
