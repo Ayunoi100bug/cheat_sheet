@@ -15,12 +15,17 @@ import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebaseStorage;
 
 import '../../model/sheet.dart';
+import '../../res/colors.dart';
 import '../../res/components/flushbar.dart';
 import '../../res/components/flushbar_icon.dart';
+import '../../res/components/popup_create_tag.dart';
+import '../../res/components/tag.dart';
+//import 'package:search_choices/search_choices.dart';
 
 class CreateDetailSheet extends StatefulWidget {
   final List<int> demoPages;
@@ -33,11 +38,73 @@ class CreateDetailSheet extends StatefulWidget {
 enum SheetType { free, sell }
 
 class _CreateDetailSheetState extends State<CreateDetailSheet> {
+  final _firestore = FirebaseFirestore.instance;
+  final TextEditingController _tagController = TextEditingController();
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetCoverImage: '', demoPages: [], sheetTypeFree: true, price: 0, authorId: '');
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   CreateCollection myCollection = CreateCollection();
   SheetType? _sheetType = SheetType.free;
+  late Future resultLoaded;
+  List _tagResult = [];
+  List _resultList = [];
+  List _dataList = [];
+  List _tagList = [];
+  List selectedTag = [];
+
+  @override
+  void dispose() {
+    _tagController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    resultLoaded = getTagSnapshot();
+  }
+
+  _onTagChanged() {
+    tagResultsList();
+  }
+
+  tagResultsList() {
+    var tagResult = [];
+
+    if (_tagController.text != "") {
+      for (var tagSnapshot in _tagResult) {
+        var tagSubject = tagSnapshot['subject'].toLowerCase();
+        if (tagSubject.contains(_tagController.text.toLowerCase())) {
+          tagResult.add(tagSnapshot);
+        }
+      }
+    } else {
+      tagResult = List.from(_tagResult);
+    }
+    setState(
+      () {
+        _resultList = [];
+        _dataList = [];
+        _tagList = tagResult;
+
+        for (int i = 0; i < _tagList.length; i++) {
+          _resultList.add(_tagList[i]);
+          _dataList.add(_tagList[i]);
+        }
+      },
+    );
+  }
+
+  getTagSnapshot() async {
+    var tagData = await _firestore.collection('tag').get();
+    setState(
+      () {
+        _tagResult = tagData.docs.map((doc) => doc.data()).toList();
+      },
+    );
+    tagResultsList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,23 +193,74 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                         padding: EdgeInsets.only(left: screenHeight * 0.024, top: isPortrait ? screenHeight * 0.02 : screenHeight * 0.04),
                         alignment: Alignment.centerLeft,
                         child: const Medium16px(text: 'แท็ก')),
-                    Row(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            margin: EdgeInsets.only(left: isPortrait ? screenHeight * 0.024 : screenWidth * 0.2, top: screenHeight * 0.01),
-                            width: isPortrait ? screenWidth * 0.2 : screenWidth * 0.1,
-                            height: isPortrait ? screenHeight * 0.05 : screenHeight * 0.1,
-                            child: DottedBorder(
-                              borderType: BorderType.RRect,
-                              radius: const Radius.circular(30),
-                              child: const Align(alignment: Alignment.center, child: Icon(FontAwesomeIcons.plus)),
-                              dashPattern: [10, 10],
+                    Padding(
+                      padding: EdgeInsets.only(left: screenHeight * 0.024),
+                      child: GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: isPortrait ? 3 : 5,
+                          crossAxisSpacing: 1,
+                          mainAxisSpacing: 1,
+                          mainAxisExtent: isPortrait ? 50 : 250,
+                        ),
+                        itemCount: selectedTag.length,
+                        itemBuilder: (context, index) {
+                          return Tag(
+                            subject: selectedTag[index],
+                            onPressed: () {},
+                          );
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: screenHeight * 0.04,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: screenHeight * 0.024, right: screenHeight * 0.2),
+                      child: TextField(
+                        controller: _tagController,
+                        cursorColor: AppColors.black900,
+                        decoration: InputDecoration(
+                          isDense: true,
+                          border: InputBorder.none,
+                          fillColor: AppColors.black200,
+                          filled: true,
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(width: 1, color: AppColors.primary800)),
+                          hintText: 'เพิ่ม/ค้นหาแท็ก',
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(width: 1, color: AppColors.primary800)),
+                          hintStyle: const TextStyle(color: AppColors.black400, fontSize: 18),
+                          suffixIcon: InkWell(
+                            child: Icon(
+                              Icons.add,
+                              color: AppColors.secondary500,
                             ),
+                            onTap: () => print("add tag"),
                           ),
                         ),
-                      ],
+                        onChanged: (value) {
+                          _onTagChanged();
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 200,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: _resultList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Tag(
+                            subject: _resultList[index]['subject'] ?? "",
+                            onPressed: () {
+                              selectedTag.add(_resultList[index]['subject']);
+                              setState(() {});
+                              print(selectedTag);
+                            },
+                          );
+                        },
+                      ),
                     ),
                     Container(
                         margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
