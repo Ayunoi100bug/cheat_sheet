@@ -88,7 +88,7 @@ Widget Popup_DeleteAllSheet(BuildContext context) {
                 Navigator.pop(context);
               }),
           PrimaryButton(
-            text: 'ลบชีท',
+            text: 'ยืนยัน',
             onPressed: () {
               DeleteCollection().deleteAllSheet(context);
             },
