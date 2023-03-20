@@ -134,7 +134,7 @@ class _CreateQuestionState extends State<CreateQuestion> {
                         PictureDetails image = _controller.finish();
                         _formKey.currentState!.save();
                         try {
-                          firebaseStorage.UploadTask? task = await ImageApi.uploadToFirebase(image, questionId);
+                          firebaseStorage.UploadTask? task = await ImageApi().uploadToFirebase(image, questionId);
                           task!.whenComplete(() {
                             myCollection
                                 .createQuestionCollection(

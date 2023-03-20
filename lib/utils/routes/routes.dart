@@ -23,6 +23,7 @@ import 'package:cheat_sheet/view/main_screen.dart';
 import 'package:cheat_sheet/view/home_screen/home_screen.dart';
 import 'package:cheat_sheet/view/activity_screen/activity_screen.dart';
 import 'package:cheat_sheet/view/profile_screen/edit_profile.dart';
+import 'package:cheat_sheet/view/profile_screen/other_profile.dart';
 import 'package:cheat_sheet/view/profile_screen/profile_screen.dart';
 import 'package:cheat_sheet/view/register.dart';
 import 'package:cheat_sheet/view/sheet_list_screen/sheet_list_detail.dart';
@@ -71,6 +72,7 @@ import 'package:cheat_sheet/view/test_ui_book.dart';
       AutoRoute(path: 'profile', name: 'ProfileRoute', page: EmptyRouterPage, children: [
         AutoRoute(path: '', page: ProfileScreen),
         AutoRoute(path: ':userId', name: 'EditProfileRoute', page: EditProfile),
+        AutoRoute(path: 'other_profile/:userId', name: 'OtherProfileRoute', page: OtherProfile),
       ]),
     ],
   ),
@@ -92,8 +94,17 @@ import 'package:cheat_sheet/view/test_ui_book.dart';
   ]),
   AutoRoute(path: '/top_up', name: 'TopUpRoute', page: TopUp),
   AutoRoute(path: '/first_login', name: 'FirstLoginRoute', page: EmptyRouterPage, children: [
-    AutoRoute(path: 'about_subject', name: 'AboutSubjectRoute', page: AboutSubject, initial: true),
-    AutoRoute(path: 'about_grade', name: 'AboutGradeRoute', page: AboutGrade),
+    AutoRoute(
+      path: 'about_subject',
+      name: 'AboutSubjectRoute',
+      page: AboutSubject,
+    ),
+    AutoRoute(
+      path: 'about_grade',
+      name: 'AboutGradeRoute',
+      page: AboutGrade,
+      initial: true,
+    ),
   ]),
 ])
 class $AppRouter {}

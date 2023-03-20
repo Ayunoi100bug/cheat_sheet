@@ -3,7 +3,8 @@ import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:flutter/material.dart';
 
 class AboutSubject extends StatefulWidget {
-  const AboutSubject({super.key});
+  final String grade;
+  const AboutSubject({super.key, required this.grade});
 
   @override
   State<AboutSubject> createState() => _AboutSubjectState();
