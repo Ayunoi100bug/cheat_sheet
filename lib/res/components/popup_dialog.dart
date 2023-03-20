@@ -275,7 +275,7 @@ Widget Popup_DeleteSheetList(BuildContext context, String sheetListId) {
         children: [
           OutlineButton(text: 'ยกเลิก', onPressed: () {}),
           PrimaryButton(
-            text: 'ลบชีทลิสต์',
+            text: 'ยืนยัน',
             onPressed: () {
               Navigator.of(context).pop();
               AutoRouter.of(context).navigateNamed('/sheet_list');

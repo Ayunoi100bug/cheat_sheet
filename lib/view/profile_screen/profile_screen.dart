@@ -44,7 +44,7 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
 
   @override
   void initState() {
-    tabController = TabController(length: 2, vsync: this);
+    tabController = TabController(length: 1, vsync: this);
     super.initState();
   }
 
@@ -82,123 +82,94 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                 Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
                 return Scaffold(
                   body: SafeArea(
-                    child: DefaultTabController(
-                      length: 2,
-                      child: NestedScrollView(
-                        scrollDirection: Axis.vertical,
-                        headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                          SliverToBoxAdapter(
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  width: double.infinity,
-                                  height: screenWidth < 480 ? screenHeight * GapDimension.h0_18 : screenHeight * GapDimension.h0_36,
-                                  child: LayoutBuilder(
-                                    builder: (context, constraints) {
-                                      return Row(
-                                        children: <Widget>[
-                                          SizedBox(
-                                            width: constraints.maxWidth * GapDimension.w0_4,
-                                            height: double.infinity,
-                                            child: Padding(
-                                              padding: EdgeInsets.all(constraints.maxHeight * GapDimension.h0_12),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                    image: CachedNetworkImageProvider(data['profileImage']),
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                  shape: BoxShape.circle,
-                                                  color: AppColors.black300,
-                                                ),
-                                                child: CircleAvatar(
-                                                  backgroundImage: CachedNetworkImageProvider(data['profileImage']),
-                                                  radius: 100,
-                                                ),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          height: screenWidth < 480 ? screenHeight * GapDimension.h0_18 : screenHeight * GapDimension.h0_36,
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              return Row(
+                                children: <Widget>[
+                                  SizedBox(
+                                    width: constraints.maxWidth * GapDimension.w0_4,
+                                    height: double.infinity,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(constraints.maxHeight * GapDimension.h0_12),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: CachedNetworkImageProvider(data['profileImage']),
+                                            fit: BoxFit.cover,
+                                          ),
+                                          shape: BoxShape.circle,
+                                          color: AppColors.black300,
+                                        ),
+                                        child: CircleAvatar(
+                                          backgroundImage: CachedNetworkImageProvider(data['profileImage']),
+                                          radius: 100,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Column(
+                                    children: <Widget>[
+                                      SizedBox(
+                                        height: constraints.maxHeight * GapDimension.h0_5,
+                                        width: constraints.maxWidth * GapDimension.w0_6,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Medium24px(text: data['username']),
+                                            IconButton(
+                                              icon: const Icon(
+                                                Icons.edit,
+                                                color: AppColors.tertiary600,
                                               ),
+                                              onPressed: () {
+                                                AutoRouter.of(context).push(EditProfileRoute(userId: data['uid']));
+                                              },
                                             ),
-                                          ),
-                                          Column(
-                                            children: <Widget>[
-                                              SizedBox(
-                                                height: constraints.maxHeight * GapDimension.h0_5,
-                                                width: constraints.maxWidth * GapDimension.w0_6,
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: <Widget>[
-                                                    Medium24px(text: data['username']),
-                                                    IconButton(
-                                                      icon: const Icon(
-                                                        Icons.edit,
-                                                        color: AppColors.tertiary600,
-                                                      ),
-                                                      onPressed: () {
-                                                        AutoRouter.of(context).push(EditProfileRoute(userId: data['uid']));
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: constraints.maxHeight * GapDimension.h0_5,
-                                                width: constraints.maxWidth * GapDimension.w0_6,
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                  children: [
-                                                    Column(
-                                                      children: [
-                                                        Medium20px(text: data['follower'].toString()),
-                                                        const Regular14px(text: "ผู้ติดตาม"),
-                                                      ],
-                                                    ),
-                                                    Column(
-                                                      children: [
-                                                        Medium20px(text: data['following'].toString()),
-                                                        const Regular14px(text: "กำลังติตดาม"),
-                                                      ],
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      );
-                                    },
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: constraints.maxHeight * GapDimension.h0_5,
+                                        width: constraints.maxWidth * GapDimension.w0_6,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Column(
+                                              children: [
+                                                Medium20px(text: data['follower'].toString()),
+                                                const Regular14px(text: "ผู้ติดตาม"),
+                                              ],
+                                            ),
+                                            Column(
+                                              children: [
+                                                Medium20px(text: data['following'].toString()),
+                                                const Regular14px(text: "กำลังติตดาม"),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                TabBar(
-                                  controller: tabController,
-                                  labelStyle: const TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: 'BaiJamjuree',
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  labelColor: AppColors.primary700,
-                                  indicatorWeight: 1,
-                                  indicatorColor: AppColors.primary700,
-                                  unselectedLabelColor: AppColors.black400,
-                                  tabs: const [
-                                    Tab(
-                                      text: 'ชีทของฉัน',
-                                    ),
-                                    Tab(
-                                      text: 'ชีทที่ซื้อ',
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                ],
+                              );
+                            },
                           ),
-                        ],
-                        body: TabBarView(
-                          controller: tabController,
-                          children: [
-                            MySheet(),
-                            BuySheet(),
-                          ],
                         ),
-                      ),
+                        Container(
+                          width: screenWidth * 0.95,
+                          height: screenWidth * 0.002,
+                          color: AppColors.black500,
+                        ),
+                        const Expanded(
+                          child: MySheet(),
+                        ),
+                      ],
                     ),
                   ),
                 );
