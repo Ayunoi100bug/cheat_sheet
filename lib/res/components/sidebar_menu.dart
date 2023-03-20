@@ -68,14 +68,6 @@ class _SidebarMenuState extends State<SidebarMenu> {
                             },
                           ),
                           CustomListTile(
-                            icon: FluentSystemIcons.ic_fluent_bank_regular,
-                            title: 'ข้อมูลบัญชีธนาคาร',
-                            onTap: () {
-                              Navigator.pop(context);
-                              AutoRouter.of(context).push(BankAccountRoute());
-                            },
-                          ),
-                          CustomListTile(
                             icon: Icons.receipt_outlined,
                             title: 'ประวัติการจ่ายเงิน',
                             onTap: () {
@@ -149,14 +141,6 @@ class _SidebarMenuState extends State<SidebarMenu> {
                             onTap: () {
                               Navigator.pop(context);
                               AutoRouter.of(context).push(MyAccountRoute());
-                            },
-                          ),
-                          CustomListTile(
-                            icon: FluentSystemIcons.ic_fluent_bank_regular,
-                            title: 'ข้อมูลบัญชีธนาคาร',
-                            onTap: () {
-                              Navigator.pop(context);
-                              AutoRouter.of(context).push(BankAccountRoute());
                             },
                           ),
                           CustomListTile(
