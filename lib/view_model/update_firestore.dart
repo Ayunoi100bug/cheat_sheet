@@ -22,7 +22,7 @@ class UpdateCollection {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   AuthService myAuth = AuthService();
-  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
+  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '', subject: []);
   Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetCoverImage: '', demoPages: [], sheetTypeFree: true, authorId: '');
 
   Future<void> updateUserData() async {

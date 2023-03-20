@@ -22,7 +22,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
+  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '', subject: []);
   AuthService myAuth = AuthService();
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
 

@@ -19,34 +19,36 @@ class AboutSubject extends StatefulWidget {
 }
 
 class _AboutSubjectState extends State<AboutSubject> {
+  late bool isChecked = false;
   List subject = [];
   final subjectTypeOne = [
-    CheckBoxState(title: 'วิทยาศาสตร์'),
-    CheckBoxState(title: 'คณิตศาสตร์'),
-    CheckBoxState(title: 'สังคม'),
-    CheckBoxState(title: 'ภาษา'),
-    CheckBoxState(title: 'สุขศึกษา'),
-    CheckBoxState(title: 'ประวัติศาสตร์'),
-    CheckBoxState(title: 'ศิลปะ'),
-    CheckBoxState(title: 'ดนตรี'),
-    CheckBoxState(title: 'พระพุทธศาสนา'),
+    'วิทยาศาสตร์',
+    'สังคม',
+    'ภาษา',
+    'คณิตศาสตร์',
+    'ศิลปะ',
+    'ดนตรี',
+    'ประวัติศาสตร์',
+    'สุขศึกษา',
+    'พละ',
+    'พระพุทธศาสนา',
   ];
   final subjectTypeTwo = [
-    CheckBoxState(title: 'วิทยาศาสตร์'),
-    CheckBoxState(title: 'คณิตศาสตร์'),
-    CheckBoxState(title: 'ภาษา'),
-    CheckBoxState(title: 'ดนตรี'),
-    CheckBoxState(title: 'สุขศึกษา'),
-    CheckBoxState(title: 'ประวัติศาสตร์'),
-    CheckBoxState(title: 'ธุรกิจ'),
-    CheckBoxState(title: 'เทคโนโลยี'),
-    CheckBoxState(title: 'เกษตรศาสตร์'),
-    CheckBoxState(title: 'ศิลปะ'),
-    CheckBoxState(title: 'สังคมศาสตร์'),
-    CheckBoxState(title: 'กฏหมาย'),
-    CheckBoxState(title: 'จิตวิทยา'),
-    CheckBoxState(title: 'วิศวกรรมศาตร์'),
-    CheckBoxState(title: 'สถาปัตยกรรม'),
+    'วิทยาศาสตร์',
+    'คณิตศาสตร์',
+    'ภาษา',
+    'ดนตรี',
+    'สุขศึกษา',
+    'ประวัติศาสตร์',
+    'ธุรกิจ',
+    'เทคโนโลยี',
+    'เกษตรศาสตร์',
+    'ศิลปะ',
+    'สังคมศาสตร์',
+    'กฏหมาย',
+    'จิตวิทยา',
+    'วิศวกรรมศาตร์',
+    'สถาปัตยกรรม',
   ];
 
   @override
@@ -60,45 +62,69 @@ class _AboutSubjectState extends State<AboutSubject> {
           title: CustomAppBar.textLogo,
         ),
         body: SafeArea(
-          child: ListView(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: isPortrait ? screenWidth * 0.08 : screenWidth * 0.04),
-                child: Column(
-                  children: const [
-                    Medium16px(text: "โปรดเลือกวิชาที่สนใจ"),
-                  ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: isPortrait ? screenWidth * 0.08 : screenWidth * 0.02),
+                  child: Medium16px(text: "โปรดเลือกวิชาที่สนใจ"),
                 ),
-              ),
-              ...subjectTypeOne.map(SingleCheckBox).toList(),
-              Padding(
-                padding: EdgeInsets.only(
-                    top: isPortrait ? screenWidth * 0.24 : screenWidth * 0.02,
-                    left: screenWidth * 0.08,
-                    right: screenWidth * 0.08,
-                    bottom: isPortrait ? 0 : screenWidth * 0.02),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    OutlineButton(
-                      text: 'ข้าม',
-                      color: AppColors.tertiary500,
-                      onPressed: () {
-                        //
-                      },
+                Padding(
+                  padding: EdgeInsets.only(left: screenWidth * 0.1),
+                  child: GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: isPortrait ? 2 : 3,
+                      crossAxisSpacing: 0,
+                      mainAxisSpacing: isPortrait ? 5 : 0,
+                      mainAxisExtent: isPortrait ? 36 : 40,
                     ),
-                    PrimaryButton(
-                      text: 'เสร็จสิ้น',
-                      color: AppColors.tertiary500,
-                      onPressed: () {
-                        UpdateCollection().userRecommented(context, subject);
-                        //
-                      },
-                    ),
-                  ],
+                    itemCount: subjectTypeOne.length,
+                    itemBuilder: (context, index) {
+                      return SelectTag(
+                        isChecked: true,
+                        subject: subjectTypeOne[index].toString(),
+                        onPressed: () {
+                          if (subject.contains(subjectTypeOne[index])) {
+                            subject.remove(subjectTypeOne[index]);
+                          } else {
+                            subject.add(subjectTypeOne[index]);
+                          }
+                        },
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: isPortrait ? screenWidth * 0.96 : screenWidth * 0.02,
+                      left: isPortrait ? screenWidth * 0.08 : screenWidth * 0.1,
+                      right: isPortrait ? screenWidth * 0.08 : screenWidth * 0.2,
+                      bottom: isPortrait ? 0 : screenWidth * 0.02),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      OutlineButton(
+                        text: 'ข้าม',
+                        color: AppColors.tertiary500,
+                        onPressed: () {
+                          //ให้อาททำ
+                        },
+                      ),
+                      PrimaryButton(
+                        text: 'เสร็จสิ้น',
+                        color: AppColors.tertiary500,
+                        onPressed: () {
+                          UpdateCollection().userRecommented(context, subject);
+                          //ให้อาททำ
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       );
@@ -109,45 +135,68 @@ class _AboutSubjectState extends State<AboutSubject> {
           title: CustomAppBar.textLogo,
         ),
         body: SafeArea(
-          child: ListView(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: isPortrait ? screenWidth * 0.08 : screenWidth * 0.04),
-                child: Column(
-                  children: const [
-                    Medium16px(text: "โปรดเลือกวิชาที่สนใจ"),
-                  ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: isPortrait ? screenWidth * 0.08 : screenWidth * 0.02),
+                  child: Medium16px(text: "โปรดเลือกวิชาที่สนใจ"),
                 ),
-              ),
-              ...subjectTypeTwo.map(SingleCheckBox).toList(),
-              Padding(
-                padding: EdgeInsets.only(
-                    top: isPortrait ? screenWidth * 0.04 : screenWidth * 0.02,
-                    left: screenWidth * 0.08,
-                    right: screenWidth * 0.08,
-                    bottom: isPortrait ? 0 : screenWidth * 0.02),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    OutlineButton(
-                      text: 'ข้าม',
-                      color: AppColors.tertiary500,
-                      onPressed: () {
-                        //
-                      },
+                Padding(
+                  padding: EdgeInsets.only(left: screenWidth * 0.1),
+                  child: GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: isPortrait ? 2 : 3,
+                      crossAxisSpacing: 0,
+                      mainAxisSpacing: isPortrait ? 5 : 0,
+                      mainAxisExtent: isPortrait ? 36 : 40,
                     ),
-                    PrimaryButton(
-                      text: 'เสร็จสิ้น',
-                      color: AppColors.tertiary500,
-                      onPressed: () {
-                        UpdateCollection().userRecommented(context, subject);
-                        //
-                      },
-                    ),
-                  ],
+                    itemCount: subjectTypeTwo.length,
+                    itemBuilder: (context, index) {
+                      return SelectTag(
+                        subject: subjectTypeTwo[index].toString(),
+                        onPressed: () {
+                          if (subject.contains(subjectTypeTwo[index])) {
+                            subject.remove(subjectTypeTwo[index]);
+                          } else {
+                            subject.add(subjectTypeTwo[index]);
+                          }
+                        },
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: isPortrait ? screenWidth * 0.68 : screenWidth * 0.02,
+                      left: isPortrait ? screenWidth * 0.08 : screenWidth * 0.1,
+                      right: isPortrait ? screenWidth * 0.08 : screenWidth * 0.12,
+                      bottom: isPortrait ? 0 : screenWidth * 0.02),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      OutlineButton(
+                        text: 'ข้าม',
+                        color: AppColors.tertiary500,
+                        onPressed: () {
+                          //ให้อาทททำ
+                        },
+                      ),
+                      PrimaryButton(
+                        text: 'เสร็จสิ้น',
+                        color: AppColors.tertiary500,
+                        onPressed: () {
+                          UpdateCollection().userRecommented(context, subject);
+                          //ให้อาทททำ
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       );

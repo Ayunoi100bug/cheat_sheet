@@ -16,7 +16,7 @@ import '../res/components/popup_auth.dart';
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final User? _user = FirebaseAuth.instance.currentUser;
-  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
+  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '', subject: []);
   CreateCollection createFS = CreateCollection();
 
   bool isLogged() {
