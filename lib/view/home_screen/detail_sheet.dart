@@ -199,9 +199,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                           child: Row(
                                             children: [
                                               Tag(
-
                                                 subject: "คณิตศาสาตร์",
-
                                                 onPressed: () {},
                                               ),
                                               Tag(
@@ -592,7 +590,7 @@ class _DetailSheetState extends State<DetailSheet> {
 
   void _BottomSheet(context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
+    Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '', subject: []);
     final FirebaseFirestore _firestoreDb = FirebaseFirestore.instance;
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     final SheetLists _sheetLists = SheetLists(sheetListName: '', sid: [], authorId: '', sheetListId: '');

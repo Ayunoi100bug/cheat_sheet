@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                 children: [
                   ElevatedButton(
                       onPressed: () {
-                        AutoRouter.of(context).push(FirstLoginRoute());
+                        AutoRouter.of(context).push(FirstLoginRoute(children: [AboutGradeRoute()]));
                       },
                       child: Text('ทดสอบหน้าใหม่')),
                   // ElevatedButton(

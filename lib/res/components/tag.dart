@@ -12,6 +12,7 @@ class Tag extends StatefulWidget {
   final double size;
   final IconData? icon;
   final double iconSize;
+
   final void Function() onPressed;
   const Tag(
       {super.key,
@@ -33,7 +34,6 @@ class _TagState extends State<Tag> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    bool isChecked = false;
 
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     return Padding(
@@ -78,16 +78,30 @@ class SelectTag extends StatefulWidget {
   final double height;
   final double width;
   final double size;
+  final bool? isChecked;
+  final void Function() onPressed;
+  final subjectTypeOne = [
+    'วิทยาศาสตร์',
+    'คณิตศาสตร์',
+    'สังคม',
+    'ภาษา',
+    'สุขศึกษา',
+    'ประวัติศาสตร์',
+    'ศิลปะ',
+    'ดนตรี',
+    'พระพุทธศาสนา',
+  ];
 
-  const SelectTag({
+  SelectTag({
     super.key,
     required this.subject,
-    required Null Function() onPressed,
+    required this.onPressed,
     this.color = AppColors.orange100,
     this.textcolor = AppColors.orange600,
     this.height = 44,
     this.width = 116,
     this.size = 14,
+    this.isChecked,
   });
 
   @override
@@ -143,8 +157,8 @@ class _SelectTagState extends State<SelectTag> {
               onTap: () {
                 setState(() {
                   isChecked = !isChecked;
-                  print(isChecked);
                 });
+                widget.onPressed();
               },
               child: Container(
                 color: Colors.transparent,

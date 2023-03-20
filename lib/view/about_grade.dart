@@ -91,7 +91,7 @@ class _AboutGradeState extends State<AboutGrade> {
                 text: 'ข้าม',
                 color: AppColors.tertiary500,
                 onPressed: () {
-                  AutoRouter.of(context).push(HomeScreen());
+                  //ให้อาททำ
                 },
               ),
             ],

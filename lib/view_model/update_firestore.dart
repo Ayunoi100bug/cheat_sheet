@@ -20,7 +20,7 @@ class UpdateCollection {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   AuthService myAuth = AuthService();
-  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
+  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '', subject: []);
   Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetCoverImage: '', demoPages: [], sheetTypeFree: true, authorId: '');
 
   Future<void> updateUserData() async {
@@ -38,6 +38,7 @@ class UpdateCollection {
         'coin': currentUserData.containsKey('coin') ? currentUserData['coin'] : myUser.coin,
         'sheetLists': currentUserData.containsKey('sheetLists') ? currentUserData['sheetLists'] : myUser.sheetLists,
         'buyedSheet': currentUserData.containsKey('buyedSheet') ? currentUserData['buyedSheet'] : myUser.buyedSheet,
+        'subject': currentUserData.containsKey('subject') ? currentUserData['subject'] : myUser.subject,
       }, SetOptions(merge: true));
     }
   }
@@ -105,6 +106,17 @@ class UpdateCollection {
       'coin': (currentUserData['coin'] + recieve),
     }).then((value) {
       String message = 'ได้รับ $recieve เหรียญ';
+      FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+    });
+  }
+
+  Future<void> userRecommented(BuildContext context, List subject) async {
+    var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
+    Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
+    await _firestore.collection("users").doc(currentUserData['uid']).update({
+      'subject': subject,
+    }).then((value) {
+      String message = 'เข้าสู่ระบบสำเร็จ';
       FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
     });
   }

@@ -12,6 +12,7 @@ class Users {
   int coin = 0;
   List? sheetLists = [];
   List? buyedSheet = [];
+  List? subject = [];
 
   Users({
     required this.username,
@@ -19,6 +20,7 @@ class Users {
     required this.password,
     required this.uid,
     required this.profileImage,
+    required this.subject,
   });
 
   Users.fromJson(Map<String, dynamic> json)
@@ -32,7 +34,8 @@ class Users {
         following = json['following'],
         coin = json['coin'],
         sheetLists = json['sheetList'],
-        buyedSheet = json['buyedSheet'];
+        buyedSheet = json['buyedSheet'],
+        subject = json['subject'];
 
   Map<String, dynamic> toJson() => {
         'timestamp': timestamp,
@@ -45,5 +48,6 @@ class Users {
         'following': following,
         'coin': coin,
         'sheetLists': sheetLists,
+        'subject': subject,
       };
 }
