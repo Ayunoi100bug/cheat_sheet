@@ -136,7 +136,7 @@ Widget Popup_DeleteSheet(BuildContext context, String sheetId) {
                 Navigator.pop(context);
               }),
           PrimaryButton(
-            text: 'ลบชีท',
+            text: 'ยืนยัน',
             onPressed: () {
               DeleteDocument().deleteSheet(context, sheetId);
             },
@@ -184,7 +184,7 @@ Widget Popup_DeleteReview(BuildContext context, String reviewId, String sheetId)
                 Navigator.pop(context);
               }),
           PrimaryButton(
-            text: 'ลบความคิดเห็น',
+            text: 'ยืนยัน',
             onPressed: () {
               DeleteDocument().deleteReview(context, reviewId, sheetId);
             },
@@ -232,7 +232,7 @@ Widget Popup_DeleteQuestion(BuildContext context, String questionId, String shee
                 Navigator.pop(context);
               }),
           PrimaryButton(
-            text: 'ลบคำถาม',
+            text: 'ยืนยัน',
             onPressed: () {
               DeleteDocument().deleteQuestion(context, questionId, sheetId);
             },
@@ -275,7 +275,7 @@ Widget Popup_DeleteSheetList(BuildContext context, String sheetListId) {
         children: [
           OutlineButton(text: 'ยกเลิก', onPressed: () {}),
           PrimaryButton(
-            text: 'ลบชีทลิสต์',
+            text: 'ยืนยัน',
             onPressed: () {
               Navigator.of(context).pop();
               AutoRouter.of(context).navigateNamed('/sheet_list');

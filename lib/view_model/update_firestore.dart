@@ -233,7 +233,7 @@ class EditReviewData {
     }).then((value) {
       Future.delayed(const Duration(milliseconds: 200), () {
         AutoRouter.of(context).popUntilRoot();
-        const String message = 'เปลี่ยนข้อมูลสำเร็จ';
+        const String message = 'แก้ไขรีวิวสำเร็จ';
         FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
       });
     });
@@ -255,7 +255,7 @@ class EditQuestionData {
     }).then((value) {
       Future.delayed(const Duration(milliseconds: 200), () {
         AutoRouter.of(context).popUntilRoot();
-        const String message = 'เปลี่ยนข้อมูลสำเร็จ';
+        const String message = 'แก้ไขคำถามสำเร็จ';
         FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
       });
     });
