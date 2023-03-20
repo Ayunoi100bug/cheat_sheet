@@ -6,6 +6,7 @@ import 'package:cheat_sheet/model/review.dart';
 import 'package:cheat_sheet/model/sheet.dart';
 import 'package:cheat_sheet/model/sheet_list.dart';
 import 'package:cheat_sheet/model/user.dart';
+import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/view_model/update_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -179,7 +180,8 @@ class CreateCollection {
     });
     await _firestore.collection('sheet').doc(argSheetId).update({'rating': result}).then(
       (value) {
-        AutoRouter.of(context).pop();
+        AutoRouter.of(context).popUntilRouteWithName('DetailSheetRoute');
+        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, 'รีวิวสำเร็จ');
       },
     );
   }
@@ -200,7 +202,7 @@ class CreateCollection {
       'question': FieldValue.arrayUnion([argQuestionId])
     }).then(
       (value) {
-        AutoRouter.of(context).popUntilRoot();
+        AutoRouter.of(context).popUntilRouteWithName('AskQuestionRoute');
         const String message = 'สร้างคำถามสำเร็จ!';
         FlushbarPopup.successFlushbar(context, FlushbarIcon.createQuestionIcon, message);
       },
