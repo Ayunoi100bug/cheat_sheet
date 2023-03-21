@@ -193,15 +193,23 @@ class _DetailSheetState extends State<DetailSheet> {
                                           activateOverflow: true,
                                           maxLine: 2,
                                         ),
+                                        ListView.builder(
+                                          itemCount: 8,
+                                          scrollDirection: Axis.horizontal,
+                                          itemBuilder: (context, index) {
+                                            return Tag(
+                                              subject: "คณิตศาสาตร์",
+                                              onPressed: () {},
+                                            );
+                                          },
+                                        ),
                                         SingleChildScrollView(
                                           padding: EdgeInsets.zero,
                                           scrollDirection: Axis.horizontal,
                                           child: Row(
                                             children: [
                                               Tag(
-
                                                 subject: "คณิตศาสาตร์",
-
                                                 onPressed: () {},
                                               ),
                                               Tag(
@@ -234,14 +242,23 @@ class _DetailSheetState extends State<DetailSheet> {
                                         ),
                                         Row(
                                           children: [
-                                            CircleAvatar(
-                                              backgroundImage: CachedNetworkImageProvider(authorData['profileImage']),
-                                              radius: 12,
+                                            InkWell(
+                                              child: CircleAvatar(
+                                                backgroundImage: CachedNetworkImageProvider(authorData['profileImage']),
+                                                radius: 18,
+                                              ),
+                                              onTap: () {
+                                                AutoRouter.of(context).navigateNamed('/profile/other_profile/+${authorData['uid']}');
+                                                print(authorData['uid']);
+                                              },
                                             ),
                                             SizedBox(
                                               width: screenWidth * 0.02,
                                             ),
-                                            Regular14px(text: authorData['username']),
+                                            Regular16px(
+                                              text: authorData['username'],
+                                              size: 18,
+                                            ),
                                           ],
                                         ),
                                         if (AuthService().isLogged() == true && sheetData['authorId'] == _auth.currentUser!.uid) ...[
