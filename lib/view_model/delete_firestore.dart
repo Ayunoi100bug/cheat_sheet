@@ -72,7 +72,7 @@ class DeleteDocument {
   Future<void> deleteSheet(BuildContext context, String sheetId) async {
     Navigator.pop(context);
     AutoRouter.of(context).navigateBack();
-    FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, 'ลบชีทสำเร็จ!');
+    FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, 'ลบชีทสำเร็จ');
 
     await Future.delayed(const Duration(milliseconds: 500), () {});
     await _firestore.collection('sheet').doc(sheetId).delete();

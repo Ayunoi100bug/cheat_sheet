@@ -5,12 +5,12 @@ import 'package:percent_indicator/percent_indicator.dart';
 
 import 'custom_appbar.dart';
 
-class DiaryQuest extends StatelessWidget {
+class DailyQuest extends StatelessWidget {
   final String questName;
   final int completeTime;
   final int doingTime;
   final int recievePoint;
-  const DiaryQuest({
+  const DailyQuest({
     super.key,
     required this.questName,
     required this.completeTime,

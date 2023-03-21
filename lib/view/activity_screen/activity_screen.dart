@@ -1,11 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/components/achievement.dart';
-import 'package:cheat_sheet/res/components/diary_quest.dart';
+import 'package:cheat_sheet/res/components/daily_quest.dart';
 import 'package:cheat_sheet/res/components/sheet.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../../res/components/popup_auth.dart';
 
 class ActivityScreen extends StatefulWidget {
   const ActivityScreen({super.key});
@@ -19,185 +23,209 @@ class _ActivityScreenState extends State<ActivityScreen> with AutomaticKeepAlive
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+    final _firestore = FirebaseFirestore.instance;
+    final _auth = FirebaseAuth.instance;
 
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(children: [
-            SizedBox(
-              height: screenHeight * 0.03,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: isPortrait ? screenWidth * 0.04 : screenWidth * 0.06, vertical: isPortrait ? screenWidth * 0.01 : screenWidth * 0.02),
-              child: Row(
-                children: [
-                  ElevatedButton(
-                      onPressed: () {
-                        AutoRouter.of(context).push(AllAchievementRoute());
-                      },
-                      child: Text('หน้าใหม่โจ้')),
-                  const Medium20px(text: 'เควสประจำวัน'),
+    if (_auth.currentUser == null) {
+      return Popup_Login(context);
+    }
+    return StreamBuilder<DocumentSnapshot>(
+        stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userSnapshot) {
+          if (!userSnapshot.hasData) {
+            return Container();
+          } else if (userSnapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          return Scaffold(
+            resizeToAvoidBottomInset: false,
+            body: SafeArea(
+              child: SingleChildScrollView(
+                child: Column(children: [
                   SizedBox(
-                    width: screenWidth * 0.02,
+                    height: screenHeight * 0.03,
                   ),
-                  const Regular14px(text: 'เหลือ 20 ชม.'),
-                ],
-              ),
-            ),
-            SizedBox(height: screenHeight * 0.01),
-            GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 1,
-                crossAxisSpacing: 8,
-                mainAxisExtent: isPortrait ? 70 : 90,
-              ),
-              itemCount: 3,
-              itemBuilder: (context, index) {
-                return const DiaryQuest(
-                  questName: 'อ่านชีทครบ 3 ครั้ง',
-                  completeTime: 3,
-                  doingTime: 1,
-                  recievePoint: 10,
-                );
-              },
-              padding: EdgeInsets.only(right: screenWidth * 0.04, left: screenWidth * 0.04),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: isPortrait ? screenWidth * 0.04 : screenWidth * 0.06, vertical: screenWidth * 0.01),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Medium20px(text: 'ความสำเร็จ'),
-                  InkWell(
-                    child: const Medium14px(
-                      text: 'ดูทั้งหมด',
-                      underline: true,
-                      color: AppColors.blue700,
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: isPortrait ? screenWidth * 0.04 : screenWidth * 0.06,
+                        vertical: isPortrait ? screenWidth * 0.01 : screenWidth * 0.02),
+                    child: Row(
+                      children: [
+                        const Medium20px(text: 'เควสประจำวัน'),
+                        SizedBox(
+                          width: screenWidth * 0.02,
+                        ),
+                        const Regular14px(text: 'เหลือ 20 ชม.'),
+                      ],
                     ),
-                    onTap: () {
-                      print("show all achievements page");
-                    },
                   ),
-                ],
-              ),
-            ),
-            GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 1,
-                crossAxisSpacing: 8,
-                mainAxisExtent: isPortrait ? 70 : 90,
-              ),
-              itemCount: 3,
-              itemBuilder: (context, index) {
-                return const Achievement(
-                  achievementName: 'เข้าสู่ระบบครบ 15 วัน',
-                  completeTime: 15,
-                  doingTime: 3,
-                  recievePoint: 100,
-                );
-              },
-              padding: EdgeInsets.only(right: screenWidth * 0.04, left: screenWidth * 0.04),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: screenWidth * 0.04,
-                vertical: screenWidth * 0.01,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Medium20px(text: 'ล่าสุด'),
-                  InkWell(
-                    child: const Regular14px(
-                      text: 'ดูทั้งหมด',
-                      underline: true,
-                      color: AppColors.blue700,
+                  SizedBox(height: screenHeight * 0.01),
+                  GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 1,
+                      crossAxisSpacing: 8,
+                      mainAxisExtent: isPortrait ? 70 : 90,
                     ),
-                    onTap: () {
-                      print("show all last page");
+                    itemCount: 3,
+                    itemBuilder: (context, index) {
+                      return const DailyQuest(
+                        questName: 'อ่านชีทครบ 3 ครั้ง',
+                        completeTime: 3,
+                        doingTime: 1,
+                        recievePoint: 10,
+                      );
                     },
-                  )
-                ],
-              ),
-            ),
-            GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: isPortrait ? 3 : 5,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 12,
-                mainAxisExtent: isPortrait ? 180 : 210,
-              ),
-              itemCount: 3,
-              itemBuilder: (context, index) {
-                return Sheet(
-                  rating: 4.5,
-                  authorImage:
-                      'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10224779237682961&width=200&ext=1678426745&hash=AeSupq2Xh_IJA7iaWys',
-                  title: 'สถิติพื้นฐานooooooooooo',
-                  priceSheet: 0,
-                  username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
-                  sheetId: (index + 1).toString(),
-                  sheetCoverImage: '',
-                );
-              },
-              padding: EdgeInsets.only(bottom: screenHeight * 0.02, left: screenWidth * 0.04, right: screenWidth * 0.04),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.01),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Medium20px(text: 'ดาวน์โหลด'),
-                  InkWell(
-                    child: const Regular14px(
-                      text: 'ดูทั้งหมด',
-                      underline: true,
-                      color: AppColors.blue700,
+                    padding: EdgeInsets.only(right: screenWidth * 0.04, left: screenWidth * 0.04),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: isPortrait ? screenWidth * 0.04 : screenWidth * 0.06, vertical: screenWidth * 0.01),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Medium20px(text: 'ความสำเร็จ'),
+                        InkWell(
+                          child: const Medium14px(
+                            text: 'ดูทั้งหมด',
+                            underline: true,
+                            color: AppColors.blue700,
+                          ),
+                          onTap: () {
+                            AutoRouter.of(context).push(AllAchievementRoute());
+                          },
+                        ),
+                      ],
                     ),
-                    onTap: () {
-                      print("show all downloads page");
+                  ),
+                  StreamBuilder<QuerySnapshot>(
+                      stream: _firestore.collection("achievement").snapshots(),
+                      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (!snapshot.hasData) {
+                          return Container();
+                        } else if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(child: CircularProgressIndicator());
+                        }
+                        return GridView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 1,
+                            crossAxisSpacing: 8,
+                            mainAxisExtent: isPortrait ? 70 : 90,
+                          ),
+                          itemCount: 3,
+                          itemBuilder: (context, index) {
+                            return Achievement(
+                              achievementName: snapshot.data!.docs[index]['achievementName'] +
+                                  ' ' +
+                                  userSnapshot.data![snapshot.data!.docs[index]['type']][1].toString() +
+                                  ' ' +
+                                  snapshot.data!.docs[index]['achievementLastName'],
+                              completeTime: userSnapshot.data![snapshot.data!.docs[index]['type']][1],
+                              doingTime: userSnapshot.data![snapshot.data!.docs[index]['type']][0],
+                              recievePoint: userSnapshot.data![snapshot.data!.docs[index]['type']][2],
+                              success: userSnapshot.data![snapshot.data!.docs[index]['type']][3],
+                            );
+                          },
+                          padding: EdgeInsets.only(right: screenWidth * 0.04, left: screenWidth * 0.04),
+                        );
+                      }),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: screenWidth * 0.04,
+                      vertical: screenWidth * 0.01,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Medium20px(text: 'ล่าสุด'),
+                        InkWell(
+                          child: const Regular14px(
+                            text: 'ดูทั้งหมด',
+                            underline: true,
+                            color: AppColors.blue700,
+                          ),
+                          onTap: () {
+                            print("show all last page");
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                  GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: isPortrait ? 3 : 5,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 12,
+                      mainAxisExtent: isPortrait ? 180 : 210,
+                    ),
+                    itemCount: 3,
+                    itemBuilder: (context, index) {
+                      return Sheet(
+                        rating: 4.5,
+                        authorImage:
+                            'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10224779237682961&width=200&ext=1678426745&hash=AeSupq2Xh_IJA7iaWys',
+                        title: 'สถิติพื้นฐานooooooooooo',
+                        priceSheet: 0,
+                        username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
+                        sheetId: (index + 1).toString(),
+                        sheetCoverImage: '',
+                      );
                     },
-                  )
-                ],
+                    padding: EdgeInsets.only(bottom: screenHeight * 0.02, left: screenWidth * 0.04, right: screenWidth * 0.04),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.01),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Medium20px(text: 'ดาวน์โหลด'),
+                        InkWell(
+                          child: const Regular14px(
+                            text: 'ดูทั้งหมด',
+                            underline: true,
+                            color: AppColors.blue700,
+                          ),
+                          onTap: () {
+                            print("show all downloads page");
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                  GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: isPortrait ? 3 : 5,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 12,
+                      mainAxisExtent: isPortrait ? 180 : 210,
+                    ),
+                    itemCount: 3,
+                    itemBuilder: (context, index) {
+                      return Sheet(
+                        rating: 4.5,
+                        authorImage:
+                            'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10224779237682961&width=200&ext=1678426745&hash=AeSupq2Xh_IJA7iaWys',
+                        title: 'สถิติพื้นฐานooooooooooo',
+                        priceSheet: 0,
+                        username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
+                        sheetId: (index + 1).toString(),
+                        sheetCoverImage: '',
+                      );
+                    },
+                    padding: EdgeInsets.only(bottom: screenHeight * 0.02, left: screenWidth * 0.04, right: screenWidth * 0.04),
+                  ),
+                ]),
               ),
             ),
-            GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: isPortrait ? 3 : 5,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 12,
-                mainAxisExtent: isPortrait ? 180 : 210,
-              ),
-              itemCount: 3,
-              itemBuilder: (context, index) {
-                return Sheet(
-                  rating: 4.5,
-                  authorImage:
-                      'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10224779237682961&width=200&ext=1678426745&hash=AeSupq2Xh_IJA7iaWys',
-                  title: 'สถิติพื้นฐานooooooooooo',
-                  priceSheet: 0,
-                  username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
-                  sheetId: (index + 1).toString(),
-                  sheetCoverImage: '',
-                );
-              },
-              padding: EdgeInsets.only(bottom: screenHeight * 0.02, left: screenWidth * 0.04, right: screenWidth * 0.04),
-            ),
-          ]),
-        ),
-      ),
-    );
+          );
+        });
   }
 
   @override

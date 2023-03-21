@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:auto_route/annotations.dart';
+import 'package:cheat_sheet/model/answer.dart';
 import 'package:cheat_sheet/res/components/answer.dart';
 import 'package:cheat_sheet/view_model/file_passer_for_read.dart';
 import 'package:cheat_sheet/view_model/question_image_passer.dart';
@@ -13,7 +14,10 @@ import 'package:provider/provider.dart';
 
 import '../../../res/button.dart';
 import '../../../res/components/ask.dart';
+import '../../../res/components/flushbar.dart';
+import '../../../res/components/flushbar_icon.dart';
 import '../../../res/components/form_field.dart';
+import '../../../view_model/create_firestore.dart';
 
 const double A4_RATIO = 1 / 1.3;
 
@@ -36,6 +40,8 @@ class _DetailQuestionState extends State<DetailQuestion> {
     double screenHeight = MediaQuery.of(context).size.height;
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    CreateCollection myCollection = CreateCollection();
+    final AnswerModel _answer = AnswerModel(text: '', respondentId: '', like: 0);
 
     final File? file = Provider.of<FilePasserForRead>(context).getFile();
     final File? questionImage = Provider.of<QuestionImagePasser>(context).getFile();
@@ -125,7 +131,9 @@ class _DetailQuestionState extends State<DetailQuestion> {
                                         maxLine: 5,
                                         autovalidateMode: AutovalidateMode.onUserInteraction,
                                         validator: RequiredValidator(errorText: 'กรุณากรอกคำถามให้เรียบร้อย'),
-                                        onSaved: (value) {},
+                                        onSaved: (value) {
+                                          _answer.text = value!;
+                                        },
                                       ),
                                     ),
                                   ),
@@ -140,7 +148,19 @@ class _DetailQuestionState extends State<DetailQuestion> {
                                           onPressed: () {
                                             Navigator.pop(context);
                                           }),
-                                      PrimaryButton(text: 'ยืนยัน', onPressed: () async {}),
+                                      PrimaryButton(
+                                          text: 'ยืนยัน',
+                                          onPressed: () async {
+                                            _formKey.currentState!.save();
+                                            try {
+                                              myCollection
+                                                  .createAnswerCollection(
+                                                      _answer.text, _answer.ansid, _auth.currentUser!.uid, widget.questionId, context)
+                                                  .then((value) => _formKey.currentState!.reset());
+                                            } on FirebaseAuthException catch (e) {
+                                              FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
+                                            }
+                                          }),
                                     ],
                                   ),
                                 ),
