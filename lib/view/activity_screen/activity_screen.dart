@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/components/achievement.dart';
-import 'package:cheat_sheet/res/components/diary_quest.dart';
+import 'package:cheat_sheet/res/components/daily_quest.dart';
 import 'package:cheat_sheet/res/components/sheet.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
@@ -27,6 +27,9 @@ class _ActivityScreenState extends State<ActivityScreen> with AutomaticKeepAlive
     final _auth = FirebaseAuth.instance;
 
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    if (_auth.currentUser == null) {
+      return Popup_Login(context);
+    }
     return StreamBuilder<DocumentSnapshot>(
         stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userSnapshot) {
@@ -34,9 +37,6 @@ class _ActivityScreenState extends State<ActivityScreen> with AutomaticKeepAlive
             return Container();
           } else if (userSnapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
-          }
-          if (_auth.currentUser == null) {
-            return Popup_Login(context);
           }
           return Scaffold(
             resizeToAvoidBottomInset: false,
@@ -71,7 +71,7 @@ class _ActivityScreenState extends State<ActivityScreen> with AutomaticKeepAlive
                     ),
                     itemCount: 3,
                     itemBuilder: (context, index) {
-                      return const DiaryQuest(
+                      return const DailyQuest(
                         questName: 'อ่านชีทครบ 3 ครั้ง',
                         completeTime: 3,
                         doingTime: 1,
