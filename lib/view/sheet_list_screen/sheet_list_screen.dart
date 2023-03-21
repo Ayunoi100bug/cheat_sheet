@@ -190,10 +190,6 @@ void _BottomSheet(context) {
               key: _formKey,
               child: Container(
                 width: 150,
-                // decoration: BoxDecoration(
-                //   border: Border.all(color: AppColors.black400),
-                //   borderRadius: BorderRadius.circular(12),
-                // ),
                 child: MyTextFormField(
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   hintText: 'ชื่อชีทลิสต์',
