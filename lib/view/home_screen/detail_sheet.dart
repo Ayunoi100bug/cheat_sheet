@@ -199,9 +199,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                           child: Row(
                                             children: [
                                               Tag(
-
                                                 subject: "คณิตศาสาตร์",
-
                                                 onPressed: () {},
                                               ),
                                               Tag(

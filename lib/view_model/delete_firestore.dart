@@ -74,6 +74,13 @@ class DeleteDocument {
     AutoRouter.of(context).navigateNamed('/home/');
 
     await Future.delayed(const Duration(milliseconds: 500), () {});
+    await _firestore.collection('tag').where('sheetInTagList', arrayContains: sheetId).get().then((value) {
+      for (var tag in value.docs) {
+        tag.reference.update({
+          'sheetInTagList': FieldValue.arrayRemove([sheetId]),
+        });
+      }
+    });
     await _firestore.collection('sheet').doc(sheetId).delete();
     await _firestore.collection('review').where('sheetId', isEqualTo: sheetId).get().then((value) {
       value.docs.forEach((review) {

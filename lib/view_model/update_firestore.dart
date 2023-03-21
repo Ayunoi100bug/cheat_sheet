@@ -28,17 +28,21 @@ class UpdateCollection {
     Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
     if (currentUserSnapshot.exists) {
       await _firestore.collection("users").doc(currentUserData['uid']).set({
-        'timestamp': myUser.timestamp,
-        'username': currentUserData.containsKey('username') ? currentUserData['username'] : myUser.username,
-        'email': currentUserData.containsKey('email') ? currentUserData['email'] : myUser.email,
-        'uid': currentUserData.containsKey('uid') ? currentUserData['uid'] : myUser.uid,
-        'profileImage': currentUserData.containsKey('profileImage') ? currentUserData['profileImage'] : myUser.profileImage,
-        'follower': currentUserData.containsKey('follower') ? currentUserData['follower'] : myUser.follower,
-        'following': currentUserData.containsKey('following') ? currentUserData['following'] : myUser.following,
-        'coin': currentUserData.containsKey('coin') ? currentUserData['coin'] : myUser.coin,
-        'sheetLists': currentUserData.containsKey('sheetLists') ? currentUserData['sheetLists'] : myUser.sheetLists,
-        'buyedSheet': currentUserData.containsKey('buyedSheet') ? currentUserData['buyedSheet'] : myUser.buyedSheet,
-      }, SetOptions(merge: true));
+        'username': currentUserData.containsKey('username') ? {} : myUser.username,
+        'email': currentUserData.containsKey('email') ? {} : myUser.email,
+        'uid': currentUserData.containsKey('uid') ? {} : myUser.uid,
+        'profileImage': currentUserData.containsKey('profileImage') ? {} : myUser.profileImage,
+        'follower': currentUserData.containsKey('follower') ? {} : myUser.follower,
+        'following': currentUserData.containsKey('following') ? {} : myUser.following,
+        'coin': currentUserData.containsKey('coin') ? {} : myUser.coin,
+        'sheetLists': currentUserData.containsKey('sheetLists') ? {} : myUser.sheetLists,
+        'buyedSheet': currentUserData.containsKey('buyedSheet') ? {} : myUser.buyedSheet,
+      }, SetOptions(merge: true)).then((value) {
+        _firestore.collection("users").doc(currentUserData['uid']).update({
+          'timestamp': myUser.timestamp,
+        });
+        debugPrint("Update user data successfully!");
+      });
     }
   }
 
