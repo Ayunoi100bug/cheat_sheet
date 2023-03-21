@@ -206,6 +206,28 @@ class CreateCollection {
       },
     );
   }
+
+  Future<void> createAnswerCollection(
+      String argText, String argAnswerId, String argSheetId, String argRespondentId, String argQuestionId, BuildContext context) async {
+    await _firestore.collection("answer").doc(argAnswerId).set({
+      'timestamp': myQuestion.timestamp,
+      'aid': argAnswerId,
+      'text': argText.toString().trim(),
+      'sheetId': argSheetId,
+      'respondentId': argRespondentId,
+      'like': myQuestion.like,
+      'dislike': myQuestion.dislike,
+    });
+    await _firestore.collection('question').doc(argQuestionId).update({
+      'question': FieldValue.arrayUnion([argAnswerId])
+    }).then(
+      (value) {
+        AutoRouter.of(context).popUntilRoot();
+        const String message = 'สร้างการตอบกลับสำเร็จ!';
+        FlushbarPopup.successFlushbar(context, FlushbarIcon.createQuestionIcon, message);
+      },
+    );
+  }
 }
 
 class Storage {
