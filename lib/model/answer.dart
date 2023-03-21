@@ -5,35 +5,27 @@ class AnswerModel {
   FieldValue timestamp = FieldValue.serverTimestamp();
   String ansid = uuid.v4();
   String text;
-  String sheetId;
   String respondentId;
   int? like = 0;
-  int? dislike = 0;
 
   AnswerModel({
     required this.text,
-    required this.sheetId,
     required this.respondentId,
     this.like,
-    this.dislike,
   });
 
   AnswerModel.fromJson(Map<String, dynamic> json)
       : timestamp = json['timestamp'],
         ansid = json['ansid'],
         text = json['text'],
-        sheetId = json['sheetId'],
         respondentId = json['respondentId'],
-        like = json['like'],
-        dislike = json['dislike'];
+        like = json['like'];
 
   Map<String, dynamic> toJson() => {
         'timestamp': timestamp,
         'ansid': ansid,
         'text': text,
-        'sheetId': sheetId,
         'respondentId': respondentId,
         'like': like,
-        'dislike': dislike,
       };
 }

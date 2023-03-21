@@ -15,4 +15,9 @@ class FlushbarIcon {
     Icons.question_answer,
     color: Colors.white,
   );
+
+  static Icon createAnswerIcon = const Icon(
+    Icons.message,
+    color: Colors.white,
+  );
 }
