@@ -219,7 +219,7 @@ class CreateCollection {
       'dislike': myQuestion.dislike,
     });
     await _firestore.collection('question').doc(argQuestionId).update({
-      'question': FieldValue.arrayUnion([argAnswerId])
+      'answer': FieldValue.arrayUnion([argAnswerId])
     }).then(
       (value) {
         AutoRouter.of(context).popUntilRoot();

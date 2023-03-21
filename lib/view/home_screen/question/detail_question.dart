@@ -155,7 +155,7 @@ class _DetailQuestionState extends State<DetailQuestion> {
                                             try {
                                               myCollection
                                                   .createAnswerCollection(
-                                                      _answer.text, _answer.aid, widget.sheetId, _auth.currentUser!.uid, widget.questionId, context)
+                                                      _answer.text, _answer.ansid, widget.sheetId, _auth.currentUser!.uid, widget.questionId, context)
                                                   .then((value) => _formKey.currentState!.reset());
                                             } on FirebaseAuthException catch (e) {
                                               FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());

@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AnswerModel {
   FieldValue timestamp = FieldValue.serverTimestamp();
-  String aid = uuid.v4();
+  String ansid = uuid.v4();
   String text;
   String sheetId;
   String respondentId;
@@ -20,7 +20,7 @@ class AnswerModel {
 
   AnswerModel.fromJson(Map<String, dynamic> json)
       : timestamp = json['timestamp'],
-        aid = json['aid'],
+        ansid = json['ansid'],
         text = json['text'],
         sheetId = json['sheetId'],
         respondentId = json['respondentId'],
@@ -29,7 +29,7 @@ class AnswerModel {
 
   Map<String, dynamic> toJson() => {
         'timestamp': timestamp,
-        'aid': aid,
+        'ansid': ansid,
         'text': text,
         'sheetId': sheetId,
         'respondentId': respondentId,
