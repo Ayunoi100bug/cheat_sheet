@@ -225,44 +225,46 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                           child: PrimaryButton(
                             text: 'เสร็จสิ้น',
                             onPressed: () async {
-                              _formKey.currentState!.save();
-                              firebaseStorage.UploadTask? task = await PDFApi.uploadToFirebase(context, pdfFile, sheetId);
-                              task!.whenComplete(() async {
-                                firebaseStorage.UploadTask? coverImage = await PDFApi().createCoverSheetImage(sheetId);
-                                coverImage!.whenComplete(() async {
-                                  String coverImage = await PDFApi.getCoverImage(sheetId);
-                                  try {
-                                    myCollection
-                                        .createSheetCollection(
-                                      sheetId,
-                                      mySheet.sheetName,
-                                      mySheet.detailSheet,
-                                      coverImage,
-                                      widget.demoPages,
-                                      mySheet.sheetTypeFree,
-                                      mySheet.price,
-                                      mySheet.authorId = userId,
-                                    )
-                                        .then(
-                                      (value) async {
-                                        _formKey.currentState!.reset();
+                              if (_formKey.currentState!.validate()) {
+                                _formKey.currentState!.save();
+                                firebaseStorage.UploadTask? task = await PDFApi.uploadToFirebase(context, pdfFile, sheetId);
+                                task!.whenComplete(() async {
+                                  firebaseStorage.UploadTask? coverImage = await PDFApi().createCoverSheetImage(sheetId);
+                                  coverImage!.whenComplete(() async {
+                                    String coverImage = await PDFApi.getCoverImage(sheetId);
+                                    try {
+                                      myCollection
+                                          .createSheetCollection(
+                                        sheetId,
+                                        mySheet.sheetName,
+                                        mySheet.detailSheet,
+                                        coverImage,
+                                        widget.demoPages,
+                                        mySheet.sheetTypeFree,
+                                        mySheet.price,
+                                        mySheet.authorId = userId,
+                                      )
+                                          .then(
+                                        (value) async {
+                                          _formKey.currentState!.reset();
 
-                                        Future.delayed(const Duration(milliseconds: 500), () {
-                                          AutoRouter.of(context).popUntilRoot();
+                                          Future.delayed(const Duration(milliseconds: 500), () {
+                                            AutoRouter.of(context).popUntilRoot();
 
-                                          final String message = 'อัพโหลดชีทสำเร็จ!';
-                                          FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
-                                        });
-                                      },
-                                    );
-                                  } on FirebaseAuthException catch (e) {
-                                    Fluttertoast.showToast(
-                                      msg: e.message.toString(),
-                                      gravity: ToastGravity.BOTTOM,
-                                    );
-                                  }
+                                            final String message = 'อัพโหลดชีทสำเร็จ!';
+                                            FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+                                          });
+                                        },
+                                      );
+                                    } on FirebaseAuthException catch (e) {
+                                      Fluttertoast.showToast(
+                                        msg: e.message.toString(),
+                                        gravity: ToastGravity.BOTTOM,
+                                      );
+                                    }
+                                  });
                                 });
-                              });
+                              }
                             },
                           ),
                         ),
