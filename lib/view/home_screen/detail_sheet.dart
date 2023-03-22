@@ -194,19 +194,21 @@ class _DetailSheetState extends State<DetailSheet> {
                                           activateOverflow: true,
                                           maxLine: 2,
                                         ),
-                                        SizedBox(
-                                          height: isPortrait ? screenHeight * 0.035 : screenHeight * 0.015,
-                                          child: ListView.builder(
-                                            physics: const ClampingScrollPhysics(),
-                                            shrinkWrap: true,
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: tagInSheet!.length,
-                                            itemBuilder: (BuildContext context, int index) => Tag(
-                                              subject: sheetData['sheetTags'][index],
-                                              onPressed: () {},
+                                        if (tagInSheet!.isNotEmpty) ...[
+                                          SizedBox(
+                                            height: isPortrait ? screenHeight * 0.035 : screenHeight * 0.015,
+                                            child: ListView.builder(
+                                              physics: const ClampingScrollPhysics(),
+                                              shrinkWrap: true,
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: tagInSheet!.length,
+                                              itemBuilder: (BuildContext context, int index) => Tag(
+                                                subject: sheetData['sheetTags'][index],
+                                                onPressed: () {},
+                                              ),
                                             ),
                                           ),
-                                        ),
+                                        ],
                                         Row(
                                           children: [
                                             RatingBarIndicator(
