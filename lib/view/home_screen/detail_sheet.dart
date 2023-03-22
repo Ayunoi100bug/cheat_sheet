@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:blinking_text/blinking_text.dart';
@@ -93,7 +92,9 @@ class _DetailSheetState extends State<DetailSheet> {
           }
           Map<String, dynamic> sheetData = snapshot.data!.data() as Map<String, dynamic>;
           List? reviewInSheet = sheetData['review'];
+          List? tagInSheet = sheetData['sheetTags'];
           reviewInSheet ??= []; //ถ้า reviewInSheet เท่ากับ null จะให้เป็น []
+          tagInSheet ??= [];
           if (sheetData['rating'].toString().contains('.') && !sheetData['rating'].toString().endsWith('.0')) {
             ratingSheet = sheetData['rating'].toStringAsFixed(1);
           } else {
@@ -193,24 +194,17 @@ class _DetailSheetState extends State<DetailSheet> {
                                           activateOverflow: true,
                                           maxLine: 2,
                                         ),
-                                        SingleChildScrollView(
-                                          padding: EdgeInsets.zero,
-                                          scrollDirection: Axis.horizontal,
-                                          child: Row(
-                                            children: [
-                                              Tag(
-                                                subject: "คณิตศาสาตร์",
-                                                onPressed: () {},
-                                              ),
-                                              Tag(
-                                                subject: "คณิตพื้นฐาน",
-                                                onPressed: () {},
-                                              ),
-                                              Tag(
-                                                subject: "สถิติ",
-                                                onPressed: () {},
-                                              ),
-                                            ],
+                                        SizedBox(
+                                          height: isPortrait ? screenHeight * 0.035 : screenHeight * 0.015,
+                                          child: ListView.builder(
+                                            physics: const ClampingScrollPhysics(),
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: tagInSheet!.length,
+                                            itemBuilder: (BuildContext context, int index) => Tag(
+                                              subject: sheetData['sheetTags'][index],
+                                              onPressed: () {},
+                                            ),
                                           ),
                                         ),
                                         Row(
