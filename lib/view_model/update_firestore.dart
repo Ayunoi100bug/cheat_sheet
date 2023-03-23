@@ -201,7 +201,7 @@ class UpdateSheetListData {
       Future.delayed(const Duration(milliseconds: 200), () {
         AutoRouter.of(context).popUntilRoot();
         const String message = 'เปลี่ยนข้อมูลสำเร็จ';
-        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+        FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, message);
       });
     });
   }
@@ -285,7 +285,7 @@ class EditReviewData {
       Future.delayed(const Duration(milliseconds: 200), () {
         AutoRouter.of(context).popUntilRoot();
         const String message = 'แก้ไขรีวิวสำเร็จ';
-        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+        FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, message);
       });
     });
   }
@@ -307,7 +307,7 @@ class EditQuestionData {
       Future.delayed(const Duration(milliseconds: 200), () {
         AutoRouter.of(context).popUntilRoot();
         const String message = 'แก้ไขคำถามสำเร็จ';
-        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+        FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, message);
       });
     });
   }
@@ -322,7 +322,7 @@ class EditSheetData {
       'detailSheet': newDetail,
     }).then(
       (value) => Future.delayed(const Duration(milliseconds: 200), () {
-        AutoRouter.of(context).popUntilRoot();
+        AutoRouter.of(context).popUntilRouteWithName('DetailSheetRoute');
         const String message = 'เปลี่ยนรายละเอียดชีทสำเร็จ';
         FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
       }),

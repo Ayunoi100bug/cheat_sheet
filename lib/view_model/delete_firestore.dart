@@ -63,17 +63,16 @@ class DeleteDocument {
       'question': FieldValue.arrayRemove([questionId])
     });
     await _firestore.collection("question").doc(questionId).delete().then((value) {
-      AutoRouter.of(context).popUntilRoot();
+      AutoRouter.of(context).popUntilRouteWithName('SheetListRoute');
       const String message = 'ลบความคิดเห็นสำเร็จ';
-      FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+      FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, message);
     });
   }
 
   Future<void> deleteSheet(BuildContext context, String sheetId) async {
     Navigator.pop(context);
-    AutoRouter.of(context).navigateNamed('/home/');
-    const String message = 'ลบชีทสำเร็จ ';
-    FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+    AutoRouter.of(context).navigateBack();
+    FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, 'ลบชีทสำเร็จ');
 
     await Future.delayed(const Duration(milliseconds: 500), () {});
     await _firestore.collection('sheet').doc(sheetId).delete();
