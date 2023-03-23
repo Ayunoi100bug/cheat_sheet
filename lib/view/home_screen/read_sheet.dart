@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/view_model/file_passer_for_read.dart';
+import 'package:cheat_sheet/view_model/update_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
@@ -36,6 +37,10 @@ class _ReadSheetState extends State<ReadSheet> {
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
 
     File? file = Provider.of<FilePasserForRead>(context).getFile();
+
+    Future.delayed(const Duration(minutes: 1), () {
+      UpdateCollection().achievement(context, 'trackingReadSheet');
+    });
 
     return Scaffold(
       key: _scaffoldKey,

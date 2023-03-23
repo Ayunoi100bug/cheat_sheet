@@ -78,6 +78,7 @@ class UpdateCollection {
       if (context.mounted) {
         const String message = 'ซื้อชีทสำเร็จ';
         FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+        achievement(context, 'trackingBuySheet');
       }
     });
     /** 

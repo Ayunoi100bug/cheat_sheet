@@ -11,6 +11,7 @@ import 'package:cheat_sheet/res/components/popup_auth.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/view_model/create_firestore.dart';
+import 'package:cheat_sheet/view_model/update_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -220,6 +221,7 @@ void _BottomSheet(context) {
                         .then(
                       (value) {
                         _formKey.currentState!.reset();
+                        UpdateCollection().achievement(context, 'trackingCreateSheetList');
                         AutoRouter.of(context).popUntilRoot();
                         FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, 'สร้างชีทลิสต์สำเร็จ');
                       },
