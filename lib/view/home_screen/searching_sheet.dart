@@ -22,7 +22,7 @@ class _SearchingSheetState extends State<SearchingSheet> {
   List _sheetResult = [];
   List _authorResult = [];
   List _resultList = [];
-  List __dataList = [];
+  List _dataList = [];
   List _sheetList = [];
   List _authorList = [];
 
@@ -86,20 +86,20 @@ class _SearchingSheetState extends State<SearchingSheet> {
     }
     setState(() {
       _resultList = [];
-      __dataList = [];
+      _dataList = [];
       _sheetList = sheetResult;
       _authorList = authorResult;
 
       for (int i = 0; i < _sheetList.length; i++) {
         Map combined = {..._sheetList[i], ..._authorList[i].data()};
         _resultList.add(combined);
-        __dataList.add(combined);
+        _dataList.add(combined);
       }
       if (selectedSortBy != null && isSort == true) {
-        __dataList.sort((a, b) => -(a[selectedSortBy] ?? '').compareTo(b[selectedSortBy] ?? ''));
+        _dataList.sort((a, b) => -(a[selectedSortBy] ?? '').compareTo(b[selectedSortBy] ?? ''));
       }
       if (isFree == true) {
-        _resultList = __dataList.where((list) {
+        _resultList = _dataList.where((list) {
           if (selectedType == 'all') {
             return list['sheetTypeFree'] == true || list['sheetTypeFree'] == false;
           }
@@ -278,8 +278,8 @@ class _SearchingSheetState extends State<SearchingSheet> {
                                   child: const Text('นำไปใช้'),
                                   onPressed: () {
                                     setState(() {
-                                      __dataList.sort((a, b) => -(a[selectedSortBy] ?? '').compareTo(b[selectedSortBy] ?? ''));
-                                      _resultList = __dataList.where((list) {
+                                      _dataList.sort((a, b) => -(a[selectedSortBy] ?? '').compareTo(b[selectedSortBy] ?? ''));
+                                      _resultList = _dataList.where((list) {
                                         if (selectedType == 'all') {
                                           return list['sheetTypeFree'] == true || list['sheetTypeFree'] == false;
                                         }

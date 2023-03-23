@@ -27,27 +27,29 @@ class UpdateCollection {
     var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
     Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
     if (currentUserSnapshot.exists) {
-      await _firestore.collection("users").doc(currentUserData['uid']).set({
-        'timestamp': myUser.timestamp,
-        'lastDayLogin': myUser.lastDayLogin,
-        'username': currentUserData.containsKey('username') ? currentUserData['username'] : myUser.username,
-        'email': currentUserData.containsKey('email') ? currentUserData['email'] : myUser.email,
-        'uid': currentUserData.containsKey('uid') ? currentUserData['uid'] : myUser.uid,
-        'profileImage': currentUserData.containsKey('profileImage') ? currentUserData['profileImage'] : myUser.profileImage,
-        'follower': currentUserData.containsKey('follower') ? currentUserData['follower'] : myUser.follower,
-        'following': currentUserData.containsKey('following') ? currentUserData['following'] : myUser.following,
-        'coin': currentUserData.containsKey('coin') ? currentUserData['coin'] : myUser.coin,
-        'trackingAsk': currentUserData.containsKey('trackingAsk') ? currentUserData['trackingAsk'] : myUser.trackingAsk,
-        'trackingBuySheet': currentUserData.containsKey('trackingBuySheet') ? currentUserData['trackingBuySheet'] : myUser.trackingBuySheet,
-        'trackingCreateSheetList':
-            currentUserData.containsKey('trackingCreateSheetList') ? currentUserData['trackingCreateSheetList'] : myUser.trackingCreateSheetList,
-        'trackingLike': currentUserData.containsKey('trackingLike') ? currentUserData['trackingLike'] : myUser.trackingLike,
-        'trackingLogin': currentUserData.containsKey('trackingLogin') ? currentUserData['trackingLogin'] : myUser.trackingLogin,
-        'trackingReadSheet': currentUserData.containsKey('trackingReadSheet') ? currentUserData['trackingReadSheet'] : myUser.trackingReadSheet,
-        'trackingReview': currentUserData.containsKey('trackingReview') ? currentUserData['trackingReview'] : myUser.trackingReview,
-        'sheetLists': currentUserData.containsKey('sheetLists') ? currentUserData['sheetLists'] : myUser.sheetLists,
-        'buyedSheet': currentUserData.containsKey('buyedSheet') ? currentUserData['buyedSheet'] : myUser.buyedSheet,
-      }, SetOptions(merge: true));
+      Map<String, dynamic> updatedUserData = {};
+      if (!currentUserData.containsKey('username')) updatedUserData['username'] = myUser.username;
+      if (!currentUserData.containsKey('email')) updatedUserData['email'] = myUser.email;
+      if (!currentUserData.containsKey('uid')) updatedUserData['uid'] = myUser.uid;
+      if (!currentUserData.containsKey('profileImage')) updatedUserData['profileImage'] = myUser.profileImage;
+      if (!currentUserData.containsKey('follower')) updatedUserData['follower'] = myUser.follower;
+      if (!currentUserData.containsKey('following')) updatedUserData['following'] = myUser.following;
+      if (!currentUserData.containsKey('coin')) updatedUserData['coin'] = myUser.coin;
+      if (!currentUserData.containsKey('sheetLists')) updatedUserData['sheetLists'] = myUser.sheetLists;
+      if (!currentUserData.containsKey('buyedSheet')) updatedUserData['buyedSheet'] = myUser.buyedSheet;
+      if (!currentUserData.containsKey('trackingAsk')) updatedUserData['trackingAsk'] = myUser.trackingAsk;
+      if (!currentUserData.containsKey('trackingBuySheet')) updatedUserData['trackingBuySheet'] = myUser.trackingBuySheet;
+      if (!currentUserData.containsKey('trackingCreateSheetList')) updatedUserData['trackingCreateSheetList'] = myUser.trackingCreateSheetList;
+      if (!currentUserData.containsKey('trackingLike')) updatedUserData['trackingLike'] = myUser.trackingLike;
+      if (!currentUserData.containsKey('trackingLogin')) updatedUserData['trackingLogin'] = myUser.trackingLogin;
+      if (!currentUserData.containsKey('trackingReadSheet')) updatedUserData['trackingReadSheet'] = myUser.trackingReadSheet;
+      if (!currentUserData.containsKey('trackingReview')) updatedUserData['trackingReview'] = myUser.trackingReview;
+
+      if (updatedUserData.isNotEmpty) {
+        updatedUserData['timestamp'] = myUser.timestamp;
+        await _firestore.collection("users").doc(currentUserData['uid']).set(updatedUserData, SetOptions(merge: true));
+        debugPrint("Update user data successfully!");
+      }
     }
   }
 

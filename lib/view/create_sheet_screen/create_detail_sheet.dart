@@ -7,16 +7,16 @@ import 'package:cheat_sheet/res/components/form_field.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/view_model/create_firestore.dart';
 import 'package:cheat_sheet/view_model/file_passer.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebaseStorage;
+import 'package:search_choices/search_choices.dart';
 
 import '../../model/sheet.dart';
 import '../../res/components/flushbar.dart';
@@ -33,11 +33,82 @@ class CreateDetailSheet extends StatefulWidget {
 enum SheetType { free, sell }
 
 class _CreateDetailSheetState extends State<CreateDetailSheet> {
+  final _firestore = FirebaseFirestore.instance;
+  final TextEditingController _tagController = TextEditingController();
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetCoverImage: '', demoPages: [], sheetTypeFree: true, price: 0, authorId: '');
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   CreateCollection myCollection = CreateCollection();
   SheetType? _sheetType = SheetType.free;
+  late Future resultLoaded;
+  List _tagResult = [];
+  List _resultList = [];
+  List _dataList = [];
+  List _tagList = [];
+  List<String> selectedTag = [];
+  List<int> selectedIndex = [];
+  List<DropdownMenuItem<dynamic>> resultTagAsDropdown = [];
+
+  @override
+  void dispose() {
+    _tagController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    resultLoaded = getTagSnapshot();
+  }
+
+  _onTagChanged() {
+    tagResultsList();
+  }
+
+  tagResultsList() {
+    var tagResult = [];
+
+    if (_tagController.text != "") {
+      for (var tagSnapshot in _tagResult) {
+        var tagName = tagSnapshot['tagName'].toLowerCase();
+        if (tagName.contains(_tagController.text.toLowerCase())) {
+          tagResult.add(tagSnapshot);
+        }
+      }
+    } else {
+      tagResult = List.from(_tagResult);
+    }
+    setState(
+      () {
+        _resultList = [];
+        _dataList = [];
+        _tagList = tagResult;
+
+        for (int i = 0; i < _tagList.length; i++) {
+          _resultList.add(_tagList[i]);
+          _dataList.add(_tagList[i]);
+        }
+
+        resultTagAsDropdown = _resultList.map((item) {
+          return DropdownMenuItem<dynamic>(
+            value: item['tagName'],
+            child: Text(item['tagName'].toString()),
+          );
+        }).toList();
+      },
+    );
+  }
+
+  getTagSnapshot() async {
+    var tagData = await _firestore.collection('tag').get();
+    setState(
+      () {
+        _tagResult = tagData.docs.map((doc) => doc.data()).toList();
+      },
+    );
+    tagResultsList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +116,6 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    var isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     File? pdfFile = Provider.of<FilePasser>(context).getFile();
 
@@ -122,12 +192,47 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                           },
                         ),
                       ),
-                      Container(
-                          margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
-                          padding: EdgeInsets.only(left: screenHeight * 0.024, top: isPortrait ? screenHeight * 0.02 : screenHeight * 0.04),
-                          alignment: Alignment.centerLeft,
-                          child: const Medium16px(text: 'แท็ก')),
-                      Row(
+                    Container(
+                        margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
+                        padding: EdgeInsets.only(left: screenHeight * 0.024, top: isPortrait ? screenHeight * 0.02 : screenHeight * 0.04),
+                        alignment: Alignment.centerLeft,
+                        child: const Medium16px(text: 'แท็ก')),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+                      child: SearchChoices.multiple(
+                        items: resultTagAsDropdown,
+                        selectedItems: selectedIndex,
+                        hint: const Padding(
+                          padding: EdgeInsets.all(12.0),
+                          child: Text("ค้นหาแท็ก"),
+                        ),
+                        searchHint: "แท็กทั้งหมด",
+                        onChanged: (value) {
+                          setState(() {
+                            selectedIndex = value;
+                            selectedTag = [];
+
+                            for (int i = 0; i < selectedIndex.length; i++) {
+                              selectedTag.add(resultTagAsDropdown[selectedIndex[i]].value);
+                            }
+                          });
+                        },
+                        closeButton: (selectedItems) {
+                          return (selectedItems.isNotEmpty
+                              ? "บันทึก ${selectedItems.length == 1 ? '"${resultTagAsDropdown[selectedItems.first].value}"' : '(${selectedItems.length})'}"
+                              : "ยกเลิก");
+                        },
+                        isExpanded: true,
+                      ),
+                    ),
+                    Container(
+                        margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
+                        padding: EdgeInsets.only(left: screenHeight * 0.024, top: screenHeight * 0.02),
+                        alignment: Alignment.centerLeft,
+                        child: const Medium16px(text: 'ประเภทของชีท')),
+                    Container(
+                      margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
+                      child: Column(
                         children: [
                           Align(
                             alignment: Alignment.centerLeft,
@@ -231,7 +336,7 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                                   coverImage!.whenComplete(() async {
                                     String coverImage = await PDFApi.getCoverImage(sheetId);
                                     try {
-                                      myCollection
+                                      await myCollection
                                           .createSheetCollection(
                                         sheetId,
                                         mySheet.sheetName,
@@ -241,11 +346,11 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                                         mySheet.sheetTypeFree,
                                         mySheet.price,
                                         mySheet.authorId = userId,
+                                        selectedTag,
                                       )
                                           .then(
                                         (value) async {
                                           _formKey.currentState!.reset();
-
                                           Future.delayed(const Duration(milliseconds: 500), () {
                                             AutoRouter.of(context).popUntilRoot();
 

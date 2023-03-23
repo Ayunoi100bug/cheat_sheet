@@ -124,7 +124,7 @@ class CreateCollection {
   }
 
   Future<void> createSheetCollection(String sheetId, String argSheetName, String argDetailSheet, String urlSheetCoverImage, List<int> demoPages,
-      bool argSheetType, int? argPrice, String argAuthorId) async {
+      bool argSheetType, int? argPrice, String argAuthorId, List<String> argTagList) async {
     await _firestore.collection("sheet").doc(sheetId).set({
       'timestamp': mySheet.timestamp,
       'sheetName': argSheetName.toString().trim(),
@@ -137,7 +137,18 @@ class CreateCollection {
       'sid': sheetId,
       'buyer': mySheet.buyer,
       'authorId': argAuthorId,
+      'sheetTags': argTagList,
+    }).then((value) async {
+      await createTag(sheetId, argTagList);
     });
+  }
+
+  Future<void> createTag(String argSid, List<String> argTag) async {
+    for (String tagDoc in argTag) {
+      await _firestore.collection("tag").doc(tagDoc).update({
+        'sheetInTagList': FieldValue.arrayUnion([argSid]),
+      });
+    }
   }
 
   Future<void> createSheetListCollection(
