@@ -37,6 +37,13 @@ class UpdateCollection {
       if (!currentUserData.containsKey('coin')) updatedUserData['coin'] = myUser.coin;
       if (!currentUserData.containsKey('sheetLists')) updatedUserData['sheetLists'] = myUser.sheetLists;
       if (!currentUserData.containsKey('buyedSheet')) updatedUserData['buyedSheet'] = myUser.buyedSheet;
+      if (!currentUserData.containsKey('trackingAsk')) updatedUserData['trackingAsk'] = myUser.trackingAsk;
+      if (!currentUserData.containsKey('trackingBuySheet')) updatedUserData['trackingBuySheet'] = myUser.trackingBuySheet;
+      if (!currentUserData.containsKey('trackingCreateSheetList')) updatedUserData['trackingCreateSheetList'] = myUser.trackingCreateSheetList;
+      if (!currentUserData.containsKey('trackingLike')) updatedUserData['trackingLike'] = myUser.trackingLike;
+      if (!currentUserData.containsKey('trackingLogin')) updatedUserData['trackingLogin'] = myUser.trackingLogin;
+      if (!currentUserData.containsKey('trackingReadSheet')) updatedUserData['trackingReadSheet'] = myUser.trackingReadSheet;
+      if (!currentUserData.containsKey('trackingReview')) updatedUserData['trackingReview'] = myUser.trackingReview;
 
       if (updatedUserData.isNotEmpty) {
         updatedUserData['timestamp'] = myUser.timestamp;
@@ -112,6 +119,48 @@ class UpdateCollection {
       FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
     });
   }
+
+  Future<void> achievement(BuildContext context, String type) async {
+    var achievementSnapshotTracking = await _firestore.collection("achievement").where('type', isEqualTo: type).get();
+    var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
+    Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
+    int tracking = currentUserData[type][0];
+    await _firestore.collection("users").doc(currentUserData['uid']).update({
+      type: [tracking + 1, currentUserData[type][1], currentUserData[type][2], false],
+    });
+    if (tracking + 1 == currentUserData[type][1]) {
+      if (tracking + 1 == 80) {
+        await _firestore.collection("users").doc(currentUserData['uid']).update({
+          'coin': currentUserData['coin'] + currentUserData[type][2],
+          type: [tracking + 1, currentUserData[type][1], currentUserData[type][2], true],
+        }).then((value) {
+          String message =
+              'คุณทำความสำเร็จ ${achievementSnapshotTracking.docs[0]['achievementName']} ${currentUserData[type][1]} ${achievementSnapshotTracking.docs[0]['achievementLastName']} เสร็จสิ้น!';
+          FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+        });
+      } else {
+        await _firestore.collection("users").doc(currentUserData['uid']).update({
+          'coin': currentUserData['coin'] + currentUserData[type][2],
+          type: [tracking + 1, currentUserData[type][1] * 2, currentUserData[type][2] * 2, false],
+        }).then((value) {
+          String message =
+              'คุณทำความสำเร็จ ${achievementSnapshotTracking.docs[0]['achievementName']} ${currentUserData[type][1]} ${achievementSnapshotTracking.docs[0]['achievementLastName']} เสร็จสิ้น!';
+          FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+        });
+      }
+    }
+  }
+
+  Future<void> updateUserDay(BuildContext context, DateTime thisDay, String? userId) async {
+    var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
+    Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
+    if (currentUserData['lastDayLogin'].toDate().day != thisDay.day) {
+      achievement(context, 'trackingLogin');
+    }
+    await _firestore.collection("users").doc(userId).update({
+      'lastDayLogin': thisDay,
+    });
+  }
 }
 
 class EditProfileData {
@@ -154,7 +203,7 @@ class UpdateSheetListData {
       Future.delayed(const Duration(milliseconds: 200), () {
         AutoRouter.of(context).popUntilRoot();
         const String message = 'เปลี่ยนข้อมูลสำเร็จ';
-        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+        FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, message);
       });
     });
   }
@@ -237,8 +286,8 @@ class EditReviewData {
     }).then((value) {
       Future.delayed(const Duration(milliseconds: 200), () {
         AutoRouter.of(context).popUntilRoot();
-        const String message = 'เปลี่ยนข้อมูลสำเร็จ';
-        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+        const String message = 'แก้ไขรีวิวสำเร็จ';
+        FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, message);
       });
     });
   }
@@ -259,8 +308,8 @@ class EditQuestionData {
     }).then((value) {
       Future.delayed(const Duration(milliseconds: 200), () {
         AutoRouter.of(context).popUntilRoot();
-        const String message = 'เปลี่ยนข้อมูลสำเร็จ';
-        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+        const String message = 'แก้ไขคำถามสำเร็จ';
+        FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, message);
       });
     });
   }
@@ -275,7 +324,7 @@ class EditSheetData {
       'detailSheet': newDetail,
     }).then(
       (value) => Future.delayed(const Duration(milliseconds: 200), () {
-        AutoRouter.of(context).popUntilRoot();
+        AutoRouter.of(context).popUntilRouteWithName('DetailSheetRoute');
         const String message = 'เปลี่ยนรายละเอียดชีทสำเร็จ';
         FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
       }),

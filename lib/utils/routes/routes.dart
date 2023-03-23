@@ -41,7 +41,7 @@ import 'package:cheat_sheet/view/test_ui_book.dart';
     page: MainScreen,
     children: [
       AutoRoute(path: 'home', name: 'HomeRoute', page: EmptyRouterPage, children: [
-        AutoRoute(path: '', page: HomeScreen),
+        AutoRoute(path: '', name: 'HomeScreenRoute', page: HomeScreen),
         AutoRoute(path: 'test_ui', name: 'TestUIRoute', page: TestUIPage),
         AutoRoute(path: 'searching', name: 'SearchingSheetRoute', page: SearchingSheet),
         AutoRoute(path: ':sheetId', name: 'DetailSheetRoute', page: DetailSheet),
