@@ -193,16 +193,6 @@ class _DetailSheetState extends State<DetailSheet> {
                                           activateOverflow: true,
                                           maxLine: 2,
                                         ),
-                                        ListView.builder(
-                                          itemCount: 8,
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder: (context, index) {
-                                            return Tag(
-                                              subject: "คณิตศาสาตร์",
-                                              onPressed: () {},
-                                            );
-                                          },
-                                        ),
                                         SingleChildScrollView(
                                           padding: EdgeInsets.zero,
                                           scrollDirection: Axis.horizontal,
@@ -240,28 +230,44 @@ class _DetailSheetState extends State<DetailSheet> {
                                             Regular12px(text: ratingSheet),
                                           ],
                                         ),
-                                        Row(
-                                          children: [
-                                            InkWell(
-                                              child: CircleAvatar(
+                                        if (_auth.currentUser!.uid != authorData['uid']) ...[
+                                          InkWell(
+                                            child: Row(
+                                              children: [
+                                                CircleAvatar(
+                                                  backgroundImage: CachedNetworkImageProvider(authorData['profileImage']),
+                                                  radius: 18,
+                                                ),
+                                                SizedBox(
+                                                  width: screenWidth * 0.02,
+                                                ),
+                                                Regular16px(
+                                                  text: authorData['username'],
+                                                  size: 18,
+                                                ),
+                                              ],
+                                            ),
+                                            onTap: () {
+                                              AutoRouter.of(context).navigateNamed('/profile/other_profile/${authorData['uid']}');
+                                            },
+                                          ),
+                                        ],
+                                        if (AuthService().isLogged() == true && sheetData['authorId'] == _auth.currentUser!.uid) ...[
+                                          Row(
+                                            children: [
+                                              CircleAvatar(
                                                 backgroundImage: CachedNetworkImageProvider(authorData['profileImage']),
                                                 radius: 18,
                                               ),
-                                              onTap: () {
-                                                AutoRouter.of(context).navigateNamed('/profile/other_profile/+${authorData['uid']}');
-                                                print(authorData['uid']);
-                                              },
-                                            ),
-                                            SizedBox(
-                                              width: screenWidth * 0.02,
-                                            ),
-                                            Regular16px(
-                                              text: authorData['username'],
-                                              size: 18,
-                                            ),
-                                          ],
-                                        ),
-                                        if (AuthService().isLogged() == true && sheetData['authorId'] == _auth.currentUser!.uid) ...[
+                                              SizedBox(
+                                                width: screenWidth * 0.02,
+                                              ),
+                                              Regular16px(
+                                                text: authorData['username'],
+                                                size: 18,
+                                              ),
+                                            ],
+                                          ),
                                           Wrap(
                                             spacing: 10,
                                             children: [

@@ -20,11 +20,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:form_field_validator/form_field_validator.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../res/components/popup_auth.dart';
 
@@ -36,23 +31,10 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
-  late TabController tabController;
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
   Users users = Users(username: '', password: '', email: '', uid: '', profileImage: '');
   final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
-
-  @override
-  void initState() {
-    tabController = TabController(length: 1, vsync: this);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    tabController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +62,15 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                   );
                 }
                 Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+                int follower = data['follower'] != null ? data['follower'].length : 0;
+                int following = 0;
+                if (data['following'] != null) {
+                  if (data['following'] is List) {
+                    following = data['following'].length;
+                  } else {
+                    following = data['following'].toString().length;
+                  }
+                }
                 return Scaffold(
                   body: SafeArea(
                     child: Column(
@@ -141,13 +132,13 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                                           children: [
                                             Column(
                                               children: [
-                                                Medium20px(text: data['follower'].toString()),
+                                                Medium20px(text: "${follower}"),
                                                 const Regular14px(text: "ผู้ติดตาม"),
                                               ],
                                             ),
                                             Column(
                                               children: [
-                                                Medium20px(text: data['following'].toString()),
+                                                Medium20px(text: "${following}"),
                                                 const Regular14px(text: "กำลังติตดาม"),
                                               ],
                                             )
