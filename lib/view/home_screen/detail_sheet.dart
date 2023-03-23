@@ -201,7 +201,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                               physics: const ClampingScrollPhysics(),
                                               shrinkWrap: true,
                                               scrollDirection: Axis.horizontal,
-                                              itemCount: tagInSheet!.length,
+                                              itemCount: tagInSheet.length,
                                               itemBuilder: (BuildContext context, int index) => Tag(
                                                 subject: sheetData['sheetTags'][index],
                                                 onPressed: () {},
