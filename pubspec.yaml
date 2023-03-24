@@ -75,9 +75,7 @@ dependencies:
   flutter_stripe: ^8.0.0+1
   flutter_colorpicker: ^1.0.3
   dropdown_button2: ^2.0.0
-
-
-
+  search_choices: ^2.2.5
 
 flutter_icons:
   android: true
