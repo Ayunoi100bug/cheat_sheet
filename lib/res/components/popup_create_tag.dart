@@ -3,10 +3,12 @@ import 'package:cheat_sheet/res/typo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../button.dart';
 
 Widget Popup_CreateTag(BuildContext context) {
+  double screenWidth = MediaQuery.of(context).size.width;
   double screenHeight = MediaQuery.of(context).size.height;
   return AlertDialog(
     shape: RoundedRectangleBorder(
@@ -16,15 +18,20 @@ Widget Popup_CreateTag(BuildContext context) {
       children: [
         Container(
           padding: EdgeInsets.only(left: screenHeight * 0.016),
-          decoration: BoxDecoration(
-            border: Border.all(color: AppColors.black800),
-            borderRadius: BorderRadius.circular(50),
-          ),
-          child: TextFormField(
-            maxLines: null,
+          child: TextField(
+            //controller: _searchController,
+            cursorColor: AppColors.black900,
             decoration: InputDecoration(
+              isDense: true,
               border: InputBorder.none,
+              fillColor: AppColors.black200,
+              filled: true,
+              enabledBorder:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: const BorderSide(width: 1, color: AppColors.primary800)),
               hintText: 'เพิ่ม/ค้นหาแท็ก',
+              focusedBorder:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: const BorderSide(width: 1, color: AppColors.primary800)),
+              hintStyle: const TextStyle(color: Colors.grey, fontSize: 18),
               suffixIcon: InkWell(
                 child: Icon(Icons.add),
                 onTap: () => print("add tag"),

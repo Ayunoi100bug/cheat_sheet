@@ -17,6 +17,7 @@ class Sheets {
   String authorId;
   List? review = [];
   List? question = [];
+  List sheetTags = [];
 
   Sheets({
     required this.sheetName,
@@ -40,7 +41,9 @@ class Sheets {
         price = json['price'],
         buyer = json['buyer'],
         authorId = json['authorId'],
-        review = json['review'];
+        review = json['review'],
+        question = json['question'],
+        sheetTags = json['sheetTags'];
 
   Map<String, dynamic> toJson() => {
         'timestamp': timestamp,
@@ -55,5 +58,7 @@ class Sheets {
         'buyer': buyer,
         'authorId': authorId,
         'review': review,
+        'question': question,
+        'sheetTags': sheetTags,
       };
 }

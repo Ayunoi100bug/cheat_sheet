@@ -190,10 +190,6 @@ void _BottomSheet(context) {
               key: _formKey,
               child: Container(
                 width: 150,
-                decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.black400),
-                  borderRadius: BorderRadius.circular(12),
-                ),
                 child: MyTextFormField(
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   hintText: 'ชื่อชีทลิสต์',
@@ -211,27 +207,29 @@ void _BottomSheet(context) {
               text: 'บันทึก',
               onPressed: () async {
                 _formKey.currentState!.save();
-                try {
-                  myCollection
-                      .createSheetListCollection(
-                    _sheetLists.sheetListName,
-                    _sheetLists.sid = [],
-                    _sheetLists.authorId = _auth.currentUser!.uid,
-                    _sheetLists.sheetListId = uuid.v4(),
-                    _sheetLists.sheetListCoverImage = '',
-                  )
-                      .then(
-                    (value) {
-                      _formKey.currentState!.reset();
-                      AutoRouter.of(context).popUntilRoot();
-                      FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, 'สร้างชีทลิสต์สำเร็จ');
-                    },
-                  );
-                  await _firestoreDb.collection('users').doc(_auth.currentUser!.uid).update({
-                    'sheetLists': FieldValue.arrayUnion([_sheetLists.sheetListId])
-                  });
-                } on FirebaseAuthException catch (e) {
-                  FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
+                if (_formKey.currentState!.validate()) {
+                  try {
+                    myCollection
+                        .createSheetListCollection(
+                      _sheetLists.sheetListName,
+                      _sheetLists.sid = [],
+                      _sheetLists.authorId = _auth.currentUser!.uid,
+                      _sheetLists.sheetListId = uuid.v4(),
+                      _sheetLists.sheetListCoverImage = '',
+                    )
+                        .then(
+                      (value) {
+                        _formKey.currentState!.reset();
+                        AutoRouter.of(context).popUntilRoot();
+                        FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, 'สร้างชีทลิสต์สำเร็จ');
+                      },
+                    );
+                    await _firestoreDb.collection('users').doc(_auth.currentUser!.uid).update({
+                      'sheetLists': FieldValue.arrayUnion([_sheetLists.sheetListId])
+                    });
+                  } on FirebaseAuthException catch (e) {
+                    FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
+                  }
                 }
               },
             ),

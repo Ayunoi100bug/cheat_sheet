@@ -7,6 +7,7 @@ import 'package:cheat_sheet/model/review.dart';
 import 'package:cheat_sheet/model/sheet.dart';
 import 'package:cheat_sheet/model/sheet_list.dart';
 import 'package:cheat_sheet/model/user.dart';
+import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/view_model/update_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -123,7 +124,7 @@ class CreateCollection {
   }
 
   Future<void> createSheetCollection(String sheetId, String argSheetName, String argDetailSheet, String urlSheetCoverImage, List<int> demoPages,
-      bool argSheetType, int? argPrice, String argAuthorId) async {
+      bool argSheetType, int? argPrice, String argAuthorId, List<String> argTagList) async {
     await _firestore.collection("sheet").doc(sheetId).set({
       'timestamp': mySheet.timestamp,
       'sheetName': argSheetName.toString().trim(),
@@ -136,7 +137,18 @@ class CreateCollection {
       'sid': sheetId,
       'buyer': mySheet.buyer,
       'authorId': argAuthorId,
+      'sheetTags': argTagList,
+    }).then((value) async {
+      await createTag(sheetId, argTagList);
     });
+  }
+
+  Future<void> createTag(String argSid, List<String> argTag) async {
+    for (String tagDoc in argTag) {
+      await _firestore.collection("tag").doc(tagDoc).update({
+        'sheetInTagList': FieldValue.arrayUnion([argSid]),
+      });
+    }
   }
 
   Future<void> createSheetListCollection(
@@ -205,7 +217,8 @@ class CreateCollection {
     });
     await _firestore.collection('sheet').doc(argSheetId).update({'rating': result}).then(
       (value) {
-        AutoRouter.of(context).pop();
+        AutoRouter.of(context).popUntilRouteWithName('DetailSheetRoute');
+        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, 'รีวิวสำเร็จ');
       },
     );
   }
@@ -226,7 +239,7 @@ class CreateCollection {
       'question': FieldValue.arrayUnion([argQuestionId])
     }).then(
       (value) {
-        AutoRouter.of(context).popUntilRoot();
+        AutoRouter.of(context).popUntilRouteWithName('AskQuestionRoute');
         const String message = 'สร้างคำถามสำเร็จ!';
         FlushbarPopup.successFlushbar(context, FlushbarIcon.createQuestionIcon, message);
       },

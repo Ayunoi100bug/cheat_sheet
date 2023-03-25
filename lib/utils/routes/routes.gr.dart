@@ -132,7 +132,7 @@ class AppRouter extends _i36.RootStackRouter {
         child: const _i5.EmptyRouterPage(),
       );
     },
-    HomeScreen.name: (routeData) {
+    HomeScreenRoute.name: (routeData) {
       return _i36.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i7.HomeScreen(),
@@ -415,7 +415,7 @@ class AppRouter extends _i36.RootStackRouter {
               parent: MainScreen.name,
               children: [
                 _i36.RouteConfig(
-                  HomeScreen.name,
+                  HomeScreenRoute.name,
                   path: '',
                   parent: HomeRoute.name,
                 ),
@@ -784,14 +784,14 @@ class ProfileRoute extends _i36.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i7.HomeScreen]
-class HomeScreen extends _i36.PageRouteInfo<void> {
-  const HomeScreen()
+class HomeScreenRoute extends _i36.PageRouteInfo<void> {
+  const HomeScreenRoute()
       : super(
-          HomeScreen.name,
+          HomeScreenRoute.name,
           path: '',
         );
 
-  static const String name = 'HomeScreen';
+  static const String name = 'HomeScreenRoute';
 }
 
 /// generated route for
