@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/model/sheet.dart';
@@ -152,15 +153,64 @@ class UpdateCollection {
     }
   }
 
+  Future<void> quest(BuildContext context, String type) async {
+    var questSnapshotTracking = await _firestore.collection("dailyQuest").where('type', isEqualTo: type).get();
+    var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
+    Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
+    for (int i = 0; i < 3; i++) {
+      if (currentUserData['quest${i + 1}'][1] == questSnapshotTracking.docs[0]['id']) {
+        int tracking = currentUserData['quest${i + 1}'][0];
+        if (tracking + 1 == questSnapshotTracking.docs[0]['complete']) {
+          await _firestore.collection("users").doc(currentUserData['uid']).update({
+            'quest${i + 1}': [tracking + 1, currentUserData['quest${i + 1}'][1], true],
+            'coin': currentUserData['coin'] + questSnapshotTracking.docs[0]['point'],
+          }).then((value) {
+            String message = 'คุณทำเควสรายวัน ${questSnapshotTracking.docs[0]['questName']} เสร็จสิ้น!';
+            FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+          });
+        } else {
+          await _firestore.collection("users").doc(currentUserData['uid']).update({
+            'quest${i + 1}': [tracking + 1, currentUserData['quest${i + 1}'][1], false],
+          });
+        }
+      }
+    }
+  }
+
   Future<void> updateUserDay(BuildContext context, DateTime thisDay, String? userId) async {
     var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
     Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
     if (currentUserData['lastDayLogin'].toDate().day != thisDay.day) {
       achievement(context, 'trackingLogin');
+      updateQuest();
     }
     await _firestore.collection("users").doc(userId).update({
       'lastDayLogin': thisDay,
     });
+  }
+
+  List getRandomNumber(int num) {
+    List number = [];
+    while (number.length <= 3) {
+      int ran = Random().nextInt(num) + 1;
+      if (!number.contains(ran)) {
+        number.add(ran);
+      }
+    }
+    return number;
+  }
+
+  Future<void> updateQuest() async {
+    List num = getRandomNumber(5);
+    for (int i = 0; i < 3; i++) {
+      var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
+      Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
+      await _firestore.collection("users").doc(currentUserData['uid']).update({
+        'quest1': [0, num[0].toString(), false],
+        'quest2': [0, num[1].toString(), false],
+        'quest3': [0, num[2].toString(), false],
+      });
+    }
   }
 }
 

@@ -71,12 +71,21 @@ class _ActivityScreenState extends State<ActivityScreen> with AutomaticKeepAlive
                     ),
                     itemCount: 3,
                     itemBuilder: (context, index) {
-                      return const DailyQuest(
-                        questName: 'อ่านชีทครบ 3 ครั้ง',
-                        completeTime: 3,
-                        doingTime: 1,
-                        recievePoint: 10,
-                      );
+                      return StreamBuilder<DocumentSnapshot>(
+                          stream: _firestore.collection('dailyQuest').doc(userSnapshot.data!['quest${index + 1}'][1]).snapshots(),
+                          builder: (BuildContext context, AsyncSnapshot dailyQuestSnapshot) {
+                            if (!dailyQuestSnapshot.hasData) {
+                              return Container();
+                            } else if (dailyQuestSnapshot.connectionState == ConnectionState.waiting) {
+                              return const Center(child: CircularProgressIndicator());
+                            }
+                            return DailyQuest(
+                              questName: dailyQuestSnapshot.data!['questName'],
+                              completeTime: dailyQuestSnapshot.data!['complete'],
+                              doingTime: userSnapshot.data!['quest${index + 1}'][0],
+                              recievePoint: dailyQuestSnapshot.data!['point'],
+                            );
+                          });
                     },
                     padding: EdgeInsets.only(right: screenWidth * 0.04, left: screenWidth * 0.04),
                   ),
