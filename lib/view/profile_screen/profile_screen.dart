@@ -1,21 +1,13 @@
-import 'dart:io';
-
-import 'package:another_flushbar/flushbar.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/model/user.dart';
-import 'package:cheat_sheet/res/button.dart';
 import 'package:cheat_sheet/res/colors.dart';
-import 'package:cheat_sheet/res/components/form_field.dart';
 import 'package:cheat_sheet/res/gap_dimension.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cheat_sheet/view/profile_screen/profile_sub_page/my_sheet.dart';
-import 'package:cheat_sheet/view/profile_screen/profile_sub_page/buy_sheet.dart';
-import 'package:cheat_sheet/view_model/create_firestore.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
@@ -62,15 +54,11 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                   );
                 }
                 Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-                int follower = data['follower'] != null ? data['follower'].length : 0;
-                int following = 0;
-                if (data['following'] != null) {
-                  if (data['following'] is List) {
-                    following = data['following'].length;
-                  } else {
-                    following = data['following'].toString().length;
-                  }
-                }
+                List followerData = data['follower'];
+                List followingData = data['following'];
+                int follower = followerData.length;
+                int following = followingData.length;
+
                 return Scaffold(
                   body: SafeArea(
                     child: Column(
@@ -132,13 +120,13 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                                           children: [
                                             Column(
                                               children: [
-                                                Medium20px(text: "${follower}"),
+                                                Medium20px(text: "$follower"),
                                                 const Regular14px(text: "ผู้ติดตาม"),
                                               ],
                                             ),
                                             Column(
                                               children: [
-                                                Medium20px(text: "${following}"),
+                                                Medium20px(text: "$following"),
                                                 const Regular14px(text: "กำลังติตดาม"),
                                               ],
                                             )

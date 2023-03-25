@@ -23,13 +23,10 @@ class _OtherProfileState extends State<OtherProfile> {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
   Users users = Users(username: '', password: '', email: '', uid: '', profileImage: '');
-  bool isFollowing = false;
-
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
 
     return StreamBuilder<DocumentSnapshot>(
         stream: _firestore.collection("users").doc(widget.userId).snapshots(),
@@ -41,15 +38,7 @@ class _OtherProfileState extends State<OtherProfile> {
               child: CircularProgressIndicator(),
             );
           }
-          _firestore.collection('users').doc(widget.userId).get().then((value) {
-            var followerFieldValue = value.data()?['follower'];
-            for (var follower in followerFieldValue) {
-              if (follower == _auth.currentUser!.uid) {
-                isFollowing = true;
-                break;
-              }
-            }
-          });
+
           Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
           List followerData = data['follower'];
           List followingData = data['following'];
@@ -116,12 +105,11 @@ class _OtherProfileState extends State<OtherProfile> {
                                     ],
                                   ),
                                 ),
-                                if (!isFollowing) ...[
+                                if (!followerData.contains(_auth.currentUser!.uid)) ...[
                                   PrimaryButton(
                                     text: "ติดตาม",
                                     onPressed: () {
                                       FollowSystem().followUser(_auth.currentUser!.uid, widget.userId);
-                                      isFollowing = true;
                                     },
                                   )
                                 ] else ...[
@@ -129,7 +117,6 @@ class _OtherProfileState extends State<OtherProfile> {
                                     text: "เลิกติดตาม",
                                     onPressed: () {
                                       FollowSystem().unfollowUser(_auth.currentUser!.uid, widget.userId);
-                                      isFollowing = false;
                                     },
                                   )
                                 ]
