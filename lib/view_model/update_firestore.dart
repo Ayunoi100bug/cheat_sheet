@@ -78,7 +78,6 @@ class UpdateCollection {
       if (context.mounted) {
         const String message = 'ซื้อชีทสำเร็จ';
         FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
-        achievement(context, 'trackingBuySheet');
       }
     });
     /** 
@@ -86,6 +85,7 @@ class UpdateCollection {
      * TODO: สิ่งที่ต้องปรับหลังแก้ context คือเอา Flushbar ไปไว้ด้านล่างแทน ที่เอามาไว้ด้านบนแบบนี้คือแก้ขัดเฉยๆ
     */
     await Future.wait([
+      achievement(context, 'trackingBuySheet'),
       _firestore.collection("users").doc(currentUserData['uid']).update({
         'timestamp': myUser.timestamp,
         'coin': (currentUserData['coin'] - sheetPrice),
