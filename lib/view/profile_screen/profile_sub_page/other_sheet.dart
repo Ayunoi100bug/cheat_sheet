@@ -7,14 +7,15 @@ import '../../../res/components/sheet.dart';
 import '../../../res/gap_dimension.dart';
 import '../../../res/typo.dart';
 
-class MySheet extends StatefulWidget {
-  const MySheet({super.key});
+class OtherSheet extends StatefulWidget {
+  final userId;
+  const OtherSheet({super.key, @PathParam() required this.userId});
 
   @override
-  State<MySheet> createState() => _MySheetState();
+  State<OtherSheet> createState() => _OtherSheetState();
 }
 
-class _MySheetState extends State<MySheet> {
+class _OtherSheetState extends State<OtherSheet> {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   final TextEditingController _searchController = TextEditingController();
@@ -97,7 +98,7 @@ class _MySheetState extends State<MySheet> {
   }
 
   getSheetSnapshot() async {
-    var sheetData = await _firestore.collection('sheet').where('authorId', isEqualTo: _auth.currentUser!.uid).get();
+    var sheetData = await _firestore.collection('sheet').where('authorId', isEqualTo: widget.userId).get();
     var authorData = await _firestore.collection('users').get();
     setState(() {
       _sheetResult = sheetData.docs.map((doc) => doc.data()).toList();

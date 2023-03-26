@@ -194,6 +194,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                           activateOverflow: true,
                                           maxLine: 2,
                                         ),
+
                                         if (tagInSheet!.isNotEmpty) ...[
                                           SizedBox(
                                             height: isPortrait ? screenHeight * 0.035 : screenHeight * 0.015,
@@ -204,6 +205,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                               itemCount: tagInSheet.length,
                                               itemBuilder: (BuildContext context, int index) => Tag(
                                                 subject: sheetData['sheetTags'][index],
+
                                                 onPressed: () {},
                                               ),
                                             ),
@@ -226,19 +228,44 @@ class _DetailSheetState extends State<DetailSheet> {
                                             Regular12px(text: ratingSheet),
                                           ],
                                         ),
-                                        Row(
-                                          children: [
-                                            CircleAvatar(
-                                              backgroundImage: CachedNetworkImageProvider(authorData['profileImage']),
-                                              radius: 12,
+                                        if (_auth.currentUser!.uid != authorData['uid']) ...[
+                                          InkWell(
+                                            child: Row(
+                                              children: [
+                                                CircleAvatar(
+                                                  backgroundImage: CachedNetworkImageProvider(authorData['profileImage']),
+                                                  radius: 18,
+                                                ),
+                                                SizedBox(
+                                                  width: screenWidth * 0.02,
+                                                ),
+                                                Regular16px(
+                                                  text: authorData['username'],
+                                                  size: 18,
+                                                ),
+                                              ],
                                             ),
-                                            SizedBox(
-                                              width: screenWidth * 0.02,
-                                            ),
-                                            Regular14px(text: authorData['username']),
-                                          ],
-                                        ),
+                                            onTap: () {
+                                              AutoRouter.of(context).navigateNamed('/profile/other_profile/${authorData['uid']}');
+                                            },
+                                          ),
+                                        ],
                                         if (AuthService().isLogged() == true && sheetData['authorId'] == _auth.currentUser!.uid) ...[
+                                          Row(
+                                            children: [
+                                              CircleAvatar(
+                                                backgroundImage: CachedNetworkImageProvider(authorData['profileImage']),
+                                                radius: 18,
+                                              ),
+                                              SizedBox(
+                                                width: screenWidth * 0.02,
+                                              ),
+                                              Regular16px(
+                                                text: authorData['username'],
+                                                size: 18,
+                                              ),
+                                            ],
+                                          ),
                                           Wrap(
                                             spacing: 10,
                                             children: [

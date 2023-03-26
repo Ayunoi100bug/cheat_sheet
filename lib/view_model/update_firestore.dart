@@ -332,3 +332,24 @@ class EditSheetData {
     );
   }
 }
+
+class FollowSystem {
+  final _firestore = FirebaseFirestore.instance;
+  Future followUser(String currentUser, String userId) async {
+    await _firestore.collection("users").doc(currentUser).update({
+      "following": FieldValue.arrayUnion([userId]),
+    });
+    await _firestore.collection("users").doc(userId).update({
+      "follower": FieldValue.arrayUnion([currentUser]),
+    });
+  }
+
+  Future unfollowUser(String currentUser, String userId) async {
+    await _firestore.collection("users").doc(currentUser).update({
+      "following": FieldValue.arrayRemove([userId]),
+    });
+    await _firestore.collection("users").doc(userId).update({
+      "follower": FieldValue.arrayRemove([currentUser]),
+    });
+  }
+}
