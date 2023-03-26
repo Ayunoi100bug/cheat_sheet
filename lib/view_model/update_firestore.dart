@@ -38,6 +38,9 @@ class UpdateCollection {
       if (!currentUserData.containsKey('coin')) updatedUserData['coin'] = myUser.coin;
       if (!currentUserData.containsKey('sheetLists')) updatedUserData['sheetLists'] = myUser.sheetLists;
       if (!currentUserData.containsKey('buyedSheet')) updatedUserData['buyedSheet'] = myUser.buyedSheet;
+      if (!currentUserData.containsKey('quest1')) updatedUserData['quest1'] = myUser.quest1;
+      if (!currentUserData.containsKey('quest2')) updatedUserData['quest2'] = myUser.quest2;
+      if (!currentUserData.containsKey('quest3')) updatedUserData['quest3'] = myUser.quest3;
       if (!currentUserData.containsKey('trackingAsk')) updatedUserData['trackingAsk'] = myUser.trackingAsk;
       if (!currentUserData.containsKey('trackingBuySheet')) updatedUserData['trackingBuySheet'] = myUser.trackingBuySheet;
       if (!currentUserData.containsKey('trackingCreateSheetList')) updatedUserData['trackingCreateSheetList'] = myUser.trackingCreateSheetList;
