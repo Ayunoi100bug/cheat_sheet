@@ -218,6 +218,7 @@ class CreateCollection {
     await _firestore.collection('sheet').doc(argSheetId).update({'rating': result}).then(
       (value) {
         UpdateCollection().achievement(context, 'trackingReview');
+        UpdateCollection().quest(context, 'trackingDailyReview');
         AutoRouter.of(context).popUntilRouteWithName('DetailSheetRoute');
         FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, 'รีวิวสำเร็จ');
       },
@@ -241,6 +242,7 @@ class CreateCollection {
     }).then(
       (value) {
         UpdateCollection().achievement(context, 'trackingAsk');
+        UpdateCollection().quest(context, 'trackingDailyAsk');
         AutoRouter.of(context).popUntilRouteWithName('AskQuestionRoute');
         const String message = 'สร้างคำถามสำเร็จ!';
         FlushbarPopup.successFlushbar(context, FlushbarIcon.createQuestionIcon, message);

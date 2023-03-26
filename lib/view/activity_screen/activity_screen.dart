@@ -84,6 +84,7 @@ class _ActivityScreenState extends State<ActivityScreen> with AutomaticKeepAlive
                               completeTime: dailyQuestSnapshot.data!['complete'],
                               doingTime: userSnapshot.data!['quest${index + 1}'][0],
                               recievePoint: dailyQuestSnapshot.data!['point'],
+                              success: userSnapshot.data!['quest${index + 1}'][2],
                             );
                           });
                     },
