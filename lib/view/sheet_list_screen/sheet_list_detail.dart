@@ -57,12 +57,13 @@ class _SheetListDetailState extends State<SheetListDetail> {
                         SizedBox(
                           child: Medium20px(text: data['sheetListName']),
                         ),
-                        InkWell(
-                          child: Icon(FontAwesomeIcons.ellipsisV, size: screenHeight * 0.024),
-                          onTap: () {
-                            _BottomSheetList(context, data['sheetListId'], data['sheetListName']);
-                          },
-                        ),
+                        if (data['accessible'] == true)
+                          InkWell(
+                            child: Icon(FontAwesomeIcons.ellipsisV, size: screenHeight * 0.024),
+                            onTap: () {
+                              _BottomSheetList(context, data['sheetListId'], data['sheetListName']);
+                            },
+                          ),
                       ],
                     ),
                   ),

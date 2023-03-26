@@ -65,6 +65,8 @@ class UpdateCollection {
     Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
     var authorSnapshot = await _firestore.collection("users").doc(authorId).get();
     Map<String, dynamic> authorData = authorSnapshot.data()!;
+    var sheetSnapshot = await _firestore.collection("sheet").doc(sid).get();
+    Map<String, dynamic> sheetData = sheetSnapshot.data()!;
     var buyerSnapshot = await _firestore.collection("users").where("buyedSheet", arrayContains: sid).get();
     int buyerAmount = buyerSnapshot.docs.length;
     if ((sheetPrice == 0 || currentUserData['uid'] == authorId || currentUserData['buyedSheet'].contains(sid))) {
@@ -98,6 +100,20 @@ class UpdateCollection {
       _firestore.collection("sheet").doc(sid).update({
         'timestamp': mySheet.timestamp,
         'buyer': buyerAmount + 1,
+      }),
+      _firestore
+          .collection("sheetList")
+          .where('authorId', isEqualTo: currentUserData['uid'])
+          .where('sheetListName', isEqualTo: 'ชีทที่ซื้อ')
+          .get()
+          .then((value) {
+        // ! จริงๆแล้ว loop ไปมันก็ได้ตัวเดียวอยู่ดี ถ้ามีวิธีที่ดีกว่านี้ลองเสนอได้ ตอนผมทำผมอาจจะเมาๆ นึกวิธีที่ดีกว่านี้ไม่ออก
+        for (var element in value.docs) {
+          _firestore.collection("sheetList").doc(element.id).update({
+            'sheetListCoverImage': sheetData['sheetCoverImage'] == '' ? sheetData['sheetCoverImage'] : {},
+            'sid': FieldValue.arrayUnion([sid]),
+          });
+        }
       }),
     ]);
   }

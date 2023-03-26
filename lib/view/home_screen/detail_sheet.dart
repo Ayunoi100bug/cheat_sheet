@@ -690,7 +690,7 @@ class _DetailSheetState extends State<DetailSheet> {
               stream: _auth.authStateChanges(),
               builder: (context, AsyncSnapshot<User?> snapshot) {
                 return StreamBuilder<QuerySnapshot>(
-                    stream: _firestoreDb.collection("sheetList").snapshots(),
+                    stream: _firestoreDb.collection("sheetList").where('accessible', isEqualTo: true).snapshots(),
                     builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (!snapshot.hasData) {
                         return Container();
