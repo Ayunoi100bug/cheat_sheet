@@ -26,6 +26,7 @@ import '../res/components/flushbar_icon.dart';
 class CreateCollection {
   final storageRef = FirebaseStorage.instance.ref();
   final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+  final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
   Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
@@ -152,14 +153,22 @@ class CreateCollection {
   }
 
   Future<void> createSheetListCollection(
-      String argSheetListName, List? argSid, String argAuthorId, String argSheetListId, String? argSheetListCoverImage) async {
-    await _firestore.collection("sheetList").doc(argSheetListId).set({
-      'timestamp': mySheetLists.timestamp,
-      'sheetListName': argSheetListName.toString().trim(),
-      'sid': argSid,
-      'authorId': argAuthorId,
-      'sheetListId': argSheetListId,
-      'sheetListCoverImage': argSheetListCoverImage,
+      BuildContext context, String argSheetListName, List? argSid, String argAuthorId, String argSheetListId, String? argSheetListCoverImage) async {
+    await Future.wait([
+      _firestore.collection("sheetList").doc(argSheetListId).set({
+        'timestamp': mySheetLists.timestamp,
+        'sheetListName': argSheetListName.toString().trim(),
+        'sid': argSid,
+        'authorId': argAuthorId,
+        'sheetListId': argSheetListId,
+        'sheetListCoverImage': argSheetListCoverImage,
+      }),
+      _firestore.collection('users').doc(_auth.currentUser!.uid).update({
+        'sheetLists': FieldValue.arrayUnion([argSheetListId]),
+      }),
+    ]).then((value) {
+      AutoRouter.of(context).popUntilRoot();
+      FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, 'สร้างชีทลิสต์สำเร็จ');
     });
   }
 
@@ -172,19 +181,8 @@ class CreateCollection {
       'authorId': argAuthorId,
       'sheetListId': argSheetListId,
       'sheetListCoverImage': argSheetListCoverImage,
-    });
-    UpdateSheetListData().updateSheetList(context, argSheetListId, sheetId);
-    Future.delayed(const Duration(milliseconds: 500), () {
-      Navigator.of(context).pop();
-
-      const String message = 'เพิ่มชีทเข้าชีทลิสต์สำเร็จ!';
-      FlushbarPopup.successFlushbar(
-          context,
-          const Icon(
-            FontAwesomeIcons.book,
-            color: AppColors.white,
-          ),
-          message);
+    }).then((value) async {
+      await UpdateSheetListData().updateSheetList(context, argSheetListId, sheetId);
     });
   }
 

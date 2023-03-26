@@ -39,7 +39,7 @@ class _SheetListDetailState extends State<SheetListDetail> {
         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (!snapshot.hasData) {
             return Container();
-          } else if (snapshot.connectionState == ConnectionState.waiting) {
+          } else if (snapshot.connectionState == ConnectionState.waiting || snapshot.data!.data() == null) {
             return const Center(child: CircularProgressIndicator());
           }
           Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;

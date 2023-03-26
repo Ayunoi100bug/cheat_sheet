@@ -219,9 +219,7 @@ class UpdateSheetListData {
     }
     await _firestore.collection('sheetList').doc(currentSheetListId).update({
       'sid': FieldValue.arrayUnion([currentSheetId])
-    });
-
-    Future.delayed(const Duration(milliseconds: 500), () {
+    }).then((value) {
       Navigator.of(context).pop();
 
       const String message = 'เพิ่มชีทเข้าชีทลิสต์สำเร็จ!';
@@ -243,13 +241,23 @@ class UpdateSheetListData {
     Map<String, dynamic> currentSheetListData = currentSheetListSnapshot.data()!;
     List? sheet = currentSheetListData['sid'];
     if (sheet!.isEmpty) {
-      await _firestore.collection('sheetList').doc(currentSheetListId).update({'sheetListCoverImage': ''});
+      await _firestore.collection('sheetList').doc(currentSheetListId).update({'sheetListCoverImage': ''}).then((value) {
+        Navigator.of(context).pop();
+
+        const String message = 'ลบชีทออกจากชีทลิสต์สำเร็จ!';
+        FlushbarPopup.successFlushbar(
+            context,
+            const Icon(
+              FontAwesomeIcons.book,
+              color: AppColors.white,
+            ),
+            message);
+      });
       return;
     }
     var sheetSnapshot = await _firestore.collection("sheet").doc(currentSheetListData['sid'][0]).get();
     Map<String, dynamic> sheetData = sheetSnapshot.data()!;
-    await _firestore.collection('sheetList').doc(currentSheetListId).update({'sheetListCoverImage': sheetData['sheetCoverImage']});
-    Future.delayed(const Duration(milliseconds: 500), () {
+    await _firestore.collection('sheetList').doc(currentSheetListId).update({'sheetListCoverImage': sheetData['sheetCoverImage']}).then((value) {
       Navigator.of(context).pop();
 
       const String message = 'ลบชีทออกจากชีทลิสต์สำเร็จ!';
