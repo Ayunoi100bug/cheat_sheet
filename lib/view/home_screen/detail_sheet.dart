@@ -271,16 +271,34 @@ class _DetailSheetState extends State<DetailSheet> {
                                           Wrap(
                                             spacing: 10,
                                             children: [
-                                              InkWell(
-                                                child: Icon(
-                                                  Icons.favorite_outline,
-                                                  color: AppColors.black600,
-                                                  size: isPortrait ? 32 : 36,
-                                                ),
-                                                onTap: () {
-                                                  UpdateCollection().achievement(context, 'trackingLike');
-                                                },
-                                              ),
+                                              StreamBuilder<QuerySnapshot>(
+                                                  stream: _firestore
+                                                      .collection('sheetList')
+                                                      .where('authorId', isEqualTo: _auth.currentUser?.uid)
+                                                      .where('sheetListName', isEqualTo: 'ชีทที่ถูกใจ')
+                                                      .snapshots(),
+                                                  builder: (BuildContext context, AsyncSnapshot sheetListSnapshot) {
+                                                    if (!sheetListSnapshot.hasData) {
+                                                      return Container();
+                                                    } else if (sheetListSnapshot.connectionState == ConnectionState.waiting) {
+                                                      return const Center(child: CircularProgressIndicator());
+                                                    }
+                                                    Map<String, dynamic> sheetListData =
+                                                        sheetListSnapshot.data!.docs[0].data() as Map<String, dynamic>;
+                                                    return InkWell(
+                                                      child: Icon(
+                                                        sheetListData['sid'].contains(widget.sheetId)
+                                                            ? Icons.favorite_outlined
+                                                            : Icons.favorite_outline,
+                                                        color:
+                                                            sheetListData['sid'].contains(widget.sheetId) ? AppColors.error500 : AppColors.black600,
+                                                        size: isPortrait ? 32 : 36,
+                                                      ),
+                                                      onTap: () async {
+                                                        await UpdateSheetListData().like(context, sheetData['sid'], sheetData['sheetCoverImage']);
+                                                      },
+                                                    );
+                                                  }),
                                               InkWell(
                                                 child: Icon(
                                                   Icons.playlist_add_rounded,

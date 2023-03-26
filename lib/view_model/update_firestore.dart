@@ -110,8 +110,8 @@ class UpdateCollection {
         // ! จริงๆแล้ว loop ไปมันก็ได้ตัวเดียวอยู่ดี ถ้ามีวิธีที่ดีกว่านี้ลองเสนอได้ ตอนผมทำผมอาจจะเมาๆ นึกวิธีที่ดีกว่านี้ไม่ออก
         for (var element in value.docs) {
           _firestore.collection("sheetList").doc(element.id).update({
-            'sheetListCoverImage': sheetData['sheetCoverImage'] == '' ? sheetData['sheetCoverImage'] : {},
             'sid': FieldValue.arrayUnion([sid]),
+            'sheetListCoverImage': (element['sid'].isEmpty) ? sheetData['sheetCoverImage'] : element['sheetListCoverImage'],
           });
         }
       }),
@@ -212,16 +212,35 @@ class EditProfileData {
 
 class UpdateSheetListData {
   final _firestore = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
+
+  Future<void> like(BuildContext context, String argSid, String argCoverImage) async {
+    var sheetListSnapshot = await _firestore
+        .collection("sheetList")
+        .where("authorId", isEqualTo: _auth.currentUser?.uid)
+        .where("sheetListName", isEqualTo: "ชีทที่ถูกใจ")
+        .get();
+    Map<String, dynamic> sheetListData = sheetListSnapshot.docs[0].data();
+    if (!sheetListData['sid'].contains(argSid)) {
+      await _firestore.collection("sheetList").doc(sheetListSnapshot.docs[0].id).update({
+        'sid': FieldValue.arrayUnion([argSid]),
+        'sheetListCoverImage': sheetListData['sheetListCoverImage'] == '' ? argCoverImage : sheetListData['sheetListCoverImage'],
+      });
+    } else {
+      await _firestore.collection("sheetList").doc(sheetListSnapshot.docs[0].id).update({
+        'sid': FieldValue.arrayRemove([argSid]),
+        'sheetListCoverImage': sheetListData['sid'].isEmpty ? sheetListData['sheetListCoverImage'] : '',
+      });
+    }
+  }
 
   Future<void> editSheetList(BuildContext context, String currentSheetListId, String newText) async {
     await _firestore.collection('sheetList').doc(currentSheetListId).update({
       'sheetListName': newText,
     }).then((value) {
-      Future.delayed(const Duration(milliseconds: 200), () {
-        AutoRouter.of(context).popUntilRoot();
-        const String message = 'เปลี่ยนข้อมูลสำเร็จ';
-        FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, message);
-      });
+      AutoRouter.of(context).popUntilRoot();
+      const String message = 'เปลี่ยนข้อมูลสำเร็จ';
+      FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, message);
     });
   }
 
