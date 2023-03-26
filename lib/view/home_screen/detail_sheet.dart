@@ -279,6 +279,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                 ),
                                                 onTap: () {
                                                   UpdateCollection().achievement(context, 'trackingLike');
+                                                  UpdateCollection().quest(context, 'trackingDailyLike');
                                                 },
                                               ),
                                               InkWell(
