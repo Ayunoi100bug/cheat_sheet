@@ -323,6 +323,8 @@ class _DetailSheetState extends State<DetailSheet> {
                                                       ),
                                                       onTap: () async {
                                                         await UpdateSheetListData().like(context, sheetData['sid'], sheetData['sheetCoverImage']);
+                                                        UpdateCollection().achievement(context, 'trackingLike');
+                                                        UpdateCollection().quest(context, 'trackingDailyLike');
                                                       },
                                                     );
                                                   }),

@@ -11,6 +11,9 @@ class Users {
   List follower = [];
   List following = [];
   int coin = 0;
+  List quest1 = [0, '', false];
+  List quest2 = [0, '', false];
+  List quest3 = [0, '', false];
   List trackingAsk = [0, 5, 15, false];
   List trackingBuySheet = [0, 5, 15, false];
   List trackingCreateSheetList = [0, 5, 15, false];
@@ -40,6 +43,9 @@ class Users {
         follower = json['follower'],
         following = json['following'],
         coin = json['coin'],
+        quest1 = json['quest1'],
+        quest2 = json['quest2'],
+        quest3 = json['quest3'],
         trackingAsk = json['trackingAsk'],
         trackingBuySheet = json['trackingBuySheet'],
         trackingCreateSheetList = json['trackingCreateSheetList'],
@@ -61,6 +67,9 @@ class Users {
         'follower': follower,
         'following': following,
         'coin': coin,
+        'quest1': quest1,
+        'quest2': quest2,
+        'quest3': quest3,
         'trackingAsk': trackingAsk,
         'trackingBuySheet': trackingBuySheet,
         'trackingCreateSheetList': trackingCreateSheetList,

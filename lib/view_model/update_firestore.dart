@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/model/sheet.dart';
@@ -37,6 +38,9 @@ class UpdateCollection {
       if (!currentUserData.containsKey('coin')) updatedUserData['coin'] = myUser.coin;
       if (!currentUserData.containsKey('sheetLists')) updatedUserData['sheetLists'] = myUser.sheetLists;
       if (!currentUserData.containsKey('buyedSheet')) updatedUserData['buyedSheet'] = myUser.buyedSheet;
+      if (!currentUserData.containsKey('quest1')) updatedUserData['quest1'] = myUser.quest1;
+      if (!currentUserData.containsKey('quest2')) updatedUserData['quest2'] = myUser.quest2;
+      if (!currentUserData.containsKey('quest3')) updatedUserData['quest3'] = myUser.quest3;
       if (!currentUserData.containsKey('trackingAsk')) updatedUserData['trackingAsk'] = myUser.trackingAsk;
       if (!currentUserData.containsKey('trackingBuySheet')) updatedUserData['trackingBuySheet'] = myUser.trackingBuySheet;
       if (!currentUserData.containsKey('trackingCreateSheetList')) updatedUserData['trackingCreateSheetList'] = myUser.trackingCreateSheetList;
@@ -87,6 +91,8 @@ class UpdateCollection {
      * TODO: สิ่งที่ต้องปรับหลังแก้ context คือเอา Flushbar ไปไว้ด้านล่างแทน ที่เอามาไว้ด้านบนแบบนี้คือแก้ขัดเฉยๆ
     */
     await Future.wait([
+      achievement(context, 'trackingBuySheet'),
+      quest(context, 'trackingDailyBuySheet'),
       _firestore.collection("users").doc(currentUserData['uid']).update({
         'timestamp': myUser.timestamp,
         'coin': (currentUserData['coin'] - sheetPrice),
@@ -142,28 +148,56 @@ class UpdateCollection {
     var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
     Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
     int tracking = currentUserData[type][0];
-    await _firestore.collection("users").doc(currentUserData['uid']).update({
-      type: [tracking + 1, currentUserData[type][1], currentUserData[type][2], false],
-    });
-    if (tracking + 1 == currentUserData[type][1]) {
-      if (tracking + 1 == 80) {
-        await _firestore.collection("users").doc(currentUserData['uid']).update({
-          'coin': currentUserData['coin'] + currentUserData[type][2],
-          type: [tracking + 1, currentUserData[type][1], currentUserData[type][2], true],
-        }).then((value) {
-          String message =
-              'คุณทำความสำเร็จ ${achievementSnapshotTracking.docs[0]['achievementName']} ${currentUserData[type][1]} ${achievementSnapshotTracking.docs[0]['achievementLastName']} เสร็จสิ้น!';
-          FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
-        });
-      } else {
-        await _firestore.collection("users").doc(currentUserData['uid']).update({
-          'coin': currentUserData['coin'] + currentUserData[type][2],
-          type: [tracking + 1, currentUserData[type][1] * 2, currentUserData[type][2] * 2, false],
-        }).then((value) {
-          String message =
-              'คุณทำความสำเร็จ ${achievementSnapshotTracking.docs[0]['achievementName']} ${currentUserData[type][1]} ${achievementSnapshotTracking.docs[0]['achievementLastName']} เสร็จสิ้น!';
-          FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
-        });
+    if (currentUserSnapshot[type][3] != true) {
+      await _firestore.collection("users").doc(currentUserData['uid']).update({
+        type: [tracking + 1, currentUserData[type][1], currentUserData[type][2], false],
+      });
+      if (tracking + 1 == currentUserData[type][1]) {
+        if (tracking + 1 == 80) {
+          await _firestore.collection("users").doc(currentUserData['uid']).update({
+            'coin': currentUserData['coin'] + currentUserData[type][2],
+            type: [tracking + 1, currentUserData[type][1], currentUserData[type][2], true],
+          }).then((value) {
+            String message =
+                'คุณทำความสำเร็จ ${achievementSnapshotTracking.docs[0]['achievementName']} ${currentUserData[type][1]} ${achievementSnapshotTracking.docs[0]['achievementLastName']} เสร็จสิ้น!';
+            FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+          });
+        } else {
+          await _firestore.collection("users").doc(currentUserData['uid']).update({
+            'coin': currentUserData['coin'] + currentUserData[type][2],
+            type: [tracking + 1, currentUserData[type][1] * 2, currentUserData[type][2] * 2, false],
+          }).then((value) {
+            String message =
+                'คุณทำความสำเร็จ ${achievementSnapshotTracking.docs[0]['achievementName']} ${currentUserData[type][1]} ${achievementSnapshotTracking.docs[0]['achievementLastName']} เสร็จสิ้น!';
+            FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+          });
+        }
+      }
+    }
+  }
+
+  Future<void> quest(BuildContext context, String type) async {
+    var questSnapshotTracking = await _firestore.collection("dailyQuest").where('type', isEqualTo: type).get();
+    var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
+    Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
+    for (int i = 0; i < 3; i++) {
+      if (currentUserData['quest${i + 1}'][2] != true) {
+        if (currentUserData['quest${i + 1}'][1] == questSnapshotTracking.docs[0]['id']) {
+          int tracking = currentUserData['quest${i + 1}'][0];
+          if (tracking + 1 == questSnapshotTracking.docs[0]['complete']) {
+            await _firestore.collection("users").doc(currentUserData['uid']).update({
+              'quest${i + 1}': [tracking + 1, currentUserData['quest${i + 1}'][1], true],
+              'coin': currentUserData['coin'] + questSnapshotTracking.docs[0]['point'],
+            }).then((value) {
+              String message = 'คุณทำเควสรายวัน ${questSnapshotTracking.docs[0]['questName']} เสร็จสิ้น!';
+              FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+            });
+          } else {
+            await _firestore.collection("users").doc(currentUserData['uid']).update({
+              'quest${i + 1}': [tracking + 1, currentUserData['quest${i + 1}'][1], false],
+            });
+          }
+        }
       }
     }
   }
@@ -173,10 +207,35 @@ class UpdateCollection {
     Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
     if (currentUserData['lastDayLogin'].toDate().day != thisDay.day) {
       achievement(context, 'trackingLogin');
+      updateQuest();
     }
     await _firestore.collection("users").doc(userId).update({
       'lastDayLogin': thisDay,
     });
+  }
+
+  List getRandomNumber(int num) {
+    List number = [];
+    while (number.length <= 3) {
+      int ran = Random().nextInt(num) + 1;
+      if (!number.contains(ran)) {
+        number.add(ran);
+      }
+    }
+    return number;
+  }
+
+  Future<void> updateQuest() async {
+    List num = getRandomNumber(5);
+    for (int i = 0; i < 3; i++) {
+      var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
+      Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
+      await _firestore.collection("users").doc(currentUserData['uid']).update({
+        'quest1': [0, num[0].toString(), false],
+        'quest2': [0, num[1].toString(), false],
+        'quest3': [0, num[2].toString(), false],
+      });
+    }
   }
 }
 

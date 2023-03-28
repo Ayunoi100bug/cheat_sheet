@@ -51,6 +51,9 @@ class CreateCollection {
       'follower': myUser.follower,
       'following': myUser.following,
       'coin': myUser.coin,
+      'quest1': myUser.quest1,
+      'quest2': myUser.quest2,
+      'quest3': myUser.quest3,
       'trackingAsk': myUser.trackingAsk,
       'trackingBuySheet': myUser.trackingBuySheet,
       'trackingCreateSheetList': myUser.trackingCreateSheetList,
@@ -81,6 +84,9 @@ class CreateCollection {
         'follower': myUser.follower,
         'following': myUser.following,
         'coin': myUser.coin,
+        'quest1': myUser.quest1,
+        'quest2': myUser.quest2,
+        'quest3': myUser.quest3,
         'trackingAsk': myUser.trackingAsk,
         'trackingBuySheet': myUser.trackingBuySheet,
         'trackingCreateSheetList': myUser.trackingCreateSheetList,
@@ -114,6 +120,9 @@ class CreateCollection {
         'follower': myUser.follower,
         'following': myUser.following,
         'coin': myUser.coin,
+        'quest1': myUser.quest1,
+        'quest2': myUser.quest2,
+        'quest3': myUser.quest3,
         'trackingAsk': myUser.trackingAsk,
         'trackingBuySheet': myUser.trackingBuySheet,
         'trackingCreateSheetList': myUser.trackingCreateSheetList,
@@ -247,6 +256,7 @@ class CreateCollection {
     await _firestore.collection('sheet').doc(argSheetId).update({'rating': result}).then(
       (value) {
         UpdateCollection().achievement(context, 'trackingReview');
+        UpdateCollection().quest(context, 'trackingDailyReview');
         AutoRouter.of(context).popUntilRouteWithName('DetailSheetRoute');
         FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, 'รีวิวสำเร็จ');
       },
@@ -270,6 +280,7 @@ class CreateCollection {
     }).then(
       (value) {
         UpdateCollection().achievement(context, 'trackingAsk');
+        UpdateCollection().quest(context, 'trackingDailyAsk');
         AutoRouter.of(context).popUntilRouteWithName('AskQuestionRoute');
         const String message = 'สร้างคำถามสำเร็จ!';
         FlushbarPopup.successFlushbar(context, FlushbarIcon.createQuestionIcon, message);
