@@ -8,8 +8,8 @@ class Users {
   String password;
   String uid;
   String profileImage;
-  int follower = 0;
-  int following = 0;
+  List follower = [];
+  List following = [];
   int coin = 0;
   List quest1 = [0, '', false];
   List quest2 = [0, '', false];

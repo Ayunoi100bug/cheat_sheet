@@ -47,7 +47,7 @@ class _SheetListScreenState extends State<SheetListScreen> with AutomaticKeepAli
             return Popup_Login(context);
           }
           return StreamBuilder<QuerySnapshot>(
-              stream: _firestore.collection("sheetList").snapshots(),
+              stream: _firestore.collection("sheetList").orderBy("timestamp", descending: true).snapshots(),
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (!snapshot.hasData) {
                   return Container();
@@ -210,8 +210,9 @@ void _BottomSheet(context) {
                 _formKey.currentState!.save();
                 if (_formKey.currentState!.validate()) {
                   try {
-                    myCollection
+                    await myCollection
                         .createSheetListCollection(
+                      context,
                       _sheetLists.sheetListName,
                       _sheetLists.sid = [],
                       _sheetLists.authorId = _auth.currentUser!.uid,
@@ -219,16 +220,11 @@ void _BottomSheet(context) {
                       _sheetLists.sheetListCoverImage = '',
                     )
                         .then(
-                      (value) {
+                      (value) async {
                         _formKey.currentState!.reset();
-                        UpdateCollection().achievement(context, 'trackingCreateSheetList');
-                        AutoRouter.of(context).popUntilRoot();
-                        FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, 'สร้างชีทลิสต์สำเร็จ');
+                        await UpdateCollection().achievement(context, 'trackingCreateSheetList');
                       },
                     );
-                    await _firestoreDb.collection('users').doc(_auth.currentUser!.uid).update({
-                      'sheetLists': FieldValue.arrayUnion([_sheetLists.sheetListId])
-                    });
                   } on FirebaseAuthException catch (e) {
                     FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
                   }
