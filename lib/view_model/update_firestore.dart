@@ -87,7 +87,6 @@ class UpdateCollection {
      * TODO: สิ่งที่ต้องปรับหลังแก้ context คือเอา Flushbar ไปไว้ด้านล่างแทน ที่เอามาไว้ด้านบนแบบนี้คือแก้ขัดเฉยๆ
     */
     await Future.wait([
-      achievement(context, 'trackingBuySheet'),
       _firestore.collection("users").doc(currentUserData['uid']).update({
         'timestamp': myUser.timestamp,
         'coin': (currentUserData['coin'] - sheetPrice),
@@ -107,13 +106,14 @@ class UpdateCollection {
           .where('sheetListName', isEqualTo: 'ชีทที่ซื้อ')
           .get()
           .then((value) {
-        // ! จริงๆแล้ว loop ไปมันก็ได้ตัวเดียวอยู่ดี ถ้ามีวิธีที่ดีกว่านี้ลองเสนอได้ ตอนผมทำผมอาจจะเมาๆ นึกวิธีที่ดีกว่านี้ไม่ออก
-        for (var element in value.docs) {
-          _firestore.collection("sheetList").doc(element.id).update({
+        for (var buyedSheetList in value.docs) {
+          _firestore.collection("sheetList").doc(buyedSheetList.id).update({
             'sid': FieldValue.arrayUnion([sid]),
-            'sheetListCoverImage': (element['sid'].isEmpty) ? sheetData['sheetCoverImage'] : element['sheetListCoverImage'],
+            'sheetListCoverImage': (buyedSheetList['sid'].isEmpty) ? sheetData['sheetCoverImage'] : buyedSheetList['sheetListCoverImage'],
           });
         }
+      }).then((value) {
+        achievement(context, 'trackingBuySheet');
       }),
     ]);
   }
