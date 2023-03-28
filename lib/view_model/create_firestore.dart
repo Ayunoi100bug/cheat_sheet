@@ -221,6 +221,7 @@ class CreateCollection {
       'askingPage': argAskingPage,
       'like': myQuestion.like,
       'dislike': myQuestion.dislike,
+      'answer': myQuestion.answer,
     });
     await _firestore.collection('sheet').doc(argSheetId).update({
       'question': FieldValue.arrayUnion([argQuestionId])

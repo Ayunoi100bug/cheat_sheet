@@ -69,6 +69,23 @@ class DeleteDocument {
     });
   }
 
+  Future<void> deleteAnswer(BuildContext context, String answerId, String questionId) async {
+    var currentAnswerSnapshot = await _firestore.collection("answer").doc(answerId).get();
+    Map<String, dynamic> currentAnswerData = currentAnswerSnapshot.data()!;
+    var currentQuestionSnapshot = await _firestore.collection("question").doc(questionId).get();
+    Map<String, dynamic> currentQuestionData = currentQuestionSnapshot.data()!;
+    List? answerInQuestion = currentQuestionData['answer'];
+    answerInQuestion ??= [];
+    await _firestore.collection('question').doc(questionId).update({
+      'answer': FieldValue.arrayRemove([answerId])
+    });
+    await _firestore.collection("answer").doc(answerId).delete().then((value) {
+      AutoRouter.of(context).popUntilRoot();
+      const String message = 'ลบคำตอบสำเร็จ';
+      FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+    });
+  }
+
   Future<void> deleteSheet(BuildContext context, String sheetId) async {
     Navigator.pop(context);
     AutoRouter.of(context).navigateNamed('/home/');
