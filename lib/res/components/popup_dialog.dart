@@ -244,6 +244,54 @@ Widget Popup_DeleteQuestion(BuildContext context, String questionId, String shee
   );
 }
 
+Widget Popup_DeleteAnswer(BuildContext context, String answerId, String questionId) {
+  double screenHeight = MediaQuery.of(context).size.height;
+
+  return AlertDialog(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
+    title: Column(
+      children: [
+        Image.asset(
+          'assets/images/error.png',
+          width: 70,
+        ),
+        SizedBox(
+          height: screenHeight * 0.008,
+        ),
+        Regular14px(text: 'ต้องการที่จะลบคำตอบนี้หรือไม่?'),
+        SizedBox(
+          height: screenHeight * 0.008,
+        ),
+        Regular12px(
+          text: 'คำตอบนี้จะถูกลบถาวร',
+          color: AppColors.black600,
+        ),
+      ],
+    ),
+    actions: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          OutlineButton(
+              text: 'ยกเลิก',
+              onPressed: () {
+                Navigator.pop(context);
+              }),
+          PrimaryButton(
+            text: 'ยืนยัน',
+            onPressed: () {
+              DeleteDocument().deleteAnswer(context, answerId, questionId);
+            },
+            color: AppColors.error600,
+          ),
+        ],
+      ),
+    ],
+  );
+}
+
 Widget Popup_DeleteSheetList(BuildContext context, String sheetListId) {
   double screenHeight = MediaQuery.of(context).size.height;
   return AlertDialog(
