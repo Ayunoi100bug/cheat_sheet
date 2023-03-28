@@ -235,18 +235,19 @@ class CreateCollection {
   }
 
   Future<void> createAnswerCollection(String argText, String argAnswerId, String argRespondentId, String argQuestionId, BuildContext context) async {
-    await _firestore.collection("answer").doc(argAnswerId).set({
-      'timestamp': myAnswer.timestamp,
-      'aid': argAnswerId,
-      'text': argText.toString().trim(),
-      'respondentId': argRespondentId,
-      'like': myAnswer.like,
-    });
-    await _firestore.collection('question').doc(argQuestionId).update({
-      'answer': FieldValue.arrayUnion([argAnswerId])
-    }).then(
+    await Future.wait([
+      _firestore.collection("answer").doc(argAnswerId).set({
+        'timestamp': myAnswer.timestamp,
+        'aid': argAnswerId,
+        'text': argText.toString().trim(),
+        'respondentId': argRespondentId,
+        'like': myAnswer.like,
+      }),
+      _firestore.collection('question').doc(argQuestionId).update({
+        'answer': FieldValue.arrayUnion([argAnswerId])
+      })
+    ]).then(
       (value) {
-        AutoRouter.of(context).popUntilRoot();
         const String message = 'สร้างการตอบกลับสำเร็จ!';
         FlushbarPopup.successFlushbar(context, FlushbarIcon.createAnswerIcon, message);
       },
