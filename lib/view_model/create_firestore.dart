@@ -18,6 +18,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:uuid/uuid.dart';
 
 import '../res/colors.dart';
 import '../res/components/flushbar.dart';
@@ -26,6 +27,7 @@ import '../res/components/flushbar_icon.dart';
 class CreateCollection {
   final storageRef = FirebaseStorage.instance.ref();
   final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+  final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
   Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
@@ -59,6 +61,7 @@ class CreateCollection {
       'sheetLists': myUser.sheetLists,
       'buyedSheet': myUser.buyedSheet,
     });
+    await createBuyedAndLikedSheetList(argUid);
   }
 
   Future<void> createGoogleUserCollection(User? currentuser) async {
@@ -88,6 +91,7 @@ class CreateCollection {
         'sheetLists': myUser.sheetLists,
         'buyedSheet': myUser.buyedSheet,
       });
+      await createBuyedAndLikedSheetList(currentuser!.uid);
     }
   }
 
@@ -120,6 +124,7 @@ class CreateCollection {
         'sheetLists': myUser.sheetLists,
         'buyedSheet': myUser.buyedSheet,
       });
+      await createBuyedAndLikedSheetList(currentuser!.uid);
     }
   }
 
@@ -152,15 +157,49 @@ class CreateCollection {
   }
 
   Future<void> createSheetListCollection(
-      String argSheetListName, List? argSid, String argAuthorId, String argSheetListId, String? argSheetListCoverImage) async {
-    await _firestore.collection("sheetList").doc(argSheetListId).set({
-      'timestamp': mySheetLists.timestamp,
-      'sheetListName': argSheetListName.toString().trim(),
-      'sid': argSid,
-      'authorId': argAuthorId,
-      'sheetListId': argSheetListId,
-      'sheetListCoverImage': argSheetListCoverImage,
+      BuildContext context, String argSheetListName, List? argSid, String argAuthorId, String argSheetListId, String? argSheetListCoverImage) async {
+    await Future.wait([
+      _firestore.collection("sheetList").doc(argSheetListId).set({
+        'timestamp': mySheetLists.timestamp,
+        'sheetListName': argSheetListName.toString().trim(),
+        'sid': argSid,
+        'authorId': argAuthorId,
+        'sheetListId': argSheetListId,
+        'sheetListCoverImage': argSheetListCoverImage,
+        'accessible': mySheetLists.accessible,
+      }),
+      _firestore.collection('users').doc(_auth.currentUser!.uid).update({
+        'sheetLists': FieldValue.arrayUnion([argSheetListId]),
+      }),
+    ]).then((value) {
+      AutoRouter.of(context).popUntilRoot();
+      FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, 'สร้างชีทลิสต์สำเร็จ');
     });
+  }
+
+  Future<void> createBuyedAndLikedSheetList(String argUid) async {
+    String buyedSheetListId = const Uuid().v4();
+    String likedSheetListId = const Uuid().v4();
+    Map<String, dynamic> likedSheetListData = {
+      'timestamp': mySheetLists.timestamp,
+      'sheetListName': 'ชีทที่ถูกใจ',
+      'sid': [],
+      'authorId': argUid,
+      'sheetListId': likedSheetListId,
+      'sheetListCoverImage': '',
+      'accessible': false,
+    };
+    Map<String, dynamic> buyedSheetListData = Map.from(likedSheetListData);
+    buyedSheetListData['sheetListName'] = 'ชีทที่ซื้อ';
+    buyedSheetListData['sheetListId'] = buyedSheetListId;
+    buyedSheetListData['timestamp'] = mySheetLists.timestamp;
+    await Future.wait([
+      _firestore.collection('sheetList').doc(buyedSheetListId).set(buyedSheetListData),
+      _firestore.collection('sheetList').doc(likedSheetListId).set(likedSheetListData),
+      _firestore.collection('users').doc(argUid).update({
+        'sheetLists': FieldValue.arrayUnion([buyedSheetListId, likedSheetListId]),
+      }),
+    ]);
   }
 
   Future<void> createSheetListAndUpdateCollection(BuildContext context, String argSheetListName, List? argSid, String argAuthorId,
@@ -172,19 +211,9 @@ class CreateCollection {
       'authorId': argAuthorId,
       'sheetListId': argSheetListId,
       'sheetListCoverImage': argSheetListCoverImage,
-    });
-    UpdateSheetListData().updateSheetList(context, argSheetListId, sheetId);
-    Future.delayed(const Duration(milliseconds: 500), () {
-      Navigator.of(context).pop();
-
-      const String message = 'เพิ่มชีทเข้าชีทลิสต์สำเร็จ!';
-      FlushbarPopup.successFlushbar(
-          context,
-          const Icon(
-            FontAwesomeIcons.book,
-            color: AppColors.white,
-          ),
-          message);
+      'accessible': mySheetLists.accessible,
+    }).then((value) async {
+      await UpdateSheetListData().updateSheetList(context, argSheetListId, sheetId);
     });
   }
 
