@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
     }
 
     return StreamBuilder<QuerySnapshot>(
-        stream: _firestore.collection("sheet").orderBy('timestamp', descending: true).snapshots(),
+        stream: _firestore.collection("sheet").orderBy('timestamp', descending: true).limit(3).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return Container();
@@ -97,10 +97,19 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                       padding: const EdgeInsets.symmetric(
                         vertical: 4,
                         horizontal: 16,
-                      ).copyWith(right: 0),
+                      ).copyWith(),
                       child: Row(
-                        children: const [
-                          Medium20px(text: 'ชีทแนะนำสำหรับคุณ'),
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Medium20px(text: 'ชีทแนะนำสำหรับคุณ'),
+                          InkWell(
+                            child: const Medium16px(
+                              text: 'ดูเพิ่มเติม',
+                              color: AppColors.tertiary700,
+                              underline: true,
+                            ),
+                            onTap: () {},
+                          ),
                         ],
                       ),
                     ),
@@ -161,6 +170,185 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                         padding: const EdgeInsets.only(bottom: 8),
                       ),
                     ),
+                    SizedBox(
+                      height: screenWidth * 0.02,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 4,
+                        horizontal: 16,
+                      ).copyWith(),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          Medium20px(text: 'ชีทมาแรง'),
+                        ],
+                      ),
+                    ),
+                    StreamBuilder<QuerySnapshot>(
+                      stream: _firestore.collection("sheet").limit(3).snapshots(),
+                      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (!snapshot.hasData) {
+                          return Container();
+                        } else if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(child: CircularProgressIndicator());
+                        }
+                        final int documentCount = snapshot.data!.docs.length;
+                        return Column(
+                          children: [
+                            Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.038),
+                              child: GridView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: isPortrait ? 3 : 5,
+                                  crossAxisSpacing: 12,
+                                  mainAxisSpacing: 16,
+                                  mainAxisExtent: isPortrait ? 200 : 250,
+                                ),
+                                itemCount: documentCount,
+                                itemBuilder: (context, index) {
+                                  var sheet = snapshot.data?.docs[index];
+                                  return StreamBuilder<DocumentSnapshot>(
+                                    stream: _firestore.collection("users").doc(sheet?["authorId"]).snapshots(),
+                                    builder: (context, userSnapshot) {
+                                      if (!userSnapshot.hasData) {
+                                        return Container();
+                                      } else if (userSnapshot.connectionState == ConnectionState.waiting) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      }
+                                      return Sheet(
+                                        rating: sheet?["rating"],
+                                        sheetCoverImage: sheet?["sheetCoverImage"],
+                                        authorImage: userSnapshot.data?["profileImage"],
+                                        title: sheet?["sheetName"],
+                                        priceSheet: sheet?["price"],
+                                        username: userSnapshot.data?["username"],
+                                        sheetId: sheet?["sid"],
+                                      );
+                                    },
+                                  );
+                                },
+                                padding: const EdgeInsets.only(bottom: 8),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                    SizedBox(
+                      height: screenWidth * 0.02,
+                    ),
+                    if (_auth.currentUser!.uid != null) ...[
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 4,
+                          horizontal: 16,
+                        ).copyWith(),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: const [
+                            Medium20px(text: 'บัญชีที่ติดตาม'),
+                          ],
+                        ),
+                      ),
+                      StreamBuilder<DocumentSnapshot>(
+                        stream: _firestore.collection("users").doc(_auth.currentUser!.uid).snapshots(),
+                        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userSnapshot) {
+                          if (!userSnapshot.hasData) {
+                            return Container();
+                          } else if (userSnapshot.connectionState == ConnectionState.waiting) {
+                            return const Center(child: CircularProgressIndicator());
+                          }
+                          List _following = List.from(userSnapshot.data!['following']);
+                          return Column(
+                            children: [
+                              Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.038),
+                                child: GridView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: isPortrait ? 3 : 5,
+                                    crossAxisSpacing: 12,
+                                    mainAxisSpacing: 16,
+                                    mainAxisExtent: isPortrait ? 200 : 250,
+                                  ),
+                                  itemCount: documentCount,
+                                  itemBuilder: (context, index) {
+                                    var sheet = snapshot.data?.docs[index];
+                                    return StreamBuilder<QuerySnapshot>(
+                                      stream: _firestore
+                                          .collection("sheet")
+                                          .where('authorId', isEqualTo: userSnapshot.data!['following'][index])
+                                          .snapshots(),
+                                      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                                        if (!snapshot.hasData) {
+                                          return Container();
+                                        } else if (snapshot.connectionState == ConnectionState.waiting) {
+                                          return const Center(child: CircularProgressIndicator());
+                                        }
+                                        final int documentCount = snapshot.data!.docs.length;
+                                        return Column(
+                                          children: [
+                                            Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.038),
+                                              child: GridView.builder(
+                                                physics: const NeverScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                                  crossAxisCount: isPortrait ? 3 : 5,
+                                                  crossAxisSpacing: 12,
+                                                  mainAxisSpacing: 16,
+                                                  mainAxisExtent: isPortrait ? 200 : 250,
+                                                ),
+                                                itemCount: documentCount,
+                                                itemBuilder: (context, index) {
+                                                  var sheet = snapshot.data?.docs[index];
+                                                  return StreamBuilder<DocumentSnapshot>(
+                                                    stream: _firestore.collection("users").doc(sheet?["authorId"]).snapshots(),
+                                                    builder: (context, userSnapshot) {
+                                                      if (!userSnapshot.hasData) {
+                                                        return Container();
+                                                      } else if (userSnapshot.connectionState == ConnectionState.waiting) {
+                                                        return const Center(
+                                                          child: CircularProgressIndicator(),
+                                                        );
+                                                      }
+                                                      return Sheet(
+                                                        rating: sheet?["rating"],
+                                                        sheetCoverImage: sheet?["sheetCoverImage"],
+                                                        authorImage: userSnapshot.data?["profileImage"],
+                                                        title: sheet?["sheetName"],
+                                                        priceSheet: sheet?["price"],
+                                                        username: userSnapshot.data?["username"],
+                                                        sheetId: sheet?["sid"],
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                                padding: const EdgeInsets.only(bottom: 8),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  padding: const EdgeInsets.only(bottom: 8),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ]
                   ],
                 ),
               ),
