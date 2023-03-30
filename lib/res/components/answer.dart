@@ -258,7 +258,7 @@ void _BottomEditAnswer(BuildContext context, String answerText, String answerId)
                 onPressed: () async {
                   _formKey.currentState!.save();
                   try {
-                    EditAnswerData().editAnswer(context, answerId, _answer.text).then((value) => _formKey.currentState!.reset());
+                    await EditAnswerData().editAnswer(context, answerId, _answer.text).then((value) => _formKey.currentState!.reset());
                   } on FirebaseAuthException catch (e) {
                     FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
                   }

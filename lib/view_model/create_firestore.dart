@@ -234,17 +234,17 @@ class CreateCollection {
     );
   }
 
-  Future<void> createAnswerCollection(String argText, String argAnswerId, String argRespondentId, String argQuestionId, BuildContext context) async {
+  Future<void> createAnswerCollection(String argText, String answerId, String argRespondentId, String argQuestionId, BuildContext context) async {
     await Future.wait([
-      _firestore.collection("answer").doc(argAnswerId).set({
+      _firestore.collection("answer").doc(answerId).set({
         'timestamp': myAnswer.timestamp,
-        'aid': argAnswerId,
+        'aid': answerId,
         'text': argText.toString().trim(),
         'respondentId': argRespondentId,
         'like': myAnswer.like,
       }),
       _firestore.collection('question').doc(argQuestionId).update({
-        'answer': FieldValue.arrayUnion([argAnswerId])
+        'answer': FieldValue.arrayUnion([answerId])
       })
     ]).then(
       (value) {

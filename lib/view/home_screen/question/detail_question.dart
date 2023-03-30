@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:pdf_render/pdf_render_widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../res/colors.dart';
 import '../../../res/components/ask.dart';
@@ -136,28 +137,26 @@ class _DetailQuestionState extends State<DetailQuestion> {
                                             return Container();
                                           } else if (answerSnapshot.connectionState == ConnectionState.waiting) {
                                             return const Center(child: CircularProgressIndicator());
-                                          } else {
-                                            return StreamBuilder<DocumentSnapshot>(
-                                              stream: _firestore.collection("users").doc(answerSnapshot.data?['respondentId']).snapshots(),
-                                              builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userAnswerSnapshot) {
-                                                if (!userAnswerSnapshot.hasData) {
-                                                  return Container();
-                                                } else if (userAnswerSnapshot.connectionState == ConnectionState.waiting) {
-                                                  return const Center(child: CircularProgressIndicator());
-                                                } else {
-                                                  return Answer(
-                                                    userImage: userAnswerSnapshot.data?['profileImage'],
-                                                    userName: userAnswerSnapshot.data?['username'],
-                                                    answerText: answerSnapshot.data?['text'],
-                                                    like: answerSnapshot.data?['like'],
-                                                    questionId: questionData['qid'],
-                                                    answerId: answerSnapshot.data?['aid'],
-                                                    userId: userAnswerSnapshot.data?['uid'],
-                                                  );
-                                                }
-                                              },
-                                            );
                                           }
+                                          return StreamBuilder<DocumentSnapshot>(
+                                            stream: _firestore.collection("users").doc(answerSnapshot.data?['respondentId']).snapshots(),
+                                            builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userAnswerSnapshot) {
+                                              if (!userAnswerSnapshot.hasData) {
+                                                return Container();
+                                              } else if (userAnswerSnapshot.connectionState == ConnectionState.waiting) {
+                                                return const Center(child: CircularProgressIndicator());
+                                              }
+                                              return Answer(
+                                                userImage: userAnswerSnapshot.data?['profileImage'],
+                                                userName: userAnswerSnapshot.data?['username'],
+                                                answerText: answerSnapshot.data?['text'],
+                                                like: answerSnapshot.data?['like'],
+                                                questionId: questionData['qid'],
+                                                answerId: answerSnapshot.data?['aid'],
+                                                userId: userAnswerSnapshot.data?['uid'],
+                                              );
+                                            },
+                                          );
                                         },
                                       );
                                     },
@@ -191,8 +190,10 @@ class _DetailQuestionState extends State<DetailQuestion> {
                                       onPressed: () async {
                                         _formKey.currentState!.save();
                                         try {
-                                          myCollection
-                                              .createAnswerCollection(_answer.text, _answer.ansid, _auth.currentUser!.uid, widget.questionId, context)
+                                          var answerId = Uuid().v4();
+
+                                          await myCollection
+                                              .createAnswerCollection(_answer.text, answerId, _auth.currentUser!.uid, widget.questionId, context)
                                               .then((value) => _formKey.currentState!.reset());
                                         } on FirebaseAuthException catch (e) {
                                           FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
