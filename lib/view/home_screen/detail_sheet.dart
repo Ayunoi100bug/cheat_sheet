@@ -194,7 +194,6 @@ class _DetailSheetState extends State<DetailSheet> {
                                           activateOverflow: true,
                                           maxLine: 2,
                                         ),
-
                                         if (tagInSheet!.isNotEmpty) ...[
                                           SizedBox(
                                             height: isPortrait ? screenHeight * 0.035 : screenHeight * 0.015,
@@ -205,7 +204,6 @@ class _DetailSheetState extends State<DetailSheet> {
                                               itemCount: tagInSheet.length,
                                               itemBuilder: (BuildContext context, int index) => Tag(
                                                 subject: sheetData['sheetTags'][index],
-
                                                 onPressed: () {},
                                               ),
                                             ),
@@ -228,7 +226,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                             Regular12px(text: ratingSheet),
                                           ],
                                         ),
-                                        if (_auth.currentUser!.uid != authorData['uid']) ...[
+                                        if (_auth.currentUser?.uid != authorData['uid']) ...[
                                           InkWell(
                                             child: Row(
                                               children: [
@@ -250,7 +248,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                             },
                                           ),
                                         ],
-                                        if (AuthService().isLogged() == true && sheetData['authorId'] == _auth.currentUser!.uid) ...[
+                                        if (AuthService().isLogged() == true && sheetData['authorId'] == _auth.currentUser?.uid) ...[
                                           Row(
                                             children: [
                                               CircleAvatar(
