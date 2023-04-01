@@ -418,6 +418,22 @@ class EditQuestionData {
   }
 }
 
+class EditAnswerData {
+  final _firestore = FirebaseFirestore.instance;
+
+  Future<void> editAnswer(BuildContext context, String answerId, String newTextAnswer) async {
+    await _firestore.collection('answer').doc(answerId).update({
+      'text': newTextAnswer,
+    }).then((value) {
+      Future.delayed(const Duration(milliseconds: 200), () {
+        AutoRouter.of(context).popUntilRoot();
+        const String message = 'แก้ไขคำตอบสำเร็จ';
+        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+      });
+    });
+  }
+}
+
 class EditSheetData {
   final _firestore = FirebaseFirestore.instance;
 
