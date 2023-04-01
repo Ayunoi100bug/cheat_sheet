@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/components/sheet.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
+import 'package:cheat_sheet/view_model/read_firestore.dart';
 import 'package:cheat_sheet/view_model/update_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,12 +20,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _firestore = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    final _auth = FirebaseAuth.instance;
     DateTime thisDay = DateTime.now();
     UpdateCollection().updateUserDay(context, thisDay, _auth.currentUser?.uid);
 
@@ -57,6 +58,13 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                     //   },
                     //   child: const Text("ปุ่มลบชีททั้งหมด"),
                     // ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        var temp3 = await ReadCollection().getAllSheetExceptCurrentUserWithoutLiked();
+                        debugPrint("Result: ${temp3.length}");
+                      },
+                      child: const Text("test"),
+                    ),
                     Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.02),
