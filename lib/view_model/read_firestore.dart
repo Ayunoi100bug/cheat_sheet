@@ -66,17 +66,6 @@ class ReadSheetListCollection {
     return currentSheetListData;
   }
 
-  Future<String> getCurrentUserLikedSheetListDocsId() async {
-    var currentUserLikedSheetListSnapshot = await _firestore
-        .collection("sheetList")
-        .where("authorId", isEqualTo: _auth.currentUser?.uid)
-        .where("sheetListName", isEqualTo: "ชีทที่ถูกใจ")
-        .get();
-    String currentId = currentUserLikedSheetListSnapshot.docs[0].id;
-
-    return currentId;
-  }
-
   Future<Map<String, dynamic>> getCurrentUserLikedSheetList() async {
     var currentUserLikedSheetListSnapshot = await _firestore
         .collection("sheetList")

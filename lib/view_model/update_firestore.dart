@@ -262,15 +262,14 @@ class UpdateSheetListData {
   final _firestore = FirebaseFirestore.instance;
 
   Future<void> like(BuildContext context, String argSid, String argCoverImage) async {
-    var sheetListDocsId = await ReadSheetListCollection().getCurrentUserLikedSheetListDocsId();
     var sheetListData = await ReadSheetListCollection().getCurrentUserLikedSheetList();
     if (!sheetListData['sid'].contains(argSid)) {
-      await _firestore.collection("sheetList").doc(sheetListDocsId).update({
+      await _firestore.collection("sheetList").doc(sheetListData['sheetListId']).update({
         'sid': FieldValue.arrayUnion([argSid]),
         'sheetListCoverImage': sheetListData['sheetListCoverImage'] == '' ? argCoverImage : sheetListData['sheetListCoverImage'],
       });
     } else {
-      await _firestore.collection("sheetList").doc(sheetListDocsId).update({
+      await _firestore.collection("sheetList").doc(sheetListData['sheetListId']).update({
         'sid': FieldValue.arrayRemove([argSid]),
         'sheetListCoverImage': sheetListData['sid'].isEmpty ? sheetListData['sheetListCoverImage'] : '',
       });
