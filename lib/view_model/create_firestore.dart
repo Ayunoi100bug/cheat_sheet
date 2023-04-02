@@ -7,7 +7,7 @@ import 'package:cheat_sheet/model/review.dart';
 import 'package:cheat_sheet/model/sheet.dart';
 import 'package:cheat_sheet/model/sheet_list.dart';
 import 'package:cheat_sheet/model/user.dart';
-import 'package:cheat_sheet/utils/routes/routes.gr.dart';
+import 'package:cheat_sheet/view_model/read_firestore.dart';
 import 'package:cheat_sheet/view_model/update_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,10 +17,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:uuid/uuid.dart';
 
-import '../res/colors.dart';
 import '../res/components/flushbar.dart';
 import '../res/components/flushbar_icon.dart';
 
@@ -227,7 +225,7 @@ class CreateCollection {
   }
 
   Future<void> createReviewCollection(String argText, String argRid, String argReviewerId, String argSheetId, double argRating, int argLike,
-      BuildContext context, String _review) async {
+      BuildContext context, String reviewId) async {
     double result = 0;
     if (argRating == 0) {
       const String message = 'กรุณาระบุคะแนนที่ท่านต้องการให้ก่อน!';
@@ -243,15 +241,13 @@ class CreateCollection {
       'rid': argRid,
       'like': argLike,
     });
-    var currentReviewSnapshot = await _firestore.collection("review").doc(_review).get();
-    Map<String, dynamic> currentReviewData = currentReviewSnapshot.data()!;
-    var currentSheetSnapshot = await _firestore.collection("sheet").doc(argSheetId).get();
-    Map<String, dynamic> currentSheetData = currentSheetSnapshot.data()!;
+    var currentReviewData = await ReadReviewCollection().getParamsReviewData(reviewId);
+    var currentSheetData = await ReadCollection().getParamsSheetData(argSheetId);
     List? reviewInSheet = currentSheetData['review'];
     reviewInSheet ??= [];
     result = ((currentSheetData['rating'] * reviewInSheet.length) + currentReviewData['rating']) / (reviewInSheet.length + 1);
     await _firestore.collection('sheet').doc(argSheetId).update({
-      'review': FieldValue.arrayUnion([_review])
+      'review': FieldValue.arrayUnion([reviewId])
     });
     await _firestore.collection('sheet').doc(argSheetId).update({'rating': result}).then(
       (value) {
