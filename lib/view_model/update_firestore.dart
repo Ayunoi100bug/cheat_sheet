@@ -108,13 +108,13 @@ class UpdateCollection {
             'sheetListCoverImage': (buyedSheetList['sid'].isEmpty) ? sheetData['sheetCoverImage'] : buyedSheetList['sheetListCoverImage'],
           });
         }
-      }).then((value) async {
-        await Future.wait([
-          achievement(context, 'trackingBuySheet'),
-          quest(context, 'trackingDailyBuySheet'),
-        ]);
       }),
-    ]);
+    ]).then((value) async {
+      await Future.wait([
+        achievement(context, 'trackingBuySheet'),
+        quest(context, 'trackingDailyBuySheet'),
+      ]);
+    });
   }
 
   Future<void> userTopup(BuildContext context, int recieve) async {
@@ -330,8 +330,6 @@ class UpdateSheetListData {
       return;
     }
     String sheetId = currentSheetListData['sid'][0];
-    // var sheetSnapshot = await _firestore.collection("sheet").doc(currentSheetListData['sid'][0]).get();
-    // Map<String, dynamic> sheetData = sheetSnapshot.data()!;
     var sheetData = await ReadCollection().getParamsSheetData(sheetId);
     await _firestore.collection('sheetList').doc(currentSheetListId).update({'sheetListCoverImage': sheetData['sheetCoverImage']}).then((value) {
       Navigator.of(context).pop();
