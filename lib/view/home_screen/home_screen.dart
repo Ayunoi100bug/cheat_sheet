@@ -63,28 +63,107 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                             borderRadius: BorderRadius.circular(50),
                             color: AppColors.black200,
                           ),
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.search,
-                                color: AppColors.primary800,
-                                size: 18,
-                              ),
-                              SizedBox(width: screenWidth * 0.02),
-                              const Regular16px(
-                                text: 'Search',
-                                color: Colors.grey,
-                                size: 18,
-                              ),
-                            ],
+                          SizedBox(width: screenWidth * 0.02),
+                          const Regular16px(
+                            text: 'Search',
+                            color: Colors.grey,
+                            size: 18,
                           ),
-                        ),
-                        onTap: () {
-                          AutoRouter.of(context).push(const SearchingSheetRoute());
-                        },
+                        ],
                       ),
                     ),
-                    Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
+                    onTap: () {
+                      AutoRouter.of(context).push(const SearchingSheetRoute());
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: screenWidth * 0.02,
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 4,
+                    horizontal: 16,
+                  ).copyWith(),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Medium20px(text: 'ชีทมาแรง'),
+                          Image.asset(
+                            'assets/images/fire.png',
+                            width: 18,
+                            height: 18,
+                          ),
+                        ],
+                      ),
+                      InkWell(
+                        child: const Medium16px(
+                          text: 'ดูเพิ่มเติม',
+                          color: AppColors.tertiary700,
+                          underline: true,
+                        ),
+                        onTap: () {},
+                      ),
+                    ],
+                  ),
+                ),
+                StreamBuilder<QuerySnapshot>(
+                  stream: _firestore.collection("sheet").limit(3).snapshots(),
+                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (!snapshot.hasData) {
+                      return Container();
+                    } else if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    final int documentCount = snapshot.data!.docs.length;
+                    return Column(
+                      children: [
+                        Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.038),
+                          child: GridView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: isPortrait ? 3 : 5,
+                              crossAxisSpacing: 12,
+                              mainAxisSpacing: 16,
+                              mainAxisExtent: isPortrait ? 200 : 250,
+                            ),
+                            itemCount: documentCount,
+                            itemBuilder: (context, index) {
+                              var sheet = snapshot.data?.docs[index];
+                              return StreamBuilder<DocumentSnapshot>(
+                                stream: _firestore.collection("users").doc(sheet?["authorId"]).snapshots(),
+                                builder: (context, userSnapshot) {
+                                  if (!userSnapshot.hasData) {
+                                    return Container();
+                                  } else if (userSnapshot.connectionState == ConnectionState.waiting) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                  return Sheet(
+                                    rating: sheet?["rating"],
+                                    sheetCoverImage: sheet?["sheetCoverImage"],
+                                    authorImage: userSnapshot.data?["profileImage"],
+                                    title: sheet?["sheetName"],
+                                    priceSheet: sheet?["price"],
+                                    username: userSnapshot.data?["username"],
+                                    sheetId: sheet?["sid"],
+                                  );
+                                },
+                              );
+                            },
+                            padding: const EdgeInsets.only(bottom: 8),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
                 SizedBox(
                   height: screenWidth * 0.02,
                 ),
@@ -297,8 +376,25 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                         ).copyWith(),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Medium20px(text: 'ชีทมาแรง'),
+                          children: [
+                            Row(
+                              children: [
+                                Medium20px(text: 'ชีทมาแรง'),
+                                Image.asset(
+                                  'assets/images/fire.png',
+                                  width: 18,
+                                  height: 18,
+                                ),
+                              ],
+                            ),
+                            InkWell(
+                              child: const Medium16px(
+                                text: 'ดูเพิ่มเติม',
+                                color: AppColors.tertiary700,
+                                underline: true,
+                              ),
+                              onTap: () {},
+                            ),
                           ],
                         ),
                       ),
