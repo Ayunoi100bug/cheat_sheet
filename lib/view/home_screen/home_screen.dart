@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/components/sheet.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
+import 'package:cheat_sheet/view_model/knn.dart';
 import 'package:cheat_sheet/view_model/update_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -45,9 +46,23 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                   children: [
                     ElevatedButton(
                         onPressed: () {
-                          AutoRouter.of(context).push(const FirstLoginRoute());
+                          Data a = Data(sheetId: 'a', tagNameList: ['คณิต']);
+                          Data b = Data(sheetId: 'b', tagNameList: ['คณิต', 'ไทย']);
+                          Data c = Data(sheetId: 'c', tagNameList: ['คณิต']);
+                          Data d = Data(sheetId: 'd', tagNameList: []);
+                          KNN.addDataTolist(b);
+                          KNN.addDataTolist(c);
+                          KNN.addDataTolist(d);
+                          KNN.caculateSimilarity(a);
+                          // KNN.displayData();
+                          // KNN.displaySimilarity();
                         },
-                        child: const Text('ทดสอบหน้าใหม่')),
+                        child: const Text('เพิ่ม Data')),
+                    ElevatedButton(
+                        onPressed: () {
+                          KNN.resetKNN();
+                        },
+                        child: Text('เคลีย KNN')),
                     // ElevatedButton(
                     //   onPressed: () {
                     //     showDialog(
