@@ -259,7 +259,7 @@ class CreateCollection {
       await Future.wait([
         UpdateCollection().achievement(context, 'trackingReview'),
         UpdateCollection().quest(context, 'trackingDailyReview'),
-      ]).then((value) {});
+      ]);
     });
   }
 

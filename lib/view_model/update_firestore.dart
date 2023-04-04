@@ -181,7 +181,7 @@ class UpdateCollection {
             await _firestore.collection("users").doc(currentUserData['uid']).update({
               'quest${i + 1}': [tracking + 1, currentUserData['quest${i + 1}'][1], true],
               'coin': currentUserData['coin'] + questSnapshotTracking.docs[0]['point'],
-            }).then((value) {});
+            });
           } else {
             await _firestore.collection("users").doc(currentUserData['uid']).update({
               'quest${i + 1}': [tracking + 1, currentUserData['quest${i + 1}'][1], false],
