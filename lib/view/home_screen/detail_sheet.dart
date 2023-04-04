@@ -244,7 +244,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                               ],
                                             ),
                                             onTap: () {
-                                              AutoRouter.of(context).navigateNamed('/profile/other_profile/${authorData['uid']}');
+                                              AutoRouter.of(context).push(OtherProfileRoute(userId: authorData['uid']));
                                             },
                                           ),
                                         ],
