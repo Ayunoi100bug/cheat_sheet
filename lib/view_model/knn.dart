@@ -1,6 +1,8 @@
 import 'dart:ffi';
 import 'dart:math';
 
+import 'package:cheat_sheet/view_model/read_firestore.dart';
+
 class KNN {
   static List<Data> dataList = []; //List of data class.
   static List<double> similarityList = []; //List of similarity values, receive when calculate cosine similarity.
@@ -41,7 +43,7 @@ class KNN {
     }
     // displayData();
     // displaySimilarity();
-    // print(sortedIndexList);
+    print(sortedIndexList);
     isCalculate = true;
   }
 
@@ -61,6 +63,17 @@ class KNN {
   static void displaySimilarity() {
     for (int i = 0; i < similarityList.length; i++) {
       print("[Data][" + (i + 1).toString() + "] " + similarityList[i].toString());
+    }
+  }
+
+  static void loadSheetData() async {
+    var sheetId = await ReadCollection().getAllSheetExceptCurrentUserWithoutLiked();
+    for (var i = 0; i < sheetId.length; i++) {
+      var sheetData = await ReadCollection().getParamsSheetData(sheetId[i]);
+      List<dynamic> dynamicTagList = sheetData['sheetTags'] ?? []; // add null check here
+      List<String> tagList = dynamicTagList.map((item) => item.toString()).toList();
+      Data targetSheet = Data(sheetId: sheetId[i], tagNameList: tagList);
+      KNN.addDataTolist(targetSheet);
     }
   }
 }
