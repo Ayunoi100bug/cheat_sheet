@@ -49,15 +49,23 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                   children: [
                     ElevatedButton(
                         onPressed: () async {
-                          Data b = Data(sheetId: 'test', tagNameList: ['คณิตศาสตร์']);
-                          KNN.caculateSimilarity(b);
-                          KNN.displayData();
-                          KNN.displaySimilarity();
+                          KNN.loadSheetData();
                         },
                         child: Text('หน้า recommend')),
                     ElevatedButton(
                         onPressed: () {
-                          AutoRouter.of(context).push(TopSheetRoute());
+                          Data tempSheet = Data(sheetId: 'test', tagNameList: ['คณิตศาสตร์']);
+                          KNN.caculateSimilarity(tempSheet);
+                        },
+                        child: Text('คำนวน KNN')),
+                    ElevatedButton(
+                        onPressed: () {
+                          print(KNN.getTopSimilarSheetList(3));
+                        },
+                        child: Text('เอาid sheet คล้าย')),
+                    ElevatedButton(
+                        onPressed: () {
+                          KNN.resetKNN();
                         },
                         child: Text('เคลีย KNN')),
                     // ElevatedButton(

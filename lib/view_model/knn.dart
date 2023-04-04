@@ -76,6 +76,21 @@ class KNN {
       KNN.addDataTolist(targetSheet);
     }
   }
+
+  static List<String> getTopSimilarSheetList(int numberSheet) {
+    if (!isCalculate) {
+      throw "need to caculate before get sheet list!";
+    }
+    List<String> sheetList = [];
+    int numberTopSheet = numberSheet;
+    if (numberSheet > sortedIndexList.length) {
+      numberTopSheet = sortedIndexList.length;
+    }
+    for (int i = 0; i < numberSheet; i++) {
+      sheetList.add(dataList[sortedIndexList[i]].sheetId);
+    }
+    return sheetList;
+  }
 }
 
 class Data {
