@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/model/sheet.dart';
 import 'package:cheat_sheet/model/user.dart';
 import 'package:cheat_sheet/res/colors.dart';
+import 'package:cheat_sheet/view_model/read_firestore.dart';
 import 'package:cheat_sheet/res/components/flushbar.dart';
 import 'package:cheat_sheet/res/components/flushbar_icon.dart';
 import 'package:cheat_sheet/view_model/auth.dart';
@@ -24,9 +26,8 @@ class UpdateCollection {
   Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetCoverImage: '', demoPages: [], sheetTypeFree: true, authorId: '');
 
   Future<void> updateUserData() async {
-    var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
-    Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
-    if (currentUserSnapshot.exists) {
+    var currentUserData = await ReadCollection().getCurrentUserData();
+    if (currentUserData.isNotEmpty) {
       Map<String, dynamic> updatedUserData = {};
       if (!currentUserData.containsKey('username')) updatedUserData['username'] = myUser.username;
       if (!currentUserData.containsKey('email')) updatedUserData['email'] = myUser.email;
@@ -37,6 +38,9 @@ class UpdateCollection {
       if (!currentUserData.containsKey('coin')) updatedUserData['coin'] = myUser.coin;
       if (!currentUserData.containsKey('sheetLists')) updatedUserData['sheetLists'] = myUser.sheetLists;
       if (!currentUserData.containsKey('buyedSheet')) updatedUserData['buyedSheet'] = myUser.buyedSheet;
+      if (!currentUserData.containsKey('quest1')) updatedUserData['quest1'] = myUser.quest1;
+      if (!currentUserData.containsKey('quest2')) updatedUserData['quest2'] = myUser.quest2;
+      if (!currentUserData.containsKey('quest3')) updatedUserData['quest3'] = myUser.quest3;
       if (!currentUserData.containsKey('trackingAsk')) updatedUserData['trackingAsk'] = myUser.trackingAsk;
       if (!currentUserData.containsKey('trackingBuySheet')) updatedUserData['trackingBuySheet'] = myUser.trackingBuySheet;
       if (!currentUserData.containsKey('trackingCreateSheetList')) updatedUserData['trackingCreateSheetList'] = myUser.trackingCreateSheetList;
@@ -61,12 +65,10 @@ class UpdateCollection {
       );
       return;
     }
-    var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
-    Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
-    var authorSnapshot = await _firestore.collection("users").doc(authorId).get();
-    Map<String, dynamic> authorData = authorSnapshot.data()!;
-    var buyerSnapshot = await _firestore.collection("users").where("buyedSheet", arrayContains: sid).get();
-    int buyerAmount = buyerSnapshot.docs.length;
+    var currentUserData = await ReadCollection().getCurrentUserData();
+    var authorData = await ReadCollection().getParamsUserData(authorId);
+    var sheetData = await ReadCollection().getParamsSheetData(sid);
+    int buyerAmount = await ReadCollection().getBuyerAmountInSheet(sid);
     if ((sheetPrice == 0 || currentUserData['uid'] == authorId || currentUserData['buyedSheet'].contains(sid))) {
       return;
     } else if (currentUserData['coin'] < sheetPrice && context.mounted) {
@@ -80,12 +82,7 @@ class UpdateCollection {
         FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
       }
     });
-    /** 
-     * * Future.wait ไว้ใช้สำหรับรอให้ตัวที่อยู่ด้านในทำงานเสร็จทุกตัวก่อน ถึงค่อยทำบรรทัดถัดไป
-     * TODO: สิ่งที่ต้องปรับหลังแก้ context คือเอา Flushbar ไปไว้ด้านล่างแทน ที่เอามาไว้ด้านบนแบบนี้คือแก้ขัดเฉยๆ
-    */
     await Future.wait([
-      achievement(context, 'trackingBuySheet'),
       _firestore.collection("users").doc(currentUserData['uid']).update({
         'timestamp': myUser.timestamp,
         'coin': (currentUserData['coin'] - sheetPrice),
@@ -99,7 +96,25 @@ class UpdateCollection {
         'timestamp': mySheet.timestamp,
         'buyer': buyerAmount + 1,
       }),
-    ]);
+      _firestore
+          .collection("sheetList")
+          .where('authorId', isEqualTo: currentUserData['uid'])
+          .where('sheetListName', isEqualTo: 'ชีทที่ซื้อ')
+          .get()
+          .then((value) {
+        for (var buyedSheetList in value.docs) {
+          _firestore.collection("sheetList").doc(buyedSheetList.id).update({
+            'sid': FieldValue.arrayUnion([sid]),
+            'sheetListCoverImage': (buyedSheetList['sid'].isEmpty) ? sheetData['sheetCoverImage'] : buyedSheetList['sheetListCoverImage'],
+          });
+        }
+      }),
+    ]).then((value) async {
+      await Future.wait([
+        achievement(context, 'trackingBuySheet'),
+        quest(context, 'trackingDailyBuySheet'),
+      ]);
+    });
   }
 
   Future<void> userTopup(BuildContext context, int recieve) async {
@@ -110,8 +125,7 @@ class UpdateCollection {
       );
       return;
     }
-    var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
-    Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
+    var currentUserData = await ReadCollection().getCurrentUserData();
     await _firestore.collection("users").doc(currentUserData['uid']).update({
       'timestamp': myUser.timestamp,
       'coin': (currentUserData['coin'] + recieve),
@@ -121,46 +135,96 @@ class UpdateCollection {
     });
   }
 
+  // ! Method นี้บัคบ่อย ควรหาเวลาแก้
   Future<void> achievement(BuildContext context, String type) async {
     var achievementSnapshotTracking = await _firestore.collection("achievement").where('type', isEqualTo: type).get();
-    var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
-    Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
+    var currentUserData = await ReadCollection().getCurrentUserData();
     int tracking = currentUserData[type][0];
-    await _firestore.collection("users").doc(currentUserData['uid']).update({
-      type: [tracking + 1, currentUserData[type][1], currentUserData[type][2], false],
-    });
-    if (tracking + 1 == currentUserData[type][1]) {
-      if (tracking + 1 == 80) {
-        await _firestore.collection("users").doc(currentUserData['uid']).update({
-          'coin': currentUserData['coin'] + currentUserData[type][2],
-          type: [tracking + 1, currentUserData[type][1], currentUserData[type][2], true],
-        }).then((value) {
-          String message =
-              'คุณทำความสำเร็จ ${achievementSnapshotTracking.docs[0]['achievementName']} ${currentUserData[type][1]} ${achievementSnapshotTracking.docs[0]['achievementLastName']} เสร็จสิ้น!';
-          FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
-        });
-      } else {
-        await _firestore.collection("users").doc(currentUserData['uid']).update({
-          'coin': currentUserData['coin'] + currentUserData[type][2],
-          type: [tracking + 1, currentUserData[type][1] * 2, currentUserData[type][2] * 2, false],
-        }).then((value) {
-          String message =
-              'คุณทำความสำเร็จ ${achievementSnapshotTracking.docs[0]['achievementName']} ${currentUserData[type][1]} ${achievementSnapshotTracking.docs[0]['achievementLastName']} เสร็จสิ้น!';
-          FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
-        });
+    if (currentUserData[type][3] != true) {
+      await _firestore.collection("users").doc(currentUserData['uid']).update({
+        type: [tracking + 1, currentUserData[type][1], currentUserData[type][2], false],
+      });
+      if (tracking + 1 == currentUserData[type][1]) {
+        if (tracking + 1 == 80) {
+          await _firestore.collection("users").doc(currentUserData['uid']).update({
+            'coin': currentUserData['coin'] + currentUserData[type][2],
+            type: [tracking + 1, currentUserData[type][1], currentUserData[type][2], true],
+          }).then((value) {
+            String message =
+                'คุณทำความสำเร็จ ${achievementSnapshotTracking.docs[0]['achievementName']} ${currentUserData[type][1]} ${achievementSnapshotTracking.docs[0]['achievementLastName']} เสร็จสิ้น!';
+            FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+          });
+        } else {
+          await _firestore.collection("users").doc(currentUserData['uid']).update({
+            'coin': currentUserData['coin'] + currentUserData[type][2],
+            type: [tracking + 1, currentUserData[type][1] * 2, currentUserData[type][2] * 2, false],
+          }).then((value) {
+            String message =
+                'คุณทำความสำเร็จ ${achievementSnapshotTracking.docs[0]['achievementName']} ${currentUserData[type][1]} ${achievementSnapshotTracking.docs[0]['achievementLastName']} เสร็จสิ้น!';
+            FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+          });
+        }
+      }
+    }
+  }
+
+  Future<void> quest(BuildContext context, String type) async {
+    var questSnapshotTracking = await _firestore.collection("dailyQuest").where('type', isEqualTo: type).get();
+    var currentUserData = await ReadCollection().getCurrentUserData();
+    for (int i = 0; i < 3; i++) {
+      if (currentUserData['quest${i + 1}'][2] != true) {
+        if (currentUserData['quest${i + 1}'][1] == questSnapshotTracking.docs[0]['id']) {
+          int tracking = currentUserData['quest${i + 1}'][0];
+          if (tracking + 1 == questSnapshotTracking.docs[0]['complete']) {
+            await _firestore.collection("users").doc(currentUserData['uid']).update({
+              'quest${i + 1}': [tracking + 1, currentUserData['quest${i + 1}'][1], true],
+              'coin': currentUserData['coin'] + questSnapshotTracking.docs[0]['point'],
+            }).then((value) {
+              String message = 'คุณทำเควสรายวัน ${questSnapshotTracking.docs[0]['questName']} เสร็จสิ้น!';
+              FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+            });
+          } else {
+            await _firestore.collection("users").doc(currentUserData['uid']).update({
+              'quest${i + 1}': [tracking + 1, currentUserData['quest${i + 1}'][1], false],
+            });
+          }
+        }
       }
     }
   }
 
   Future<void> updateUserDay(BuildContext context, DateTime thisDay, String? userId) async {
-    var currentUserSnapshot = await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
-    Map<String, dynamic> currentUserData = currentUserSnapshot.data()!;
+    var currentUserData = await ReadCollection().getCurrentUserData();
     if (currentUserData['lastDayLogin'].toDate().day != thisDay.day) {
       achievement(context, 'trackingLogin');
+      updateQuest();
     }
     await _firestore.collection("users").doc(userId).update({
       'lastDayLogin': thisDay,
     });
+  }
+
+  List getRandomNumber(int num) {
+    List number = [];
+    while (number.length <= 3) {
+      int ran = Random().nextInt(num) + 1;
+      if (!number.contains(ran)) {
+        number.add(ran);
+      }
+    }
+    return number;
+  }
+
+  Future<void> updateQuest() async {
+    List num = getRandomNumber(5);
+    for (int i = 0; i < 3; i++) {
+      var currentUserData = await ReadCollection().getCurrentUserData();
+      await _firestore.collection("users").doc(currentUserData['uid']).update({
+        'quest1': [0, num[0].toString(), false],
+        'quest2': [0, num[1].toString(), false],
+        'quest3': [0, num[2].toString(), false],
+      });
+    }
   }
 }
 
@@ -197,31 +261,40 @@ class EditProfileData {
 class UpdateSheetListData {
   final _firestore = FirebaseFirestore.instance;
 
+  Future<void> like(BuildContext context, String argSid, String argCoverImage) async {
+    var sheetListData = await ReadSheetListCollection().getCurrentUserLikedSheetList();
+    if (!sheetListData['sid'].contains(argSid)) {
+      await _firestore.collection("sheetList").doc(sheetListData['sheetListId']).update({
+        'sid': FieldValue.arrayUnion([argSid]),
+        'sheetListCoverImage': sheetListData['sheetListCoverImage'] == '' ? argCoverImage : sheetListData['sheetListCoverImage'],
+      });
+    } else {
+      await _firestore.collection("sheetList").doc(sheetListData['sheetListId']).update({
+        'sid': FieldValue.arrayRemove([argSid]),
+        'sheetListCoverImage': sheetListData['sid'].isEmpty ? sheetListData['sheetListCoverImage'] : '',
+      });
+    }
+  }
+
   Future<void> editSheetList(BuildContext context, String currentSheetListId, String newText) async {
     await _firestore.collection('sheetList').doc(currentSheetListId).update({
       'sheetListName': newText,
     }).then((value) {
-      Future.delayed(const Duration(milliseconds: 200), () {
-        AutoRouter.of(context).popUntilRoot();
-        const String message = 'เปลี่ยนข้อมูลสำเร็จ';
-        FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, message);
-      });
+      AutoRouter.of(context).popUntilRoot();
+      const String message = 'เปลี่ยนข้อมูลสำเร็จ';
+      FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, message);
     });
   }
 
   Future<void> updateSheetList(BuildContext context, String currentSheetListId, String currentSheetId) async {
-    var currentSheetListSnapshot = await _firestore.collection("sheetList").doc(currentSheetListId).get();
-    Map<String, dynamic> currentSheetListData = currentSheetListSnapshot.data()!;
-    var currentSheetSnapshot = await _firestore.collection("sheet").doc(currentSheetId).get();
-    Map<String, dynamic> currentSheetData = currentSheetSnapshot.data()!;
+    var currentSheetListData = await ReadSheetListCollection().getParamsSheetListData(currentSheetListId);
+    var currentSheetData = await ReadCollection().getParamsSheetData(currentSheetId);
     if (currentSheetListData['sheetListCoverImage'] == '') {
       await _firestore.collection('sheetList').doc(currentSheetListId).update({'sheetListCoverImage': currentSheetData['sheetCoverImage']});
     }
     await _firestore.collection('sheetList').doc(currentSheetListId).update({
       'sid': FieldValue.arrayUnion([currentSheetId])
-    });
-
-    Future.delayed(const Duration(milliseconds: 500), () {
+    }).then((value) {
       Navigator.of(context).pop();
 
       const String message = 'เพิ่มชีทเข้าชีทลิสต์สำเร็จ!';
@@ -239,17 +312,26 @@ class UpdateSheetListData {
     await _firestore.collection('sheetList').doc(currentSheetListId).update({
       'sid': FieldValue.arrayRemove([currentSheetId])
     });
-    var currentSheetListSnapshot = await _firestore.collection("sheetList").doc(currentSheetListId).get();
-    Map<String, dynamic> currentSheetListData = currentSheetListSnapshot.data()!;
+    var currentSheetListData = await ReadSheetListCollection().getParamsSheetListData(currentSheetListId);
     List? sheet = currentSheetListData['sid'];
     if (sheet!.isEmpty) {
-      await _firestore.collection('sheetList').doc(currentSheetListId).update({'sheetListCoverImage': ''});
+      await _firestore.collection('sheetList').doc(currentSheetListId).update({'sheetListCoverImage': ''}).then((value) {
+        Navigator.of(context).pop();
+
+        const String message = 'ลบชีทออกจากชีทลิสต์สำเร็จ!';
+        FlushbarPopup.successFlushbar(
+            context,
+            const Icon(
+              FontAwesomeIcons.book,
+              color: AppColors.white,
+            ),
+            message);
+      });
       return;
     }
-    var sheetSnapshot = await _firestore.collection("sheet").doc(currentSheetListData['sid'][0]).get();
-    Map<String, dynamic> sheetData = sheetSnapshot.data()!;
-    await _firestore.collection('sheetList').doc(currentSheetListId).update({'sheetListCoverImage': sheetData['sheetCoverImage']});
-    Future.delayed(const Duration(milliseconds: 500), () {
+    String sheetId = currentSheetListData['sid'][0];
+    var sheetData = await ReadCollection().getParamsSheetData(sheetId);
+    await _firestore.collection('sheetList').doc(currentSheetListId).update({'sheetListCoverImage': sheetData['sheetCoverImage']}).then((value) {
       Navigator.of(context).pop();
 
       const String message = 'ลบชีทออกจากชีทลิสต์สำเร็จ!';
@@ -268,10 +350,8 @@ class EditReviewData {
   final _firestore = FirebaseFirestore.instance;
 
   Future<void> editReview(BuildContext context, String currentRid, String newTextReview, double newRating) async {
-    var currentReviewSnapshot = await _firestore.collection("review").doc(currentRid).get();
-    Map<String, dynamic> currentReviewData = currentReviewSnapshot.data()!;
-    var currentSheetSnapshot = await _firestore.collection("sheet").doc(currentReviewData['sheetId']).get();
-    Map<String, dynamic> currentSheetData = currentSheetSnapshot.data()!;
+    var currentReviewData = await ReadReviewCollection().getParamsReviewData(currentRid);
+    var currentSheetData = await ReadCollection().getParamsSheetData(currentReviewData['sheetId']);
     List? reviewInSheet = currentSheetData['review'];
     reviewInSheet ??= [];
     double result = (currentSheetData['rating'] * reviewInSheet.length) - currentReviewData['rating'];
@@ -279,8 +359,7 @@ class EditReviewData {
       'text': newTextReview,
       'rating': newRating,
     });
-    var newReviewSnapshot = await _firestore.collection("review").doc(currentRid).get();
-    Map<String, dynamic> newReviewData = newReviewSnapshot.data()!;
+    var newReviewData = await ReadReviewCollection().getParamsReviewData(currentRid);
     result = (result + newReviewData['rating']) / reviewInSheet.length;
     await _firestore.collection('sheet').doc(currentReviewData['sheetId']).update({
       'rating': result,
@@ -298,10 +377,8 @@ class EditQuestionData {
   final _firestore = FirebaseFirestore.instance;
 
   Future<void> editQuestion(BuildContext context, String currentQid, String newTextQuestion) async {
-    var currentQuestionSnapshot = await _firestore.collection("question").doc(currentQid).get();
-    Map<String, dynamic> currentQuestionData = currentQuestionSnapshot.data()!;
-    var currentSheetSnapshot = await _firestore.collection("sheet").doc(currentQuestionData['sheetId']).get();
-    Map<String, dynamic> currentSheetData = currentSheetSnapshot.data()!;
+    var currentQuestionData = await ReadQuestionCollection().getParamsQuestionData(currentQid);
+    var currentSheetData = await ReadCollection().getParamsSheetData(currentQuestionData['sheetId']);
     List? questionInSheet = currentSheetData['question'];
     questionInSheet ??= [];
     await _firestore.collection('question').doc(currentQid).update({
@@ -311,6 +388,22 @@ class EditQuestionData {
         AutoRouter.of(context).popUntilRoot();
         const String message = 'แก้ไขคำถามสำเร็จ';
         FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, message);
+      });
+    });
+  }
+}
+
+class EditAnswerData {
+  final _firestore = FirebaseFirestore.instance;
+
+  Future<void> editAnswer(BuildContext context, String answerId, String newTextAnswer) async {
+    await _firestore.collection('answer').doc(answerId).update({
+      'text': newTextAnswer,
+    }).then((value) {
+      Future.delayed(const Duration(milliseconds: 200), () {
+        AutoRouter.of(context).popUntilRoot();
+        const String message = 'แก้ไขคำตอบสำเร็จ';
+        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
       });
     });
   }
@@ -335,6 +428,7 @@ class EditSheetData {
 
 class FollowSystem {
   final _firestore = FirebaseFirestore.instance;
+
   Future followUser(String currentUser, String userId) async {
     await _firestore.collection("users").doc(currentUser).update({
       "following": FieldValue.arrayUnion([userId]),

@@ -194,7 +194,6 @@ class _DetailSheetState extends State<DetailSheet> {
                                           activateOverflow: true,
                                           maxLine: 2,
                                         ),
-
                                         if (tagInSheet!.isNotEmpty) ...[
                                           SizedBox(
                                             height: isPortrait ? screenHeight * 0.035 : screenHeight * 0.015,
@@ -205,7 +204,6 @@ class _DetailSheetState extends State<DetailSheet> {
                                               itemCount: tagInSheet.length,
                                               itemBuilder: (BuildContext context, int index) => Tag(
                                                 subject: sheetData['sheetTags'][index],
-
                                                 onPressed: () {},
                                               ),
                                             ),
@@ -228,7 +226,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                             Regular12px(text: ratingSheet),
                                           ],
                                         ),
-                                        if (_auth.currentUser!.uid != authorData['uid']) ...[
+                                        if (_auth.currentUser?.uid != authorData['uid']) ...[
                                           InkWell(
                                             child: Row(
                                               children: [
@@ -246,11 +244,11 @@ class _DetailSheetState extends State<DetailSheet> {
                                               ],
                                             ),
                                             onTap: () {
-                                              AutoRouter.of(context).navigateNamed('/profile/other_profile/${authorData['uid']}');
+                                              AutoRouter.of(context).push(OtherProfileRoute(userId: authorData['uid']));
                                             },
                                           ),
                                         ],
-                                        if (AuthService().isLogged() == true && sheetData['authorId'] == _auth.currentUser!.uid) ...[
+                                        if (AuthService().isLogged() == true && sheetData['authorId'] == _auth.currentUser?.uid) ...[
                                           Row(
                                             children: [
                                               CircleAvatar(
@@ -298,16 +296,36 @@ class _DetailSheetState extends State<DetailSheet> {
                                           Wrap(
                                             spacing: 10,
                                             children: [
-                                              InkWell(
-                                                child: Icon(
-                                                  Icons.favorite_outline,
-                                                  color: AppColors.black600,
-                                                  size: isPortrait ? 32 : 36,
-                                                ),
-                                                onTap: () {
-                                                  UpdateCollection().achievement(context, 'trackingLike');
-                                                },
-                                              ),
+                                              StreamBuilder<QuerySnapshot>(
+                                                  stream: _firestore
+                                                      .collection('sheetList')
+                                                      .where('authorId', isEqualTo: _auth.currentUser?.uid)
+                                                      .where('sheetListName', isEqualTo: 'ชีทที่ถูกใจ')
+                                                      .snapshots(),
+                                                  builder: (BuildContext context, AsyncSnapshot sheetListSnapshot) {
+                                                    if (!sheetListSnapshot.hasData) {
+                                                      return Container();
+                                                    } else if (sheetListSnapshot.connectionState == ConnectionState.waiting) {
+                                                      return const Center(child: CircularProgressIndicator());
+                                                    }
+                                                    Map<String, dynamic> sheetListData =
+                                                        sheetListSnapshot.data!.docs[0].data() as Map<String, dynamic>;
+                                                    return InkWell(
+                                                      child: Icon(
+                                                        sheetListData['sid'].contains(widget.sheetId)
+                                                            ? Icons.favorite_outlined
+                                                            : Icons.favorite_outline,
+                                                        color:
+                                                            sheetListData['sid'].contains(widget.sheetId) ? AppColors.error500 : AppColors.black600,
+                                                        size: isPortrait ? 32 : 36,
+                                                      ),
+                                                      onTap: () async {
+                                                        await UpdateSheetListData().like(context, sheetData['sid'], sheetData['sheetCoverImage']);
+                                                        UpdateCollection().achievement(context, 'trackingLike');
+                                                        UpdateCollection().quest(context, 'trackingDailyLike');
+                                                      },
+                                                    );
+                                                  }),
                                               InkWell(
                                                 child: Icon(
                                                   Icons.playlist_add_rounded,
@@ -675,25 +693,17 @@ class _DetailSheetState extends State<DetailSheet> {
                 onPressed: () async {
                   _formKey.currentState!.save();
                   try {
-                    myCollection
+                    await myCollection
                         .createSheetListAndUpdateCollection(
-                      context,
-                      _sheetLists.sheetListName,
-                      _sheetLists.sid = [],
-                      _sheetLists.authorId = _auth.currentUser!.uid,
-                      _sheetLists.sheetListId = uuid.v4(),
-                      _sheetLists.sheetListCoverImage = '',
-                      widget.sheetId,
-                    )
-                        .then(
-                      (value) {
-                        _formKey.currentState!.reset();
-                        AutoRouter.of(context).popUntilRoot();
-                      },
-                    );
-                    await _firestoreDb.collection('users').doc(_auth.currentUser!.uid).update({
-                      'sheetLists': FieldValue.arrayUnion([_sheetLists.sheetListId])
-                    });
+                          context,
+                          _sheetLists.sheetListName,
+                          _sheetLists.sid = [],
+                          _sheetLists.authorId = _auth.currentUser!.uid,
+                          _sheetLists.sheetListId = uuid.v4(),
+                          _sheetLists.sheetListCoverImage = '',
+                          widget.sheetId,
+                        )
+                        .then((value) => _formKey.currentState!.reset());
                   } on FirebaseAuthException catch (e) {
                     FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
                   }
@@ -725,7 +735,7 @@ class _DetailSheetState extends State<DetailSheet> {
               stream: _auth.authStateChanges(),
               builder: (context, AsyncSnapshot<User?> snapshot) {
                 return StreamBuilder<QuerySnapshot>(
-                    stream: _firestoreDb.collection("sheetList").snapshots(),
+                    stream: _firestoreDb.collection("sheetList").where('accessible', isEqualTo: true).snapshots(),
                     builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (!snapshot.hasData) {
                         return Container();
@@ -733,127 +743,126 @@ class _DetailSheetState extends State<DetailSheet> {
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
-                      } else {
-                        final mySheetLists = snapshot.data?.docs.where((document) => document["authorId"] == _auth.currentUser?.uid);
-                        return SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 20, right: 24, top: 28, bottom: 28),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Regular16px(
-                                      text: 'บันทึกชีทนี้ลง...',
-                                    ),
-                                    InkWell(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(color: AppColors.tertiary500),
-                                          borderRadius: BorderRadius.circular(5),
-                                        ),
-                                        child: const Icon(
-                                          FontAwesomeIcons.plus,
-                                          color: AppColors.tertiary500,
-                                          size: 24,
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        _BottomSheet(context);
-                                      },
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(screenWidth * GapDimension.w0_032),
-                                child: GridView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3,
-                                    crossAxisSpacing: 8,
-                                    mainAxisSpacing: 8,
-                                    childAspectRatio: screenWidth < 480
-                                        ? MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.1)
-                                        : MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 0.4),
+                      }
+                      final mySheetLists = snapshot.data?.docs.where((document) => document["authorId"] == _auth.currentUser?.uid);
+                      return SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20, right: 24, top: 28, bottom: 28),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Regular16px(
+                                    text: 'บันทึกชีทนี้ลง...',
                                   ),
-                                  itemCount: mySheetLists?.length,
-                                  itemBuilder: (context, index) {
-                                    var sheetLists = mySheetLists?.elementAt(index);
-                                    return LayoutBuilder(
-                                      builder: (context, constraints) {
-                                        return InkWell(
-                                          child: Column(
-                                            children: [
-                                              Container(
-                                                height: constraints.maxHeight * 0.8,
-                                                color: sheetLists!['sheetListCoverImage'] == '' ? AppColors.black300 : Colors.transparent,
-                                                child: Stack(
-                                                  children: [
-                                                    sheetLists['sid'].contains(widget.sheetId)
-                                                        ? Opacity(
-                                                            opacity: 0.5,
-                                                            child: CachedNetworkImage(
-                                                              imageUrl: sheetLists["sheetListCoverImage"],
+                                  InkWell(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: AppColors.tertiary500),
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: const Icon(
+                                        FontAwesomeIcons.plus,
+                                        color: AppColors.tertiary500,
+                                        size: 24,
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      _BottomSheet(context);
+                                    },
+                                  )
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(screenWidth * GapDimension.w0_032),
+                              child: GridView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  crossAxisSpacing: 8,
+                                  mainAxisSpacing: 8,
+                                  childAspectRatio: screenWidth < 480
+                                      ? MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.1)
+                                      : MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 0.4),
+                                ),
+                                itemCount: mySheetLists?.length,
+                                itemBuilder: (context, index) {
+                                  var sheetLists = mySheetLists?.elementAt(index);
+                                  return LayoutBuilder(
+                                    builder: (context, constraints) {
+                                      return InkWell(
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              height: constraints.maxHeight * 0.8,
+                                              color: sheetLists!['sheetListCoverImage'] == '' ? AppColors.black300 : Colors.transparent,
+                                              child: Stack(
+                                                children: [
+                                                  sheetLists['sid'].contains(widget.sheetId)
+                                                      ? Opacity(
+                                                          opacity: 0.5,
+                                                          child: CachedNetworkImage(
+                                                            imageUrl: sheetLists["sheetListCoverImage"],
+                                                          ),
+                                                        )
+                                                      : Container(
+                                                          child: sheetLists['sheetListCoverImage'] != ''
+                                                              ? CachedNetworkImage(
+                                                                  imageUrl: sheetLists["sheetListCoverImage"],
+                                                                )
+                                                              : Container(),
+                                                        ),
+                                                  Center(
+                                                    child: sheetLists['sid'].contains(widget.sheetId)
+                                                        ? const InkWell(
+                                                            child: Icon(
+                                                              FontAwesomeIcons.check,
+                                                              color: AppColors.tertiary600,
                                                             ),
                                                           )
-                                                        : Container(
-                                                            child: sheetLists['sheetListCoverImage'] != ''
-                                                                ? CachedNetworkImage(
-                                                                    imageUrl: sheetLists["sheetListCoverImage"],
-                                                                  )
-                                                                : Container(),
-                                                          ),
-                                                    Center(
-                                                      child: sheetLists['sid'].contains(widget.sheetId)
-                                                          ? InkWell(
-                                                              child: const Icon(
-                                                                FontAwesomeIcons.check,
-                                                                color: AppColors.tertiary600,
-                                                              ),
-                                                              onTap: () {
-                                                                UpdateSheetListData()
-                                                                    .removeSheetFromList(context, sheetLists['sheetListId'], widget.sheetId);
-                                                              },
-                                                            )
-                                                          : Container(),
-                                                    ),
-                                                  ],
-                                                ),
+                                                        : Container(),
+                                                  ),
+                                                ],
                                               ),
-                                              SizedBox(
-                                                height: constraints.maxHeight * 0.2,
-                                                child: LayoutBuilder(
-                                                  builder: (context, constraints) {
-                                                    return Container(
-                                                      padding: EdgeInsets.only(top: screenWidth * 0.02),
-                                                      alignment: Alignment.topCenter,
-                                                      height: constraints.maxHeight * 0.5,
-                                                      child: Regular16px(text: sheetLists['sheetListName']),
-                                                    );
-                                                  },
-                                                ),
+                                            ),
+                                            SizedBox(
+                                              height: constraints.maxHeight * 0.2,
+                                              child: LayoutBuilder(
+                                                builder: (context, constraints) {
+                                                  return Container(
+                                                    padding: EdgeInsets.only(top: screenWidth * 0.02),
+                                                    alignment: Alignment.topCenter,
+                                                    height: constraints.maxHeight * 0.5,
+                                                    child: Regular16px(text: sheetLists['sheetListName']),
+                                                  );
+                                                },
                                               ),
-                                            ],
-                                          ),
-                                          onTap: () async {
-                                            try {
-                                              UpdateSheetListData().updateSheetList(context, sheetLists['sheetListId'], widget.sheetId);
-                                            } on FirebaseAuthException catch (e) {
-                                              FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
+                                            ),
+                                          ],
+                                        ),
+                                        onTap: () async {
+                                          try {
+                                            if (sheetLists['sid'].contains(widget.sheetId)) {
+                                              await UpdateSheetListData().removeSheetFromList(context, sheetLists['sheetListId'], widget.sheetId);
+                                            } else {
+                                              await UpdateSheetListData().updateSheetList(context, sheetLists['sheetListId'], widget.sheetId);
                                             }
-                                          },
-                                        );
-                                      },
-                                    );
-                                  },
-                                ),
+                                          } on FirebaseAuthException catch (e) {
+                                            FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
+                                          }
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
                               ),
-                            ],
-                          ),
-                        );
-                      }
+                            ),
+                          ],
+                        ),
+                      );
                     });
               });
         });

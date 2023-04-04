@@ -65,8 +65,8 @@ class _OtherProfileState extends State<OtherProfile> {
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
                                       image: CachedNetworkImageProvider(data['profileImage']),
+                                      fit: BoxFit.cover,
                                     ),
-                                    border: Border.all(color: AppColors.black800, width: 2.0),
                                     shape: BoxShape.circle,
                                   ),
                                 ),
