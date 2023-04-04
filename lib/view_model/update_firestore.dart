@@ -76,13 +76,11 @@ class UpdateCollection {
       FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, message);
       return;
     }
-    await Future.delayed(const Duration(milliseconds: 300), () {
-      if (context.mounted) {
+    await Future.wait([
+      Future.delayed(const Duration(milliseconds: 0), () {
         const String message = 'ซื้อชีทสำเร็จ';
         FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
-      }
-    });
-    await Future.wait([
+      }),
       _firestore.collection("users").doc(currentUserData['uid']).update({
         'timestamp': myUser.timestamp,
         'coin': (currentUserData['coin'] - sheetPrice),
@@ -176,13 +174,14 @@ class UpdateCollection {
         if (currentUserData['quest${i + 1}'][1] == questSnapshotTracking.docs[0]['id']) {
           int tracking = currentUserData['quest${i + 1}'][0];
           if (tracking + 1 == questSnapshotTracking.docs[0]['complete']) {
-            await _firestore.collection("users").doc(currentUserData['uid']).update({
-              'quest${i + 1}': [tracking + 1, currentUserData['quest${i + 1}'][1], true],
-              'coin': currentUserData['coin'] + questSnapshotTracking.docs[0]['point'],
-            }).then((value) {
+            await Future.delayed(const Duration(milliseconds: 0), () {
               String message = 'คุณทำเควสรายวัน ${questSnapshotTracking.docs[0]['questName']} เสร็จสิ้น!';
               FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
             });
+            await _firestore.collection("users").doc(currentUserData['uid']).update({
+              'quest${i + 1}': [tracking + 1, currentUserData['quest${i + 1}'][1], true],
+              'coin': currentUserData['coin'] + questSnapshotTracking.docs[0]['point'],
+            }).then((value) {});
           } else {
             await _firestore.collection("users").doc(currentUserData['uid']).update({
               'quest${i + 1}': [tracking + 1, currentUserData['quest${i + 1}'][1], false],
@@ -249,11 +248,9 @@ class EditProfileData {
     await _firestore.collection('users').doc(currentUid).update({
       'username': newUsername,
     }).then((value) {
-      Future.delayed(const Duration(milliseconds: 200), () {
-        AutoRouter.of(context).popUntilRoot();
-        const String message = 'เปลี่ยนข้อมูลสำเร็จ';
-        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
-      });
+      AutoRouter.of(context).popUntilRoot();
+      const String message = 'เปลี่ยนข้อมูลสำเร็จ';
+      FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
     });
   }
 }
@@ -364,11 +361,9 @@ class EditReviewData {
     await _firestore.collection('sheet').doc(currentReviewData['sheetId']).update({
       'rating': result,
     }).then((value) {
-      Future.delayed(const Duration(milliseconds: 200), () {
-        AutoRouter.of(context).popUntilRoot();
-        const String message = 'แก้ไขรีวิวสำเร็จ';
-        FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, message);
-      });
+      AutoRouter.of(context).popUntilRoot();
+      const String message = 'แก้ไขรีวิวสำเร็จ';
+      FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, message);
     });
   }
 }
@@ -384,11 +379,9 @@ class EditQuestionData {
     await _firestore.collection('question').doc(currentQid).update({
       'text': newTextQuestion,
     }).then((value) {
-      Future.delayed(const Duration(milliseconds: 200), () {
-        AutoRouter.of(context).popUntilRoot();
-        const String message = 'แก้ไขคำถามสำเร็จ';
-        FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, message);
-      });
+      AutoRouter.of(context).popUntilRoot();
+      const String message = 'แก้ไขคำถามสำเร็จ';
+      FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, message);
     });
   }
 }
@@ -400,11 +393,9 @@ class EditAnswerData {
     await _firestore.collection('answer').doc(answerId).update({
       'text': newTextAnswer,
     }).then((value) {
-      Future.delayed(const Duration(milliseconds: 200), () {
-        AutoRouter.of(context).popUntilRoot();
-        const String message = 'แก้ไขคำตอบสำเร็จ';
-        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
-      });
+      AutoRouter.of(context).popUntilRoot();
+      const String message = 'แก้ไขคำตอบสำเร็จ';
+      FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
     });
   }
 }
@@ -416,13 +407,11 @@ class EditSheetData {
     await _firestore.collection('sheet').doc(currentSid).update({
       'sheetName': newName,
       'detailSheet': newDetail,
-    }).then(
-      (value) => Future.delayed(const Duration(milliseconds: 200), () {
-        AutoRouter.of(context).popUntilRouteWithName('DetailSheetRoute');
-        const String message = 'เปลี่ยนรายละเอียดชีทสำเร็จ';
-        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
-      }),
-    );
+    }).then((value) {
+      AutoRouter.of(context).popUntilRouteWithName('DetailSheetRoute');
+      const String message = 'เปลี่ยนรายละเอียดชีทสำเร็จ';
+      FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+    });
   }
 }
 
