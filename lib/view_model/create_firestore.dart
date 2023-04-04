@@ -7,7 +7,7 @@ import 'package:cheat_sheet/model/review.dart';
 import 'package:cheat_sheet/model/sheet.dart';
 import 'package:cheat_sheet/model/sheet_list.dart';
 import 'package:cheat_sheet/model/user.dart';
-import 'package:cheat_sheet/utils/routes/routes.gr.dart';
+import 'package:cheat_sheet/view_model/read_firestore.dart';
 import 'package:cheat_sheet/view_model/update_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,10 +17,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:uuid/uuid.dart';
 
-import '../res/colors.dart';
 import '../res/components/flushbar.dart';
 import '../res/components/flushbar_icon.dart';
 
@@ -227,7 +225,7 @@ class CreateCollection {
   }
 
   Future<void> createReviewCollection(String argText, String argRid, String argReviewerId, String argSheetId, double argRating, int argLike,
-      BuildContext context, String _review) async {
+      BuildContext context, String reviewId) async {
     double result = 0;
     if (argRating == 0) {
       const String message = 'กรุณาระบุคะแนนที่ท่านต้องการให้ก่อน!';
@@ -243,76 +241,77 @@ class CreateCollection {
       'rid': argRid,
       'like': argLike,
     });
-    var currentReviewSnapshot = await _firestore.collection("review").doc(_review).get();
-    Map<String, dynamic> currentReviewData = currentReviewSnapshot.data()!;
-    var currentSheetSnapshot = await _firestore.collection("sheet").doc(argSheetId).get();
-    Map<String, dynamic> currentSheetData = currentSheetSnapshot.data()!;
+    var currentReviewData = await ReadReviewCollection().getParamsReviewData(reviewId);
+    var currentSheetData = await ReadCollection().getParamsSheetData(argSheetId);
     List? reviewInSheet = currentSheetData['review'];
     reviewInSheet ??= [];
     result = ((currentSheetData['rating'] * reviewInSheet.length) + currentReviewData['rating']) / (reviewInSheet.length + 1);
-    await _firestore.collection('sheet').doc(argSheetId).update({
-      'review': FieldValue.arrayUnion([_review])
-    });
-    await _firestore.collection('sheet').doc(argSheetId).update({'rating': result}).then(
-      (value) {
-        UpdateCollection().achievement(context, 'trackingReview');
-        UpdateCollection().quest(context, 'trackingDailyReview');
+    await Future.wait([
+      _firestore.collection('sheet').doc(argSheetId).update({
+        'review': FieldValue.arrayUnion([reviewId])
+      }),
+      _firestore.collection('sheet').doc(argSheetId).update({'rating': result}),
+    ]).then((value) async {
+      await Future.wait([
+        UpdateCollection().achievement(context, 'trackingReview'),
+        UpdateCollection().quest(context, 'trackingDailyReview'),
+      ]).then((value) {
         AutoRouter.of(context).popUntilRouteWithName('DetailSheetRoute');
         FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, 'รีวิวสำเร็จ');
-      },
-    );
+      });
+    });
   }
 
   Future<void> createQuestionCollection(
       String argText, String argQuestionId, String argSheetId, String argQuestionerId, BuildContext context, int argAskingPage) async {
-    await _firestore.collection("question").doc(argQuestionId).set({
-      'timestamp': myQuestion.timestamp,
-      'qid': argQuestionId,
-      'text': argText.toString().trim(),
-      'sheetId': argSheetId,
-      'questionerId': argQuestionerId,
-      'askingPage': argAskingPage,
-      'like': myQuestion.like,
-      'dislike': myQuestion.dislike,
-      'answer': myQuestion.answer,
-    });
-    await _firestore.collection('sheet').doc(argSheetId).update({
-      'question': FieldValue.arrayUnion([argQuestionId])
-    }).then(
-      (value) {
-        UpdateCollection().achievement(context, 'trackingAsk');
-        UpdateCollection().quest(context, 'trackingDailyAsk');
+    await Future.wait([
+      _firestore.collection("question").doc(argQuestionId).set({
+        'timestamp': myQuestion.timestamp,
+        'qid': argQuestionId,
+        'text': argText.toString().trim(),
+        'sheetId': argSheetId,
+        'questionerId': argQuestionerId,
+        'askingPage': argAskingPage,
+        'like': myQuestion.like,
+        'dislike': myQuestion.dislike,
+      }),
+      _firestore.collection('sheet').doc(argSheetId).update({
+        'question': FieldValue.arrayUnion([argQuestionId])
+      }),
+    ]).then((value) async {
+      await Future.wait([
+        UpdateCollection().achievement(context, 'trackingAsk'),
+        UpdateCollection().quest(context, 'trackingDailyAsk'),
+      ]).then((value) {
         AutoRouter.of(context).popUntilRouteWithName('AskQuestionRoute');
         const String message = 'สร้างคำถามสำเร็จ!';
         FlushbarPopup.successFlushbar(context, FlushbarIcon.createQuestionIcon, message);
-      },
-    );
+      });
+    });
   }
 
-  Future<void> createAnswerCollection(String argText, String answerId, String argRespondentId, String argQuestionId, BuildContext context) async {
+  Future<void> createAnswerCollection(String argText, String argAnswerId, String argRespondentId, String argQuestionId, BuildContext context) async {
     await Future.wait([
-      _firestore.collection("answer").doc(answerId).set({
+      _firestore.collection("answer").doc(argAnswerId).set({
         'timestamp': myAnswer.timestamp,
-        'aid': answerId,
+        'aid': argAnswerId,
         'text': argText.toString().trim(),
         'respondentId': argRespondentId,
         'like': myAnswer.like,
       }),
       _firestore.collection('question').doc(argQuestionId).update({
-        'answer': FieldValue.arrayUnion([answerId])
-      })
-    ]).then(
-      (value) {
-        const String message = 'สร้างการตอบกลับสำเร็จ!';
-        FlushbarPopup.successFlushbar(context, FlushbarIcon.createAnswerIcon, message);
-      },
-    );
+        'answer': FieldValue.arrayUnion([argAnswerId])
+      }),
+    ]).then((value) {
+      AutoRouter.of(context).popUntilRoot();
+      const String message = 'สร้างการตอบกลับสำเร็จ!';
+      FlushbarPopup.successFlushbar(context, FlushbarIcon.createAnswerIcon, message);
+    });
   }
 }
 
 class Storage {
   final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
-  final User? _user = FirebaseAuth.instance.currentUser;
   final ref = FirebaseStorage.instance.ref().child('userImages');
   late String imageURL;
 
