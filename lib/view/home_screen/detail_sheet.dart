@@ -321,11 +321,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                       ),
                                                       onTap: () async {
                                                         if (AuthService().isLogged()) {
-                                                          await Future.wait([
-                                                            UpdateSheetListData().like(context, sheetData['sid'], sheetData['sheetCoverImage']),
-                                                            UpdateCollection().achievement(context, 'trackingLike'),
-                                                            UpdateCollection().quest(context, 'trackingDailyLike'),
-                                                          ]);
+                                                          await UpdateSheetListData().like(context, sheetData['sid'], sheetData['sheetCoverImage']);
                                                         } else {
                                                           showDialog(
                                                             context: context,

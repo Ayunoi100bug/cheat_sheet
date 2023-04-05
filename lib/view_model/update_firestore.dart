@@ -264,6 +264,11 @@ class UpdateSheetListData {
       await _firestore.collection("sheetList").doc(sheetListData['sheetListId']).update({
         'sid': FieldValue.arrayUnion([argSid]),
         'sheetListCoverImage': sheetListData['sheetListCoverImage'] == '' ? argCoverImage : sheetListData['sheetListCoverImage'],
+      }).then((value) async {
+        await Future.wait([
+          UpdateCollection().achievement(context, 'trackingLike'),
+          UpdateCollection().quest(context, 'trackingDailyLike'),
+        ]);
       });
     } else {
       await _firestore.collection("sheetList").doc(sheetListData['sheetListId']).update({
