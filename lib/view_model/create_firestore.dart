@@ -266,6 +266,11 @@ class CreateCollection {
   Future<void> createQuestionCollection(
       String argText, String argQuestionId, String argSheetId, String argQuestionerId, BuildContext context, int argAskingPage) async {
     await Future.wait([
+      Future.delayed(const Duration(milliseconds: 0), () {
+        AutoRouter.of(context).popUntilRouteWithName('AskQuestionRoute');
+        const String message = 'สร้างคำถามสำเร็จ!';
+        FlushbarPopup.successFlushbar(context, FlushbarIcon.createQuestionIcon, message);
+      }),
       _firestore.collection("question").doc(argQuestionId).set({
         'timestamp': myQuestion.timestamp,
         'qid': argQuestionId,
@@ -282,13 +287,9 @@ class CreateCollection {
       }),
     ]).then((value) async {
       await Future.wait([
-        UpdateCollection().achievement(context, 'trackingAsk'),
-        UpdateCollection().quest(context, 'trackingDailyAsk'),
-      ]).then((value) {
-        AutoRouter.of(context).popUntilRouteWithName('AskQuestionRoute');
-        const String message = 'สร้างคำถามสำเร็จ!';
-        FlushbarPopup.successFlushbar(context, FlushbarIcon.createQuestionIcon, message);
-      });
+        UpdateCollection().achievement(context, 'trackingQuestion'),
+        UpdateCollection().quest(context, 'trackingDailyQuestion'),
+      ]);
     });
   }
 

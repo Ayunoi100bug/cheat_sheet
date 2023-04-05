@@ -63,27 +63,26 @@ class DeleteDocument {
       }),
       _firestore.collection("question").doc(questionId).delete(),
     ]).then((value) {
-      AutoRouter.of(context).popUntilRouteWithName('SheetListRoute');
-      const String message = 'ลบความคิดเห็นสำเร็จ';
+      AutoRouter.of(context).popUntilRoot();
+      const String message = 'ลบคำถามสำเร็จ';
       FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, message);
     });
   }
 
   Future<void> deleteAnswer(BuildContext context, String answerId, String questionId) async {
-    var currentAnswerSnapshot = await _firestore.collection("answer").doc(answerId).get();
-    Map<String, dynamic> currentAnswerData = currentAnswerSnapshot.data()!;
-    var currentQuestionSnapshot = await _firestore.collection("question").doc(questionId).get();
-    Map<String, dynamic> currentQuestionData = currentQuestionSnapshot.data()!;
+    var currentQuestionData = await ReadQuestionCollection().getParamsQuestionData(questionId);
     List? answerInQuestion = currentQuestionData['answer'];
     answerInQuestion ??= [];
-    await _firestore.collection('question').doc(questionId).update({
-      'answer': FieldValue.arrayRemove([answerId])
-    });
-    await _firestore.collection("answer").doc(answerId).delete().then((value) {
-      AutoRouter.of(context).popUntilRoot();
-      const String message = 'ลบคำตอบสำเร็จ';
-      FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
-    });
+    await Future.wait([
+      Future.delayed(const Duration(milliseconds: 0), () {
+        Navigator.pop(context);
+        AutoRouter.of(context).pop();
+      }),
+      _firestore.collection('question').doc(questionId).update({
+        'answer': FieldValue.arrayRemove([answerId])
+      }),
+      _firestore.collection("answer").doc(answerId).delete(),
+    ]);
   }
 
   Future<void> deleteSheet(BuildContext context, String sheetId) async {

@@ -1,5 +1,7 @@
+import 'package:cheat_sheet/view_model/knn.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class ReadCollection {
   final _firestore = FirebaseFirestore.instance;
@@ -53,6 +55,43 @@ class ReadCollection {
 
     return remainingSheetIds;
   }
+
+  Future<List<int>> getAmountOfTagOfUserLikes() async {
+    // start stopwatch to monitor execution time
+    Stopwatch stopwatch = Stopwatch()..start();
+    var allUserLikedSheet = await ReadSheetListCollection().getCurrentUserLikedSheetList();
+    // tag is ordered as follows: คณิตศาสตร์, พระพุทธศาสนา, ภาษาอังกฤษ, ภาษาไทย, วิทยาศาสตร์, สังคมศึกษา
+    List<int> allTagCount = [0, 0, 0, 0, 0, 0];
+
+    // add all tag from each of sid in allUserLikedSheet into allTag list
+    for (var sid in allUserLikedSheet['sid']) {
+      var tempSheet = await getParamsSheetData(sid);
+      if (!tempSheet.containsKey('sheetTags')) continue;
+      for (var tagName in tempSheet['sheetTags']) {
+        if (tagName == "คณิตศาสตร์") {
+          allTagCount[0]++;
+        } else if (tagName == "พระพุทธศาสนา") {
+          allTagCount[1]++;
+        } else if (tagName == "ภาษาอังกฤษ") {
+          allTagCount[2]++;
+        } else if (tagName == "ภาษาไทย") {
+          allTagCount[3]++;
+        } else if (tagName == "วิทยาศาสตร์") {
+          allTagCount[4]++;
+        } else if (tagName == "สังคมศึกษา") {
+          allTagCount[5]++;
+        }
+      }
+    }
+
+    // Stop the stopwatch and print the elapsed time
+    stopwatch.stop();
+    Duration elapsed = stopwatch.elapsed;
+    double milliseconds = elapsed.inMilliseconds.toDouble();
+    debugPrint('Execution time: $milliseconds ms');
+
+    return allTagCount;
+  }
 }
 
 class ReadSheetListCollection {
@@ -99,5 +138,12 @@ class ReadQuestionCollection {
     Map<String, dynamic> currentQuestionData = currentArgQuestionSnapshot.data() as Map<String, dynamic>;
 
     return currentQuestionData;
+  }
+
+  Future<Map<String, dynamic>> getParamsAnswerData(String argAnswerId) async {
+    var currentArgAnswerSnapshot = await _firestore.collection("answer").doc(argAnswerId).get();
+    Map<String, dynamic> currentAnswerData = currentArgAnswerSnapshot.data() as Map<String, dynamic>;
+
+    return currentAnswerData;
   }
 }

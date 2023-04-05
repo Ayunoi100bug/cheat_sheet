@@ -80,6 +80,13 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                       },
                       child: const Text("test"),
                     ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        var temp = await ReadCollection().getAmountOfTagOfUserLikes();
+                        debugPrint("Result: $temp");
+                      },
+                      child: const Text("test read sid"),
+                    ),
                     Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.02),
