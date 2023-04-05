@@ -320,9 +320,14 @@ class _DetailSheetState extends State<DetailSheet> {
                                                         size: isPortrait ? 32 : 36,
                                                       ),
                                                       onTap: () async {
-                                                        await UpdateSheetListData().like(context, sheetData['sid'], sheetData['sheetCoverImage']);
-                                                        UpdateCollection().achievement(context, 'trackingLike');
-                                                        UpdateCollection().quest(context, 'trackingDailyLike');
+                                                        if (AuthService().isLogged()) {
+                                                          await UpdateSheetListData().like(context, sheetData['sid'], sheetData['sheetCoverImage']);
+                                                        } else {
+                                                          showDialog(
+                                                            context: context,
+                                                            builder: (BuildContext context) => Popup_Login(context),
+                                                          );
+                                                        }
                                                       },
                                                     );
                                                   }),
@@ -477,29 +482,27 @@ class _DetailSheetState extends State<DetailSheet> {
                                                     return Container();
                                                   } else if (reviewSnapshot.connectionState == ConnectionState.waiting) {
                                                     return const Center(child: CircularProgressIndicator());
-                                                  } else {
-                                                    return StreamBuilder<DocumentSnapshot>(
-                                                      stream: _firestore.collection("users").doc(reviewSnapshot.data!['reviewerId']).snapshots(),
-                                                      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userReviewSnapshot) {
-                                                        if (!userReviewSnapshot.hasData) {
-                                                          return Container();
-                                                        } else if (userReviewSnapshot.connectionState == ConnectionState.waiting) {
-                                                          return const Center(child: CircularProgressIndicator());
-                                                        } else {
-                                                          return Review(
-                                                              sheetId: sheetData['sid'],
-                                                              userId: userReviewSnapshot.data!['uid'],
-                                                              userImage: userReviewSnapshot.data!['profileImage'],
-                                                              userName: userReviewSnapshot.data!['username'],
-                                                              userRating: reviewSnapshot.data!['rating'],
-                                                              textReview: reviewSnapshot.data!['text'],
-                                                              reviewId: reviewSnapshot.data!['rid'],
-                                                              dateTime: reviewSnapshot.data!['timestamp'],
-                                                              like: reviewSnapshot.data!['like']);
-                                                        }
-                                                      },
-                                                    );
                                                   }
+                                                  return StreamBuilder<DocumentSnapshot>(
+                                                    stream: _firestore.collection("users").doc(reviewSnapshot.data!['reviewerId']).snapshots(),
+                                                    builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userReviewSnapshot) {
+                                                      if (!userReviewSnapshot.hasData) {
+                                                        return Container();
+                                                      } else if (userReviewSnapshot.connectionState == ConnectionState.waiting) {
+                                                        return const Center(child: CircularProgressIndicator());
+                                                      }
+                                                      return Review(
+                                                          sheetId: sheetData['sid'],
+                                                          userId: userReviewSnapshot.data!['uid'],
+                                                          userImage: userReviewSnapshot.data!['profileImage'],
+                                                          userName: userReviewSnapshot.data!['username'],
+                                                          userRating: reviewSnapshot.data!['rating'],
+                                                          textReview: reviewSnapshot.data!['text'],
+                                                          reviewId: reviewSnapshot.data!['rid'],
+                                                          dateTime: reviewSnapshot.data!['timestamp'],
+                                                          like: reviewSnapshot.data!['like']);
+                                                    },
+                                                  );
                                                 });
                                           },
                                         ),
@@ -579,29 +582,27 @@ class _DetailSheetState extends State<DetailSheet> {
                                                         return Container();
                                                       } else if (reviewSnapshot.connectionState == ConnectionState.waiting) {
                                                         return const Center(child: CircularProgressIndicator());
-                                                      } else {
-                                                        return StreamBuilder<DocumentSnapshot>(
-                                                          stream: _firestore.collection("users").doc(reviewSnapshot.data!['reviewerId']).snapshots(),
-                                                          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userReviewSnapshot) {
-                                                            if (!userReviewSnapshot.hasData) {
-                                                              return Container();
-                                                            } else if (userReviewSnapshot.connectionState == ConnectionState.waiting) {
-                                                              return const Center(child: CircularProgressIndicator());
-                                                            } else {
-                                                              return Review(
-                                                                  sheetId: sheetData['sid'],
-                                                                  userId: userReviewSnapshot.data!['uid'],
-                                                                  userImage: userReviewSnapshot.data!['profileImage'],
-                                                                  userName: userReviewSnapshot.data!['username'],
-                                                                  userRating: reviewSnapshot.data!['rating'],
-                                                                  textReview: reviewSnapshot.data!['text'],
-                                                                  reviewId: reviewSnapshot.data!['rid'],
-                                                                  dateTime: reviewSnapshot.data!['timestamp'],
-                                                                  like: reviewSnapshot.data!['like']);
-                                                            }
-                                                          },
-                                                        );
                                                       }
+                                                      return StreamBuilder<DocumentSnapshot>(
+                                                        stream: _firestore.collection("users").doc(reviewSnapshot.data!['reviewerId']).snapshots(),
+                                                        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userReviewSnapshot) {
+                                                          if (!userReviewSnapshot.hasData) {
+                                                            return Container();
+                                                          } else if (userReviewSnapshot.connectionState == ConnectionState.waiting) {
+                                                            return const Center(child: CircularProgressIndicator());
+                                                          }
+                                                          return Review(
+                                                              sheetId: sheetData['sid'],
+                                                              userId: userReviewSnapshot.data!['uid'],
+                                                              userImage: userReviewSnapshot.data!['profileImage'],
+                                                              userName: userReviewSnapshot.data!['username'],
+                                                              userRating: reviewSnapshot.data!['rating'],
+                                                              textReview: reviewSnapshot.data!['text'],
+                                                              reviewId: reviewSnapshot.data!['rid'],
+                                                              dateTime: reviewSnapshot.data!['timestamp'],
+                                                              like: reviewSnapshot.data!['like']);
+                                                        },
+                                                      );
                                                     });
                                               },
                                             ),
@@ -640,7 +641,6 @@ class _DetailSheetState extends State<DetailSheet> {
     final FirebaseFirestore _firestoreDb = FirebaseFirestore.instance;
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     final SheetLists _sheetLists = SheetLists(sheetListName: '', sid: [], authorId: '', sheetListId: '');
-    final Future<FirebaseApp> firebase = Firebase.initializeApp();
     CreateCollection myCollection = CreateCollection();
 
     showModalBottomSheet(

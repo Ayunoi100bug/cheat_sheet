@@ -247,6 +247,10 @@ class CreateCollection {
     reviewInSheet ??= [];
     result = ((currentSheetData['rating'] * reviewInSheet.length) + currentReviewData['rating']) / (reviewInSheet.length + 1);
     await Future.wait([
+      Future.delayed(const Duration(seconds: 0), () {
+        AutoRouter.of(context).popUntilRouteWithName('DetailSheetRoute');
+        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, 'รีวิวสำเร็จ');
+      }),
       _firestore.collection('sheet').doc(argSheetId).update({
         'review': FieldValue.arrayUnion([reviewId])
       }),
@@ -255,10 +259,7 @@ class CreateCollection {
       await Future.wait([
         UpdateCollection().achievement(context, 'trackingReview'),
         UpdateCollection().quest(context, 'trackingDailyReview'),
-      ]).then((value) {
-        AutoRouter.of(context).popUntilRouteWithName('DetailSheetRoute');
-        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, 'รีวิวสำเร็จ');
-      });
+      ]);
     });
   }
 
@@ -274,6 +275,7 @@ class CreateCollection {
         'askingPage': argAskingPage,
         'like': myQuestion.like,
         'dislike': myQuestion.dislike,
+        'answer': myQuestion.answer,
       }),
       _firestore.collection('sheet').doc(argSheetId).update({
         'question': FieldValue.arrayUnion([argQuestionId])
@@ -292,6 +294,10 @@ class CreateCollection {
 
   Future<void> createAnswerCollection(String argText, String argAnswerId, String argRespondentId, String argQuestionId, BuildContext context) async {
     await Future.wait([
+      Future.delayed(const Duration(milliseconds: 0), () {
+        const String message = 'สร้างการตอบกลับสำเร็จ!';
+        FlushbarPopup.successFlushbar(context, FlushbarIcon.createAnswerIcon, message);
+      }),
       _firestore.collection("answer").doc(argAnswerId).set({
         'timestamp': myAnswer.timestamp,
         'aid': argAnswerId,
@@ -302,11 +308,7 @@ class CreateCollection {
       _firestore.collection('question').doc(argQuestionId).update({
         'answer': FieldValue.arrayUnion([argAnswerId])
       }),
-    ]).then((value) {
-      AutoRouter.of(context).popUntilRoot();
-      const String message = 'สร้างการตอบกลับสำเร็จ!';
-      FlushbarPopup.successFlushbar(context, FlushbarIcon.createAnswerIcon, message);
-    });
+    ]);
   }
 }
 

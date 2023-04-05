@@ -62,14 +62,13 @@ class _DetailQuestionState extends State<DetailQuestion> {
         answerInQuestion ?? [];
         return StreamBuilder<DocumentSnapshot>(
           stream: _firestore.collection("sheet").doc(widget.sheetId).snapshots(),
-          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-            if (!snapshot.hasData) {
+          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> sheetSnapshot) {
+            if (!sheetSnapshot.hasData) {
               return Container();
-            } else if (snapshot.connectionState == ConnectionState.waiting) {
+            } else if (sheetSnapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             }
-            Map<String, dynamic> sheetData = snapshot.data!.data() as Map<String, dynamic>;
-
+            Map<String, dynamic>? sheetData = sheetSnapshot.data!.data() as Map<String, dynamic>;
             return StreamBuilder<DocumentSnapshot>(
               stream: _firestore.collection("users").doc(questionData['questionerId']).snapshots(),
               builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userSnapshot) {
@@ -78,9 +77,7 @@ class _DetailQuestionState extends State<DetailQuestion> {
                 } else if (userSnapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 }
-
                 Map<String, dynamic>? user = userSnapshot.data!.data() as Map<String, dynamic>;
-
                 return Scaffold(
                   resizeToAvoidBottomInset: false,
                   body: SafeArea(
@@ -190,14 +187,14 @@ class _DetailQuestionState extends State<DetailQuestion> {
                                       onPressed: () async {
                                         _formKey.currentState!.save();
                                         try {
-                                          var answerId = Uuid().v4();
-
-                                          await myCollection
-                                              .createAnswerCollection(_answer.text, answerId, _auth.currentUser!.uid, widget.questionId, context)
-                                              .then((value) => _formKey.currentState!.reset());
+                                          String answerId = const Uuid().v4();
+                                          await myCollection.createAnswerCollection(
+                                              _answer.text, answerId, _auth.currentUser!.uid, widget.questionId, context);
                                         } on FirebaseAuthException catch (e) {
                                           FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
                                         }
+                                        // ! this form reset not work and it's bug
+                                        // _formKey.currentState!.reset();
                                       },
                                       backgroundColor: AppColors.tertiary600,
                                       child: Transform.rotate(
