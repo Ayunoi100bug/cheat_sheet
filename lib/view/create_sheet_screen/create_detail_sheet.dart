@@ -236,32 +236,6 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                         margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
                         child: Column(
                           children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Container(
-                                margin: EdgeInsets.only(left: isPortrait ? screenHeight * 0.024 : screenWidth * 0.2, top: screenHeight * 0.01),
-                                width: isPortrait ? screenWidth * 0.2 : screenWidth * 0.1,
-                                height: isPortrait ? screenHeight * 0.05 : screenHeight * 0.1,
-                                child: DottedBorder(
-                                  borderType: BorderType.RRect,
-                                  radius: const Radius.circular(30),
-                                  dashPattern: [10, 10],
-                                  child: const Align(alignment: Alignment.center, child: Icon(FontAwesomeIcons.plus)),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                          margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
-                          padding: EdgeInsets.only(left: screenHeight * 0.024, top: screenHeight * 0.02),
-                          alignment: Alignment.centerLeft,
-                          child: const Medium16px(text: 'ประเภทของชีท')),
-                      Container(
-                        margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
-                        child: Column(
-                          children: [
                             ListTile(
                               title: const Medium16px(text: 'ฟรี'),
                               leading: Radio<SheetType>(

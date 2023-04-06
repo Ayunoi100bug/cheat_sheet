@@ -121,7 +121,7 @@ class _DetailQuestionState extends State<DetailQuestion> {
                                   height: screenHeight * 0.2,
                                 )
                               : SizedBox(
-                                  height: screenHeight * 0.2,
+                                  height: _auth.currentUser != null ? screenHeight * 0.2 : screenHeight * 0.31,
                                   child: ListView.builder(
                                     physics: const AlwaysScrollableScrollPhysics(),
                                     shrinkWrap: true,
@@ -176,7 +176,7 @@ class _DetailQuestionState extends State<DetailQuestion> {
                                           minLine: 5,
                                           maxLine: 5,
                                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                                          validator: RequiredValidator(errorText: 'กรุณากรอกคำถามให้เรียบร้อย'),
+                                          validator: RequiredValidator(errorText: 'กรุณา ให้เรียบร้อย'),
                                           onSaved: (value) {
                                             _answer.text = value!;
                                           },

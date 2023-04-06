@@ -151,15 +151,32 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                                   child: CircularProgressIndicator(),
                                 );
                               }
-                              return Sheet(
-                                rating: sheet?["rating"],
-                                sheetCoverImage: sheet?["sheetCoverImage"],
-                                authorImage: userSnapshot.data?["profileImage"],
-                                title: sheet?["sheetName"],
-                                priceSheet: sheet?["price"],
-                                username: userSnapshot.data?["username"],
-                                sheetId: sheet?["sid"],
-                              );
+                              return FutureBuilder<Map<String, dynamic>>(
+                                  future: ReadCollection().getCurrentUserData(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      Map<String, dynamic> currentUserData = snapshot.data!;
+                                      return Sheet(
+                                        rating: sheet?["rating"],
+                                        sheetCoverImage: sheet?["sheetCoverImage"],
+                                        authorImage: userSnapshot.data?["profileImage"],
+                                        title: sheet?["sheetName"],
+                                        priceSheet: sheet?["price"],
+                                        username: userSnapshot.data?["username"],
+                                        sheetId: sheet?["sid"],
+                                        currentUserData: currentUserData,
+                                      );
+                                    }
+                                    return Sheet(
+                                      rating: sheet?["rating"],
+                                      sheetCoverImage: sheet?["sheetCoverImage"],
+                                      authorImage: userSnapshot.data?["profileImage"],
+                                      title: sheet?["sheetName"],
+                                      priceSheet: sheet?["price"],
+                                      username: userSnapshot.data?["username"],
+                                      sheetId: sheet?["sid"],
+                                    );
+                                  });
                             },
                           );
                         },
