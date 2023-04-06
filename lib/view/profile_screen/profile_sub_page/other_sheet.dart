@@ -216,7 +216,6 @@ class _OtherSheetState extends State<OtherSheet> {
                                                 isActive = 'rating';
                                               });
                                               Navigator.of(context).pop();
-                                              AutoRouter.of(context).popUntilRoot();
                                             },
                                           ),
                                           Container(
