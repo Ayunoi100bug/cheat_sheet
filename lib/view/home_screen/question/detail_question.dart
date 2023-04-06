@@ -176,7 +176,7 @@ class _DetailQuestionState extends State<DetailQuestion> {
                                           minLine: 5,
                                           maxLine: 5,
                                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                                          validator: RequiredValidator(errorText: 'กรุณา ให้เรียบร้อย'),
+                                          validator: RequiredValidator(errorText: 'กรุณากรอกคำถามให้เรียบร้อย'),
                                           onSaved: (value) {
                                             _answer.text = value!;
                                           },
