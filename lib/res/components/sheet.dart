@@ -133,7 +133,7 @@ class Sheet extends StatelessWidget {
                                     ),
                                   } else if (buyedSheets.contains(sheetId)) ...{
                                     const Medium14px(
-                                      text: 'BUYED',
+                                      text: 'BOUGHT',
                                       color: AppColors.warning600,
                                       size: 13,
                                     )
@@ -154,28 +154,21 @@ class Sheet extends StatelessWidget {
                                   }
                                 ],
                               ),
-                              // if (ratingSheet != "0") ...{
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.star,
-                                    color: AppColors.warning400,
-                                    size: constraints.maxHeight * 0.25,
-                                  ),
-                                  if (ratingSheet != "0") ...{
+                              if (ratingSheet != "0") ...{
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.star,
+                                      color: AppColors.warning400,
+                                      size: constraints.maxHeight * 0.25,
+                                    ),
                                     Medium14px(
                                       text: ratingSheet,
                                       size: 13,
                                     ),
-                                  } else ...{
-                                    const Medium14px(
-                                      text: "-",
-                                      size: 16,
-                                    ),
-                                  }
-                                ],
-                              ),
-                              // }
+                                  ],
+                                ),
+                              }
                             ],
                           ),
                         ),
