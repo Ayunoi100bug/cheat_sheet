@@ -45,48 +45,6 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    ElevatedButton(
-                        onPressed: () {
-                          Data a = Data(sheetId: 'a', tagNameList: ['คณิต']);
-                          Data b = Data(sheetId: 'b', tagNameList: ['คณิต', 'ไทย']);
-                          Data c = Data(sheetId: 'c', tagNameList: ['คณิต']);
-                          Data d = Data(sheetId: 'd', tagNameList: []);
-                          KNN.addDataTolist(b);
-                          KNN.addDataTolist(c);
-                          KNN.addDataTolist(d);
-                          KNN.caculateSimilarity(a);
-                          // KNN.displayData();
-                          // KNN.displaySimilarity();
-                        },
-                        child: const Text('เพิ่ม Data')),
-                    ElevatedButton(
-                        onPressed: () {
-                          KNN.resetKNN();
-                        },
-                        child: Text('เคลีย KNN')),
-                    // ElevatedButton(
-                    //   onPressed: () {
-                    //     showDialog(
-                    //       context: context,
-                    //       builder: (BuildContext context) => Popup_DeleteAllSheet(context),
-                    //     );
-                    //   },
-                    //   child: const Text("ปุ่มลบชีททั้งหมด"),
-                    // ),
-                    ElevatedButton(
-                      onPressed: () async {
-                        var temp3 = await ReadCollection().getAllSheetExceptCurrentUserWithoutLiked();
-                        debugPrint("Result: ${temp3.length}");
-                      },
-                      child: const Text("test"),
-                    ),
-                    ElevatedButton(
-                      onPressed: () async {
-                        var temp = await ReadCollection().getAmountOfTagOfUserLikes();
-                        debugPrint("Result: $temp");
-                      },
-                      child: const Text("test read sid"),
-                    ),
                     Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.02),

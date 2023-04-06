@@ -66,13 +66,11 @@ class _AskState extends State<Ask> {
                       child: SizedBox(
                         width: isPortrait ? constraints.maxWidth * 0.12 : constraints.maxWidth * 0.05,
                         child: CircleAvatar(
+                          radius: 20,
                           backgroundImage: CachedNetworkImageProvider(widget.userImage),
-                          radius: 12,
                         ),
                       ),
-                      onTap: () {
-                        print("user image");
-                      },
+                      onTap: () {},
                     ),
                     Column(
                       children: [

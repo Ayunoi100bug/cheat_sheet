@@ -118,10 +118,12 @@ class DailyQuest extends StatelessWidget {
             )
           : Container(),
       success == true
-          ? Container(
+          ? Align(
               alignment: Alignment.center,
               child: Image.asset(
                 'assets/images/complete.png',
+                fit: BoxFit.fitWidth,
+                width: 250,
               ),
             )
           : Container(),
