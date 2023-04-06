@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/components/sheet.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
+import 'package:cheat_sheet/view_model/auth.dart';
 import 'package:cheat_sheet/view_model/knn.dart';
 import 'package:cheat_sheet/view_model/read_firestore.dart';
 import 'package:cheat_sheet/view_model/update_firestore.dart';
@@ -28,7 +29,9 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
     double screenWidth = MediaQuery.of(context).size.width;
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     DateTime thisDay = DateTime.now();
-    UpdateCollection().updateUserDay(context, thisDay, _auth.currentUser?.uid);
+    if (AuthService().isLogged()) {
+      UpdateCollection().updateUserDay(context, thisDay, _auth.currentUser?.uid);
+    }
 
     return StreamBuilder<QuerySnapshot>(
         stream: _firestore.collection("sheet").orderBy('timestamp', descending: true).snapshots(),

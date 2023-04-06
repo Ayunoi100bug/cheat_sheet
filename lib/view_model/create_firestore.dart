@@ -61,8 +61,10 @@ class CreateCollection {
       'trackingReview': myUser.trackingReview,
       'sheetLists': myUser.sheetLists,
       'buyedSheet': myUser.buyedSheet,
+    }).then((value) async {
+      await createBuyedAndLikedSheetList(argUid);
+      await UpdateCollection().updateQuest();
     });
-    await createBuyedAndLikedSheetList(argUid);
   }
 
   Future<void> createGoogleUserCollection(User? currentuser) async {
@@ -94,8 +96,10 @@ class CreateCollection {
         'trackingReview': myUser.trackingReview,
         'sheetLists': myUser.sheetLists,
         'buyedSheet': myUser.buyedSheet,
+      }).then((value) async {
+        await createBuyedAndLikedSheetList(currentuser!.uid);
+        await UpdateCollection().updateQuest();
       });
-      await createBuyedAndLikedSheetList(currentuser!.uid);
     }
   }
 
@@ -130,8 +134,10 @@ class CreateCollection {
         'trackingReview': myUser.trackingReview,
         'sheetLists': myUser.sheetLists,
         'buyedSheet': myUser.buyedSheet,
+      }).then((value) async {
+        await createBuyedAndLikedSheetList(currentuser!.uid);
+        await UpdateCollection().updateQuest();
       });
-      await createBuyedAndLikedSheetList(currentuser!.uid);
     }
   }
 
