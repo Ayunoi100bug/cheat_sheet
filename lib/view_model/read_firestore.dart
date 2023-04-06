@@ -1,5 +1,7 @@
+import 'package:cheat_sheet/view_model/knn.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class ReadCollection {
   final _firestore = FirebaseFirestore.instance;
@@ -22,6 +24,16 @@ class ReadCollection {
   Future<Map<String, dynamic>> getParamsSheetData(String argSid) async {
     var currentArgSheetSnapshot = await _firestore.collection("sheet").doc(argSid).get();
     Map<String, dynamic> currentSheetData = currentArgSheetSnapshot.data() as Map<String, dynamic>;
+
+    return currentSheetData;
+  }
+
+  Future<Map<String, dynamic>> getParamsSheetDataBatch(List<dynamic> argSidList) async {
+    var currentArgSheetSnapshot = await _firestore.collection("sheet").where(FieldPath.documentId, whereIn: argSidList).get();
+    Map<String, dynamic> currentSheetData = {};
+    for (var i = 0; i < currentArgSheetSnapshot.docs.length; i++) {
+      currentSheetData[currentArgSheetSnapshot.docs[i].id] = currentArgSheetSnapshot.docs[i].data();
+    }
 
     return currentSheetData;
   }
@@ -52,6 +64,56 @@ class ReadCollection {
     var remainingSheetIds = remainingSheetDocs.map((doc) => doc.id).toList();
 
     return remainingSheetIds;
+  }
+
+  Future<List<int>> getAmountOfTagOfUserLikes() async {
+    // start stopwatch to monitor execution time
+    Stopwatch stopwatch = Stopwatch()..start();
+    // tag is ordered as follows: คณิตศาสตร์, พระพุทธศาสนา, ภาษาอังกฤษ, ภาษาไทย, วิทยาศาสตร์, สังคมศึกษา
+    List<int> allTagCount = [0, 0, 0, 0, 0, 0];
+    var allUserLikedSheet = await ReadSheetListCollection().getCurrentUserLikedSheetList();
+    if (allUserLikedSheet['sid'].isEmpty) {
+      debugPrint("User has no liked sheet");
+      return allTagCount;
+    }
+    List<dynamic> allSheetTags = [];
+
+    Map<String, dynamic> allSheetData = await getParamsSheetDataBatch(allUserLikedSheet['sid']);
+    // add all tag from each of sid in allUserLikedSheet into allSheetTags list
+    for (var sid in allUserLikedSheet['sid']) {
+      if (!allSheetData[sid].containsKey('sheetTags')) continue;
+      allSheetTags.addAll(allSheetData[sid]['sheetTags']);
+    }
+
+    for (var tagName in allSheetTags) {
+      switch (tagName) {
+        case "คณิตศาสตร์":
+          allTagCount[0]++;
+          break;
+        case "พระพุทธศาสนา":
+          allTagCount[1]++;
+          break;
+        case "ภาษาอังกฤษ":
+          allTagCount[2]++;
+          break;
+        case "ภาษาไทย":
+          allTagCount[3]++;
+          break;
+        case "วิทยาศาสตร์":
+          allTagCount[4]++;
+          break;
+        case "สังคมศึกษา":
+          allTagCount[5]++;
+          break;
+      }
+    }
+    // Stop the stopwatch and print the elapsed time
+    stopwatch.stop();
+    Duration elapsed = stopwatch.elapsed;
+    double milliseconds = elapsed.inMilliseconds.toDouble();
+    debugPrint('Execution time: $milliseconds ms');
+
+    return allTagCount;
   }
 }
 
@@ -99,5 +161,12 @@ class ReadQuestionCollection {
     Map<String, dynamic> currentQuestionData = currentArgQuestionSnapshot.data() as Map<String, dynamic>;
 
     return currentQuestionData;
+  }
+
+  Future<Map<String, dynamic>> getParamsAnswerData(String argAnswerId) async {
+    var currentArgAnswerSnapshot = await _firestore.collection("answer").doc(argAnswerId).get();
+    Map<String, dynamic> currentAnswerData = currentArgAnswerSnapshot.data() as Map<String, dynamic>;
+
+    return currentAnswerData;
   }
 }
