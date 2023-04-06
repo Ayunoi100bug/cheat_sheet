@@ -125,7 +125,7 @@ class _ActivityScreenState extends State<ActivityScreen> with AutomaticKeepAlive
                             crossAxisSpacing: 8,
                             mainAxisExtent: isPortrait ? 70 : 90,
                           ),
-                          itemCount: 3,
+                          itemCount: 5,
                           itemBuilder: (context, index) {
                             return Achievement(
                               achievementName: snapshot.data!.docs[index]['achievementName'] +
@@ -142,96 +142,6 @@ class _ActivityScreenState extends State<ActivityScreen> with AutomaticKeepAlive
                           padding: EdgeInsets.only(right: screenWidth * 0.04, left: screenWidth * 0.04),
                         );
                       }),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: screenWidth * 0.04,
-                      vertical: screenWidth * 0.01,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Medium20px(text: 'ล่าสุด'),
-                        InkWell(
-                          child: const Regular14px(
-                            text: 'ดูทั้งหมด',
-                            underline: true,
-                            color: AppColors.blue700,
-                          ),
-                          onTap: () {
-                            print("show all last page");
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-                  GridView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: isPortrait ? 3 : 5,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 12,
-                      mainAxisExtent: isPortrait ? 180 : 210,
-                    ),
-                    itemCount: 3,
-                    itemBuilder: (context, index) {
-                      return Sheet(
-                        rating: 4.5,
-                        authorImage:
-                            'https://firebasestorage.googleapis.com/v0/b/cheatsheet-770ad.appspot.com/o/users%2F8om0U6KH5RhmdU3pFUAatocw3Mm2%2Fimages%2FprofileImage?alt=media&token=e1222c57-38ef-4d2b-8840-8d70d8745651',
-                        title: 'สถิติพื้นฐานooooooooooo',
-                        priceSheet: 0,
-                        username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
-                        sheetId: (index + 1).toString(),
-                        sheetCoverImage:
-                            'https://firebasestorage.googleapis.com/v0/b/cheatsheet-770ad.appspot.com/o/sheets%2Fcd4d0717-7ec0-4e96-b27c-ac27efb8b809%2Fcover_image.png?alt=media&token=67c954eb-1297-4cf4-846c-e58b86b536cc',
-                      );
-                    },
-                    padding: EdgeInsets.only(bottom: screenHeight * 0.02, left: screenWidth * 0.04, right: screenWidth * 0.04),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.01),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Medium20px(text: 'ดาวน์โหลด'),
-                        InkWell(
-                          child: const Regular14px(
-                            text: 'ดูทั้งหมด',
-                            underline: true,
-                            color: AppColors.blue700,
-                          ),
-                          onTap: () {
-                            print("show all downloads page");
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-                  GridView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: isPortrait ? 3 : 5,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 12,
-                      mainAxisExtent: isPortrait ? 180 : 210,
-                    ),
-                    itemCount: 3,
-                    itemBuilder: (context, index) {
-                      return Sheet(
-                        rating: 4.5,
-                        authorImage: 'https://lh3.googleusercontent.com/a/AEdFTp52DCit4mYX_ZfFy1B7gh6MPgwsznDxzYha9_kTJg=s96-c',
-                        title: 'สถิติพื้นฐานooooooooooo',
-                        priceSheet: 0,
-                        username: 'Macaronnnnnnnnnnnnnnnnnnnnnn',
-                        sheetId: (index + 1).toString(),
-                        sheetCoverImage:
-                            'https://firebasestorage.googleapis.com/v0/b/cheatsheet-770ad.appspot.com/o/sheets%2Fcd4d0717-7ec0-4e96-b27c-ac27efb8b809%2Fcover_image.png?alt=media&token=67c954eb-1297-4cf4-846c-e58b86b536cc',
-                      );
-                    },
-                    padding: EdgeInsets.only(bottom: screenHeight * 0.02, left: screenWidth * 0.04, right: screenWidth * 0.04),
-                  ),
                 ]),
               ),
             ),
