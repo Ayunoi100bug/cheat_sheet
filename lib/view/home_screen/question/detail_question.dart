@@ -121,7 +121,7 @@ class _DetailQuestionState extends State<DetailQuestion> {
                                   height: screenHeight * 0.2,
                                 )
                               : SizedBox(
-                                  height: screenHeight * 0.2,
+                                  height: _auth.currentUser != null ? screenHeight * 0.2 : screenHeight * 0.31,
                                   child: ListView.builder(
                                     physics: const AlwaysScrollableScrollPhysics(),
                                     shrinkWrap: true,

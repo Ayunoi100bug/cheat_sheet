@@ -91,6 +91,7 @@ class _DetailSheetState extends State<DetailSheet> {
             return const Center(child: CircularProgressIndicator());
           }
           Map<String, dynamic> sheetData = snapshot.data!.data() as Map<String, dynamic>;
+          List? demoInSheet = sheetData['demoPages'];
           List? reviewInSheet = sheetData['review'];
           List? tagInSheet = sheetData['sheetTags'];
           reviewInSheet ??= []; //ถ้า reviewInSheet เท่ากับ null จะให้เป็น []
@@ -125,7 +126,8 @@ class _DetailSheetState extends State<DetailSheet> {
                                     height: constraints.maxHeight * 0.9,
                                     child: LayoutBuilder(builder: (context, constraints) {
                                       return InkWell(
-                                          onTap: (() {
+                                        onTap: (() {
+                                          if (demoInSheet.isNotEmpty) {
                                             showDialog(
                                                 context: context,
                                                 builder: (BuildContext context) {
@@ -135,7 +137,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                       children: [
                                                         Container(
                                                           alignment: Alignment.center,
-                                                          height: screenHeight * 0.55,
+                                                          height: sheetData['demoPages'].length > 1 ? screenHeight * 0.55 : screenHeight * 0.6,
                                                           width: screenWidth,
                                                           child: PageView.builder(
                                                             itemCount: sheetData['demoPages'].length,
@@ -150,33 +152,41 @@ class _DetailSheetState extends State<DetailSheet> {
                                                         SizedBox(
                                                           height: screenWidth * 0.04,
                                                         ),
-                                                        const BlinkText('เลื่อนไปทางขวาเพื่อดูเพิ่มเติม',
+                                                        if (sheetData['demoPages'].length > 1) ...[
+                                                          const BlinkText(
+                                                            'เลื่อนไปทางขวาเพื่อดูเพิ่มเติม',
                                                             style: TextStyle(fontSize: 20, color: AppColors.black800),
                                                             beginColor: AppColors.black800,
                                                             endColor: AppColors.white,
                                                             times: 20,
-                                                            duration: Duration(seconds: 1)),
+                                                            duration: Duration(seconds: 1),
+                                                          ),
+                                                        ]
                                                       ],
                                                     ),
                                                   );
                                                 });
-                                          }),
-                                          child: Stack(
-                                            alignment: Alignment.center,
-                                            children: [
-                                              CachedNetworkImage(
-                                                imageUrl: sheetData["sheetCoverImage"],
-                                                color: AppColors.black400,
-                                                colorBlendMode: BlendMode.modulate,
-                                                fit: BoxFit.cover,
-                                                height: constraints.maxHeight,
-                                              ),
+                                          }
+                                        }),
+                                        child: Stack(
+                                          alignment: Alignment.center,
+                                          children: [
+                                            CachedNetworkImage(
+                                              imageUrl: sheetData["sheetCoverImage"],
+                                              color: AppColors.black400,
+                                              colorBlendMode: BlendMode.modulate,
+                                              fit: BoxFit.cover,
+                                              height: constraints.maxHeight,
+                                            ),
+                                            if (demoInSheet!.isNotEmpty) ...{
                                               const Medium16px(
                                                 text: 'ดูตัวอย่างชีทที่นี่',
                                                 color: AppColors.white,
                                               ),
-                                            ],
-                                          ));
+                                            }
+                                          ],
+                                        ),
+                                      );
                                     }),
                                   ),
                                   Container(
@@ -348,20 +358,6 @@ class _DetailSheetState extends State<DetailSheet> {
                                                   }
                                                 },
                                               ),
-                                              Icon(
-                                                UniconsLine.arrow_circle_down,
-                                                color: AppColors.black600,
-                                                size: isPortrait ? 32 : 36,
-                                              ),
-                                              InkWell(
-                                                child: Icon(
-                                                  UniconsLine.share,
-                                                  size: isPortrait ? 32 : 36,
-                                                ),
-                                                onTap: () {
-                                                  _shareSheet(context);
-                                                },
-                                              ),
                                             ],
                                           )
                                         ],
@@ -376,6 +372,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                   text: sheetData['price'] == 0 ? "อ่านชีท" : sheetData['price'].toString(),
                                                   size: 16,
                                                   onPressed: () async {
+                                                    print(sheetData['price']);
                                                     if (sheetData['price'] == 0) {
                                                       Provider.of<FilePasserForRead>(context, listen: false).setFile(file);
                                                       AutoRouter.of(context)
