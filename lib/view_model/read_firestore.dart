@@ -28,6 +28,16 @@ class ReadCollection {
     return currentSheetData;
   }
 
+  Future<Map<String, dynamic>> getParamsSheetDataBatch(List<dynamic> argSidList) async {
+    var currentArgSheetSnapshot = await _firestore.collection("sheet").where(FieldPath.documentId, whereIn: argSidList).get();
+    Map<String, dynamic> currentSheetData = {};
+    for (var i = 0; i < currentArgSheetSnapshot.docs.length; i++) {
+      currentSheetData[currentArgSheetSnapshot.docs[i].id] = currentArgSheetSnapshot.docs[i].data();
+    }
+
+    return currentSheetData;
+  }
+
   Future<int> getBuyerAmountInSheet(String argSid) async {
     var buyerSnapshot = await _firestore.collection("users").where("buyedSheet", arrayContains: argSid).get();
     int buyerAmount = buyerSnapshot.docs.length;
@@ -59,31 +69,44 @@ class ReadCollection {
   Future<List<int>> getAmountOfTagOfUserLikes() async {
     // start stopwatch to monitor execution time
     Stopwatch stopwatch = Stopwatch()..start();
-    var allUserLikedSheet = await ReadSheetListCollection().getCurrentUserLikedSheetList();
     // tag is ordered as follows: คณิตศาสตร์, พระพุทธศาสนา, ภาษาอังกฤษ, ภาษาไทย, วิทยาศาสตร์, สังคมศึกษา
     List<int> allTagCount = [0, 0, 0, 0, 0, 0];
+    var allUserLikedSheet = await ReadSheetListCollection().getCurrentUserLikedSheetList();
+    if (allUserLikedSheet['sid'].isEmpty) {
+      debugPrint("User has no liked sheet");
+      return allTagCount;
+    }
+    List<dynamic> allSheetTags = [];
 
-    // add all tag from each of sid in allUserLikedSheet into allTag list
+    Map<String, dynamic> allSheetData = await getParamsSheetDataBatch(allUserLikedSheet['sid']);
+    // add all tag from each of sid in allUserLikedSheet into allSheetTags list
     for (var sid in allUserLikedSheet['sid']) {
-      var tempSheet = await getParamsSheetData(sid);
-      if (!tempSheet.containsKey('sheetTags')) continue;
-      for (var tagName in tempSheet['sheetTags']) {
-        if (tagName == "คณิตศาสตร์") {
-          allTagCount[0]++;
-        } else if (tagName == "พระพุทธศาสนา") {
-          allTagCount[1]++;
-        } else if (tagName == "ภาษาอังกฤษ") {
-          allTagCount[2]++;
-        } else if (tagName == "ภาษาไทย") {
-          allTagCount[3]++;
-        } else if (tagName == "วิทยาศาสตร์") {
-          allTagCount[4]++;
-        } else if (tagName == "สังคมศึกษา") {
-          allTagCount[5]++;
-        }
-      }
+      if (!allSheetData[sid].containsKey('sheetTags')) continue;
+      allSheetTags.addAll(allSheetData[sid]['sheetTags']);
     }
 
+    for (var tagName in allSheetTags) {
+      switch (tagName) {
+        case "คณิตศาสตร์":
+          allTagCount[0]++;
+          break;
+        case "พระพุทธศาสนา":
+          allTagCount[1]++;
+          break;
+        case "ภาษาอังกฤษ":
+          allTagCount[2]++;
+          break;
+        case "ภาษาไทย":
+          allTagCount[3]++;
+          break;
+        case "วิทยาศาสตร์":
+          allTagCount[4]++;
+          break;
+        case "สังคมศึกษา":
+          allTagCount[5]++;
+          break;
+      }
+    }
     // Stop the stopwatch and print the elapsed time
     stopwatch.stop();
     Duration elapsed = stopwatch.elapsed;
