@@ -91,6 +91,7 @@ class _DetailSheetState extends State<DetailSheet> {
             return const Center(child: CircularProgressIndicator());
           }
           Map<String, dynamic> sheetData = snapshot.data!.data() as Map<String, dynamic>;
+          List? demoInSheet = sheetData['demoPages'];
           List? reviewInSheet = sheetData['review'];
           List? tagInSheet = sheetData['sheetTags'];
           reviewInSheet ??= []; //ถ้า reviewInSheet เท่ากับ null จะให้เป็น []
@@ -125,7 +126,8 @@ class _DetailSheetState extends State<DetailSheet> {
                                     height: constraints.maxHeight * 0.9,
                                     child: LayoutBuilder(builder: (context, constraints) {
                                       return InkWell(
-                                          onTap: (() {
+                                        onTap: (() {
+                                          if (demoInSheet.isNotEmpty) {
                                             showDialog(
                                                 context: context,
                                                 builder: (BuildContext context) {
@@ -164,23 +166,27 @@ class _DetailSheetState extends State<DetailSheet> {
                                                     ),
                                                   );
                                                 });
-                                          }),
-                                          child: Stack(
-                                            alignment: Alignment.center,
-                                            children: [
-                                              CachedNetworkImage(
-                                                imageUrl: sheetData["sheetCoverImage"],
-                                                color: AppColors.black400,
-                                                colorBlendMode: BlendMode.modulate,
-                                                fit: BoxFit.cover,
-                                                height: constraints.maxHeight,
-                                              ),
+                                          }
+                                        }),
+                                        child: Stack(
+                                          alignment: Alignment.center,
+                                          children: [
+                                            CachedNetworkImage(
+                                              imageUrl: sheetData["sheetCoverImage"],
+                                              color: AppColors.black400,
+                                              colorBlendMode: BlendMode.modulate,
+                                              fit: BoxFit.cover,
+                                              height: constraints.maxHeight,
+                                            ),
+                                            if (demoInSheet!.isNotEmpty) ...{
                                               const Medium16px(
                                                 text: 'ดูตัวอย่างชีทที่นี่',
                                                 color: AppColors.white,
                                               ),
-                                            ],
-                                          ));
+                                            }
+                                          ],
+                                        ),
+                                      );
                                     }),
                                   ),
                                   Container(
