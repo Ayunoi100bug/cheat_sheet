@@ -16,8 +16,10 @@ import 'package:cheat_sheet/view/home_screen/question/detail_question.dart';
 import 'package:cheat_sheet/view/home_screen/detail_sheet.dart';
 import 'package:cheat_sheet/view/home_screen/question/edit_demo.dart';
 import 'package:cheat_sheet/view/home_screen/read_sheet.dart';
+import 'package:cheat_sheet/view/home_screen/recommend_sheet.dart';
 import 'package:cheat_sheet/view/home_screen/review_sheet.dart';
 import 'package:cheat_sheet/view/home_screen/searching_sheet.dart';
+import 'package:cheat_sheet/view/home_screen/top_sheet.dart';
 import 'package:cheat_sheet/view/login.dart';
 import 'package:cheat_sheet/view/main_screen.dart';
 import 'package:cheat_sheet/view/home_screen/home_screen.dart';
@@ -43,6 +45,8 @@ import 'package:cheat_sheet/view/test_ui_book.dart';
         AutoRoute(path: '', name: 'HomeScreenRoute', page: HomeScreen),
         AutoRoute(path: 'test_ui', name: 'TestUIRoute', page: TestUIPage),
         AutoRoute(path: 'searching', name: 'SearchingSheetRoute', page: SearchingSheet),
+        AutoRoute(path: 'recommend_sheet', name: 'RecommendSheetRoute', page: RecommendSheet),
+        AutoRoute(path: 'top_sheet', name: 'TopSheetRoute', page: TopSheet),
         AutoRoute(path: 'other_profile/:userId', name: 'OtherProfileRoute', page: OtherProfile),
         AutoRoute(path: ':sheetId', name: 'DetailSheetRoute', page: DetailSheet),
         AutoRoute(path: ':sheetId/read_sheet', name: 'ReadSheetRoute', page: ReadSheet),
