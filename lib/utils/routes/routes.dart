@@ -16,8 +16,10 @@ import 'package:cheat_sheet/view/home_screen/question/detail_question.dart';
 import 'package:cheat_sheet/view/home_screen/detail_sheet.dart';
 import 'package:cheat_sheet/view/home_screen/question/edit_demo.dart';
 import 'package:cheat_sheet/view/home_screen/read_sheet.dart';
+import 'package:cheat_sheet/view/home_screen/recommend_sheet.dart';
 import 'package:cheat_sheet/view/home_screen/review_sheet.dart';
 import 'package:cheat_sheet/view/home_screen/searching_sheet.dart';
+import 'package:cheat_sheet/view/home_screen/top_sheet.dart';
 import 'package:cheat_sheet/view/login.dart';
 import 'package:cheat_sheet/view/main_screen.dart';
 import 'package:cheat_sheet/view/home_screen/home_screen.dart';
@@ -31,7 +33,6 @@ import 'package:cheat_sheet/view/sheet_list_screen/sheet_list_screen.dart';
 import 'package:cheat_sheet/view/side_bar_menu/my_account/change_email.dart';
 import 'package:cheat_sheet/view/side_bar_menu/my_account/change_password.dart';
 import 'package:cheat_sheet/view/side_bar_menu/my_account/my_account.dart';
-import 'package:cheat_sheet/view/side_bar_menu/notification_setting.dart';
 import 'package:cheat_sheet/view/side_bar_menu/top_up.dart';
 import 'package:cheat_sheet/view/test_ui_book.dart';
 
@@ -44,6 +45,8 @@ import 'package:cheat_sheet/view/test_ui_book.dart';
         AutoRoute(path: '', name: 'HomeScreenRoute', page: HomeScreen),
         AutoRoute(path: 'test_ui', name: 'TestUIRoute', page: TestUIPage),
         AutoRoute(path: 'searching', name: 'SearchingSheetRoute', page: SearchingSheet),
+        AutoRoute(path: 'recommend_sheet', name: 'RecommendSheetRoute', page: RecommendSheet),
+        AutoRoute(path: 'top_sheet', name: 'TopSheetRoute', page: TopSheet),
         AutoRoute(path: 'other_profile/:userId', name: 'OtherProfileRoute', page: OtherProfile),
         AutoRoute(path: ':sheetId', name: 'DetailSheetRoute', page: DetailSheet),
         AutoRoute(path: ':sheetId/read_sheet', name: 'ReadSheetRoute', page: ReadSheet),
@@ -86,7 +89,6 @@ import 'package:cheat_sheet/view/test_ui_book.dart';
     name: 'RegisterRoute',
     page: RegisterScreen,
   ),
-  AutoRoute(path: '/notification_setting', name: 'NotificationSettingRoute', page: NotificationSetting),
   AutoRoute(path: '/my_account', name: 'MyAccountRoute', page: EmptyRouterPage, children: [
     AutoRoute(path: '', page: MyAccount),
     AutoRoute(path: 'change_email', name: 'ChangeEmailRoute', page: ChangeEmail),

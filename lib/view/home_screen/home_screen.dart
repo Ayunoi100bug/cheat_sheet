@@ -48,6 +48,16 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
               child: SingleChildScrollView(
                 child: Column(
                   children: [
+                    ElevatedButton(
+                        onPressed: () {
+                          AutoRouter.of(context).push(RecommendSheetRoute());
+                        },
+                        child: Text('หน้า recommend')),
+                    ElevatedButton(
+                        onPressed: () {
+                          AutoRouter.of(context).push(TopSheetRoute());
+                        },
+                        child: Text('หน้า top sheet')),
                     Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.02),
