@@ -40,28 +40,25 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
           child: SingleChildScrollView(
             child: Column(
               children: [
-  ElevatedButton(
-                        onPressed: () {
-                          AutoRouter.of(context).push(RecommendSheetRoute());
-                        },
-                        child: Text('หน้า recommend')),
-                    ElevatedButton(
-                        onPressed: () {
-                          AutoRouter.of(context).push(TopSheetRoute());
-                        },
-                        child: Text('หน้า top sheet')),
-           				Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.02),
-                      child: GestureDetector(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
-                          width: screenWidth,
-                          height: isPortrait ? screenWidth * 0.13 : screenWidth * 0.06,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: AppColors.primary800),
-                            borderRadius: BorderRadius.circular(50),
-                            color: AppColors.black200,
+                Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.02),
+                  child: GestureDetector(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+                      width: screenWidth,
+                      height: isPortrait ? screenWidth * 0.13 : screenWidth * 0.06,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.primary800),
+                        borderRadius: BorderRadius.circular(50),
+                        color: AppColors.black200,
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.search,
+                            color: AppColors.primary800,
+                            size: 18,
                           ),
                           SizedBox(width: screenWidth * 0.02),
                           const Regular16px(
@@ -77,9 +74,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                     },
                   ),
                 ),
-                SizedBox(
-                  height: screenWidth * 0.02,
-                ),
+                Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
                 Container(
                   padding: const EdgeInsets.symmetric(
                     vertical: 4,
@@ -104,7 +99,9 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                           color: AppColors.tertiary700,
                           underline: true,
                         ),
-                        onTap: () {},
+                        onTap: () {
+                          AutoRouter.of(context).push(TopSheetRoute());
+                        },
                       ),
                     ],
                   ),
@@ -257,11 +254,11 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      ElevatedButton(
-                          onPressed: () {
-                            AutoRouter.of(context).push(const FirstLoginRoute());
-                          },
-                          child: const Text('ทดสอบหน้าใหม่')),
+                      // ElevatedButton(
+                      //     onPressed: () {
+                      //       AutoRouter.of(context).push(const FirstLoginRoute());
+                      //     },
+                      //     child: const Text('ทดสอบหน้าใหม่')),
                       // ElevatedButton(
                       //   onPressed: () {
                       //     showDialog(
@@ -321,7 +318,9 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                                 color: AppColors.tertiary700,
                                 underline: true,
                               ),
-                              onTap: () {},
+                              onTap: () {
+                                AutoRouter.of(context).push(RecommendSheetRoute());
+                              },
                             ),
                           ],
                         ),
@@ -393,7 +392,9 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                                 color: AppColors.tertiary700,
                                 underline: true,
                               ),
-                              onTap: () {},
+                              onTap: () {
+                                AutoRouter.of(context).push(TopSheetRoute());
+                              },
                             ),
                           ],
                         ),
