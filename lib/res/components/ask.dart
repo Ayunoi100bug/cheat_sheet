@@ -2,9 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cheat_sheet/model/question.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/components/flushbar_icon.dart';
+import 'package:cheat_sheet/res/components/popup_auth.dart';
 import 'package:cheat_sheet/res/components/popup_dialog.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/view/home_screen/question/ask_question.dart';
+import 'package:cheat_sheet/view_model/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -22,7 +24,7 @@ class Ask extends StatefulWidget {
   final String username;
   final String questionText;
   final String sheetId;
-  final String like;
+  final List like;
 
   const Ask({
     super.key,
@@ -99,11 +101,36 @@ class _AskState extends State<Ask> {
                                   Padding(
                                     padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
                                     child: GestureDetector(
-                                      child: Icon(Icons.thumb_up_off_alt_outlined, size: 18),
-                                      onTap: () {},
+                                      child: Icon(
+                                          widget.like.contains(_auth.currentUser?.uid)
+                                              ? Icons.thumb_up_off_alt_rounded
+                                              : Icons.thumb_up_off_alt_outlined,
+                                          color: widget.like.contains(_auth.currentUser?.uid) ? AppColors.black600 : AppColors.black600,
+                                          size: 18),
+                                      onTap: () async {
+                                        if (widget.like.contains(_auth.currentUser?.uid)) {
+                                          if (AuthService().isLogged()) {
+                                            await EditQuestionData().removeQuestionLike(widget.questionId, _auth.currentUser!.uid);
+                                          } else {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) => Popup_Login(context),
+                                            );
+                                          }
+                                        } else {
+                                          if (AuthService().isLogged()) {
+                                            await EditQuestionData().increaseQuestionLike(widget.questionId, _auth.currentUser!.uid);
+                                          } else {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) => Popup_Login(context),
+                                            );
+                                          }
+                                        }
+                                      },
                                     ),
                                   ),
-                                  Regular14px(text: widget.like),
+                                  Regular14px(text: widget.like.length.toString()),
                                   SizedBox(
                                     width: screenWidth * 0.02,
                                   ),
