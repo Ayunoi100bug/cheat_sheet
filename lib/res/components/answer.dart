@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/components/flushbar.dart';
 import 'package:cheat_sheet/res/components/flushbar_icon.dart';
+import 'package:cheat_sheet/res/components/popup_auth.dart';
 import 'package:cheat_sheet/res/components/popup_dialog.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +11,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
 import '../../model/answer.dart';
+import '../../view_model/auth.dart';
 import '../../view_model/update_firestore.dart';
 import '../button.dart';
 import '../gap_dimension.dart';
@@ -21,7 +23,7 @@ class Answer extends StatefulWidget {
   final String userName;
   final String answerId;
   final String answerText;
-  final int like;
+  final List like;
   final String questionId;
   const Answer({
     super.key,
@@ -100,15 +102,36 @@ class _AnswerState extends State<Answer> {
                                     padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
                                     child: InkWell(
                                       child: Icon(
-                                        Icons.thumb_up_off_alt_outlined,
+                                        widget.like.contains(_auth.currentUser?.uid)
+                                            ? Icons.thumb_up_off_alt_rounded
+                                            : Icons.thumb_up_off_alt_outlined,
+                                        color: widget.like.contains(_auth.currentUser?.uid) ? AppColors.black600 : AppColors.black600,
                                         size: 18,
                                       ),
-                                      onTap: () {
-                                        print("like");
+                                      onTap: () async {
+                                        if (widget.like.contains(_auth.currentUser?.uid)) {
+                                          if (AuthService().isLogged()) {
+                                            await EditAnswerData().removeAnswerLike(widget.answerId, _auth.currentUser!.uid);
+                                          } else {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) => Popup_Login(context),
+                                            );
+                                          }
+                                        } else {
+                                          if (AuthService().isLogged()) {
+                                            await EditAnswerData().increaseAnswerLike(widget.answerId, _auth.currentUser!.uid);
+                                          } else {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) => Popup_Login(context),
+                                            );
+                                          }
+                                        }
                                       },
                                     ),
                                   ),
-                                  Regular14px(text: widget.like.toString()),
+                                  Regular14px(text: widget.like.length.toString()),
                                   SizedBox(
                                     width: screenWidth * 0.02,
                                   ),
