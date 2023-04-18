@@ -6,12 +6,14 @@ class AnswerModel {
   String ansid = uuid.v4();
   String text;
   String respondentId;
-  int? like = 0;
+  List? like = [];
+  int? numOfLike;
 
   AnswerModel({
     required this.text,
     required this.respondentId,
     this.like,
+    this.numOfLike,
   });
 
   AnswerModel.fromJson(Map<String, dynamic> json)
@@ -19,7 +21,8 @@ class AnswerModel {
         ansid = json['ansid'],
         text = json['text'],
         respondentId = json['respondentId'],
-        like = json['like'];
+        like = json['like'],
+        numOfLike = json['numOfLike'];
 
   Map<String, dynamic> toJson() => {
         'timestamp': timestamp,
@@ -27,5 +30,7 @@ class AnswerModel {
         'text': text,
         'respondentId': respondentId,
         'like': like,
+        'like': like,
+        'numOfLike': numOfLike,
       };
 }
