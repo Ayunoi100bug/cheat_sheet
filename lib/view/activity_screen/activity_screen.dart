@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/components/achievement.dart';
@@ -19,6 +21,34 @@ class ActivityScreen extends StatefulWidget {
 }
 
 class _ActivityScreenState extends State<ActivityScreen> with AutomaticKeepAliveClientMixin {
+  Timer? timer;
+  double? indicatorValues;
+
+  String time() {
+    return "${23 - DateTime.now().hour < 10 ? "0${23 - DateTime.now().hour}" : 23 - DateTime.now().hour} : ${59 - DateTime.now().minute < 10 ? "0${59 - DateTime.now().minute}" : 59 - DateTime.now().minute} : ${59 - DateTime.now().second < 10 ? "0${59 - DateTime.now().second}" : 59 - DateTime.now().second}";
+  }
+
+  updateTime() {
+    timer = Timer.periodic(
+        Duration(seconds: 1),
+        (Timer timer) => setState(() {
+              indicatorValues = DateTime.now().second / 60;
+            }));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    indicatorValues = DateTime.now().second / 60;
+    updateTime();
+  }
+
+  @override
+  void dispose() {
+    timer!.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -30,13 +60,11 @@ class _ActivityScreenState extends State<ActivityScreen> with AutomaticKeepAlive
     if (_auth.currentUser == null) {
       return Popup_Login(context);
     }
-    return StreamBuilder<DocumentSnapshot>(
-        stream: _firestore.collection("users").doc(_auth.currentUser?.uid).snapshots(),
+    return FutureBuilder<DocumentSnapshot>(
+        future: _firestore.collection("users").doc(_auth.currentUser?.uid).get(),
         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userSnapshot) {
           if (!userSnapshot.hasData) {
             return Container();
-          } else if (userSnapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
           }
           return Scaffold(
             resizeToAvoidBottomInset: false,
@@ -56,7 +84,7 @@ class _ActivityScreenState extends State<ActivityScreen> with AutomaticKeepAlive
                         SizedBox(
                           width: screenWidth * 0.02,
                         ),
-                        const Regular14px(text: 'เหลือ 20 ชม.'),
+                        Regular14px(text: 'เหลือเวลาอีก ' + time() + ' ชม.'),
                       ],
                     ),
                   ),
@@ -71,13 +99,11 @@ class _ActivityScreenState extends State<ActivityScreen> with AutomaticKeepAlive
                     ),
                     itemCount: 3,
                     itemBuilder: (context, index) {
-                      return StreamBuilder<DocumentSnapshot>(
-                          stream: _firestore.collection('dailyQuest').doc(userSnapshot.data!['quest${index + 1}'][1]).snapshots(),
+                      return FutureBuilder<DocumentSnapshot>(
+                          future: _firestore.collection('dailyQuest').doc(userSnapshot.data!['quest${index + 1}'][1]).get(),
                           builder: (BuildContext context, AsyncSnapshot dailyQuestSnapshot) {
                             if (!dailyQuestSnapshot.hasData) {
                               return Container();
-                            } else if (dailyQuestSnapshot.connectionState == ConnectionState.waiting) {
-                              return const Center(child: CircularProgressIndicator());
                             }
                             return DailyQuest(
                               questName: dailyQuestSnapshot.data!['questName'],
@@ -109,13 +135,11 @@ class _ActivityScreenState extends State<ActivityScreen> with AutomaticKeepAlive
                       ],
                     ),
                   ),
-                  StreamBuilder<QuerySnapshot>(
-                      stream: _firestore.collection("achievement").snapshots(),
+                  FutureBuilder<QuerySnapshot>(
+                      future: _firestore.collection("achievement").get(),
                       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (!snapshot.hasData) {
                           return Container();
-                        } else if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
                         }
                         return GridView.builder(
                           physics: const NeverScrollableScrollPhysics(),
