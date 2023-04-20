@@ -420,17 +420,17 @@ class EditAnswerData {
     });
   }
 
-  Future<void> increaseAnswerLike(String currentQid, String currentUser) async {
-    var currentAnswerData = await ReadQuestionCollection().getParamsAnswerData(currentQid);
-    await _firestore.collection('answer').doc(currentQid).update({
+  Future<void> increaseAnswerLike(String currentAid, String currentUser) async {
+    var currentAnswerData = await ReadQuestionCollection().getParamsAnswerData(currentAid);
+    await _firestore.collection('answer').doc(currentAid).update({
       'like': FieldValue.arrayUnion([currentUser]),
       'numOfLike': currentAnswerData['numOfLike'] + 1,
     });
   }
 
-  Future<void> removeAnswerLike(String currentQid, String currentUser) async {
-    var currentAnswerData = await ReadQuestionCollection().getParamsAnswerData(currentQid);
-    await _firestore.collection('answer').doc(currentQid).update({
+  Future<void> removeAnswerLike(String currentAid, String currentUser) async {
+    var currentAnswerData = await ReadQuestionCollection().getParamsAnswerData(currentAid);
+    await _firestore.collection('answer').doc(currentAid).update({
       'like': FieldValue.arrayRemove([currentUser]),
       'numOfLike': currentAnswerData['numOfLike'] - 1,
     });

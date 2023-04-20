@@ -108,23 +108,16 @@ class _AskState extends State<Ask> {
                                           color: widget.like.contains(_auth.currentUser?.uid) ? AppColors.black600 : AppColors.black600,
                                           size: 18),
                                       onTap: () async {
-                                        if (widget.like.contains(_auth.currentUser?.uid)) {
-                                          if (AuthService().isLogged()) {
+                                        if (!AuthService().isLogged()) {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) => Popup_Login(context),
+                                          );
+                                        } else {
+                                          if (widget.like.contains(_auth.currentUser?.uid)) {
                                             await EditQuestionData().removeQuestionLike(widget.questionId, _auth.currentUser!.uid);
                                           } else {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) => Popup_Login(context),
-                                            );
-                                          }
-                                        } else {
-                                          if (AuthService().isLogged()) {
                                             await EditQuestionData().increaseQuestionLike(widget.questionId, _auth.currentUser!.uid);
-                                          } else {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) => Popup_Login(context),
-                                            );
                                           }
                                         }
                                       },
