@@ -89,6 +89,7 @@ class _AskQuestionState extends State<AskQuestion> {
                           .collection('question')
                           .where('sheetId', isEqualTo: widget.sheetId)
                           .where('askingPage', isEqualTo: widget.askingPage)
+                          .orderBy('numOfLike', descending: true)
                           .snapshots(),
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
@@ -105,21 +106,23 @@ class _AskQuestionState extends State<AskQuestion> {
                             ),
                           );
                         }
+
                         return ListView.builder(
                           controller: _scrollController,
                           shrinkWrap: true,
                           itemCount: questionCount,
                           itemBuilder: (context, index) {
                             DocumentSnapshot question = snapshot.data!.docs[index];
-                            return FutureBuilder(
-                                future: _firestore.collection('users').doc(question['questionerId']).get(),
+
+                            return StreamBuilder<DocumentSnapshot>(
+                                stream: _firestore.collection('users').doc(question['questionerId']).snapshots(),
                                 builder: (context, userSnapshot) {
                                   if (!userSnapshot.hasData) {
                                     return Container();
                                   } else if (userSnapshot.connectionState == ConnectionState.waiting) {
                                     return const Center(child: CircularProgressIndicator());
                                   }
-                                  Map<String, dynamic>? user = userSnapshot.data?.data();
+                                  Map<String, dynamic>? user = userSnapshot.data?.data() as Map<String, dynamic>?;
                                   return InkWell(
                                     onTap: () async {
                                       File questionImage = await ImageApi.loadQuestionImage(question.id);
@@ -136,7 +139,7 @@ class _AskQuestionState extends State<AskQuestion> {
                                       username: user?['username'],
                                       sheetId: widget.sheetId,
                                       questionText: question['text'],
-                                      like: question['like'].toString(),
+                                      like: question['like'],
                                     ),
                                   );
                                 });
