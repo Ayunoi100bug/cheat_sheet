@@ -121,7 +121,7 @@ class _CreateQuestionState extends State<CreateQuestion> {
                             minLine: 5,
                             maxLine: 5,
                             autovalidateMode: AutovalidateMode.onUserInteraction,
-                            validator: RequiredValidator(errorText: 'กรุณากรอกคำถามให้เรียบร้อย'),
+                            validator: RequiredValidator(errorText: 'กรุณากรอกคำถามให้ครบถ้วน'),
                             onSaved: (value) {
                               _question.text = value!;
                             },
@@ -131,18 +131,20 @@ class _CreateQuestionState extends State<CreateQuestion> {
                     ),
                     FloatingActionButton(
                       onPressed: () async {
-                        PictureDetails image = _controller.finish();
-                        _formKey.currentState!.save();
-                        try {
-                          firebaseStorage.UploadTask? task = await ImageApi.uploadToFirebase(image, questionId);
-                          task!.whenComplete(() {
-                            myCollection
-                                .createQuestionCollection(
-                                    _question.text, questionId, widget.sheetId, _auth.currentUser!.uid, context, widget.askingPage)
-                                .then((value) => _formKey.currentState!.reset());
-                          });
-                        } on FirebaseAuthException catch (e) {
-                          FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
+                        if (_formKey.currentState!.validate()) {
+                          PictureDetails image = _controller.finish();
+                          _formKey.currentState!.save();
+                          try {
+                            firebaseStorage.UploadTask? task = await ImageApi().uploadToFirebase(image, questionId);
+                            task!.whenComplete(() {
+                              myCollection
+                                  .createQuestionCollection(
+                                      _question.text, questionId, widget.sheetId, _auth.currentUser!.uid, context, widget.askingPage)
+                                  .then((value) => _formKey.currentState!.reset());
+                            });
+                          } on FirebaseAuthException catch (e) {
+                            FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
+                          }
                         }
                       },
                       backgroundColor: AppColors.tertiary600,

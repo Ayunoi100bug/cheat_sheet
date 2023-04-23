@@ -26,43 +26,45 @@ class BuySheet extends StatelessWidget {
           final mySheets = snapshot.data!.docs.where((document) => document["authorId"] == _auth.currentUser?.uid);
           return Padding(
             padding: EdgeInsets.all(screenWidth * GapDimension.w0_032),
-            child: GridView.builder(
-              padding: EdgeInsets.zero,
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: isPortrait ? 3 : 5,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 12,
-                mainAxisExtent: isPortrait ? 200 : 250,
-              ),
-              itemCount: mySheets.length,
-              itemBuilder: (context, index) {
-                var sheet = mySheets.elementAt(index);
-                if (sheet["authorId"] != _auth.currentUser?.uid) {
-                  return Container();
-                }
-                return StreamBuilder<DocumentSnapshot>(
-                    stream: _firestore.collection("users").doc(sheet["authorId"]).snapshots(),
-                    builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userSnapshot) {
-                      if (!userSnapshot.hasData) {
-                        return Container();
-                      } else if (userSnapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
+            child: SingleChildScrollView(
+              child: GridView.builder(
+                padding: EdgeInsets.zero,
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: isPortrait ? 3 : 5,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 12,
+                  mainAxisExtent: isPortrait ? 200 : 250,
+                ),
+                itemCount: mySheets.length,
+                itemBuilder: (context, index) {
+                  var sheet = mySheets.elementAt(index);
+                  if (sheet["authorId"] != _auth.currentUser?.uid) {
+                    return Container();
+                  }
+                  return StreamBuilder<DocumentSnapshot>(
+                      stream: _firestore.collection("users").doc(sheet["authorId"]).snapshots(),
+                      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userSnapshot) {
+                        if (!userSnapshot.hasData) {
+                          return Container();
+                        } else if (userSnapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        return Sheet(
+                          rating: sheet["rating"],
+                          sheetCoverImage: sheet["sheetCoverImage"],
+                          authorImage: userSnapshot.data?["profileImage"],
+                          title: sheet["sheetName"],
+                          priceSheet: sheet["price"],
+                          username: userSnapshot.data?["username"],
+                          sheetId: sheet["sid"],
                         );
-                      }
-                      return Sheet(
-                        rating: sheet["rating"],
-                        sheetCoverImage: sheet["sheetCoverImage"],
-                        authorImage: userSnapshot.data?["profileImage"],
-                        title: sheet["sheetName"],
-                        priceSheet: sheet["price"],
-                        username: userSnapshot.data?["username"],
-                        sheetId: sheet["sid"],
-                      );
-                    });
-              },
+                      });
+                },
+              ),
             ),
           );
         });

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/view_model/file_passer_for_read.dart';
+import 'package:cheat_sheet/view_model/update_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
@@ -37,11 +38,15 @@ class _ReadSheetState extends State<ReadSheet> {
 
     File? file = Provider.of<FilePasserForRead>(context).getFile();
 
+    Future.delayed(const Duration(minutes: 1), () {
+      UpdateCollection().achievement(context, 'trackingReadSheet');
+    });
+
     return Scaffold(
       key: _scaffoldKey,
       floatingActionButton: FloatingActionButton(
-        splashColor: AppColors.warning100,
-        backgroundColor: AppColors.warning200.withOpacity(0.7),
+        splashColor: AppColors.tertiary600,
+        backgroundColor: AppColors.tertiary700.withOpacity(0.7),
         elevation: 0,
         onPressed: () async {
           AutoRouter.of(context).push(AskQuestionRoute(
@@ -51,7 +56,7 @@ class _ReadSheetState extends State<ReadSheet> {
         },
         child: const Icon(
           Icons.question_mark_outlined,
-          color: AppColors.error500,
+          color: AppColors.white,
           size: 30,
         ),
       ),

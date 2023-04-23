@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:blinking_text/blinking_text.dart';
@@ -92,8 +91,11 @@ class _DetailSheetState extends State<DetailSheet> {
             return const Center(child: CircularProgressIndicator());
           }
           Map<String, dynamic> sheetData = snapshot.data!.data() as Map<String, dynamic>;
+          List? demoInSheet = sheetData['demoPages'];
           List? reviewInSheet = sheetData['review'];
+          List? tagInSheet = sheetData['sheetTags'];
           reviewInSheet ??= []; //ถ้า reviewInSheet เท่ากับ null จะให้เป็น []
+          tagInSheet ??= [];
           if (sheetData['rating'].toString().contains('.') && !sheetData['rating'].toString().endsWith('.0')) {
             ratingSheet = sheetData['rating'].toStringAsFixed(1);
           } else {
@@ -124,7 +126,8 @@ class _DetailSheetState extends State<DetailSheet> {
                                     height: constraints.maxHeight * 0.9,
                                     child: LayoutBuilder(builder: (context, constraints) {
                                       return InkWell(
-                                          onTap: (() {
+                                        onTap: (() {
+                                          if (demoInSheet.isNotEmpty) {
                                             showDialog(
                                                 context: context,
                                                 builder: (BuildContext context) {
@@ -134,7 +137,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                       children: [
                                                         Container(
                                                           alignment: Alignment.center,
-                                                          height: screenHeight * 0.55,
+                                                          height: sheetData['demoPages'].length > 1 ? screenHeight * 0.55 : screenHeight * 0.6,
                                                           width: screenWidth,
                                                           child: PageView.builder(
                                                             itemCount: sheetData['demoPages'].length,
@@ -149,33 +152,41 @@ class _DetailSheetState extends State<DetailSheet> {
                                                         SizedBox(
                                                           height: screenWidth * 0.04,
                                                         ),
-                                                        const BlinkText('เลื่อนไปทางขวาเพื่อดูเพิ่มเติม',
+                                                        if (sheetData['demoPages'].length > 1) ...[
+                                                          const BlinkText(
+                                                            'เลื่อนไปทางขวาเพื่อดูเพิ่มเติม',
                                                             style: TextStyle(fontSize: 20, color: AppColors.black800),
                                                             beginColor: AppColors.black800,
                                                             endColor: AppColors.white,
                                                             times: 20,
-                                                            duration: Duration(seconds: 1)),
+                                                            duration: Duration(seconds: 1),
+                                                          ),
+                                                        ]
                                                       ],
                                                     ),
                                                   );
                                                 });
-                                          }),
-                                          child: Stack(
-                                            alignment: Alignment.center,
-                                            children: [
-                                              CachedNetworkImage(
-                                                imageUrl: sheetData["sheetCoverImage"],
-                                                color: AppColors.black400,
-                                                colorBlendMode: BlendMode.modulate,
-                                                fit: BoxFit.cover,
-                                                height: constraints.maxHeight,
-                                              ),
+                                          }
+                                        }),
+                                        child: Stack(
+                                          alignment: Alignment.center,
+                                          children: [
+                                            CachedNetworkImage(
+                                              imageUrl: sheetData["sheetCoverImage"],
+                                              color: AppColors.black400,
+                                              colorBlendMode: BlendMode.modulate,
+                                              fit: BoxFit.cover,
+                                              height: constraints.maxHeight,
+                                            ),
+                                            if (demoInSheet!.isNotEmpty) ...{
                                               const Medium16px(
                                                 text: 'ดูตัวอย่างชีทที่นี่',
                                                 color: AppColors.white,
                                               ),
-                                            ],
-                                          ));
+                                            }
+                                          ],
+                                        ),
+                                      );
                                     }),
                                   ),
                                   Container(
@@ -193,23 +204,21 @@ class _DetailSheetState extends State<DetailSheet> {
                                           activateOverflow: true,
                                           maxLine: 2,
                                         ),
-                                        SingleChildScrollView(
-                                          padding: EdgeInsets.zero,
-                                          scrollDirection: Axis.horizontal,
-                                          child: Row(
-                                            children: const [
-                                              Tag(
-                                                subject: "คณิตศาสาตร์",
+                                        if (tagInSheet!.isNotEmpty) ...[
+                                          SizedBox(
+                                            height: isPortrait ? screenHeight * 0.035 : screenHeight * 0.015,
+                                            child: ListView.builder(
+                                              physics: const ClampingScrollPhysics(),
+                                              shrinkWrap: true,
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: tagInSheet.length,
+                                              itemBuilder: (BuildContext context, int index) => Tag(
+                                                subject: sheetData['sheetTags'][index],
+                                                onPressed: () {},
                                               ),
-                                              Tag(
-                                                subject: "คณิตพื้นฐาน",
-                                              ),
-                                              Tag(
-                                                subject: "สถิติ",
-                                              ),
-                                            ],
+                                            ),
                                           ),
-                                        ),
+                                        ],
                                         Row(
                                           children: [
                                             RatingBarIndicator(
@@ -227,19 +236,44 @@ class _DetailSheetState extends State<DetailSheet> {
                                             Regular12px(text: ratingSheet),
                                           ],
                                         ),
-                                        Row(
-                                          children: [
-                                            CircleAvatar(
-                                              backgroundImage: CachedNetworkImageProvider(authorData['profileImage']),
-                                              radius: 12,
+                                        if (_auth.currentUser?.uid != authorData['uid']) ...[
+                                          InkWell(
+                                            child: Row(
+                                              children: [
+                                                CircleAvatar(
+                                                  backgroundImage: CachedNetworkImageProvider(authorData['profileImage']),
+                                                  radius: 18,
+                                                ),
+                                                SizedBox(
+                                                  width: screenWidth * 0.02,
+                                                ),
+                                                Regular16px(
+                                                  text: authorData['username'],
+                                                  size: 18,
+                                                ),
+                                              ],
                                             ),
-                                            SizedBox(
-                                              width: screenWidth * 0.02,
-                                            ),
-                                            Regular14px(text: authorData['username']),
-                                          ],
-                                        ),
-                                        if (AuthService().isLogged() == true && sheetData['authorId'] == _auth.currentUser!.uid) ...[
+                                            onTap: () {
+                                              AutoRouter.of(context).push(OtherProfileRoute(userId: authorData['uid']));
+                                            },
+                                          ),
+                                        ],
+                                        if (AuthService().isLogged() == true && sheetData['authorId'] == _auth.currentUser?.uid) ...[
+                                          Row(
+                                            children: [
+                                              CircleAvatar(
+                                                backgroundImage: CachedNetworkImageProvider(authorData['profileImage']),
+                                                radius: 18,
+                                              ),
+                                              SizedBox(
+                                                width: screenWidth * 0.02,
+                                              ),
+                                              Regular16px(
+                                                text: authorData['username'],
+                                                size: 18,
+                                              ),
+                                            ],
+                                          ),
                                           Wrap(
                                             spacing: 10,
                                             children: [
@@ -272,11 +306,41 @@ class _DetailSheetState extends State<DetailSheet> {
                                           Wrap(
                                             spacing: 10,
                                             children: [
-                                              Icon(
-                                                Icons.favorite_outline,
-                                                color: AppColors.black600,
-                                                size: isPortrait ? 32 : 36,
-                                              ),
+                                              StreamBuilder<QuerySnapshot>(
+                                                  stream: _firestore
+                                                      .collection('sheetList')
+                                                      .where('authorId', isEqualTo: _auth.currentUser?.uid)
+                                                      .where('sheetListName', isEqualTo: 'ชีทที่ถูกใจ')
+                                                      .snapshots(),
+                                                  builder: (BuildContext context, AsyncSnapshot sheetListSnapshot) {
+                                                    if (!sheetListSnapshot.hasData) {
+                                                      return Container();
+                                                    } else if (sheetListSnapshot.connectionState == ConnectionState.waiting) {
+                                                      return const Center(child: CircularProgressIndicator());
+                                                    }
+                                                    Map<String, dynamic> sheetListData =
+                                                        sheetListSnapshot.data!.docs[0].data() as Map<String, dynamic>;
+                                                    return InkWell(
+                                                      child: Icon(
+                                                        sheetListData['sid'].contains(widget.sheetId)
+                                                            ? Icons.favorite_outlined
+                                                            : Icons.favorite_outline,
+                                                        color:
+                                                            sheetListData['sid'].contains(widget.sheetId) ? AppColors.error500 : AppColors.black600,
+                                                        size: isPortrait ? 32 : 36,
+                                                      ),
+                                                      onTap: () async {
+                                                        if (AuthService().isLogged()) {
+                                                          await UpdateSheetListData().like(context, sheetData['sid'], sheetData['sheetCoverImage']);
+                                                        } else {
+                                                          showDialog(
+                                                            context: context,
+                                                            builder: (BuildContext context) => Popup_Login(context),
+                                                          );
+                                                        }
+                                                      },
+                                                    );
+                                                  }),
                                               InkWell(
                                                 child: Icon(
                                                   Icons.playlist_add_rounded,
@@ -294,20 +358,6 @@ class _DetailSheetState extends State<DetailSheet> {
                                                   }
                                                 },
                                               ),
-                                              Icon(
-                                                UniconsLine.arrow_circle_down,
-                                                color: AppColors.black600,
-                                                size: isPortrait ? 32 : 36,
-                                              ),
-                                              InkWell(
-                                                child: Icon(
-                                                  UniconsLine.share,
-                                                  size: isPortrait ? 32 : 36,
-                                                ),
-                                                onTap: () {
-                                                  _shareSheet(context);
-                                                },
-                                              ),
                                             ],
                                           )
                                         ],
@@ -322,6 +372,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                   text: sheetData['price'] == 0 ? "อ่านชีท" : sheetData['price'].toString(),
                                                   size: 16,
                                                   onPressed: () async {
+                                                    print(sheetData['price']);
                                                     if (sheetData['price'] == 0) {
                                                       Provider.of<FilePasserForRead>(context, listen: false).setFile(file);
                                                       AutoRouter.of(context)
@@ -360,8 +411,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                       AutoRouter.of(context)
                                                           .push(ReadSheetRoute(sheetId: widget.sheetId, sheetTitle: sheetData['sheetName']));
                                                     }
-                                                  }
-                                                  if (context.mounted) {
+                                                  } else {
                                                     await updateFS.userBuySheet(context, sheetData['sid'], authorData['uid'], sheetData['price']);
                                                   }
                                                 },
@@ -429,29 +479,27 @@ class _DetailSheetState extends State<DetailSheet> {
                                                     return Container();
                                                   } else if (reviewSnapshot.connectionState == ConnectionState.waiting) {
                                                     return const Center(child: CircularProgressIndicator());
-                                                  } else {
-                                                    return StreamBuilder<DocumentSnapshot>(
-                                                      stream: _firestore.collection("users").doc(reviewSnapshot.data!['reviewerId']).snapshots(),
-                                                      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userReviewSnapshot) {
-                                                        if (!userReviewSnapshot.hasData) {
-                                                          return Container();
-                                                        } else if (userReviewSnapshot.connectionState == ConnectionState.waiting) {
-                                                          return const Center(child: CircularProgressIndicator());
-                                                        } else {
-                                                          return Review(
-                                                              sheetId: sheetData['sid'],
-                                                              userId: userReviewSnapshot.data!['uid'],
-                                                              userImage: userReviewSnapshot.data!['profileImage'],
-                                                              userName: userReviewSnapshot.data!['username'],
-                                                              userRating: reviewSnapshot.data!['rating'],
-                                                              textReview: reviewSnapshot.data!['text'],
-                                                              reviewId: reviewSnapshot.data!['rid'],
-                                                              dateTime: reviewSnapshot.data!['timestamp'],
-                                                              like: reviewSnapshot.data!['like']);
-                                                        }
-                                                      },
-                                                    );
                                                   }
+                                                  return StreamBuilder<DocumentSnapshot>(
+                                                    stream: _firestore.collection("users").doc(reviewSnapshot.data!['reviewerId']).snapshots(),
+                                                    builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userReviewSnapshot) {
+                                                      if (!userReviewSnapshot.hasData) {
+                                                        return Container();
+                                                      } else if (userReviewSnapshot.connectionState == ConnectionState.waiting) {
+                                                        return const Center(child: CircularProgressIndicator());
+                                                      }
+                                                      return Review(
+                                                          sheetId: sheetData['sid'],
+                                                          userId: userReviewSnapshot.data!['uid'],
+                                                          userImage: userReviewSnapshot.data!['profileImage'],
+                                                          userName: userReviewSnapshot.data!['username'],
+                                                          userRating: reviewSnapshot.data!['rating'],
+                                                          textReview: reviewSnapshot.data!['text'],
+                                                          reviewId: reviewSnapshot.data!['rid'],
+                                                          dateTime: reviewSnapshot.data!['timestamp'],
+                                                          like: reviewSnapshot.data!['like']);
+                                                    },
+                                                  );
                                                 });
                                           },
                                         ),
@@ -531,29 +579,27 @@ class _DetailSheetState extends State<DetailSheet> {
                                                         return Container();
                                                       } else if (reviewSnapshot.connectionState == ConnectionState.waiting) {
                                                         return const Center(child: CircularProgressIndicator());
-                                                      } else {
-                                                        return StreamBuilder<DocumentSnapshot>(
-                                                          stream: _firestore.collection("users").doc(reviewSnapshot.data!['reviewerId']).snapshots(),
-                                                          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userReviewSnapshot) {
-                                                            if (!userReviewSnapshot.hasData) {
-                                                              return Container();
-                                                            } else if (userReviewSnapshot.connectionState == ConnectionState.waiting) {
-                                                              return const Center(child: CircularProgressIndicator());
-                                                            } else {
-                                                              return Review(
-                                                                  sheetId: sheetData['sid'],
-                                                                  userId: userReviewSnapshot.data!['uid'],
-                                                                  userImage: userReviewSnapshot.data!['profileImage'],
-                                                                  userName: userReviewSnapshot.data!['username'],
-                                                                  userRating: reviewSnapshot.data!['rating'],
-                                                                  textReview: reviewSnapshot.data!['text'],
-                                                                  reviewId: reviewSnapshot.data!['rid'],
-                                                                  dateTime: reviewSnapshot.data!['timestamp'],
-                                                                  like: reviewSnapshot.data!['like']);
-                                                            }
-                                                          },
-                                                        );
                                                       }
+                                                      return StreamBuilder<DocumentSnapshot>(
+                                                        stream: _firestore.collection("users").doc(reviewSnapshot.data!['reviewerId']).snapshots(),
+                                                        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userReviewSnapshot) {
+                                                          if (!userReviewSnapshot.hasData) {
+                                                            return Container();
+                                                          } else if (userReviewSnapshot.connectionState == ConnectionState.waiting) {
+                                                            return const Center(child: CircularProgressIndicator());
+                                                          }
+                                                          return Review(
+                                                              sheetId: sheetData['sid'],
+                                                              userId: userReviewSnapshot.data!['uid'],
+                                                              userImage: userReviewSnapshot.data!['profileImage'],
+                                                              userName: userReviewSnapshot.data!['username'],
+                                                              userRating: reviewSnapshot.data!['rating'],
+                                                              textReview: reviewSnapshot.data!['text'],
+                                                              reviewId: reviewSnapshot.data!['rid'],
+                                                              dateTime: reviewSnapshot.data!['timestamp'],
+                                                              like: reviewSnapshot.data!['like']);
+                                                        },
+                                                      );
                                                     });
                                               },
                                             ),
@@ -592,7 +638,6 @@ class _DetailSheetState extends State<DetailSheet> {
     final FirebaseFirestore _firestoreDb = FirebaseFirestore.instance;
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     final SheetLists _sheetLists = SheetLists(sheetListName: '', sid: [], authorId: '', sheetListId: '');
-    final Future<FirebaseApp> firebase = Firebase.initializeApp();
     CreateCollection myCollection = CreateCollection();
 
     showModalBottomSheet(
@@ -645,25 +690,17 @@ class _DetailSheetState extends State<DetailSheet> {
                 onPressed: () async {
                   _formKey.currentState!.save();
                   try {
-                    myCollection
+                    await myCollection
                         .createSheetListAndUpdateCollection(
-                      context,
-                      _sheetLists.sheetListName,
-                      _sheetLists.sid = [],
-                      _sheetLists.authorId = _auth.currentUser!.uid,
-                      _sheetLists.sheetListId = uuid.v4(),
-                      _sheetLists.sheetListCoverImage = '',
-                      widget.sheetId,
-                    )
-                        .then(
-                      (value) {
-                        _formKey.currentState!.reset();
-                        AutoRouter.of(context).popUntilRoot();
-                      },
-                    );
-                    await _firestoreDb.collection('users').doc(_auth.currentUser!.uid).update({
-                      'sheetLists': FieldValue.arrayUnion([_sheetLists.sheetListId])
-                    });
+                          context,
+                          _sheetLists.sheetListName,
+                          _sheetLists.sid = [],
+                          _sheetLists.authorId = _auth.currentUser!.uid,
+                          _sheetLists.sheetListId = uuid.v4(),
+                          _sheetLists.sheetListCoverImage = '',
+                          widget.sheetId,
+                        )
+                        .then((value) => _formKey.currentState!.reset());
                   } on FirebaseAuthException catch (e) {
                     FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
                   }
@@ -695,7 +732,7 @@ class _DetailSheetState extends State<DetailSheet> {
               stream: _auth.authStateChanges(),
               builder: (context, AsyncSnapshot<User?> snapshot) {
                 return StreamBuilder<QuerySnapshot>(
-                    stream: _firestoreDb.collection("sheetList").snapshots(),
+                    stream: _firestoreDb.collection("sheetList").where('accessible', isEqualTo: true).snapshots(),
                     builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (!snapshot.hasData) {
                         return Container();
@@ -703,127 +740,126 @@ class _DetailSheetState extends State<DetailSheet> {
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
-                      } else {
-                        final mySheetLists = snapshot.data?.docs.where((document) => document["authorId"] == _auth.currentUser?.uid);
-                        return SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 20, right: 24, top: 28, bottom: 28),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Regular16px(
-                                      text: 'บันทึกชีทนี้ลง...',
-                                    ),
-                                    InkWell(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(color: AppColors.tertiary500),
-                                          borderRadius: BorderRadius.circular(5),
-                                        ),
-                                        child: const Icon(
-                                          FontAwesomeIcons.plus,
-                                          color: AppColors.tertiary500,
-                                          size: 24,
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        _BottomSheet(context);
-                                      },
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(screenWidth * GapDimension.w0_032),
-                                child: GridView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3,
-                                    crossAxisSpacing: 8,
-                                    mainAxisSpacing: 8,
-                                    childAspectRatio: screenWidth < 480
-                                        ? MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.1)
-                                        : MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 0.4),
+                      }
+                      final mySheetLists = snapshot.data?.docs.where((document) => document["authorId"] == _auth.currentUser?.uid);
+                      return SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20, right: 24, top: 28, bottom: 28),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Regular16px(
+                                    text: 'บันทึกชีทนี้ลง...',
                                   ),
-                                  itemCount: mySheetLists?.length,
-                                  itemBuilder: (context, index) {
-                                    var sheetLists = mySheetLists?.elementAt(index);
-                                    return LayoutBuilder(
-                                      builder: (context, constraints) {
-                                        return InkWell(
-                                          child: Column(
-                                            children: [
-                                              Container(
-                                                height: constraints.maxHeight * 0.8,
-                                                color: sheetLists!['sheetListCoverImage'] == '' ? AppColors.black300 : Colors.transparent,
-                                                child: Stack(
-                                                  children: [
-                                                    sheetLists['sid'].contains(widget.sheetId)
-                                                        ? Opacity(
-                                                            opacity: 0.5,
-                                                            child: CachedNetworkImage(
-                                                              imageUrl: sheetLists["sheetListCoverImage"],
+                                  InkWell(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: AppColors.tertiary500),
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: const Icon(
+                                        FontAwesomeIcons.plus,
+                                        color: AppColors.tertiary500,
+                                        size: 24,
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      _BottomSheet(context);
+                                    },
+                                  )
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(screenWidth * GapDimension.w0_032),
+                              child: GridView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  crossAxisSpacing: 8,
+                                  mainAxisSpacing: 8,
+                                  childAspectRatio: screenWidth < 480
+                                      ? MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.1)
+                                      : MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 0.4),
+                                ),
+                                itemCount: mySheetLists?.length,
+                                itemBuilder: (context, index) {
+                                  var sheetLists = mySheetLists?.elementAt(index);
+                                  return LayoutBuilder(
+                                    builder: (context, constraints) {
+                                      return InkWell(
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              height: constraints.maxHeight * 0.8,
+                                              color: sheetLists!['sheetListCoverImage'] == '' ? AppColors.black300 : Colors.transparent,
+                                              child: Stack(
+                                                children: [
+                                                  sheetLists['sid'].contains(widget.sheetId)
+                                                      ? Opacity(
+                                                          opacity: 0.5,
+                                                          child: CachedNetworkImage(
+                                                            imageUrl: sheetLists["sheetListCoverImage"],
+                                                          ),
+                                                        )
+                                                      : Container(
+                                                          child: sheetLists['sheetListCoverImage'] != ''
+                                                              ? CachedNetworkImage(
+                                                                  imageUrl: sheetLists["sheetListCoverImage"],
+                                                                )
+                                                              : Container(),
+                                                        ),
+                                                  Center(
+                                                    child: sheetLists['sid'].contains(widget.sheetId)
+                                                        ? const InkWell(
+                                                            child: Icon(
+                                                              FontAwesomeIcons.check,
+                                                              color: AppColors.tertiary600,
                                                             ),
                                                           )
-                                                        : Container(
-                                                            child: sheetLists['sheetListCoverImage'] != ''
-                                                                ? CachedNetworkImage(
-                                                                    imageUrl: sheetLists["sheetListCoverImage"],
-                                                                  )
-                                                                : Container(),
-                                                          ),
-                                                    Center(
-                                                      child: sheetLists['sid'].contains(widget.sheetId)
-                                                          ? InkWell(
-                                                              child: const Icon(
-                                                                FontAwesomeIcons.check,
-                                                                color: AppColors.tertiary600,
-                                                              ),
-                                                              onTap: () {
-                                                                UpdateSheetListData()
-                                                                    .removeSheetFromList(context, sheetLists['sheetListId'], widget.sheetId);
-                                                              },
-                                                            )
-                                                          : Container(),
-                                                    ),
-                                                  ],
-                                                ),
+                                                        : Container(),
+                                                  ),
+                                                ],
                                               ),
-                                              SizedBox(
-                                                height: constraints.maxHeight * 0.2,
-                                                child: LayoutBuilder(
-                                                  builder: (context, constraints) {
-                                                    return Container(
-                                                      padding: EdgeInsets.only(top: screenWidth * 0.02),
-                                                      alignment: Alignment.topCenter,
-                                                      height: constraints.maxHeight * 0.5,
-                                                      child: Regular16px(text: sheetLists['sheetListName']),
-                                                    );
-                                                  },
-                                                ),
+                                            ),
+                                            SizedBox(
+                                              height: constraints.maxHeight * 0.2,
+                                              child: LayoutBuilder(
+                                                builder: (context, constraints) {
+                                                  return Container(
+                                                    padding: EdgeInsets.only(top: screenWidth * 0.02),
+                                                    alignment: Alignment.topCenter,
+                                                    height: constraints.maxHeight * 0.5,
+                                                    child: Regular16px(text: sheetLists['sheetListName']),
+                                                  );
+                                                },
                                               ),
-                                            ],
-                                          ),
-                                          onTap: () async {
-                                            try {
-                                              UpdateSheetListData().updateSheetList(context, sheetLists['sheetListId'], widget.sheetId);
-                                            } on FirebaseAuthException catch (e) {
-                                              FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
+                                            ),
+                                          ],
+                                        ),
+                                        onTap: () async {
+                                          try {
+                                            if (sheetLists['sid'].contains(widget.sheetId)) {
+                                              await UpdateSheetListData().removeSheetFromList(context, sheetLists['sheetListId'], widget.sheetId);
+                                            } else {
+                                              await UpdateSheetListData().updateSheetList(context, sheetLists['sheetListId'], widget.sheetId);
                                             }
-                                          },
-                                        );
-                                      },
-                                    );
-                                  },
-                                ),
+                                          } on FirebaseAuthException catch (e) {
+                                            FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
+                                          }
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
                               ),
-                            ],
-                          ),
-                        );
-                      }
+                            ),
+                          ],
+                        ),
+                      );
                     });
               });
         });

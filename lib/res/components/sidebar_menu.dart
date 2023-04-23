@@ -52,27 +52,11 @@ class _SidebarMenuState extends State<SidebarMenu> {
                       child: Column(
                         children: [
                           CustomListTile(
-                            icon: Icons.notifications_active_outlined,
-                            title: 'ตั้งค่าการแจ้งเตือน',
-                            onTap: () {
-                              Navigator.pop(context);
-                              AutoRouter.of(context).push(NotificationSettingRoute());
-                            },
-                          ),
-                          CustomListTile(
                             icon: FluentSystemIcons.ic_fluent_shield_regular,
                             title: 'บัญชีของฉัน',
                             onTap: () {
                               Navigator.pop(context);
                               AutoRouter.of(context).push(MyAccountRoute());
-                            },
-                          ),
-                          CustomListTile(
-                            icon: FluentSystemIcons.ic_fluent_bank_regular,
-                            title: 'ข้อมูลบัญชีธนาคาร',
-                            onTap: () {
-                              Navigator.pop(context);
-                              AutoRouter.of(context).push(BankAccountRoute());
                             },
                           ),
                           CustomListTile(
@@ -136,27 +120,11 @@ class _SidebarMenuState extends State<SidebarMenu> {
                       child: Column(
                         children: [
                           CustomListTile(
-                            icon: Icons.notifications_active_outlined,
-                            title: 'ตั้งค่าการแจ้งเตือน',
-                            onTap: () {
-                              Navigator.pop(context);
-                              AutoRouter.of(context).push(NotificationSettingRoute());
-                            },
-                          ),
-                          CustomListTile(
                             icon: FluentSystemIcons.ic_fluent_shield_regular,
                             title: 'บัญชีของฉัน',
                             onTap: () {
                               Navigator.pop(context);
                               AutoRouter.of(context).push(MyAccountRoute());
-                            },
-                          ),
-                          CustomListTile(
-                            icon: FluentSystemIcons.ic_fluent_bank_regular,
-                            title: 'ข้อมูลบัญชีธนาคาร',
-                            onTap: () {
-                              Navigator.pop(context);
-                              AutoRouter.of(context).push(BankAccountRoute());
                             },
                           ),
                           CustomListTile(

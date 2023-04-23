@@ -15,8 +15,10 @@ import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebaseStorage;
+import 'package:search_choices/search_choices.dart';
 
 import '../../model/sheet.dart';
 import '../../res/components/flushbar.dart';
@@ -33,11 +35,82 @@ class CreateDetailSheet extends StatefulWidget {
 enum SheetType { free, sell }
 
 class _CreateDetailSheetState extends State<CreateDetailSheet> {
+  final _firestore = FirebaseFirestore.instance;
+  final TextEditingController _tagController = TextEditingController();
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetCoverImage: '', demoPages: [], sheetTypeFree: true, price: 0, authorId: '');
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   CreateCollection myCollection = CreateCollection();
   SheetType? _sheetType = SheetType.free;
+  late Future resultLoaded;
+  List _tagResult = [];
+  List _resultList = [];
+  List _dataList = [];
+  List _tagList = [];
+  List<String> selectedTag = [];
+  List<int> selectedIndex = [];
+  List<DropdownMenuItem<dynamic>> resultTagAsDropdown = [];
+
+  @override
+  void dispose() {
+    _tagController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    resultLoaded = getTagSnapshot();
+  }
+
+  _onTagChanged() {
+    tagResultsList();
+  }
+
+  tagResultsList() {
+    var tagResult = [];
+
+    if (_tagController.text != "") {
+      for (var tagSnapshot in _tagResult) {
+        var tagName = tagSnapshot['tagName'].toLowerCase();
+        if (tagName.contains(_tagController.text.toLowerCase())) {
+          tagResult.add(tagSnapshot);
+        }
+      }
+    } else {
+      tagResult = List.from(_tagResult);
+    }
+    setState(
+      () {
+        _resultList = [];
+        _dataList = [];
+        _tagList = tagResult;
+
+        for (int i = 0; i < _tagList.length; i++) {
+          _resultList.add(_tagList[i]);
+          _dataList.add(_tagList[i]);
+        }
+
+        resultTagAsDropdown = _resultList.map((item) {
+          return DropdownMenuItem<dynamic>(
+            value: item['tagName'],
+            child: Text(item['tagName'].toString()),
+          );
+        }).toList();
+      },
+    );
+  }
+
+  getTagSnapshot() async {
+    var tagData = await _firestore.collection('tag').get();
+    setState(
+      () {
+        _tagResult = tagData.docs.map((doc) => doc.data()).toList();
+      },
+    );
+    tagResultsList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +118,6 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    var isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     File? pdfFile = Provider.of<FilePasser>(context).getFile();
 
@@ -67,210 +139,220 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
           }
           return Scaffold(
             body: SingleChildScrollView(
-              child: Center(
-                  child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(isPortrait ? screenHeight * 0.024 : screenHeight * 0.048),
-                      height: isPortrait ? screenHeight * 0.35 : screenHeight * 0.6,
-                      child: PDFView(
-                        filePath: pdfFile?.path,
+              child: SafeArea(
+                child: Center(
+                    child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(isPortrait ? screenHeight * 0.024 : screenHeight * 0.048),
+                        height: isPortrait ? screenHeight * 0.35 : screenHeight * 0.6,
+                        child: PDFView(
+                          filePath: pdfFile?.path,
+                        ),
                       ),
-                    ),
-                    Container(
-                        margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
-                        padding: EdgeInsets.only(left: screenHeight * 0.024, top: isPortrait ? screenHeight * 0.04 : screenHeight * 0.08),
+                      Container(
+                          margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
+                          padding: EdgeInsets.only(left: screenHeight * 0.024, top: isPortrait ? screenHeight * 0.04 : screenHeight * 0.08),
+                          alignment: Alignment.centerLeft,
+                          child: const Medium16px(text: 'ชื่อ')),
+                      Align(
                         alignment: Alignment.centerLeft,
-                        child: const Medium16px(text: 'ชื่อ')),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        width: isPortrait ? screenWidth : screenWidth * 0.3,
-                        padding: EdgeInsets.all(isPortrait ? screenHeight * 0.002 : screenHeight * 0.004),
-                        margin: EdgeInsets.only(
-                            left: isPortrait ? screenHeight * 0.024 : screenWidth * 0.2,
-                            right: isPortrait ? screenHeight * 0.024 : screenHeight * 0.048),
+                        child: Container(
+                          width: isPortrait ? screenWidth : screenWidth * 0.3,
+                          padding: EdgeInsets.all(isPortrait ? screenHeight * 0.002 : screenHeight * 0.004),
+                          margin: EdgeInsets.only(
+                              left: isPortrait ? screenHeight * 0.024 : screenWidth * 0.2,
+                              right: isPortrait ? screenHeight * 0.024 : screenHeight * 0.048),
+                          child: MyTextFormField(
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                            validator: RequiredValidator(errorText: 'กรุณากรอกชื่อชีทของท่าน.'),
+                            onSaved: (value) {
+                              mySheet.sheetName = value!;
+                            },
+                          ),
+                        ),
+                      ),
+                      Container(
+                          width: isPortrait ? screenWidth : screenWidth * 0.6,
+                          padding: EdgeInsets.only(left: screenHeight * 0.024, top: screenHeight * 0.02),
+                          alignment: Alignment.centerLeft,
+                          child: const Medium16px(text: 'รายละเอียด')),
+                      Container(
+                        width: isPortrait ? screenWidth : screenWidth * 0.6,
+                        height: isPortrait ? screenHeight * 0.15 : screenHeight * 0.25,
+                        padding: EdgeInsets.all(screenHeight * 0.002),
+                        margin: EdgeInsets.only(left: screenHeight * 0.024, right: screenHeight * 0.024),
                         child: MyTextFormField(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: RequiredValidator(errorText: 'กรุณากรอกชื่อชีทของท่าน.'),
+                          validator: RequiredValidator(errorText: 'กรุณากรอกรายละเอียดของชีท.'),
+                          minLine: 6,
+                          maxLine: 6,
                           onSaved: (value) {
-                            mySheet.sheetName = value!;
+                            mySheet.detailSheet = value!;
                           },
                         ),
                       ),
-                    ),
-                    Container(
-                        width: isPortrait ? screenWidth : screenWidth * 0.6,
-                        padding: EdgeInsets.only(left: screenHeight * 0.024, top: screenHeight * 0.02),
-                        alignment: Alignment.centerLeft,
-                        child: const Medium16px(text: 'รายละเอียด')),
-                    Container(
-                      width: isPortrait ? screenWidth : screenWidth * 0.6,
-                      height: isPortrait ? screenHeight * 0.15 : screenHeight * 0.25,
-                      padding: EdgeInsets.all(screenHeight * 0.002),
-                      margin: EdgeInsets.only(left: screenHeight * 0.024, right: screenHeight * 0.024),
-                      child: MyTextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: RequiredValidator(errorText: 'กรุณากรอกรายละเอียดของชีท.'),
-                        minLine: 6,
-                        maxLine: 6,
-                        onSaved: (value) {
-                          mySheet.detailSheet = value!;
-                        },
+                      Container(
+                          margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
+                          padding: EdgeInsets.only(left: screenHeight * 0.024, top: isPortrait ? screenHeight * 0.02 : screenHeight * 0.04),
+                          alignment: Alignment.centerLeft,
+                          child: const Medium16px(text: 'แท็ก')),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+                        child: SearchChoices.multiple(
+                          items: resultTagAsDropdown,
+                          selectedItems: selectedIndex,
+                          hint: const Padding(
+                            padding: EdgeInsets.all(12.0),
+                            child: Text("ค้นหาแท็ก"),
+                          ),
+                          searchHint: "แท็กทั้งหมด",
+                          onChanged: (value) {
+                            setState(() {
+                              selectedIndex = value;
+                              selectedTag = [];
+
+                              for (int i = 0; i < selectedIndex.length; i++) {
+                                selectedTag.add(resultTagAsDropdown[selectedIndex[i]].value);
+                              }
+                            });
+                          },
+                          closeButton: (selectedItems) {
+                            return (selectedItems.isNotEmpty
+                                ? "บันทึก ${selectedItems.length == 1 ? '"${resultTagAsDropdown[selectedItems.first].value}"' : '(${selectedItems.length})'}"
+                                : "ยกเลิก");
+                          },
+                          isExpanded: true,
+                        ),
                       ),
-                    ),
-                    Container(
+                      Container(
+                          margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
+                          padding: EdgeInsets.only(left: screenHeight * 0.024, top: screenHeight * 0.02),
+                          alignment: Alignment.centerLeft,
+                          child: const Medium16px(text: 'ประเภทของชีท')),
+                      Container(
                         margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
-                        padding: EdgeInsets.only(left: screenHeight * 0.024, top: isPortrait ? screenHeight * 0.02 : screenHeight * 0.04),
-                        alignment: Alignment.centerLeft,
-                        child: const Medium16px(text: 'แท็ก')),
-                    Row(
-                      children: [
+                        child: Column(
+                          children: [
+                            ListTile(
+                              title: const Medium16px(text: 'ฟรี'),
+                              leading: Radio<SheetType>(
+                                value: SheetType.free,
+                                groupValue: _sheetType,
+                                onChanged: (SheetType? value) {
+                                  setState(() {
+                                    _sheetType = value;
+                                    mySheet.sheetTypeFree = true;
+                                  });
+                                },
+                              ),
+                            ),
+                            ListTile(
+                              title: const Medium16px(text: 'ขาย'),
+                              leading: Radio<SheetType>(
+                                value: SheetType.sell,
+                                groupValue: _sheetType,
+                                onChanged: (SheetType? value) {
+                                  setState(() {
+                                    _sheetType = value;
+                                    mySheet.sheetTypeFree = false;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (_sheetType == SheetType.sell)
+                        Container(
+                            margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
+                            padding: EdgeInsets.only(left: screenHeight * 0.024, bottom: screenHeight * 0.01),
+                            alignment: Alignment.centerLeft,
+                            child: const Medium16px(text: 'ราคา')),
+                      if (_sheetType == SheetType.sell)
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Container(
-                            margin: EdgeInsets.only(left: isPortrait ? screenHeight * 0.024 : screenWidth * 0.2, top: screenHeight * 0.01),
-                            width: isPortrait ? screenWidth * 0.2 : screenWidth * 0.1,
-                            height: isPortrait ? screenHeight * 0.05 : screenHeight * 0.1,
-                            child: DottedBorder(
-                              borderType: BorderType.RRect,
-                              radius: const Radius.circular(30),
-                              child: const Align(alignment: Alignment.center, child: Icon(FontAwesomeIcons.plus)),
-                              dashPattern: [10, 10],
-                            ),
+                            margin: EdgeInsets.only(left: isPortrait ? screenWidth * 0.048 : screenWidth * 0.24, right: screenWidth * 0.048),
+                            width: isPortrait ? screenWidth * 0.25 : screenWidth * 0.125,
+                            child: MyTextFormField(
+                                hintText: 'หน่วย coin',
+                                keyboardType: TextInputType.number,
+                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                                validator: RequiredValidator(errorText: 'กรุณาระบุราคา.'),
+                                onSaved: (value) {
+                                  mySheet.price = int.parse(value!);
+                                }),
                           ),
                         ),
-                      ],
-                    ),
-                    Container(
-                        margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
-                        padding: EdgeInsets.only(left: screenHeight * 0.024, top: screenHeight * 0.02),
-                        alignment: Alignment.centerLeft,
-                        child: const Medium16px(text: 'ประเภทของชีท')),
-                    Container(
-                      margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
-                      child: Column(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          ListTile(
-                            title: const Medium16px(text: 'ฟรี'),
-                            leading: Radio<SheetType>(
-                              value: SheetType.free,
-                              groupValue: _sheetType,
-                              onChanged: (SheetType? value) {
-                                setState(() {
-                                  _sheetType = value;
-                                  mySheet.sheetTypeFree = true;
-                                });
+                          Container(
+                            margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2, top: isPortrait ? 0 : screenHeight * 0.04),
+                            padding: EdgeInsets.all(screenHeight * 0.024),
+                            child: OutlineButton(
+                              text: 'ยกเลิก',
+                              onPressed: () {
+                                AutoRouter.of(context).popUntilRoot();
                               },
                             ),
                           ),
-                          ListTile(
-                            title: const Medium16px(text: 'ขาย'),
-                            leading: Radio<SheetType>(
-                              value: SheetType.sell,
-                              groupValue: _sheetType,
-                              onChanged: (SheetType? value) {
-                                setState(() {
-                                  _sheetType = value;
-                                  mySheet.sheetTypeFree = false;
+                          Container(
+                            margin: EdgeInsets.only(right: isPortrait ? 0 : screenWidth * 0.2, top: isPortrait ? 0 : screenHeight * 0.04),
+                            padding: EdgeInsets.all(screenHeight * 0.024),
+                            child: PrimaryButton(
+                              text: 'เสร็จสิ้น',
+                              onPressed: () async {
+                                _formKey.currentState!.save();
+                                firebaseStorage.UploadTask? task = await PDFApi.uploadToFirebase(context, pdfFile, sheetId);
+                                task!.whenComplete(() async {
+                                  firebaseStorage.UploadTask? coverImage = await PDFApi().createCoverSheetImage(sheetId);
+                                  coverImage!.whenComplete(() async {
+                                    String coverImage = await PDFApi.getCoverImage(sheetId);
+                                    try {
+                                      await myCollection
+                                          .createSheetCollection(
+                                        sheetId,
+                                        mySheet.sheetName,
+                                        mySheet.detailSheet,
+                                        coverImage,
+                                        widget.demoPages,
+                                        mySheet.sheetTypeFree,
+                                        mySheet.price,
+                                        mySheet.authorId = userId,
+                                        selectedTag,
+                                      )
+                                          .then(
+                                        (value) async {
+                                          _formKey.currentState!.reset();
+                                          Future.delayed(const Duration(milliseconds: 500), () {
+                                            AutoRouter.of(context).popUntilRoot();
+
+                                            final String message = 'อัพโหลดชีทสำเร็จ!';
+                                            FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+                                          });
+                                        },
+                                      );
+                                    } on FirebaseAuthException catch (e) {
+                                      Fluttertoast.showToast(
+                                        msg: e.message.toString(),
+                                        gravity: ToastGravity.BOTTOM,
+                                      );
+                                    }
+                                  });
                                 });
                               },
                             ),
                           ),
                         ],
                       ),
-                    ),
-                    if (_sheetType == SheetType.sell)
-                      Container(
-                          margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2),
-                          padding: EdgeInsets.only(left: screenHeight * 0.024, bottom: screenHeight * 0.01),
-                          alignment: Alignment.centerLeft,
-                          child: const Medium16px(text: 'ราคา')),
-                    if (_sheetType == SheetType.sell)
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          padding: EdgeInsets.all(screenHeight * 0.002),
-                          margin: EdgeInsets.only(left: isPortrait ? screenHeight * 0.024 : screenWidth * 0.2, right: screenHeight * 0.024),
-                          width: isPortrait ? screenWidth * 0.25 : screenWidth * 0.125,
-                          height: isPortrait ? screenHeight * 0.04 : screenHeight * 0.08,
-                          child: MyTextFormField(
-                              hintText: 'หน่วย coin',
-                              keyboardType: TextInputType.number,
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
-                              validator: RequiredValidator(errorText: 'กรุณาระบุราคา.'),
-                              onSaved: (value) {
-                                mySheet.price = int.parse(value!);
-                              }),
-                        ),
-                      ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(left: isPortrait ? 0 : screenWidth * 0.2, top: isPortrait ? 0 : screenHeight * 0.04),
-                          padding: EdgeInsets.all(screenHeight * 0.024),
-                          child: OutlineButton(
-                            text: 'ยกเลิก',
-                            onPressed: () {
-                              AutoRouter.of(context).popUntilRoot();
-                            },
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(right: isPortrait ? 0 : screenWidth * 0.2, top: isPortrait ? 0 : screenHeight * 0.04),
-                          padding: EdgeInsets.all(screenHeight * 0.024),
-                          child: PrimaryButton(
-                            text: 'เสร็จสิ้น',
-                            onPressed: () async {
-                              _formKey.currentState!.save();
-                              firebaseStorage.UploadTask? task = await PDFApi.uploadToFirebase(context, pdfFile, sheetId);
-                              task!.whenComplete(() async {
-                                firebaseStorage.UploadTask? coverImage = await PDFApi.createCoverSheetImage(sheetId);
-                                coverImage!.whenComplete(() async {
-                                  String coverImage = await PDFApi.getCoverImage(sheetId);
-                                  try {
-                                    myCollection
-                                        .createSheetCollection(
-                                      sheetId,
-                                      mySheet.sheetName,
-                                      mySheet.detailSheet,
-                                      coverImage,
-                                      widget.demoPages,
-                                      mySheet.sheetTypeFree,
-                                      mySheet.price,
-                                      mySheet.authorId = userId,
-                                    )
-                                        .then(
-                                      (value) async {
-                                        _formKey.currentState!.reset();
-
-                                        Future.delayed(const Duration(milliseconds: 500), () {
-                                          AutoRouter.of(context).popUntilRoot();
-
-                                          final String message = 'อัพโหลดชีทสำเร็จ!';
-                                          FlushbarPopup.successFlushbar(context, FlushbarIcon.errorIcon, message);
-                                        });
-                                      },
-                                    );
-                                  } on FirebaseAuthException catch (e) {
-                                    Fluttertoast.showToast(
-                                      msg: e.message.toString(),
-                                      gravity: ToastGravity.BOTTOM,
-                                    );
-                                  }
-                                });
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              )),
+                    ],
+                  ),
+                )),
+              ),
             ),
           );
         });

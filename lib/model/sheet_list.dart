@@ -7,6 +7,7 @@ class SheetLists {
   List? sid;
   String authorId;
   String? sheetListCoverImage;
+  bool accessible = true;
 
   SheetLists({
     required this.sheetListName,
@@ -22,7 +23,8 @@ class SheetLists {
         sid = json['sid'],
         authorId = json['authorId'],
         sheetListId = json['sheetListId'],
-        sheetListCoverImage = json['sheetListCoverImage'];
+        sheetListCoverImage = json['sheetListCoverImage'],
+        accessible = json['accessible'];
 
   Map<String, dynamic> toJson() => {
         'timestamp': timestamp,
@@ -31,5 +33,6 @@ class SheetLists {
         'authorId': authorId,
         'sheetListId': sheetListId,
         'sheetListCoverImage': sheetListCoverImage,
+        'accessible': accessible,
       };
 }

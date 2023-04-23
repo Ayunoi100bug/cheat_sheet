@@ -1,6 +1,9 @@
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/empty_router_widgets.dart';
 import 'package:cheat_sheet/res/components/tools_bar/color_picker_page.dart';
+import 'package:cheat_sheet/view/about_grade.dart';
+import 'package:cheat_sheet/view/about_subject.dart';
+import 'package:cheat_sheet/view/activity_screen/all_achievement.dart';
 import 'package:cheat_sheet/view/create_sheet_screen/create_detail_sheet.dart';
 import 'package:cheat_sheet/view/create_sheet_screen/import_sheet_screen.dart';
 import 'package:cheat_sheet/view/create_sheet_screen/pick_demo_pages.dart';
@@ -13,24 +16,23 @@ import 'package:cheat_sheet/view/home_screen/question/detail_question.dart';
 import 'package:cheat_sheet/view/home_screen/detail_sheet.dart';
 import 'package:cheat_sheet/view/home_screen/question/edit_demo.dart';
 import 'package:cheat_sheet/view/home_screen/read_sheet.dart';
+import 'package:cheat_sheet/view/home_screen/recommend_sheet.dart';
 import 'package:cheat_sheet/view/home_screen/review_sheet.dart';
 import 'package:cheat_sheet/view/home_screen/searching_sheet.dart';
+import 'package:cheat_sheet/view/home_screen/top_sheet.dart';
 import 'package:cheat_sheet/view/login.dart';
 import 'package:cheat_sheet/view/main_screen.dart';
 import 'package:cheat_sheet/view/home_screen/home_screen.dart';
 import 'package:cheat_sheet/view/activity_screen/activity_screen.dart';
 import 'package:cheat_sheet/view/profile_screen/edit_profile.dart';
+import 'package:cheat_sheet/view/home_screen/other_profile.dart';
 import 'package:cheat_sheet/view/profile_screen/profile_screen.dart';
 import 'package:cheat_sheet/view/register.dart';
 import 'package:cheat_sheet/view/sheet_list_screen/sheet_list_detail.dart';
 import 'package:cheat_sheet/view/sheet_list_screen/sheet_list_screen.dart';
-import 'package:cheat_sheet/view/side_bar_menu/bank_account/add_card.dart';
-import 'package:cheat_sheet/view/side_bar_menu/bank_account/add_payment_methods.dart';
-import 'package:cheat_sheet/view/side_bar_menu/bank_account/bank_account.dart';
 import 'package:cheat_sheet/view/side_bar_menu/my_account/change_email.dart';
 import 'package:cheat_sheet/view/side_bar_menu/my_account/change_password.dart';
 import 'package:cheat_sheet/view/side_bar_menu/my_account/my_account.dart';
-import 'package:cheat_sheet/view/side_bar_menu/notification_setting.dart';
 import 'package:cheat_sheet/view/side_bar_menu/top_up.dart';
 import 'package:cheat_sheet/view/test_ui_book.dart';
 
@@ -40,9 +42,12 @@ import 'package:cheat_sheet/view/test_ui_book.dart';
     page: MainScreen,
     children: [
       AutoRoute(path: 'home', name: 'HomeRoute', page: EmptyRouterPage, children: [
-        AutoRoute(path: '', page: HomeScreen),
+        AutoRoute(path: '', name: 'HomeScreenRoute', page: HomeScreen),
         AutoRoute(path: 'test_ui', name: 'TestUIRoute', page: TestUIPage),
         AutoRoute(path: 'searching', name: 'SearchingSheetRoute', page: SearchingSheet),
+        AutoRoute(path: 'recommend_sheet', name: 'RecommendSheetRoute', page: RecommendSheet),
+        AutoRoute(path: 'top_sheet', name: 'TopSheetRoute', page: TopSheet),
+        AutoRoute(path: 'other_profile/:userId', name: 'OtherProfileRoute', page: OtherProfile),
         AutoRoute(path: ':sheetId', name: 'DetailSheetRoute', page: DetailSheet),
         AutoRoute(path: ':sheetId/read_sheet', name: 'ReadSheetRoute', page: ReadSheet),
         AutoRoute(path: ':sheetId/read_sheet/ask_question', name: 'AskQuestionRoute', page: AskQuestion),
@@ -56,6 +61,7 @@ import 'package:cheat_sheet/view/test_ui_book.dart';
       ]),
       AutoRoute(path: 'activity', name: 'ActivityRoute', page: EmptyRouterPage, children: [
         AutoRoute(path: '', page: ActivityScreen),
+        AutoRoute(path: 'all_achievement', name: 'AllAchievementRoute', page: AllAchievement),
       ]),
       AutoRoute(path: 'create_sheet', name: 'CreateSheetRoute', page: EmptyRouterPage, children: [
         AutoRoute(path: '', page: CreateSheetScreen),
@@ -83,17 +89,24 @@ import 'package:cheat_sheet/view/test_ui_book.dart';
     name: 'RegisterRoute',
     page: RegisterScreen,
   ),
-  AutoRoute(path: '/notification_setting', name: 'NotificationSettingRoute', page: NotificationSetting),
   AutoRoute(path: '/my_account', name: 'MyAccountRoute', page: EmptyRouterPage, children: [
     AutoRoute(path: '', page: MyAccount),
     AutoRoute(path: 'change_email', name: 'ChangeEmailRoute', page: ChangeEmail),
     AutoRoute(path: 'change_password', name: 'ChangePasswordRoute', page: ChangePassword),
   ]),
   AutoRoute(path: '/top_up', name: 'TopUpRoute', page: TopUp),
-  AutoRoute(path: '/bank_account', name: 'BankAccountRoute', page: EmptyRouterPage, children: [
-    AutoRoute(path: '', page: BankAccount),
-    AutoRoute(path: 'add_payment_methods', name: 'AddPaymentMethodsRoute', page: AddPaymentMethods),
-    AutoRoute(path: 'add_payment_methods/add_card', name: 'AddCardRoute', page: AddCard)
+  AutoRoute(path: '/first_login', name: 'FirstLoginRoute', page: EmptyRouterPage, children: [
+    AutoRoute(
+      path: 'about_subject',
+      name: 'AboutSubjectRoute',
+      page: AboutSubject,
+    ),
+    AutoRoute(
+      path: 'about_grade',
+      name: 'AboutGradeRoute',
+      page: AboutGrade,
+      initial: true,
+    ),
   ]),
 ])
 class $AppRouter {}

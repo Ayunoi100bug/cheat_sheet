@@ -2,9 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cheat_sheet/model/question.dart';
 import 'package:cheat_sheet/res/colors.dart';
 import 'package:cheat_sheet/res/components/flushbar_icon.dart';
+import 'package:cheat_sheet/res/components/popup_auth.dart';
 import 'package:cheat_sheet/res/components/popup_dialog.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/view/home_screen/question/ask_question.dart';
+import 'package:cheat_sheet/view_model/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -16,18 +18,23 @@ import 'flushbar.dart';
 import 'form_field.dart';
 
 class Ask extends StatefulWidget {
-  final bool focus;
+  final String userId;
+  final String questionId;
   final String userImage;
   final String username;
   final String questionText;
   final String sheetId;
+  final List like;
+
   const Ask({
     super.key,
-    required this.focus,
+    required this.userId,
+    required this.questionId,
     required this.userImage,
     required this.username,
     required this.questionText,
     required this.sheetId,
+    required this.like,
   });
 
   @override
@@ -44,9 +51,9 @@ class _AskState extends State<Ask> {
     return Padding(
       padding: EdgeInsets.only(left: screenWidth * 0.032, right: screenWidth * 0.032, bottom: screenWidth * 0.024),
       child: Card(
-        color: widget.focus ? AppColors.warning100 : AppColors.white,
+        color: AppColors.white,
         elevation: 6,
-        shadowColor: widget.focus ? AppColors.error600 : AppColors.black600,
+        shadowColor: AppColors.black600,
         child: Container(
           padding: EdgeInsets.all(screenWidth * 0.02),
           child: LayoutBuilder(builder: (context, constraints) {
@@ -61,13 +68,11 @@ class _AskState extends State<Ask> {
                       child: SizedBox(
                         width: isPortrait ? constraints.maxWidth * 0.12 : constraints.maxWidth * 0.05,
                         child: CircleAvatar(
+                          radius: 20,
                           backgroundImage: CachedNetworkImageProvider(widget.userImage),
-                          radius: 12,
                         ),
                       ),
-                      onTap: () {
-                        print("user image");
-                      },
+                      onTap: () {},
                     ),
                     Column(
                       children: [
@@ -96,25 +101,44 @@ class _AskState extends State<Ask> {
                                   Padding(
                                     padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
                                     child: GestureDetector(
-                                      child: Icon(Icons.thumb_up_off_alt_outlined, size: 18),
-                                      onTap: () {},
+                                      child: Icon(
+                                          widget.like.contains(_auth.currentUser?.uid)
+                                              ? Icons.thumb_up_off_alt_rounded
+                                              : Icons.thumb_up_off_alt_outlined,
+                                          color: widget.like.contains(_auth.currentUser?.uid) ? AppColors.black600 : AppColors.black600,
+                                          size: 18),
+                                      onTap: () async {
+                                        if (!AuthService().isLogged()) {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) => Popup_Login(context),
+                                          );
+                                        } else {
+                                          if (widget.like.contains(_auth.currentUser?.uid)) {
+                                            await EditQuestionData().removeQuestionLike(widget.questionId, _auth.currentUser!.uid);
+                                          } else {
+                                            await EditQuestionData().increaseQuestionLike(widget.questionId, _auth.currentUser!.uid);
+                                          }
+                                        }
+                                      },
                                     ),
                                   ),
-                                  Regular14px(text: "99"),
+                                  Regular14px(text: widget.like.length.toString()),
                                   SizedBox(
                                     width: screenWidth * 0.02,
                                   ),
-                                  // InkWell(
-                                  //   child: widget.userId == _auth.currentUser!.uid
-                                  //       ? Icon(
-                                  //           FontAwesomeIcons.ellipsisV,
-                                  //           size: 16,
-                                  //         )
-                                  //       : Container(),
-                                  //   onTap: () {
-                                  //     _BottomQuestion(context, widget.questionText, widget.questionId, widget.sheetId);
-                                  //   },
-                                  // ),
+                                  InkWell(
+                                    child: widget.userId == _auth.currentUser?.uid
+                                        ? Icon(
+                                            FontAwesomeIcons.ellipsisV,
+                                            size: 16,
+                                            color: AppColors.black600,
+                                          )
+                                        : Container(),
+                                    onTap: () {
+                                      _BottomQuestion(context, widget.questionText, widget.questionId, widget.sheetId);
+                                    },
+                                  ),
                                 ],
                               ),
                             ),
@@ -168,7 +192,7 @@ void _BottomQuestion(BuildContext context, String textQuestion, String questionI
                   alignment: Alignment.center,
                   height: isPortrait ? screenHeight * 0.08 : screenWidth * 0.08,
                   width: double.infinity,
-                  child: const Regular16px(text: 'Edit')),
+                  child: const Regular16px(text: 'แก้ไขคำถาม')),
               onTap: () {
                 _BottomEditQuestion(context, textQuestion, questionId);
               },
@@ -179,7 +203,7 @@ void _BottomQuestion(BuildContext context, String textQuestion, String questionI
                   height: isPortrait ? screenHeight * 0.08 : screenWidth * 0.08,
                   width: double.infinity,
                   child: const Regular16px(
-                    text: 'Delete',
+                    text: 'ลบคำถาม',
                     color: AppColors.error500,
                   )),
               onTap: () {
@@ -214,7 +238,9 @@ void _BottomEditQuestion(BuildContext context, String textQuestion, String quest
     )),
     builder: (BuildContext context) {
       return SizedBox(
-        height: isPortrait ? screenHeight * 0.25 : screenWidth * 0.25,
+        height: MediaQuery.of(context).viewInsets.bottom == 0
+            ? screenHeight * 0.3
+            : (MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.bottom) / 1,
         child: Column(
           children: [
             Form(
@@ -224,8 +250,8 @@ void _BottomEditQuestion(BuildContext context, String textQuestion, String quest
                 height: isPortrait ? screenHeight * 0.15 : screenWidth * 0.15,
                 child: MyTextFormField(
                   initialValue: textQuestion,
-                  maxLine: 2,
-                  minLine: 2,
+                  maxLine: 6,
+                  minLine: 6,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   onSaved: (value) {
                     if (value == '') {
@@ -243,7 +269,7 @@ void _BottomEditQuestion(BuildContext context, String textQuestion, String quest
               height: isPortrait ? screenHeight * 0.05 : screenWidth * 0.05,
               alignment: Alignment.centerRight,
               child: PrimaryButton(
-                text: 'แก้ไข',
+                text: 'ส่ง',
                 onPressed: () async {
                   _formKey.currentState!.save();
                   try {

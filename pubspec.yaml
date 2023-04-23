@@ -74,8 +74,9 @@ dependencies:
   painter: ^2.0.0
   flutter_stripe: ^8.0.0+1
   flutter_colorpicker: ^1.0.3
-
-
+  dropdown_button2: ^2.0.0
+  search_choices: ^2.2.5
+  intl: ^0.17.0
 
 flutter_icons:
   android: true

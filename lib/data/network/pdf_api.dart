@@ -70,7 +70,12 @@ class PDFApi {
     return Future.value(uploadTask);
   }
 
-  static Future<firebaseStorage.UploadTask?> createCoverSheetImage(String sheetId) async {
+  static Future<void> deleteSheet(String sheetId) async {
+    firebaseStorage.FirebaseStorage.instance.ref().child('sheets').child(sheetId).child(sheetId + '.pdf').delete();
+    firebaseStorage.FirebaseStorage.instance.ref().child('sheets').child(sheetId).child('cover_image.png').delete();
+  }
+
+  Future<firebaseStorage.UploadTask?> createCoverSheetImage(String sheetId) async {
     final File file = await loadPDFFromFirebase(sheetId);
 
     imglib.Image coverImage = await _getImageFromPdf(file, 1);
@@ -97,13 +102,39 @@ class PDFApi {
     return file;
   }
 
-  static Future<File> _imageToFile(imglib.Image inputImage) async {
+  Future<File> _imageToFile(imglib.Image inputImage) async {
     final dir = await getExternalStorageDirectory();
 
-    File imageFile = new File('${dir!.path}/image.png');
-    new File(imageFile.path).writeAsBytes(imglib.encodePng(inputImage));
+    File imageFile = File('${dir!.path}/image.png');
+    await Future.wait([
+      File(imageFile.path).writeAsBytes(imglib.encodePng(inputImage)),
+    ]);
 
-    return imageFile;
+    return coverImageCorruptHandler(inputImage, imageFile);
+  }
+
+  Future<File> coverImageCorruptHandler(imglib.Image newImage, File handler) async {
+    int handlerSize = await handler.length();
+    if (handlerSize != 0) {
+      debugPrint("Image size is: $handlerSize, and it's not corrupt.");
+      return handler;
+    }
+    int i = 1;
+    while (handlerSize == 0) {
+      if (i == 1) debugPrint("Begin fixing...");
+      if (handlerSize != 0) {
+        debugPrint("Fixing ends with $handlerSize image file size.");
+        break;
+      }
+      await Future.wait([
+        File(handler.path).writeAsBytes(imglib.encodePng(newImage)),
+      ]);
+      handlerSize = await handler.length();
+      debugPrint("Round $i fixed, new image size is: $handlerSize");
+      i++;
+    }
+
+    return handler;
   }
 
   static Future<imglib.Image> _getImageFromPdf(File inputFile, int pageNumber) async {

@@ -100,6 +100,7 @@ class _MainScreenState extends State<MainScreen> {
                   }
                   Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
                   return Scaffold(
+                    resizeToAvoidBottomInset: false,
                     key: _scaffoldKey,
                     endDrawer: const SidebarMenu(),
                     body: AutoTabsScaffold(

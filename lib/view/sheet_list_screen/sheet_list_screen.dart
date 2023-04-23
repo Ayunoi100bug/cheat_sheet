@@ -11,6 +11,7 @@ import 'package:cheat_sheet/res/components/popup_auth.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/view_model/create_firestore.dart';
+import 'package:cheat_sheet/view_model/update_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -46,7 +47,7 @@ class _SheetListScreenState extends State<SheetListScreen> with AutomaticKeepAli
             return Popup_Login(context);
           }
           return StreamBuilder<QuerySnapshot>(
-              stream: _firestore.collection("sheetList").snapshots(),
+              stream: _firestore.collection("sheetList").orderBy("timestamp", descending: true).snapshots(),
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (!snapshot.hasData) {
                   return Container();
@@ -58,35 +59,25 @@ class _SheetListScreenState extends State<SheetListScreen> with AutomaticKeepAli
                 final mySheetLists = snapshot.data?.docs.where((document) => document["authorId"] == _auth.currentUser?.uid);
                 return Scaffold(
                   resizeToAvoidBottomInset: true,
+                  floatingActionButton: FloatingActionButton(
+                    splashColor: AppColors.tertiary600,
+                    backgroundColor: AppColors.tertiary700.withOpacity(0.7),
+                    elevation: 0,
+                    onPressed: () {
+                      _BottomSheet(context);
+                    },
+                    child: const Icon(
+                      Icons.add,
+                      color: AppColors.white,
+                      size: 40,
+                    ),
+                  ),
+                  floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
                   body: SafeArea(
                     child: LayoutBuilder(builder: (context, constraints) {
                       return SingleChildScrollView(
                         child: Column(
                           children: [
-                            Container(
-                              padding: EdgeInsets.only(top: screenWidth * 0.032, right: screenWidth * 0.032),
-                              child: InkWell(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(color: AppColors.tertiary500),
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: const Icon(
-                                        FontAwesomeIcons.plus,
-                                        color: AppColors.tertiary500,
-                                        size: 30,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                onTap: () {
-                                  _BottomSheet(context);
-                                },
-                              ),
-                            ),
                             Padding(
                               padding: EdgeInsets.all(screenWidth * GapDimension.w0_032),
                               child: GridView.builder(
@@ -200,10 +191,6 @@ void _BottomSheet(context) {
               key: _formKey,
               child: Container(
                 width: 150,
-                decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.black400),
-                  borderRadius: BorderRadius.circular(12),
-                ),
                 child: MyTextFormField(
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   hintText: 'ชื่อชีทลิสต์',
@@ -221,27 +208,26 @@ void _BottomSheet(context) {
               text: 'บันทึก',
               onPressed: () async {
                 _formKey.currentState!.save();
-                try {
-                  myCollection
-                      .createSheetListCollection(
-                    _sheetLists.sheetListName,
-                    _sheetLists.sid = [],
-                    _sheetLists.authorId = _auth.currentUser!.uid,
-                    _sheetLists.sheetListId = uuid.v4(),
-                    _sheetLists.sheetListCoverImage = '',
-                  )
-                      .then(
-                    (value) {
-                      _formKey.currentState!.reset();
-                      AutoRouter.of(context).popUntilRoot();
-                      FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, 'สร้างชีทลิสต์สำเร็จ');
-                    },
-                  );
-                  await _firestoreDb.collection('users').doc(_auth.currentUser!.uid).update({
-                    'sheetLists': FieldValue.arrayUnion([_sheetLists.sheetListId])
-                  });
-                } on FirebaseAuthException catch (e) {
-                  FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
+                if (_formKey.currentState!.validate()) {
+                  try {
+                    await myCollection
+                        .createSheetListCollection(
+                      context,
+                      _sheetLists.sheetListName,
+                      _sheetLists.sid = [],
+                      _sheetLists.authorId = _auth.currentUser!.uid,
+                      _sheetLists.sheetListId = uuid.v4(),
+                      _sheetLists.sheetListCoverImage = '',
+                    )
+                        .then(
+                      (value) async {
+                        _formKey.currentState!.reset();
+                        await UpdateCollection().achievement(context, 'trackingCreateSheetList');
+                      },
+                    );
+                  } on FirebaseAuthException catch (e) {
+                    FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
+                  }
                 }
               },
             ),

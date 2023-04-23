@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:intl/intl.dart';
 
 class Review extends StatefulWidget {
   final String sheetId;
@@ -118,7 +119,7 @@ class _ReviewState extends State<Review> {
                                           _BottomReview(context, widget.textReview, widget.userRating, widget.reviewId, widget.sheetId);
                                         },
                                         child: widget.userId == _auth.currentUser!.uid
-                                            ? const Icon(FontAwesomeIcons.ellipsisV, color: AppColors.black700, size: 16)
+                                            ? const Icon(FontAwesomeIcons.ellipsisV, color: AppColors.black600, size: 16)
                                             : Container(),
                                       );
                                     }),
@@ -139,7 +140,9 @@ class _ReviewState extends State<Review> {
                   ),
                   Container(
                     padding: EdgeInsets.all(constraints.maxWidth * 0.016),
-                    child: Regular10px(text: widget.dateTime.toDate().toString()),
+                    child: Regular12px(
+                      text: DateFormat('M/d/y hh:mm').format(widget.dateTime.toDate()),
+                    ),
                   ),
                 ],
               );

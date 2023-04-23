@@ -16,13 +16,26 @@ class ColorPickerPage extends StatefulWidget {
 class _ColorPickerPageState extends State<ColorPickerPage> {
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: ColorPicker(
-        pickerColor: widget.pickedColor,
-        onColorChanged: (Color c) {
-          Provider.of<ColorPasser>(context, listen: false).setColor(c);
-          widget.controller.drawColor = c;
-        },
+      body: SafeArea(
+        child: Column(
+          children: [
+            SizedBox(
+              height: screenWidth * 0.3,
+            ),
+            ColorPicker(
+              pickerColor: widget.pickedColor,
+              onColorChanged: (Color c) {
+                Provider.of<ColorPasser>(context, listen: false).setColor(c);
+                widget.controller.drawColor = c;
+              },
+            ),
+            SizedBox(
+              height: screenWidth * 0.3,
+            ),
+          ],
+        ),
       ),
     );
   }

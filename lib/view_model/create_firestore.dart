@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:cheat_sheet/model/answer.dart';
 import 'package:cheat_sheet/model/question.dart';
 import 'package:cheat_sheet/model/review.dart';
 import 'package:cheat_sheet/model/sheet.dart';
 import 'package:cheat_sheet/model/sheet_list.dart';
 import 'package:cheat_sheet/model/user.dart';
+import 'package:cheat_sheet/view_model/read_firestore.dart';
 import 'package:cheat_sheet/view_model/update_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,22 +17,23 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:uuid/uuid.dart';
 
-import '../res/colors.dart';
 import '../res/components/flushbar.dart';
 import '../res/components/flushbar_icon.dart';
 
 class CreateCollection {
   final storageRef = FirebaseStorage.instance.ref();
   final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+  final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
   Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
   Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetCoverImage: '', demoPages: [], sheetTypeFree: true, authorId: '');
   SheetLists mySheetLists = SheetLists(sheetListName: '', sid: [], authorId: '', sheetListId: '');
   Reviews myReview = Reviews(text: '', rid: '', reviewerId: '', sheetId: '', rating: 0, like: 0);
-  Question myQuestion = Question(text: '', sheetId: '', questionerId: '', askingPage: 0);
+  Question myQuestion = Question(text: '', sheetId: '', questionerId: '', askingPage: 0, like: [], numOfLike: 0);
+  AnswerModel myAnswer = AnswerModel(text: '', respondentId: '', like: [], numOfLike: 0);
 
   Future<void> createUserCollection(String argUsername, String argEmail, String argUid) async {
     const String defaultPath = "images/default_profile.png";
@@ -38,6 +41,7 @@ class CreateCollection {
     final String url = await storageRef.getDownloadURL();
     await _firestore.collection("users").doc(argUid).set({
       'timestamp': myUser.timestamp,
+      'lastDayLogin': myUser.lastDayLogin,
       'username': argUsername.toString().trim(),
       'email': argEmail.toString().trim(),
       'uid': argUid.toString().trim(),
@@ -45,8 +49,21 @@ class CreateCollection {
       'follower': myUser.follower,
       'following': myUser.following,
       'coin': myUser.coin,
+      'quest1': myUser.quest1,
+      'quest2': myUser.quest2,
+      'quest3': myUser.quest3,
+      'trackingAsk': myUser.trackingAsk,
+      'trackingBuySheet': myUser.trackingBuySheet,
+      'trackingCreateSheetList': myUser.trackingCreateSheetList,
+      'trackingLike': myUser.trackingLike,
+      'trackingLogin': myUser.trackingLogin,
+      'trackingReadSheet': myUser.trackingReadSheet,
+      'trackingReview': myUser.trackingReview,
       'sheetLists': myUser.sheetLists,
       'buyedSheet': myUser.buyedSheet,
+    }).then((value) async {
+      await createBuyedAndLikedSheetList(argUid);
+      await UpdateCollection().updateQuest();
     });
   }
 
@@ -59,6 +76,7 @@ class CreateCollection {
       String? firstName = cutName?[0];
       await _firestore.collection("users").doc(currentuser?.uid).set({
         'timestamp': myUser.timestamp,
+        'lastDayLogin': myUser.lastDayLogin,
         'username': firstName,
         'email': currentuser?.email,
         'uid': currentuser?.uid,
@@ -66,8 +84,21 @@ class CreateCollection {
         'follower': myUser.follower,
         'following': myUser.following,
         'coin': myUser.coin,
+        'quest1': myUser.quest1,
+        'quest2': myUser.quest2,
+        'quest3': myUser.quest3,
+        'trackingAsk': myUser.trackingAsk,
+        'trackingBuySheet': myUser.trackingBuySheet,
+        'trackingCreateSheetList': myUser.trackingCreateSheetList,
+        'trackingLike': myUser.trackingLike,
+        'trackingLogin': myUser.trackingLogin,
+        'trackingReadSheet': myUser.trackingReadSheet,
+        'trackingReview': myUser.trackingReview,
         'sheetLists': myUser.sheetLists,
         'buyedSheet': myUser.buyedSheet,
+      }).then((value) async {
+        await createBuyedAndLikedSheetList(currentuser!.uid);
+        await UpdateCollection().updateQuest();
       });
     }
   }
@@ -83,6 +114,7 @@ class CreateCollection {
       String profileImage = userData['picture']['data']['url'];
       await _firestore.collection("users").doc(currentuser?.uid).set({
         'timestamp': myUser.timestamp,
+        'lastDayLogin': myUser.lastDayLogin,
         'username': firstName,
         'email': currentuser?.email,
         'uid': currentuser?.uid,
@@ -90,14 +122,27 @@ class CreateCollection {
         'follower': myUser.follower,
         'following': myUser.following,
         'coin': myUser.coin,
+        'quest1': myUser.quest1,
+        'quest2': myUser.quest2,
+        'quest3': myUser.quest3,
+        'trackingAsk': myUser.trackingAsk,
+        'trackingBuySheet': myUser.trackingBuySheet,
+        'trackingCreateSheetList': myUser.trackingCreateSheetList,
+        'trackingLike': myUser.trackingLike,
+        'trackingLogin': myUser.trackingLogin,
+        'trackingReadSheet': myUser.trackingReadSheet,
+        'trackingReview': myUser.trackingReview,
         'sheetLists': myUser.sheetLists,
         'buyedSheet': myUser.buyedSheet,
+      }).then((value) async {
+        await createBuyedAndLikedSheetList(currentuser!.uid);
+        await UpdateCollection().updateQuest();
       });
     }
   }
 
   Future<void> createSheetCollection(String sheetId, String argSheetName, String argDetailSheet, String urlSheetCoverImage, List<int> demoPages,
-      bool argSheetType, int? argPrice, String argAuthorId) async {
+      bool argSheetType, int? argPrice, String argAuthorId, List<String> argTagList) async {
     await _firestore.collection("sheet").doc(sheetId).set({
       'timestamp': mySheet.timestamp,
       'sheetName': argSheetName.toString().trim(),
@@ -110,19 +155,64 @@ class CreateCollection {
       'sid': sheetId,
       'buyer': mySheet.buyer,
       'authorId': argAuthorId,
+      'sheetTags': argTagList,
+    }).then((value) async {
+      await createTag(sheetId, argTagList);
     });
   }
 
+  Future<void> createTag(String argSid, List<String> argTag) async {
+    for (String tagDoc in argTag) {
+      await _firestore.collection("tag").doc(tagDoc).update({
+        'sheetInTagList': FieldValue.arrayUnion([argSid]),
+      });
+    }
+  }
+
   Future<void> createSheetListCollection(
-      String argSheetListName, List? argSid, String argAuthorId, String argSheetListId, String? argSheetListCoverImage) async {
-    await _firestore.collection("sheetList").doc(argSheetListId).set({
-      'timestamp': mySheetLists.timestamp,
-      'sheetListName': argSheetListName.toString().trim(),
-      'sid': argSid,
-      'authorId': argAuthorId,
-      'sheetListId': argSheetListId,
-      'sheetListCoverImage': argSheetListCoverImage,
+      BuildContext context, String argSheetListName, List? argSid, String argAuthorId, String argSheetListId, String? argSheetListCoverImage) async {
+    await Future.wait([
+      _firestore.collection("sheetList").doc(argSheetListId).set({
+        'timestamp': mySheetLists.timestamp,
+        'sheetListName': argSheetListName.toString().trim(),
+        'sid': argSid,
+        'authorId': argAuthorId,
+        'sheetListId': argSheetListId,
+        'sheetListCoverImage': argSheetListCoverImage,
+        'accessible': mySheetLists.accessible,
+      }),
+      _firestore.collection('users').doc(_auth.currentUser!.uid).update({
+        'sheetLists': FieldValue.arrayUnion([argSheetListId]),
+      }),
+    ]).then((value) {
+      AutoRouter.of(context).popUntilRoot();
+      FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, 'สร้างชีทลิสต์สำเร็จ');
     });
+  }
+
+  Future<void> createBuyedAndLikedSheetList(String argUid) async {
+    String buyedSheetListId = const Uuid().v4();
+    String likedSheetListId = const Uuid().v4();
+    Map<String, dynamic> likedSheetListData = {
+      'timestamp': mySheetLists.timestamp,
+      'sheetListName': 'ชีทที่ถูกใจ',
+      'sid': [],
+      'authorId': argUid,
+      'sheetListId': likedSheetListId,
+      'sheetListCoverImage': '',
+      'accessible': false,
+    };
+    Map<String, dynamic> buyedSheetListData = Map.from(likedSheetListData);
+    buyedSheetListData['sheetListName'] = 'ชีทที่ซื้อ';
+    buyedSheetListData['sheetListId'] = buyedSheetListId;
+    buyedSheetListData['timestamp'] = mySheetLists.timestamp;
+    await Future.wait([
+      _firestore.collection('sheetList').doc(buyedSheetListId).set(buyedSheetListData),
+      _firestore.collection('sheetList').doc(likedSheetListId).set(likedSheetListData),
+      _firestore.collection('users').doc(argUid).update({
+        'sheetLists': FieldValue.arrayUnion([buyedSheetListId, likedSheetListId]),
+      }),
+    ]);
   }
 
   Future<void> createSheetListAndUpdateCollection(BuildContext context, String argSheetListName, List? argSid, String argAuthorId,
@@ -134,24 +224,14 @@ class CreateCollection {
       'authorId': argAuthorId,
       'sheetListId': argSheetListId,
       'sheetListCoverImage': argSheetListCoverImage,
-    });
-    UpdateSheetListData().updateSheetList(context, argSheetListId, sheetId);
-    Future.delayed(const Duration(milliseconds: 500), () {
-      Navigator.of(context).pop();
-
-      const String message = 'เพิ่มชีทเข้าชีทลิสต์สำเร็จ!';
-      FlushbarPopup.successFlushbar(
-          context,
-          const Icon(
-            FontAwesomeIcons.book,
-            color: AppColors.white,
-          ),
-          message);
+      'accessible': mySheetLists.accessible,
+    }).then((value) async {
+      await UpdateSheetListData().updateSheetList(context, argSheetListId, sheetId);
     });
   }
 
   Future<void> createReviewCollection(String argText, String argRid, String argReviewerId, String argSheetId, double argRating, int argLike,
-      BuildContext context, String _review) async {
+      BuildContext context, String reviewId) async {
     double result = 0;
     if (argRating == 0) {
       const String message = 'กรุณาระบุคะแนนที่ท่านต้องการให้ก่อน!';
@@ -167,50 +247,81 @@ class CreateCollection {
       'rid': argRid,
       'like': argLike,
     });
-    var currentReviewSnapshot = await _firestore.collection("review").doc(_review).get();
-    Map<String, dynamic> currentReviewData = currentReviewSnapshot.data()!;
-    var currentSheetSnapshot = await _firestore.collection("sheet").doc(argSheetId).get();
-    Map<String, dynamic> currentSheetData = currentSheetSnapshot.data()!;
+    var currentReviewData = await ReadReviewCollection().getParamsReviewData(reviewId);
+    var currentSheetData = await ReadCollection().getParamsSheetData(argSheetId);
     List? reviewInSheet = currentSheetData['review'];
     reviewInSheet ??= [];
     result = ((currentSheetData['rating'] * reviewInSheet.length) + currentReviewData['rating']) / (reviewInSheet.length + 1);
-    await _firestore.collection('sheet').doc(argSheetId).update({
-      'review': FieldValue.arrayUnion([_review])
+    await Future.wait([
+      Future.delayed(const Duration(seconds: 0), () {
+        AutoRouter.of(context).popUntilRouteWithName('DetailSheetRoute');
+        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, 'รีวิวสำเร็จ');
+      }),
+      _firestore.collection('sheet').doc(argSheetId).update({
+        'review': FieldValue.arrayUnion([reviewId])
+      }),
+      _firestore.collection('sheet').doc(argSheetId).update({'rating': result}),
+    ]).then((value) async {
+      await Future.wait([
+        UpdateCollection().achievement(context, 'trackingReview'),
+        UpdateCollection().quest(context, 'trackingDailyReview'),
+      ]);
     });
-    await _firestore.collection('sheet').doc(argSheetId).update({'rating': result}).then(
-      (value) {
-        AutoRouter.of(context).pop();
-      },
-    );
   }
 
   Future<void> createQuestionCollection(
       String argText, String argQuestionId, String argSheetId, String argQuestionerId, BuildContext context, int argAskingPage) async {
-    await _firestore.collection("question").doc(argQuestionId).set({
-      'timestamp': myQuestion.timestamp,
-      'qid': argQuestionId,
-      'text': argText.toString().trim(),
-      'sheetId': argSheetId,
-      'questionerId': argQuestionerId,
-      'askingPage': argAskingPage,
-      'like': myQuestion.like,
-      'dislike': myQuestion.dislike,
-    });
-    await _firestore.collection('sheet').doc(argSheetId).update({
-      'question': FieldValue.arrayUnion([argQuestionId])
-    }).then(
-      (value) {
-        AutoRouter.of(context).popUntilRoot();
+    await Future.wait([
+      Future.delayed(const Duration(milliseconds: 0), () {
+        AutoRouter.of(context).popUntilRouteWithName('AskQuestionRoute');
         const String message = 'สร้างคำถามสำเร็จ!';
         FlushbarPopup.successFlushbar(context, FlushbarIcon.createQuestionIcon, message);
-      },
-    );
+      }),
+      _firestore.collection("question").doc(argQuestionId).set({
+        'timestamp': myQuestion.timestamp,
+        'qid': argQuestionId,
+        'text': argText.toString().trim(),
+        'sheetId': argSheetId,
+        'questionerId': argQuestionerId,
+        'askingPage': argAskingPage,
+        'like': myQuestion.like,
+        'numOfLike': myQuestion.numOfLike,
+        'answer': myQuestion.answer,
+      }),
+      _firestore.collection('sheet').doc(argSheetId).update({
+        'question': FieldValue.arrayUnion([argQuestionId])
+      }),
+    ]).then((value) async {
+      await Future.wait([
+        UpdateCollection().achievement(context, 'trackingQuestion'),
+        UpdateCollection().quest(context, 'trackingDailyQuestion'),
+      ]);
+    });
+  }
+
+  Future<void> createAnswerCollection(String argText, String argAnswerId, String argRespondentId, String argQuestionId, BuildContext context) async {
+    await Future.wait([
+      Future.delayed(const Duration(milliseconds: 0), () {
+        const String message = 'สร้างการตอบกลับสำเร็จ!';
+        FlushbarPopup.successFlushbar(context, FlushbarIcon.createAnswerIcon, message);
+      }),
+      _firestore.collection("answer").doc(argAnswerId).set({
+        'timestamp': myAnswer.timestamp,
+        'aid': argAnswerId,
+        'text': argText.toString().trim(),
+        'respondentId': argRespondentId,
+        'like': myAnswer.like,
+        'numOfLike': myAnswer.numOfLike,
+      }),
+      _firestore.collection('question').doc(argQuestionId).update({
+        'answer': FieldValue.arrayUnion([argAnswerId])
+      }),
+    ]);
   }
 }
 
 class Storage {
   final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
-  final User? _user = FirebaseAuth.instance.currentUser;
   final ref = FirebaseStorage.instance.ref().child('userImages');
   late String imageURL;
 

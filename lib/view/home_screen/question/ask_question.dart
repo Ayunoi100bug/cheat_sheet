@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 
 import '../../../res/components/ask.dart';
 import '../../../res/components/popup_auth.dart';
+import '../../../res/typo.dart';
 
 class AskQuestion extends StatefulWidget {
   final String sheetId;
@@ -36,7 +37,6 @@ class _AskQuestionState extends State<AskQuestion> {
   void initState() {
     super.initState();
     _scrollController = ScrollController();
-    // _scrollController = FixedExtentScrollController();
   }
 
   @override
@@ -75,52 +75,54 @@ class _AskQuestionState extends State<AskQuestion> {
           size: 40,
         ),
       ),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return Padding(
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
             padding: EdgeInsets.only(top: screenHeight * 0.024),
             child: Column(
               children: [
-                // Container(
-                //   padding: EdgeInsets.only(
-                //     top: screenHeight * 0.020,
-                //     left: screenHeight * 0.036,
-                //     right: screenHeight * 0.036,
-                //     bottom: screenHeight * 0.020,
-                //   ),
-                //   height: isPortrait ? constraints.maxHeight * 0.6 : constraints.maxHeight * 0.4,
-                //   child: PdfDocumentLoader.openFile(
-                //     file!.path,
-                //     pageNumber: widget.askingPage,
-                //     pageBuilder: (context, textureBuilder, pageSize) => textureBuilder(),
-                //   ),
-                // ),
                 SizedBox(
                   height: isPortrait ? screenHeight * 0.8 : screenHeight * 0.6,
-                  child: FutureBuilder(
-                      future: _firestore
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: _firestore
                           .collection('question')
                           .where('sheetId', isEqualTo: widget.sheetId)
                           .where('askingPage', isEqualTo: widget.askingPage)
-                          .get(),
+                          .orderBy('numOfLike', descending: true)
+                          .snapshots(),
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
-                          return Center(child: CircularProgressIndicator());
+                          return Container();
+                        } else if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(child: CircularProgressIndicator());
                         }
                         int questionCount = snapshot.data!.docs.length;
+                        if (questionCount == 0) {
+                          return SizedBox(
+                            height: screenWidth * 0.57,
+                            child: const Center(
+                              child: Regular16px(text: "ยังไม่มีคำถาม"),
+                            ),
+                          );
+                        }
+
                         return ListView.builder(
                           controller: _scrollController,
                           shrinkWrap: true,
                           itemCount: questionCount,
                           itemBuilder: (context, index) {
                             DocumentSnapshot question = snapshot.data!.docs[index];
-                            return FutureBuilder(
-                                future: _firestore.collection('users').doc(question['questionerId']).get(),
+
+                            return StreamBuilder<DocumentSnapshot>(
+                                stream: _firestore.collection('users').doc(question['questionerId']).snapshots(),
                                 builder: (context, userSnapshot) {
-                                  if (!snapshot.hasData) {
-                                    return Center(child: CircularProgressIndicator());
+                                  if (!userSnapshot.hasData) {
+                                    return Container();
+                                  } else if (userSnapshot.connectionState == ConnectionState.waiting) {
+                                    return const Center(child: CircularProgressIndicator());
                                   }
-                                  Map<String, dynamic>? user = userSnapshot.data!.data();
+                                  Map<String, dynamic>? user = userSnapshot.data?.data() as Map<String, dynamic>?;
                                   return InkWell(
                                     onTap: () async {
                                       File questionImage = await ImageApi.loadQuestionImage(question.id);
@@ -131,11 +133,13 @@ class _AskQuestionState extends State<AskQuestion> {
                                       }
                                     },
                                     child: Ask(
-                                      userImage: user!['profileImage'],
-                                      username: user['username'],
+                                      userId: user?['uid'],
+                                      questionId: question['qid'],
+                                      userImage: user?['profileImage'],
+                                      username: user?['username'],
                                       sheetId: widget.sheetId,
                                       questionText: question['text'],
-                                      focus: false,
+                                      like: question['like'],
                                     ),
                                   );
                                 });
@@ -145,10 +149,9 @@ class _AskQuestionState extends State<AskQuestion> {
                 ),
               ],
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
-    // });
   }
 }

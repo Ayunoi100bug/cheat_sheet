@@ -1,43 +1,35 @@
 import 'package:cheat_sheet/view/sheet_list_screen/sheet_list_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Question {
+class AnswerModel {
   FieldValue timestamp = FieldValue.serverTimestamp();
-  String qid = uuid.v4();
+  String ansid = uuid.v4();
   String text;
-  String sheetId;
-  String questionerId;
-  int askingPage;
-  List? answer = [];
+  String respondentId;
   List? like = [];
   int? numOfLike;
 
-  Question({
+  AnswerModel({
     required this.text,
-    required this.sheetId,
-    required this.questionerId,
-    required this.askingPage,
+    required this.respondentId,
     this.like,
     this.numOfLike,
   });
 
-  Question.fromJson(Map<String, dynamic> json)
+  AnswerModel.fromJson(Map<String, dynamic> json)
       : timestamp = json['timestamp'],
-        qid = json['qid'],
+        ansid = json['ansid'],
         text = json['text'],
-        sheetId = json['sheetId'],
-        questionerId = json['questionerId'],
-        askingPage = json['askingPage'],
+        respondentId = json['respondentId'],
         like = json['like'],
         numOfLike = json['numOfLike'];
 
   Map<String, dynamic> toJson() => {
         'timestamp': timestamp,
-        'qid': qid,
+        'ansid': ansid,
         'text': text,
-        'sheetId': sheetId,
-        'questionerId': questionerId,
-        'askingPage': askingPage,
+        'respondentId': respondentId,
+        'like': like,
         'like': like,
         'numOfLike': numOfLike,
       };

@@ -88,7 +88,7 @@ Widget Popup_DeleteAllSheet(BuildContext context) {
                 Navigator.pop(context);
               }),
           PrimaryButton(
-            text: 'ลบชีท',
+            text: 'ยืนยัน',
             onPressed: () {
               DeleteCollection().deleteAllSheet(context);
             },
@@ -136,7 +136,7 @@ Widget Popup_DeleteSheet(BuildContext context, String sheetId) {
                 Navigator.pop(context);
               }),
           PrimaryButton(
-            text: 'ลบชีท',
+            text: 'ยืนยัน',
             onPressed: () {
               DeleteDocument().deleteSheet(context, sheetId);
             },
@@ -184,7 +184,7 @@ Widget Popup_DeleteReview(BuildContext context, String reviewId, String sheetId)
                 Navigator.pop(context);
               }),
           PrimaryButton(
-            text: 'ลบความคิดเห็น',
+            text: 'ยืนยัน',
             onPressed: () {
               DeleteDocument().deleteReview(context, reviewId, sheetId);
             },
@@ -232,9 +232,57 @@ Widget Popup_DeleteQuestion(BuildContext context, String questionId, String shee
                 Navigator.pop(context);
               }),
           PrimaryButton(
-            text: 'ลบคำถาม',
+            text: 'ยืนยัน',
             onPressed: () {
               DeleteDocument().deleteQuestion(context, questionId, sheetId);
+            },
+            color: AppColors.error600,
+          ),
+        ],
+      ),
+    ],
+  );
+}
+
+Widget Popup_DeleteAnswer(BuildContext context, String answerId, String questionId) {
+  double screenHeight = MediaQuery.of(context).size.height;
+
+  return AlertDialog(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
+    title: Column(
+      children: [
+        Image.asset(
+          'assets/images/error.png',
+          width: 70,
+        ),
+        SizedBox(
+          height: screenHeight * 0.008,
+        ),
+        Regular14px(text: 'ต้องการที่จะลบคำตอบนี้หรือไม่?'),
+        SizedBox(
+          height: screenHeight * 0.008,
+        ),
+        Regular12px(
+          text: 'คำตอบนี้จะถูกลบถาวร',
+          color: AppColors.black600,
+        ),
+      ],
+    ),
+    actions: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          OutlineButton(
+              text: 'ยกเลิก',
+              onPressed: () {
+                Navigator.pop(context);
+              }),
+          PrimaryButton(
+            text: 'ยืนยัน',
+            onPressed: () {
+              DeleteDocument().deleteAnswer(context, answerId, questionId);
             },
             color: AppColors.error600,
           ),
@@ -275,7 +323,7 @@ Widget Popup_DeleteSheetList(BuildContext context, String sheetListId) {
         children: [
           OutlineButton(text: 'ยกเลิก', onPressed: () {}),
           PrimaryButton(
-            text: 'ลบชีทลิสต์',
+            text: 'ยืนยัน',
             onPressed: () {
               Navigator.of(context).pop();
               AutoRouter.of(context).navigateNamed('/sheet_list');
