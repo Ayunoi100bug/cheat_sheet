@@ -225,6 +225,12 @@ class UpdateCollection {
       });
     }
   }
+
+  Future<void> readerIncrement(String argSid) async {
+    await _firestore.collection("sheet").doc(argSid).update({
+      'read': FieldValue.increment(1),
+    });
+  }
 }
 
 class EditProfileData {

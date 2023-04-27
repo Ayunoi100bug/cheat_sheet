@@ -156,6 +156,9 @@ class CreateCollection {
       'buyer': mySheet.buyer,
       'authorId': argAuthorId,
       'sheetTags': argTagList,
+      'review': mySheet.review,
+      'question': mySheet.question,
+      'read': mySheet.read,
     }).then((value) async {
       await createTag(sheetId, argTagList);
     });
