@@ -32,8 +32,8 @@ class CreateCollection {
   Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetCoverImage: '', demoPages: [], sheetTypeFree: true, authorId: '');
   SheetLists mySheetLists = SheetLists(sheetListName: '', sid: [], authorId: '', sheetListId: '');
   Reviews myReview = Reviews(text: '', rid: '', reviewerId: '', sheetId: '', rating: 0, like: 0);
-  Question myQuestion = Question(text: '', sheetId: '', questionerId: '', askingPage: 0, like: 0, dislike: 0);
-  AnswerModel myAnswer = AnswerModel(text: '', respondentId: '', like: 0);
+  Question myQuestion = Question(text: '', sheetId: '', questionerId: '', askingPage: 0, like: [], numOfLike: 0);
+  AnswerModel myAnswer = AnswerModel(text: '', respondentId: '', like: [], numOfLike: 0);
 
   Future<void> createUserCollection(String argUsername, String argEmail, String argUid) async {
     const String defaultPath = "images/default_profile.png";
@@ -156,6 +156,9 @@ class CreateCollection {
       'buyer': mySheet.buyer,
       'authorId': argAuthorId,
       'sheetTags': argTagList,
+      'review': mySheet.review,
+      'question': mySheet.question,
+      'read': mySheet.read,
     }).then((value) async {
       await createTag(sheetId, argTagList);
     });
@@ -285,7 +288,7 @@ class CreateCollection {
         'questionerId': argQuestionerId,
         'askingPage': argAskingPage,
         'like': myQuestion.like,
-        'dislike': myQuestion.dislike,
+        'numOfLike': myQuestion.numOfLike,
         'answer': myQuestion.answer,
       }),
       _firestore.collection('sheet').doc(argSheetId).update({
@@ -311,6 +314,7 @@ class CreateCollection {
         'text': argText.toString().trim(),
         'respondentId': argRespondentId,
         'like': myAnswer.like,
+        'numOfLike': myAnswer.numOfLike,
       }),
       _firestore.collection('question').doc(argQuestionId).update({
         'answer': FieldValue.arrayUnion([argAnswerId])

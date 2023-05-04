@@ -77,14 +77,16 @@ class ReadCollection {
       return allTagCount;
     }
     List<dynamic> allSheetTags = [];
-
+    // get all sheet data from all sid in allUserLikedSheet
     Map<String, dynamic> allSheetData = await getParamsSheetDataBatch(allUserLikedSheet['sid']);
+
     // add all tag from each of sid in allUserLikedSheet into allSheetTags list
     for (var sid in allUserLikedSheet['sid']) {
       if (!allSheetData[sid].containsKey('sheetTags')) continue;
       allSheetTags.addAll(allSheetData[sid]['sheetTags']);
     }
 
+    // count all tag in allSheetTags each of specific tag
     for (var tagName in allSheetTags) {
       switch (tagName) {
         case "คณิตศาสตร์":
@@ -107,7 +109,7 @@ class ReadCollection {
           break;
       }
     }
-    // Stop the stopwatch and print the elapsed time
+    // stop the stopwatch and print the elapsed time
     stopwatch.stop();
     Duration elapsed = stopwatch.elapsed;
     double milliseconds = elapsed.inMilliseconds.toDouble();

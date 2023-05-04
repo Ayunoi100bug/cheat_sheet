@@ -3,7 +3,6 @@ import 'package:cheat_sheet/res/components/sheet.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/view_model/auth.dart';
 import 'package:cheat_sheet/view_model/knn.dart';
-import 'package:cheat_sheet/view_model/read_firestore.dart';
 import 'package:cheat_sheet/view_model/update_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -33,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
       UpdateCollection().updateUserDay(context, thisDay, _auth.currentUser?.uid);
     }
 
+
     if (_auth.currentUser?.uid == null) {
       return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -59,6 +59,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                             Icons.search,
                             color: AppColors.primary800,
                             size: 18,
+
                           ),
                           SizedBox(width: screenWidth * 0.02),
                           const Regular16px(

@@ -225,6 +225,12 @@ class UpdateCollection {
       });
     }
   }
+
+  Future<void> readerIncrement(String argSid) async {
+    await _firestore.collection("sheet").doc(argSid).update({
+      'read': FieldValue.increment(1),
+    });
+  }
 }
 
 class EditProfileData {
@@ -389,6 +395,22 @@ class EditQuestionData {
       FlushbarPopup.successFlushbarNoAppbar(context, FlushbarIcon.successIcon, message);
     });
   }
+
+  Future<void> increaseQuestionLike(String currentQid, String currentUser) async {
+    var currentQuestionData = await ReadQuestionCollection().getParamsQuestionData(currentQid);
+    await _firestore.collection('question').doc(currentQid).update({
+      'like': FieldValue.arrayUnion([currentUser]),
+      'numOfLike': currentQuestionData['numOfLike'] + 1,
+    });
+  }
+
+  Future<void> removeQuestionLike(String currentQid, String currentUser) async {
+    var currentQuestionData = await ReadQuestionCollection().getParamsQuestionData(currentQid);
+    await _firestore.collection('question').doc(currentQid).update({
+      'like': FieldValue.arrayRemove([currentUser]),
+      'numOfLike': currentQuestionData['numOfLike'] - 1,
+    });
+  }
 }
 
 class EditAnswerData {
@@ -401,6 +423,22 @@ class EditAnswerData {
       AutoRouter.of(context).popUntilRoot();
       const String message = 'แก้ไขคำตอบสำเร็จ';
       FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+    });
+  }
+
+  Future<void> increaseAnswerLike(String currentAid, String currentUser) async {
+    var currentAnswerData = await ReadQuestionCollection().getParamsAnswerData(currentAid);
+    await _firestore.collection('answer').doc(currentAid).update({
+      'like': FieldValue.arrayUnion([currentUser]),
+      'numOfLike': currentAnswerData['numOfLike'] + 1,
+    });
+  }
+
+  Future<void> removeAnswerLike(String currentAid, String currentUser) async {
+    var currentAnswerData = await ReadQuestionCollection().getParamsAnswerData(currentAid);
+    await _firestore.collection('answer').doc(currentAid).update({
+      'like': FieldValue.arrayRemove([currentUser]),
+      'numOfLike': currentAnswerData['numOfLike'] - 1,
     });
   }
 }

@@ -44,7 +44,7 @@ class _DetailQuestionState extends State<DetailQuestion> {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     CreateCollection myCollection = CreateCollection();
-    final AnswerModel _answer = AnswerModel(text: '', respondentId: '', like: 0);
+    final AnswerModel _answer = AnswerModel(text: '', respondentId: '', like: []);
 
     final File? file = Provider.of<FilePasserForRead>(context).getFile();
     final File? questionImage = Provider.of<QuestionImagePasser>(context).getFile();
@@ -114,7 +114,7 @@ class _DetailQuestionState extends State<DetailQuestion> {
                             username: user['username'],
                             sheetId: widget.sheetId,
                             questionText: questionData["text"],
-                            like: questionData['like'].toString(),
+                            like: questionData['like'],
                           ),
                           answerInQuestion!.isEmpty
                               ? SizedBox(
@@ -193,8 +193,6 @@ class _DetailQuestionState extends State<DetailQuestion> {
                                         } on FirebaseAuthException catch (e) {
                                           FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
                                         }
-                                        // ! this form reset not work and it's bug
-                                        // _formKey.currentState!.reset();
                                       },
                                       backgroundColor: AppColors.tertiary600,
                                       child: Transform.rotate(

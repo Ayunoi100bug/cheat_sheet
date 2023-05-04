@@ -81,6 +81,14 @@ class _SidebarMenuState extends State<SidebarMenu> {
                               print("guide");
                             },
                           ),
+                          CustomListTile(
+                            icon: Icons.cast_for_education_outlined,
+                            title: 'แดชบอร์ด',
+                            onTap: () {
+                              Navigator.pop(context);
+                              AutoRouter.of(context).push(DashBoardRoute());
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -147,6 +155,14 @@ class _SidebarMenuState extends State<SidebarMenu> {
                             title: 'แนะนำการใช้งาน',
                             onTap: () {
                               print("guide");
+                            },
+                          ),
+                          CustomListTile(
+                            icon: Icons.cast_for_education_outlined,
+                            title: 'แดชบอร์ด',
+                            onTap: () {
+                              Navigator.pop(context);
+                              AutoRouter.of(context).push(DashBoardRoute());
                             },
                           ),
                         ],
