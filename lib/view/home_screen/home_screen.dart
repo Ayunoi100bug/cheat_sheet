@@ -379,11 +379,11 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                             Row(
                               children: [
                                 Medium20px(text: 'ชีทมาแรง'),
-                                Image.asset(
-                                  'assets/images/fire.png',
-                                  width: 18,
-                                  height: 18,
-                                ),
+                                // Image.asset(
+                                //   'assets/images/fire.png',
+                                //   width: 18,
+                                //   height: 18,
+                                // ),
                               ],
                             ),
                             InkWell(
