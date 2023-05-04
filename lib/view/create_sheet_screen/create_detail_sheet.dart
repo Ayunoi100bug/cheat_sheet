@@ -7,13 +7,13 @@ import 'package:cheat_sheet/res/components/form_field.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/view_model/create_firestore.dart';
 import 'package:cheat_sheet/view_model/file_passer.dart';
-import 'package:dotted_border/dotted_border.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
@@ -43,6 +43,7 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   CreateCollection myCollection = CreateCollection();
   SheetType? _sheetType = SheetType.free;
+  bool isEmpty = false;
   late Future resultLoaded;
   List _tagResult = [];
   List _resultList = [];
@@ -186,7 +187,7 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                         margin: EdgeInsets.only(left: screenHeight * 0.024, right: screenHeight * 0.024),
                         child: MyTextFormField(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: RequiredValidator(errorText: 'กรุณากรอกรายละเอียดของชีท.'),
+                          validator: (value) {},
                           minLine: 6,
                           maxLine: 6,
                           onSaved: (value) {
@@ -202,6 +203,7 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
                         child: SearchChoices.multiple(
+                          fieldDecoration: isEmpty == true ? BoxDecoration(border: Border.all(color: Colors.red)) : null,
                           items: resultTagAsDropdown,
                           selectedItems: selectedIndex,
                           hint: const Padding(
@@ -213,6 +215,8 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                             setState(() {
                               selectedIndex = value;
                               selectedTag = [];
+
+                              isEmpty = false;
 
                               for (int i = 0; i < selectedIndex.length; i++) {
                                 selectedTag.add(resultTagAsDropdown[selectedIndex[i]].value);
@@ -306,44 +310,50 @@ class _CreateDetailSheetState extends State<CreateDetailSheet> {
                             child: PrimaryButton(
                               text: 'เสร็จสิ้น',
                               onPressed: () async {
-                                _formKey.currentState!.save();
-                                firebaseStorage.UploadTask? task = await PDFApi.uploadToFirebase(context, pdfFile, sheetId);
-                                task!.whenComplete(() async {
-                                  firebaseStorage.UploadTask? coverImage = await PDFApi().createCoverSheetImage(sheetId);
-                                  coverImage!.whenComplete(() async {
-                                    String coverImage = await PDFApi.getCoverImage(sheetId);
-                                    try {
-                                      await myCollection
-                                          .createSheetCollection(
-                                        sheetId,
-                                        mySheet.sheetName,
-                                        mySheet.detailSheet,
-                                        coverImage,
-                                        widget.demoPages,
-                                        mySheet.sheetTypeFree,
-                                        mySheet.price,
-                                        mySheet.authorId = userId,
-                                        selectedTag,
-                                      )
-                                          .then(
-                                        (value) async {
-                                          _formKey.currentState!.reset();
-                                          Future.delayed(const Duration(milliseconds: 500), () {
-                                            AutoRouter.of(context).popUntilRoot();
+                                if (_formKey.currentState!.validate() && selectedIndex.isNotEmpty) {
+                                  _formKey.currentState!.save();
+                                  firebaseStorage.UploadTask? task = await PDFApi.uploadToFirebase(context, pdfFile, sheetId);
+                                  task!.whenComplete(() async {
+                                    firebaseStorage.UploadTask? coverImage = await PDFApi().createCoverSheetImage(sheetId);
+                                    coverImage!.whenComplete(() async {
+                                      String coverImage = await PDFApi.getCoverImage(sheetId);
+                                      try {
+                                        await myCollection
+                                            .createSheetCollection(
+                                          sheetId,
+                                          mySheet.sheetName,
+                                          mySheet.detailSheet,
+                                          coverImage,
+                                          widget.demoPages,
+                                          mySheet.sheetTypeFree,
+                                          mySheet.price,
+                                          mySheet.authorId = userId,
+                                          selectedTag,
+                                        )
+                                            .then(
+                                          (value) async {
+                                            _formKey.currentState!.reset();
+                                            Future.delayed(const Duration(milliseconds: 500), () {
+                                              AutoRouter.of(context).popUntilRoot();
 
-                                            final String message = 'อัพโหลดชีทสำเร็จ!';
-                                            FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
-                                          });
-                                        },
-                                      );
-                                    } on FirebaseAuthException catch (e) {
-                                      Fluttertoast.showToast(
-                                        msg: e.message.toString(),
-                                        gravity: ToastGravity.BOTTOM,
-                                      );
-                                    }
+                                              final String message = 'อัพโหลดชีทสำเร็จ!';
+                                              FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
+                                            });
+                                          },
+                                        );
+                                      } on FirebaseAuthException catch (e) {
+                                        Fluttertoast.showToast(
+                                          msg: e.message.toString(),
+                                          gravity: ToastGravity.BOTTOM,
+                                        );
+                                      }
+                                    });
                                   });
-                                });
+                                } else if (selectedIndex.isEmpty) {
+                                  setState(() {
+                                    isEmpty = true;
+                                  });
+                                }
                               },
                             ),
                           ),
