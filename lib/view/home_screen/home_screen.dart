@@ -3,7 +3,6 @@ import 'package:cheat_sheet/res/components/sheet.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 import 'package:cheat_sheet/view_model/auth.dart';
 import 'package:cheat_sheet/view_model/knn.dart';
-import 'package:cheat_sheet/view_model/read_firestore.dart';
 import 'package:cheat_sheet/view_model/update_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -49,15 +48,42 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                 child: Column(
                   children: [
                     ElevatedButton(
-                        onPressed: () {
-                          AutoRouter.of(context).push(RecommendSheetRoute());
+                        onPressed: () async {
+                          KNN.loadSheetData();
                         },
                         child: Text('หน้า recommend')),
                     ElevatedButton(
                         onPressed: () {
-                          AutoRouter.of(context).push(TopSheetRoute());
+                          Data tempSheet = Data(sheetId: 'test', tagNameList: ['คณิตศาสตร์']);
+                          KNN.caculateSimilarity(tempSheet);
                         },
-                        child: Text('หน้า top sheet')),
+                        child: Text('คำนวน KNN')),
+                    ElevatedButton(
+                        onPressed: () {
+                          print(KNN.getTopSimilarSheetList(3));
+                        },
+                        child: Text('เอาid sheet คล้าย')),
+                    ElevatedButton(
+                        onPressed: () {
+                          KNN.resetKNN();
+                        },
+                        child: Text('เคลีย KNN')),
+                    // ElevatedButton(
+                    //   onPressed: () {
+                    //     showDialog(
+                    //       context: context,
+                    //       builder: (BuildContext context) => Popup_DeleteAllSheet(context),
+                    //     );
+                    //   },
+                    //   child: const Text("ปุ่มลบชีททั้งหมด"),
+                    // ),
+                    // ElevatedButton(
+                    //   onPressed: () async {
+                    //     var temp3 = await ReadCollection().getAllSheetExceptCurrentUserWithoutLiked();
+                    //     debugPrint("Result: ${temp3.length}");
+                    //   },
+                    //   child: const Text("test"),
+                    // ),
                     Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.02),
