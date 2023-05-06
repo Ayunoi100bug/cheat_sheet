@@ -231,6 +231,8 @@ class UpdateCollection {
       'read': FieldValue.increment(1),
     });
   }
+
+  void userRecommented(BuildContext context, List subject) {}
 }
 
 class EditProfileData {
