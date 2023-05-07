@@ -1,4 +1,4 @@
-import 'dart:ffi';
+import 'dart:async';
 import 'dart:math';
 
 import 'package:cheat_sheet/view_model/read_firestore.dart';
@@ -187,7 +187,7 @@ class MathPack {
 
 class UpdateRecommendSheet {
   static Future<List<String>> callRecommendSheet(int numberRecommendSheet) async {
-    List<String> recommendSheetId = [];
+    Completer<List<String>> completer = Completer<List<String>>();
 
     KNN.loadSheetData();
     Future.delayed(Duration(seconds: 1), () async {
@@ -195,9 +195,11 @@ class UpdateRecommendSheet {
       List<int> topTag = Data.calculateTopTag(tagList);
       Data userTag = Data.createFromUserTag(sheetId: 'user', listTag: topTag);
       KNN.caculateSimilarity(userTag);
-      print(KNN.getTopSimilarSheetList(numberRecommendSheet));
+      List<String> recommendSheetId = KNN.getTopSimilarSheetList(numberRecommendSheet);
       KNN.resetKNN();
+      completer.complete(recommendSheetId);
     });
-    return recommendSheetId;
+
+    return completer.future;
   }
 }

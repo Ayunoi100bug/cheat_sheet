@@ -25,7 +25,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
-  Users users = Users(username: '', password: '', email: '', uid: '', profileImage: '');
+  Users users = Users(username: '', password: '', email: '', uid: '', profileImage: '', subject: []);
   final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
 
   @override
