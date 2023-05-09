@@ -47,7 +47,7 @@ class _SheetListScreenState extends State<SheetListScreen> with AutomaticKeepAli
             return Popup_Login(context);
           }
           return StreamBuilder<QuerySnapshot>(
-              stream: _firestore.collection("sheetList").orderBy("timestamp", descending: true).snapshots(),
+              stream: _firestore.collection("sheetList").where('accessible', isEqualTo: true).snapshots(),
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (!snapshot.hasData) {
                   return Container();
