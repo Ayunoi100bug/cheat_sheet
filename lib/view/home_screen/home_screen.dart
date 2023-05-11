@@ -128,7 +128,9 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                     if (!snapshot.hasData) {
                       return Container();
                     } else if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
                     }
                     final int documentCount = snapshot.data!.docs.length;
                     return Column(
@@ -436,7 +438,9 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                           if (!snapshot.hasData) {
                             return Container();
                           } else if (snapshot.connectionState == ConnectionState.waiting) {
-                            return const Center(child: CircularProgressIndicator());
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
                           }
                           final int documentCount = snapshot.data!.docs.length;
                           return Column(
