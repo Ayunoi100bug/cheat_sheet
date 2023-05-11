@@ -162,49 +162,47 @@ class _DetailQuestionState extends State<DetailQuestion> {
                           if (_auth.currentUser != null) ...[
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: screenHeight * 0.01, vertical: screenHeight * 0.02),
-                              child: Expanded(
-                                child: Wrap(
-                                  children: [
-                                    Container(
-                                      width: isPortrait ? screenWidth * 0.8 : screenWidth * 0.6,
-                                      height: isPortrait ? screenWidth * 0.16 : screenHeight * 0.5,
-                                      padding: EdgeInsets.all(screenHeight * 0.004),
-                                      child: Form(
-                                        key: _formKey,
-                                        child: MyTextFormField(
-                                          hintText: 'ตอบกลับคำถามได้ที่นี่',
-                                          minLine: 5,
-                                          maxLine: 5,
-                                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                                          validator: RequiredValidator(errorText: 'กรอกคำถามให้เรียบร้อย'),
-                                          onSaved: (value) {
-                                            _answer.text = value!;
-                                          },
-                                        ),
+                              child: Wrap(
+                                children: [
+                                  Container(
+                                    width: isPortrait ? screenWidth * 0.8 : screenWidth * 0.6,
+                                    height: isPortrait ? screenWidth * 0.16 : screenHeight * 0.5,
+                                    padding: EdgeInsets.all(screenHeight * 0.004),
+                                    child: Form(
+                                      key: _formKey,
+                                      child: MyTextFormField(
+                                        hintText: 'ตอบกลับคำถามได้ที่นี่',
+                                        minLine: 5,
+                                        maxLine: 5,
+                                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                                        validator: RequiredValidator(errorText: 'กรอกคำถามให้เรียบร้อย'),
+                                        onSaved: (value) {
+                                          _answer.text = value!;
+                                        },
                                       ),
                                     ),
-                                    FloatingActionButton(
-                                      onPressed: () async {
-                                        _formKey.currentState!.save();
-                                        try {
-                                          String answerId = const Uuid().v4();
-                                          await myCollection.createAnswerCollection(
-                                              _answer.text, answerId, _auth.currentUser!.uid, widget.questionId, context);
-                                        } on FirebaseAuthException catch (e) {
-                                          FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
-                                        }
-                                      },
-                                      backgroundColor: AppColors.tertiary600,
-                                      child: Transform.rotate(
-                                        angle: 90 * pi / 180,
-                                        child: const Icon(
-                                          Icons.navigation,
-                                          size: 28,
-                                        ),
+                                  ),
+                                  FloatingActionButton(
+                                    onPressed: () async {
+                                      _formKey.currentState!.save();
+                                      try {
+                                        String answerId = const Uuid().v4();
+                                        await myCollection.createAnswerCollection(
+                                            _answer.text, answerId, _auth.currentUser!.uid, widget.questionId, context);
+                                      } on FirebaseAuthException catch (e) {
+                                        FlushbarPopup.errorFlushbar(context, FlushbarIcon.errorIcon, e.toString());
+                                      }
+                                    },
+                                    backgroundColor: AppColors.tertiary600,
+                                    child: Transform.rotate(
+                                      angle: 90 * pi / 180,
+                                      child: const Icon(
+                                        Icons.navigation,
+                                        size: 28,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
