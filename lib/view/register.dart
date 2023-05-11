@@ -198,14 +198,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               size: 36,
                             ),
                           ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              FontAwesomeIcons.line,
-                              color: Colors.green,
-                              size: 36,
-                            ),
-                          ),
                         ],
                       ),
                     ),

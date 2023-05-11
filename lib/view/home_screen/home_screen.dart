@@ -495,8 +495,8 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                           } else if (userSnapshot.connectionState == ConnectionState.waiting) {
                             return const Center(child: CircularProgressIndicator());
                           }
-                          List _following = List.from(userSnapshot.data!['following']);
-                          if (!_following.isEmpty) {
+                          List<Object> following = List.from(userSnapshot.data!['following']);
+                          if (following.isNotEmpty) {
                             return Column(
                               children: [
                                 Container(
@@ -513,7 +513,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                                 ),
                                 SizedBox(
                                   child: StreamBuilder<QuerySnapshot>(
-                                    stream: _firestore.collection("sheet").where('authorId', whereIn: userSnapshot.data!['following']).snapshots(),
+                                    stream: _firestore.collection("sheet").where('authorId', whereIn: following).snapshots(),
                                     builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                                       if (!snapshot.hasData) {
                                         return Container();
@@ -521,48 +521,59 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                                         return const Center(child: CircularProgressIndicator());
                                       }
                                       final int documentCount = snapshot.data!.docs.length;
+
                                       return Column(
                                         children: [
-                                          Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02)),
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.038),
-                                            child: GridView.builder(
-                                              physics: const NeverScrollableScrollPhysics(),
-                                              shrinkWrap: true,
-                                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount: isPortrait ? 3 : 5,
-                                                crossAxisSpacing: 12,
-                                                mainAxisSpacing: 16,
-                                                mainAxisExtent: isPortrait ? 200 : 250,
-                                              ),
-                                              itemCount: documentCount,
-                                              itemBuilder: (context, index) {
-                                                var sheet = snapshot.data?.docs[index];
-                                                return StreamBuilder<DocumentSnapshot>(
-                                                  stream: _firestore.collection("users").doc(sheet?["authorId"]).snapshots(),
-                                                  builder: (context, userSnapshot) {
-                                                    if (!userSnapshot.hasData) {
-                                                      return Container();
-                                                    } else if (userSnapshot.connectionState == ConnectionState.waiting) {
-                                                      return const Center(
-                                                        child: CircularProgressIndicator(),
-                                                      );
-                                                    }
-                                                    return Sheet(
-                                                      rating: sheet?["rating"],
-                                                      sheetCoverImage: sheet?["sheetCoverImage"],
-                                                      authorImage: userSnapshot.data?["profileImage"],
-                                                      title: sheet?["sheetName"],
-                                                      priceSheet: sheet?["price"],
-                                                      username: userSnapshot.data?["username"],
-                                                      sheetId: sheet?["sid"],
-                                                    );
-                                                  },
-                                                );
-                                              },
-                                              padding: const EdgeInsets.only(bottom: 8),
+                                          if (documentCount <= 0) ...[
+                                            Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.03)),
+                                            SizedBox(
+                                              height: screenWidth * 0.2,
+                                              child: Image.network('https://cdn.onlinewebfonts.com/svg/img_257095.png'),
                                             ),
-                                          ),
+                                            Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.01)),
+                                            const Regular16px(text: 'บัญชีที่ติดตามยังไม่มีชีท'),
+                                            Padding(padding: EdgeInsets.symmetric(vertical: screenWidth * 0.03)),
+                                          ] else ...[
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.038),
+                                              child: GridView.builder(
+                                                physics: const NeverScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                                  crossAxisCount: isPortrait ? 3 : 5,
+                                                  crossAxisSpacing: 12,
+                                                  mainAxisSpacing: 16,
+                                                  mainAxisExtent: isPortrait ? 200 : 250,
+                                                ),
+                                                itemCount: documentCount,
+                                                itemBuilder: (context, index) {
+                                                  var sheet = snapshot.data?.docs[index];
+                                                  return StreamBuilder<DocumentSnapshot>(
+                                                    stream: _firestore.collection("users").doc(sheet?["authorId"]).snapshots(),
+                                                    builder: (context, userSnapshot) {
+                                                      if (!userSnapshot.hasData) {
+                                                        return Container();
+                                                      } else if (userSnapshot.connectionState == ConnectionState.waiting) {
+                                                        return const Center(
+                                                          child: CircularProgressIndicator(),
+                                                        );
+                                                      }
+                                                      return Sheet(
+                                                        rating: sheet?["rating"],
+                                                        sheetCoverImage: sheet?["sheetCoverImage"],
+                                                        authorImage: userSnapshot.data?["profileImage"],
+                                                        title: sheet?["sheetName"],
+                                                        priceSheet: sheet?["price"],
+                                                        username: userSnapshot.data?["username"],
+                                                        sheetId: sheet?["sid"],
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                                padding: const EdgeInsets.only(bottom: 8),
+                                              ),
+                                            ),
+                                          ]
                                         ],
                                       );
                                     },

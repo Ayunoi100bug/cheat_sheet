@@ -143,28 +143,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         SizedBox(height: screenHeight * GapDimension.h0_02),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            TextButton(
-                              child: const Regular12px(
-                                text: "เข้าสู่ระบบด้วยเกสท์",
-                                color: AppColors.tertiary500,
-                                underline: true,
-                              ),
-                              onPressed: () {},
-                            ),
-                            SizedBox(width: screenWidth * GapDimension.w0_128),
-                            TextButton(
-                              child: const Regular12px(
-                                text: "ลืมรหัสผ่าน?",
-                                color: AppColors.tertiary500,
-                                underline: true,
-                              ),
-                              onPressed: () {},
-                            ),
-                          ],
-                        ),
-                        Row(
                           children: <Widget>[
                             Expanded(
                               child: Container(
@@ -203,14 +181,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 icon: const Icon(
                                   FontAwesomeIcons.facebook,
                                   color: Colors.blue,
-                                  size: 36,
-                                ),
-                              ),
-                              IconButton(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  FontAwesomeIcons.line,
-                                  color: Colors.green,
                                   size: 36,
                                 ),
                               ),
