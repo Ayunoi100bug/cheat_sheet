@@ -262,7 +262,6 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
             } else if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             }
-            final int documentCount = snapshot.data!.docs.length;
             return Scaffold(
               resizeToAvoidBottomInset: false,
               body: SafeArea(
@@ -342,7 +341,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                             if (!snapshot.hasData || snapshot.data!.isEmpty) {
                               return const Center(child: CircularProgressIndicator());
                             }
-
+                            final documentCount = snapshot.data!.length;
                             final recommendSheetList = snapshot.data!;
                             return Padding(
                               padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.038),
@@ -601,6 +600,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                                         return const Center(child: CircularProgressIndicator());
                                       }
                                       final int documentCount = snapshot.data!.docs.length;
+
                                       return Column(
                                         children: [
                                           SizedBox(
@@ -613,9 +613,10 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                                                 mainAxisSpacing: 16,
                                                 mainAxisExtent: isPortrait ? 200 : 250,
                                               ),
-                                              itemCount: documentCount,
+                                              itemCount: snapshot.data!.docs.length,
                                               itemBuilder: (context, index) {
                                                 var sheet = snapshot.data?.docs[index];
+                                                print(sheet);
                                                 return StreamBuilder<DocumentSnapshot>(
                                                   stream: _firestore.collection("users").doc(sheet?["authorId"]).snapshots(),
                                                   builder: (context, userSnapshot) {
