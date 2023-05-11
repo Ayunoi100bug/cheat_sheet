@@ -511,10 +511,13 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                                   ).copyWith(),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: const [
+                                    children: [
                                       Medium20px(text: 'บัญชีที่ติดตาม'),
                                     ],
                                   ),
+                                ),
+                                SizedBox(
+                                  height: screenWidth * 0.04,
                                 ),
                                 SizedBox(
                                   child: StreamBuilder<QuerySnapshot>(
