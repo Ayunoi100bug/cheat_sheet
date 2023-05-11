@@ -41,6 +41,7 @@ class _TopSheetSubPageState extends State<TopSheetSubPage> {
               );
             }
 
+            sortLikeSheet = [];
             for (int i = 0; i < subList.length; i++) {
               Map<String, dynamic> sheet = sheetSnapshot.data?.docs[i].data() as Map<String, dynamic>;
               sortLikeSheet.add(sheet);
