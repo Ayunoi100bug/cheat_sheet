@@ -122,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                   ),
                 ),
                 StreamBuilder<QuerySnapshot>(
-                  stream: _firestore.collection("sheet").limit(3).snapshots(),
+                  stream: _firestore.collection("sheet").orderBy('likeAmount', descending: true).limit(3).snapshots(),
                   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (!snapshot.hasData) {
                       return Container();
@@ -430,7 +430,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                         ),
                       ),
                       StreamBuilder<QuerySnapshot>(
-                        stream: _firestore.collection("sheet").limit(3).snapshots(),
+                        stream: _firestore.collection("sheet").orderBy('likeAmount', descending: true).limit(3).snapshots(),
                         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                           if (!snapshot.hasData) {
                             return Container();

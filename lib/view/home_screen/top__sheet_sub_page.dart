@@ -30,7 +30,7 @@ class _TopSheetSubPageState extends State<TopSheetSubPage> {
         List subList = tagList.take(10).toList();
 
         return StreamBuilder<QuerySnapshot>(
-          stream: _firestore.collection("sheet").where('sid', whereIn: subList).snapshots(),
+          stream: _firestore.collection("sheet").orderBy('likeAmount', descending: true).snapshots(),
           builder: (context, sheetSnapshot) {
             if (!sheetSnapshot.hasData) {
               return Container();
@@ -58,7 +58,6 @@ class _TopSheetSubPageState extends State<TopSheetSubPage> {
                       itemCount: subList.length,
                       itemBuilder: (context, index) {
                         var sheet = sheetSnapshot.data?.docs[index];
-                        print(sheetSnapshot);
                         return StreamBuilder<DocumentSnapshot>(
                           stream: _firestore.collection("users").doc(sheet?["authorId"]).snapshots(),
                           builder: (context, userSnapshot) {
@@ -69,6 +68,7 @@ class _TopSheetSubPageState extends State<TopSheetSubPage> {
                                 child: CircularProgressIndicator(),
                               );
                             }
+
                             return Sheet(
                               rating: sheet?["rating"],
                               sheetCoverImage: sheet?["sheetCoverImage"],
