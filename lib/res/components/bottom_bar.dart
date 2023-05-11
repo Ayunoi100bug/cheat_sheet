@@ -6,7 +6,7 @@ class BottomBar {
     BottomNavigationBarItem(
         icon: Icon(FluentSystemIcons.ic_fluent_home_regular), activeIcon: Icon(FluentSystemIcons.ic_fluent_home_filled), label: "Home"),
     BottomNavigationBarItem(
-        icon: Icon(FluentSystemIcons.ic_fluent_clock_regular), activeIcon: Icon(FluentSystemIcons.ic_fluent_clock_filled), label: "Activity"),
+        icon: Icon(FluentSystemIcons.ic_fluent_trophy_regular), activeIcon: Icon(FluentSystemIcons.ic_fluent_trophy_filled), label: "Activity"),
     BottomNavigationBarItem(
         icon: Icon(FluentSystemIcons.ic_fluent_document_edit_regular),
         activeIcon: Icon(FluentSystemIcons.ic_fluent_document_edit_filled),

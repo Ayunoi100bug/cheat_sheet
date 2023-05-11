@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/colors.dart';
+import 'package:cheat_sheet/res/components/popup_auth.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 
@@ -46,8 +47,15 @@ class _SidebarMenuState extends State<SidebarMenu> {
                             icon: FluentSystemIcons.ic_fluent_shield_regular,
                             title: 'บัญชีของฉัน',
                             onTap: () {
-                              Navigator.pop(context);
-                              AutoRouter.of(context).push(MyAccountRoute());
+                              if (!AuthService().isLogged()) {
+                                // Navigator.pop(context);
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) => Popup_Login(context),
+                                );
+                              } else {
+                                AutoRouter.of(context).push(MyAccountRoute());
+                              }
                             },
                           ),
                           CustomListTile(
@@ -100,8 +108,15 @@ class _SidebarMenuState extends State<SidebarMenu> {
                             icon: FluentSystemIcons.ic_fluent_shield_regular,
                             title: 'บัญชีของฉัน',
                             onTap: () {
-                              Navigator.pop(context);
-                              AutoRouter.of(context).push(MyAccountRoute());
+                              if (!AuthService().isLogged()) {
+                                // Navigator.pop(context);
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) => Popup_Login(context),
+                                );
+                              } else {
+                                AutoRouter.of(context).push(MyAccountRoute());
+                              }
                             },
                           ),
                           CustomListTile(

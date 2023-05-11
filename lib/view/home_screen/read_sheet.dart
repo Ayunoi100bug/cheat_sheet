@@ -54,10 +54,9 @@ class _ReadSheetState extends State<ReadSheet> {
             askingPage: currentPage + 1,
           ));
         },
-        child: const Icon(
-          Icons.question_mark_outlined,
+        child: Bold16px(
+          text: "ถาม",
           color: AppColors.white,
-          size: 30,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -93,31 +92,17 @@ class _ReadSheetState extends State<ReadSheet> {
                 ],
               ),
             ),
-            Stack(
-              children: [
-                SizedBox(
-                  width: screenWidth * 0.9,
-                  height: isOpen ? screenHeight * 0.47 : screenHeight * 0.67,
-                  child: PDFView(
-                    filePath: file!.path,
-                    pageSnap: false,
-                    pageFling: false,
-                    onRender: (pages) => setState(() => this.numberPages = pages!),
-                    onViewCreated: (controller) => setState(() => this.controller = controller),
-                    onPageChanged: (indexPage, _) => setState(() => this.currentPage = indexPage!),
-                  ),
-                ),
-                Container(
-                  width: screenWidth * 0.9,
-                  alignment: Alignment.centerRight,
-                  padding: EdgeInsets.only(top: screenWidth * 0.02, right: screenWidth * 0.02),
-                  child: Icon(
-                    Icons.bookmark_outline,
-                    size: 36,
-                    color: AppColors.black700,
-                  ),
-                ),
-              ],
+            SizedBox(
+              width: screenWidth * 0.9,
+              height: isOpen ? screenHeight * 0.47 : screenHeight * 0.67,
+              child: PDFView(
+                filePath: file!.path,
+                pageSnap: false,
+                pageFling: false,
+                onRender: (pages) => setState(() => this.numberPages = pages!),
+                onViewCreated: (controller) => setState(() => this.controller = controller),
+                onPageChanged: (indexPage, _) => setState(() => this.currentPage = indexPage!),
+              ),
             ),
             Padding(
               padding: EdgeInsets.only(top: screenHeight * 0.018),

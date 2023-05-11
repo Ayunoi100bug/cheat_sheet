@@ -52,7 +52,7 @@ class _MyAccountState extends State<MyAccount> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Regular16px(text: 'อีเมล์'),
+                    Regular16px(text: 'อีเมลล์'),
                     InkWell(
                       child: Row(
                         children: [
@@ -102,15 +102,6 @@ class _MyAccountState extends State<MyAccount> {
                 ),
                 SizedBox(
                   height: screenWidth * 0.1,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    PrimaryButton(
-                      text: 'บันทึก',
-                      onPressed: () {},
-                    ),
-                  ],
                 ),
               ],
             ),

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import '../../model/user.dart';
 import '../../res/button.dart';
 import '../../res/colors.dart';
+import '../../res/components/popup_auth.dart';
 import '../../res/typo.dart';
 
 class OtherProfile extends StatefulWidget {
@@ -105,21 +106,18 @@ class _OtherProfileState extends State<OtherProfile> {
                                     ],
                                   ),
                                 ),
-                                if (!followerData.contains(_auth.currentUser!.uid)) ...[
-                                  PrimaryButton(
-                                    text: "ติดตาม",
-                                    onPressed: () {
+                                PrimaryButton(
+                                  text: !followerData.contains(_auth.currentUser?.uid) ? "ติดตาม" : "เลิกติดตาม",
+                                  onPressed: () {
+                                    if (!followerData.contains(_auth.currentUser?.uid) && _auth.currentUser != null) {
                                       FollowSystem().followUser(_auth.currentUser!.uid, widget.userId);
-                                    },
-                                  )
-                                ] else ...[
-                                  PrimaryButton(
-                                    text: "เลิกติดตาม",
-                                    onPressed: () {
+                                    } else if (followerData.contains(_auth.currentUser?.uid) && _auth.currentUser != null) {
                                       FollowSystem().unfollowUser(_auth.currentUser!.uid, widget.userId);
-                                    },
-                                  )
-                                ]
+                                    } else {
+                                      showDialog(context: context, builder: (ctx) => Popup_Login(context));
+                                    }
+                                  },
+                                )
                               ],
                             ),
                           ],
