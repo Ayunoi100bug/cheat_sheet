@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../res/colors.dart';
+import '../../res/components/popup_dialog.dart';
 import '../../res/typo.dart';
 
 class HomeScreen extends StatefulWidget {

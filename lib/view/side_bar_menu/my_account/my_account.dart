@@ -101,72 +101,16 @@ class _MyAccountState extends State<MyAccount> {
                   },
                 ),
                 SizedBox(
-                  height: screenWidth * 0.04,
-                ),
-                Medium20px(text: 'ความเป็นส่วนตัว'),
-                SizedBox(
-                  height: screenWidth * 0.012,
+                  height: screenWidth * 0.1,
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Checkbox(
-                      activeColor: AppColors.secondary500,
-                      value: firstValue,
-                      onChanged: (newValue) {
-                        setState(
-                          () {
-                            firstValue = newValue!;
-                          },
-                        );
-                      },
+                    PrimaryButton(
+                      text: 'บันทึก',
+                      onPressed: () {},
                     ),
-                    Regular16px(text: 'ไม่สามารถติดตามบัญชีของฉันได้'),
                   ],
-                ),
-                Row(
-                  children: [
-                    Checkbox(
-                      activeColor: AppColors.secondary500,
-                      value: secondValue,
-                      onChanged: (newValue) {
-                        setState(
-                          () {
-                            secondValue = newValue!;
-                          },
-                        );
-                      },
-                    ),
-                    Regular16px(text: 'ไม่สามารถถามหรือตอบภายในชีทของฉันได้'),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Checkbox(
-                      activeColor: AppColors.secondary500,
-                      value: thirdValue,
-                      onChanged: (newValue) {
-                        setState(
-                          () {
-                            thirdValue = newValue!;
-                          },
-                        );
-                      },
-                    ),
-                    Regular16px(text: 'ไม่สามารถรีวิวความคิดเห็นชีทของฉันได้'),
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: isPortrait ? screenWidth * 0.9 : screenWidth * 0.024,
-                    left: isPortrait ? screenWidth * 0.6 : screenWidth * 0.74,
-                    right: isPortrait ? screenWidth * 0.08 : screenWidth * 0.032,
-                  ),
-                  child: PrimaryButton(
-                    text: 'บันทึก',
-                    onPressed: () {
-                      print('go go');
-                    },
-                  ),
                 ),
               ],
             ),
