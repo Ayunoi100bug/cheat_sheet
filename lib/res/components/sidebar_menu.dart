@@ -105,33 +105,11 @@ class _SidebarMenuState extends State<SidebarMenu> {
                             },
                           ),
                           CustomListTile(
-                            icon: Icons.receipt_outlined,
-                            title: 'ประวัติการจ่ายเงิน',
-                            onTap: () {
-                              print("history");
-                            },
-                          ),
-                          CustomListTile(
                             icon: FontAwesomeIcons.coins,
                             title: 'เติมเงิน',
                             onTap: () {
                               Navigator.pop(context);
                               AutoRouter.of(context).push(TopUpRoute());
-                            },
-                          ),
-                          CustomListTile(
-                            icon: Icons.cast_for_education_outlined,
-                            title: 'แนะนำการใช้งาน',
-                            onTap: () {
-                              print("guide");
-                            },
-                          ),
-                          CustomListTile(
-                            icon: Icons.cast_for_education_outlined,
-                            title: 'แดชบอร์ด',
-                            onTap: () {
-                              Navigator.pop(context);
-                              AutoRouter.of(context).push(DashBoardRoute());
                             },
                           ),
                         ],
