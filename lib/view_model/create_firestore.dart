@@ -159,6 +159,7 @@ class CreateCollection {
       'review': mySheet.review,
       'question': mySheet.question,
       'read': mySheet.read,
+      'likeAmount': mySheet.likeAmount,
     }).then((value) async {
       await createTag(sheetId, argTagList);
     });
