@@ -221,19 +221,23 @@ class _DetailSheetState extends State<DetailSheet> {
                                         ],
                                         Row(
                                           children: [
-                                            RatingBarIndicator(
-                                              rating: sheetData['rating'],
-                                              itemBuilder: (context, index) => const Icon(
-                                                Icons.star,
-                                                color: AppColors.warning400,
+                                            if (sheetData['rating'] > 0) ...[
+                                              RatingBarIndicator(
+                                                rating: sheetData['rating'],
+                                                itemBuilder: (context, index) => const Icon(
+                                                  Icons.star,
+                                                  color: AppColors.warning400,
+                                                ),
+                                                itemCount: 5,
+                                                itemSize: screenWidth * 0.04,
                                               ),
-                                              itemCount: 5,
-                                              itemSize: screenWidth * 0.04,
-                                            ),
-                                            SizedBox(
-                                              width: screenWidth * 0.01,
-                                            ),
-                                            Regular12px(text: ratingSheet),
+                                              SizedBox(
+                                                width: screenWidth * 0.01,
+                                              ),
+                                              Regular12px(text: ratingSheet),
+                                            ] else ...[
+                                              Regular14px(text: 'ยังไม่มีรีวิว'),
+                                            ]
                                           ],
                                         ),
                                         if (_auth.currentUser?.uid != authorData['uid']) ...[
