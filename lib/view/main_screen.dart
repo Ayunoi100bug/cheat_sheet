@@ -125,7 +125,6 @@ class _MainScreenState extends State<MainScreen> {
                               AutoRouter.of(context as BuildContext).push(TopUpRoute());
                             },
                           ),
-                          CustomAppBar.notifications,
                           IconButton(
                             icon: const Icon(Icons.menu),
                             onPressed: () {
