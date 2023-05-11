@@ -251,10 +251,14 @@ class _DetailSheetState extends State<DetailSheet> {
                                                 SizedBox(
                                                   width: screenWidth * 0.02,
                                                 ),
-                                                Regular16px(
-                                                  text: authorData['username'],
-                                                  size: 18,
-                                                ),
+                                                SizedBox(
+                                                  width: 100,
+                                                  child: Regular16px(
+                                                    text: authorData['username'],
+                                                    size: 18,
+                                                    activateOverflow: true,
+                                                  ),
+                                                )
                                               ],
                                             ),
                                             onTap: () {
@@ -272,10 +276,14 @@ class _DetailSheetState extends State<DetailSheet> {
                                               SizedBox(
                                                 width: screenWidth * 0.02,
                                               ),
-                                              Regular16px(
-                                                text: authorData['username'],
-                                                size: 18,
-                                              ),
+                                              SizedBox(
+                                                width: 100,
+                                                child: Regular16px(
+                                                  text: authorData['username'],
+                                                  size: 18,
+                                                  activateOverflow: true,
+                                                ),
+                                              )
                                             ],
                                           ),
                                           Wrap(
