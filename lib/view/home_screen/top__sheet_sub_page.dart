@@ -13,6 +13,7 @@ class TopSheetSubPage extends StatefulWidget {
 
 class _TopSheetSubPageState extends State<TopSheetSubPage> {
   final _firestore = FirebaseFirestore.instance;
+  late List sortLikeSheet = [];
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -30,7 +31,7 @@ class _TopSheetSubPageState extends State<TopSheetSubPage> {
         List subList = tagList.take(10).toList();
 
         return StreamBuilder<QuerySnapshot>(
-          stream: _firestore.collection("sheet").orderBy('likeAmount', descending: true).snapshots(),
+          stream: _firestore.collection("sheet").where('sid', whereIn: subList).snapshots(),
           builder: (context, sheetSnapshot) {
             if (!sheetSnapshot.hasData) {
               return Container();
@@ -39,6 +40,12 @@ class _TopSheetSubPageState extends State<TopSheetSubPage> {
                 child: CircularProgressIndicator(),
               );
             }
+
+            for (int i = 0; i < subList.length; i++) {
+              Map<String, dynamic> sheet = sheetSnapshot.data?.docs[i].data() as Map<String, dynamic>;
+              sortLikeSheet.add(sheet);
+            }
+            sortLikeSheet.sort((a, b) => b['likeAmount'].compareTo(a['likeAmount']));
 
             return SingleChildScrollView(
               child: Column(
@@ -55,11 +62,10 @@ class _TopSheetSubPageState extends State<TopSheetSubPage> {
                         mainAxisSpacing: 16,
                         mainAxisExtent: isPortrait ? 200 : 250,
                       ),
-                      itemCount: subList.length,
+                      itemCount: sortLikeSheet.length,
                       itemBuilder: (context, index) {
-                        var sheet = sheetSnapshot.data?.docs[index];
                         return StreamBuilder<DocumentSnapshot>(
-                          stream: _firestore.collection("users").doc(sheet?["authorId"]).snapshots(),
+                          stream: _firestore.collection("users").doc(sortLikeSheet[index]['authorId']).snapshots(),
                           builder: (context, userSnapshot) {
                             if (!userSnapshot.hasData) {
                               return Container();
@@ -68,15 +74,14 @@ class _TopSheetSubPageState extends State<TopSheetSubPage> {
                                 child: CircularProgressIndicator(),
                               );
                             }
-
                             return Sheet(
-                              rating: sheet?["rating"],
-                              sheetCoverImage: sheet?["sheetCoverImage"],
+                              rating: sortLikeSheet[index]["rating"],
+                              sheetCoverImage: sortLikeSheet[index]["sheetCoverImage"],
                               authorImage: userSnapshot.data?["profileImage"],
-                              title: sheet?["sheetName"],
-                              priceSheet: sheet?["price"],
+                              title: sortLikeSheet[index]["sheetName"],
+                              priceSheet: sortLikeSheet[index]["price"],
                               username: userSnapshot.data?["username"],
-                              sheetId: sheet?["sid"],
+                              sheetId: sortLikeSheet[index]["sid"],
                             );
                           },
                         );
