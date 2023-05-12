@@ -34,14 +34,6 @@ class _ViewImportSheetState extends State<ViewImportSheet> {
     return Column(
       children: [
         Container(
-          alignment: Alignment.centerRight,
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: screenHeight * 0.005),
-          child: const Icon(
-            Icons.file_download_outlined,
-            size: 36,
-          ),
-        ),
-        Container(
           width: screenWidth * 0.9,
           height: screenHeight * 0.64,
           child: PDFView(
