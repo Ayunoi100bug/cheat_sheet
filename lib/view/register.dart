@@ -22,7 +22,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
+  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '', subject: []);
   AuthService myAuth = AuthService();
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -195,14 +195,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             icon: const Icon(
                               FontAwesomeIcons.facebook,
                               color: Colors.blue,
-                              size: 36,
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              FontAwesomeIcons.line,
-                              color: Colors.green,
                               size: 36,
                             ),
                           ),

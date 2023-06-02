@@ -11,16 +11,26 @@ class DeleteCollection {
   final _firestore = FirebaseFirestore.instance;
 
   Future<void> deleteAllSheet(context) async {
-    await _firestore.collection("sheet").get().then((value) async {
-      for (var element in value.docs) {
-        await _firestore.collection("sheet").doc(element.id).delete();
-      }
-    }).then((value) {
+    await Future.wait([
+      _firestore.collection("sheet").get().then((value) async {
+        for (var element in value.docs) {
+          await _firestore.collection("sheet").doc(element.id).delete();
+        }
+      }),
+      _firestore.collection("sheetList").get().then((value) async {
+        for (var element in value.docs) {
+          await _firestore.collection("sheetList").doc(element.id).update({
+            'sid': FieldValue.arrayRemove(element['sid']),
+            'sheetListCoverImage': "",
+            'timestamp': FieldValue.serverTimestamp(),
+          });
+        }
+      }),
+      // ฝากลบชีทใน storage ที
+    ]).then((value) {
       AutoRouter.of(context).pop();
-      Future.delayed(const Duration(milliseconds: 500), () {
-        const String message = 'ลบชีททั้งหมดสำเร็จ';
-        FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
-      });
+      const String message = 'ลบชีททั้งหมดสำเร็จ';
+      FlushbarPopup.successFlushbar(context, FlushbarIcon.successIcon, message);
     });
   }
 }

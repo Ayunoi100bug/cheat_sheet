@@ -221,19 +221,23 @@ class _DetailSheetState extends State<DetailSheet> {
                                         ],
                                         Row(
                                           children: [
-                                            RatingBarIndicator(
-                                              rating: sheetData['rating'],
-                                              itemBuilder: (context, index) => const Icon(
-                                                Icons.star,
-                                                color: AppColors.warning400,
+                                            if (sheetData['rating'] > 0) ...[
+                                              RatingBarIndicator(
+                                                rating: sheetData['rating'],
+                                                itemBuilder: (context, index) => const Icon(
+                                                  Icons.star,
+                                                  color: AppColors.warning400,
+                                                ),
+                                                itemCount: 5,
+                                                itemSize: screenWidth * 0.04,
                                               ),
-                                              itemCount: 5,
-                                              itemSize: screenWidth * 0.04,
-                                            ),
-                                            SizedBox(
-                                              width: screenWidth * 0.01,
-                                            ),
-                                            Regular12px(text: ratingSheet),
+                                              SizedBox(
+                                                width: screenWidth * 0.01,
+                                              ),
+                                              Regular12px(text: ratingSheet),
+                                            ] else ...[
+                                              Regular14px(text: 'ยังไม่มีรีวิว'),
+                                            ]
                                           ],
                                         ),
                                         if (_auth.currentUser?.uid != authorData['uid']) ...[
@@ -247,10 +251,14 @@ class _DetailSheetState extends State<DetailSheet> {
                                                 SizedBox(
                                                   width: screenWidth * 0.02,
                                                 ),
-                                                Regular16px(
-                                                  text: authorData['username'],
-                                                  size: 18,
-                                                ),
+                                                SizedBox(
+                                                  width: 100,
+                                                  child: Regular16px(
+                                                    text: authorData['username'],
+                                                    size: 18,
+                                                    activateOverflow: true,
+                                                  ),
+                                                )
                                               ],
                                             ),
                                             onTap: () {
@@ -268,10 +276,14 @@ class _DetailSheetState extends State<DetailSheet> {
                                               SizedBox(
                                                 width: screenWidth * 0.02,
                                               ),
-                                              Regular16px(
-                                                text: authorData['username'],
-                                                size: 18,
-                                              ),
+                                              SizedBox(
+                                                width: 100,
+                                                child: Regular16px(
+                                                  text: authorData['username'],
+                                                  size: 18,
+                                                  activateOverflow: true,
+                                                ),
+                                              )
                                             ],
                                           ),
                                           Wrap(
@@ -372,11 +384,11 @@ class _DetailSheetState extends State<DetailSheet> {
                                                   text: sheetData['price'] == 0 ? "อ่านชีท" : sheetData['price'].toString(),
                                                   size: 16,
                                                   onPressed: () async {
-                                                    print(sheetData['price']);
                                                     if (sheetData['price'] == 0) {
                                                       Provider.of<FilePasserForRead>(context, listen: false).setFile(file);
                                                       AutoRouter.of(context)
                                                           .push(ReadSheetRoute(sheetId: widget.sheetId, sheetTitle: sheetData['sheetName']));
+                                                      await UpdateCollection().readerIncrement(sheetData['sid']);
                                                     } else {
                                                       await updateFS.userBuySheet(context, sheetData['sid'], authorData['uid'], sheetData['price']);
                                                     }
@@ -410,6 +422,7 @@ class _DetailSheetState extends State<DetailSheet> {
                                                       Provider.of<FilePasserForRead>(context, listen: false).setFile(file);
                                                       AutoRouter.of(context)
                                                           .push(ReadSheetRoute(sheetId: widget.sheetId, sheetTitle: sheetData['sheetName']));
+                                                      await UpdateCollection().readerIncrement(sheetData['sid']);
                                                     }
                                                   } else {
                                                     await updateFS.userBuySheet(context, sheetData['sid'], authorData['uid'], sheetData['price']);
@@ -634,7 +647,7 @@ class _DetailSheetState extends State<DetailSheet> {
 
   void _BottomSheet(context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
+    Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '', subject: []);
     final FirebaseFirestore _firestoreDb = FirebaseFirestore.instance;
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     final SheetLists _sheetLists = SheetLists(sheetListName: '', sid: [], authorId: '', sheetListId: '');

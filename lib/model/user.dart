@@ -23,6 +23,7 @@ class Users {
   List trackingReview = [0, 5, 15, false];
   List? sheetLists = [];
   List? buyedSheet = [];
+  List? subject = [];
 
   Users({
     required this.username,
@@ -30,6 +31,7 @@ class Users {
     required this.password,
     required this.uid,
     required this.profileImage,
+    required this.subject,
   });
 
   Users.fromJson(Map<String, dynamic> json)
@@ -54,7 +56,8 @@ class Users {
         trackingReadSheet = json['trackingReadSheet'],
         trackingReview = json['trackingReview'],
         sheetLists = json['sheetList'],
-        buyedSheet = json['buyedSheet'];
+        buyedSheet = json['buyedSheet'],
+        subject = json['subject'];
 
   Map<String, dynamic> toJson() => {
         'timestamp': timestamp,
@@ -78,5 +81,6 @@ class Users {
         'trackingReadSheet': trackingReadSheet,
         'trackingReview': trackingReview,
         'sheetLists': sheetLists,
+        'subject': subject,
       };
 }

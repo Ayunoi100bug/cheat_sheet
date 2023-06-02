@@ -18,6 +18,8 @@ class Sheets {
   List? review = [];
   List? question = [];
   List sheetTags = [];
+  int read = 0;
+  int likeAmount = 0;
 
   Sheets({
     required this.sheetName,
@@ -43,7 +45,9 @@ class Sheets {
         authorId = json['authorId'],
         review = json['review'],
         question = json['question'],
-        sheetTags = json['sheetTags'];
+        sheetTags = json['sheetTags'],
+        read = json['read'],
+        likeAmount = json['likeAmount'];
 
   Map<String, dynamic> toJson() => {
         'timestamp': timestamp,
@@ -60,5 +64,7 @@ class Sheets {
         'review': review,
         'question': question,
         'sheetTags': sheetTags,
+        'read': read,
+        'likeAmount': likeAmount,
       };
 }

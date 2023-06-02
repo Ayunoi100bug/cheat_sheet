@@ -22,7 +22,7 @@ class UpdateCollection {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   AuthService myAuth = AuthService();
-  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
+  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '', subject: []);
   Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetCoverImage: '', demoPages: [], sheetTypeFree: true, authorId: '');
 
   Future<void> updateUserData() async {
@@ -225,6 +225,14 @@ class UpdateCollection {
       });
     }
   }
+
+  Future<void> readerIncrement(String argSid) async {
+    await _firestore.collection("sheet").doc(argSid).update({
+      'read': FieldValue.increment(1),
+    });
+  }
+
+  void userRecommented(BuildContext context, List subject) {}
 }
 
 class EditProfileData {
@@ -261,20 +269,30 @@ class UpdateSheetListData {
   Future<void> like(BuildContext context, String argSid, String argCoverImage) async {
     var sheetListData = await ReadSheetListCollection().getCurrentUserLikedSheetList();
     if (!sheetListData['sid'].contains(argSid)) {
-      await _firestore.collection("sheetList").doc(sheetListData['sheetListId']).update({
-        'sid': FieldValue.arrayUnion([argSid]),
-        'sheetListCoverImage': sheetListData['sheetListCoverImage'] == '' ? argCoverImage : sheetListData['sheetListCoverImage'],
-      }).then((value) async {
+      await Future.wait([
+        _firestore.collection("sheetList").doc(sheetListData['sheetListId']).update({
+          'sid': FieldValue.arrayUnion([argSid]),
+          'sheetListCoverImage': sheetListData['sheetListCoverImage'] == '' ? argCoverImage : sheetListData['sheetListCoverImage'],
+        }),
+        _firestore.collection("sheet").doc(argSid).update({
+          'likeAmount': FieldValue.increment(1),
+        }),
+      ]).then((value) async {
         await Future.wait([
           UpdateCollection().achievement(context, 'trackingLike'),
           UpdateCollection().quest(context, 'trackingDailyLike'),
         ]);
       });
     } else {
-      await _firestore.collection("sheetList").doc(sheetListData['sheetListId']).update({
-        'sid': FieldValue.arrayRemove([argSid]),
-        'sheetListCoverImage': sheetListData['sid'].isEmpty ? sheetListData['sheetListCoverImage'] : '',
-      });
+      await Future.wait([
+        _firestore.collection("sheetList").doc(sheetListData['sheetListId']).update({
+          'sid': FieldValue.arrayRemove([argSid]),
+          'sheetListCoverImage': sheetListData['sid'].isEmpty ? sheetListData['sheetListCoverImage'] : '',
+        }),
+        _firestore.collection("sheet").doc(argSid).update({
+          'likeAmount': FieldValue.increment(-1),
+        }),
+      ]);
     }
   }
 

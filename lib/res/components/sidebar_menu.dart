@@ -1,22 +1,17 @@
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cheat_sheet/res/colors.dart';
-import 'package:cheat_sheet/res/components/flushbar.dart';
+import 'package:cheat_sheet/res/components/popup_auth.dart';
 import 'package:cheat_sheet/res/typo.dart';
 import 'package:cheat_sheet/utils/routes/routes.gr.dart';
 
 import 'package:cheat_sheet/view_model/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'drawer_list.dart';
-
-import 'flushbar_icon.dart';
 
 class SidebarMenu extends StatefulWidget {
   const SidebarMenu({super.key});
@@ -31,10 +26,7 @@ class _SidebarMenuState extends State<SidebarMenu> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    var isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     return StreamBuilder(
       stream: _auth.authStateChanges(),
@@ -55,15 +47,15 @@ class _SidebarMenuState extends State<SidebarMenu> {
                             icon: FluentSystemIcons.ic_fluent_shield_regular,
                             title: 'บัญชีของฉัน',
                             onTap: () {
-                              Navigator.pop(context);
-                              AutoRouter.of(context).push(MyAccountRoute());
-                            },
-                          ),
-                          CustomListTile(
-                            icon: Icons.receipt_outlined,
-                            title: 'ประวัติการจ่ายเงิน',
-                            onTap: () {
-                              print("history");
+                              if (!AuthService().isLogged()) {
+                                // Navigator.pop(context);
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) => Popup_Login(context),
+                                );
+                              } else {
+                                AutoRouter.of(context).push(MyAccountRoute());
+                              }
                             },
                           ),
                           CustomListTile(
@@ -72,13 +64,6 @@ class _SidebarMenuState extends State<SidebarMenu> {
                             onTap: () {
                               Navigator.pop(context);
                               AutoRouter.of(context).push(TopUpRoute());
-                            },
-                          ),
-                          CustomListTile(
-                            icon: Icons.cast_for_education_outlined,
-                            title: 'แนะนำการใช้งาน',
-                            onTap: () {
-                              print("guide");
                             },
                           ),
                         ],
@@ -123,15 +108,15 @@ class _SidebarMenuState extends State<SidebarMenu> {
                             icon: FluentSystemIcons.ic_fluent_shield_regular,
                             title: 'บัญชีของฉัน',
                             onTap: () {
-                              Navigator.pop(context);
-                              AutoRouter.of(context).push(MyAccountRoute());
-                            },
-                          ),
-                          CustomListTile(
-                            icon: Icons.receipt_outlined,
-                            title: 'ประวัติการจ่ายเงิน',
-                            onTap: () {
-                              print("history");
+                              if (!AuthService().isLogged()) {
+                                // Navigator.pop(context);
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) => Popup_Login(context),
+                                );
+                              } else {
+                                AutoRouter.of(context).push(MyAccountRoute());
+                              }
                             },
                           ),
                           CustomListTile(
@@ -140,13 +125,6 @@ class _SidebarMenuState extends State<SidebarMenu> {
                             onTap: () {
                               Navigator.pop(context);
                               AutoRouter.of(context).push(TopUpRoute());
-                            },
-                          ),
-                          CustomListTile(
-                            icon: Icons.cast_for_education_outlined,
-                            title: 'แนะนำการใช้งาน',
-                            onTap: () {
-                              print("guide");
                             },
                           ),
                         ],

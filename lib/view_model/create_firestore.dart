@@ -28,7 +28,7 @@ class CreateCollection {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
-  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
+  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '', subject: []);
   Sheets mySheet = Sheets(sheetName: '', detailSheet: '', sheetCoverImage: '', demoPages: [], sheetTypeFree: true, authorId: '');
   SheetLists mySheetLists = SheetLists(sheetListName: '', sid: [], authorId: '', sheetListId: '');
   Reviews myReview = Reviews(text: '', rid: '', reviewerId: '', sheetId: '', rating: 0, like: 0);
@@ -156,6 +156,10 @@ class CreateCollection {
       'buyer': mySheet.buyer,
       'authorId': argAuthorId,
       'sheetTags': argTagList,
+      'review': mySheet.review,
+      'question': mySheet.question,
+      'read': mySheet.read,
+      'likeAmount': mySheet.likeAmount,
     }).then((value) async {
       await createTag(sheetId, argTagList);
     });

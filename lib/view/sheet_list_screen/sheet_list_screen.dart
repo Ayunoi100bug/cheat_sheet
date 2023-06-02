@@ -33,7 +33,7 @@ class SheetListScreen extends StatefulWidget {
 class _SheetListScreenState extends State<SheetListScreen> with AutomaticKeepAliveClientMixin {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
-  Users users = Users(username: '', password: '', email: '', uid: '', profileImage: '');
+  Users users = Users(username: '', password: '', email: '', uid: '', profileImage: '', subject: []);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class _SheetListScreenState extends State<SheetListScreen> with AutomaticKeepAli
             return Popup_Login(context);
           }
           return StreamBuilder<QuerySnapshot>(
-              stream: _firestore.collection("sheetList").orderBy("timestamp", descending: true).snapshots(),
+              stream: _firestore.collection("sheetList").where('accessible', isEqualTo: true).snapshots(),
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (!snapshot.hasData) {
                   return Container();
@@ -155,7 +155,7 @@ class _SheetListScreenState extends State<SheetListScreen> with AutomaticKeepAli
 
 void _BottomSheet(context) {
   double screenHeight = MediaQuery.of(context).size.height;
-  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '');
+  Users myUser = Users(email: '', password: '', username: '', uid: '', profileImage: '', subject: []);
   final FirebaseFirestore _firestoreDb = FirebaseFirestore.instance;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final SheetLists _sheetLists = SheetLists(sheetListName: '', sid: [], authorId: '', sheetListId: '');
